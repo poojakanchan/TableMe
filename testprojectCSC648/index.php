@@ -7,10 +7,9 @@ and open the template in the editor.
 <html>
     <head>
         <meta charset="UTF-8">
-        <title></title>
+        <title>hello world</title>
     </head>
     <body>
-        <?php  Print "Hello, World!"; ?>
-        <?php  Echo "Hello, World!"; ?>
+        <p>Hello world</p>
     </body>
 </html>

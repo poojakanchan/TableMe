@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <link rel=stylesheet href="style.css" type="text/css" media=screen />
+</head>
+<body>
+
+<form action="upload.php" method="post" enctype="multipart/form-data">
+    <h2 align ="center"> Image Upload </h2>
+    <p>Select image to upload:</p>
+    <input type="file" name="fileToUpload" id="fileToUpload"> &nbsp;&nbsp;&nbsp;
+    <input type="submit" value="Upload Image" name="submit">
+    <br><br>
+    <p>File Description:</p>
+    <textarea rows="7" cols="60" maxlength="50" placeholder="Enter the description of your file here." name="description"></textarea>
+</form>
+
+</body>
+</html>

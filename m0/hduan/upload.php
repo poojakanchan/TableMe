@@ -44,12 +44,6 @@ else if (file_exists($imgFile)) {
     echo "<p>Sorry, file already exists.</p>";
     $uploadOk = 0;
 }
-//// Allow certain file formats
-//else if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-//&& $imageFileType != "gif" ) {
-//    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-//    $uploadOk = 0;
-//}
 // Check if $uploadOk is set to 0 by an error
 if ($uploadOk == 0) {
     echo "Sorry, your file was not uploaded.";
@@ -106,14 +100,14 @@ function displayImg() {
     if (!$queryResult) {
         exit("<p>Error querying database.</p>");
     }
-    $row = $queryResult->fetch_row();
-    echo"<h3>$img_name</h3>";
-    echo "<img src= $imgFile />";
+    $row = $queryResult->fetch_row();    
     echo "<h3>Image description: $row[0] </h3><br><br>";
+    echo "<img src= $imgFile />";
+    echo"<h3>$imgFile</h3><br>";
     echo "<img src=$imgFileMedium />";
-    echo "<h3>Medium Thumbnail</h3><br><br>";
+    echo "<h3>$imgFileMedium</h3><br><br>";
     echo "<img src=$imgFileSmall />";
-    echo "<h3>Small thumbnail</h3>";
+    echo "<h3>$imgFileSmall</h3>";
 }
 
 ?>

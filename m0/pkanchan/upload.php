@@ -9,7 +9,7 @@ $target_dir = "uploads/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
 $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-// Check if image file is a actual image or fake image
+
 if(isset($_POST["submit"])) {
     if(isset($_POST["description"])) {
         $desc = $_POST["description"];
@@ -17,6 +17,7 @@ if(isset($_POST["submit"])) {
     else { 
             $desc = NULL;
     }
+    // Check if image file is a actual image or fake image
     $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
    
     if($check !== false) {
@@ -39,30 +40,34 @@ if(isset($_POST["submit"])) {
                 
                 if(resizeImage($target_file,$path1,250)) {
                     $path2 = $path_parts['dirname']."/".$path_parts['filename']."_resize2.".$path_parts['extension'];
-
+                    $baseName = $path_parts['basename'];
                     if(resizeImage($target_file,$path2,150)) {
                     
                         if(saveData($target_file, $desc, $path2, $path1)) {
                                  echo "<p align=\"center\" >Your file was uploaded successfully!!</p>";
-                                 echo "<br><br>";
-                                 echo "<p> FileName</p> $target_file </p>";
+                                 echo "<p align=\"center\"> Click <a href=\"index.html\">here</a> to upload more images.</p> ";
                                  echo "<br>";
+                                 echo "<p> FileName</p> $baseName </p>";
+                               //  echo "<br>";
                                  if($desc == NULL) {
                                      echo "Description was not set.";
                                  } else
                                  {
                                      echo "<p> Description </p> $desc </p>";
                                  }
-                                 echo "<br><br>";
+                                 //echo "<br><br>";
+                                 echo "<div class=\"container\">";
                                  echo "<div class=\"row\">";
                                
-                                 echo "<div class=\"col-md-6\">";
+                                 echo "<div class=\"col-xs-6\">";
                                  echo "<p>Resized image 1</p> ";
-                                 echo "<img src=\"$path1\"/> </div>";
-                                 
-                                 echo "<div class=\"col-md-6\">";
-                                 echo "<p>Resized image 1</p> ";
-                                 echo "<img src=\"$path2\"/> </div>";
+                                 echo "<img src=\"$path1\"/> ";
+                                 echo "</div>";
+                                 echo "<div class=\"col-xs-6\">";
+                                 echo "<p>Resized image 2</p> ";
+                                 echo "<img src=\"$path2\"/>";
+                                 echo " </div>"; 
+                                echo " </div>"; 
                                  echo "</div>";
                                  echo "<p> Original image </p>";
                                  echo "<img height =\"300\" width =\"400\" src=\"$target_file \"/>";
@@ -77,8 +82,10 @@ if(isset($_POST["submit"])) {
 }
 
 if(!empty($error_message)) {
-    echo "<h1 class=\"error\">Sorry your file was not uploaded</h2>";
+    echo "<h1 class=\"error\">Sorry, your file was not uploaded</h2>";
     echo "<h1 class=\"error\"> Error: $error_message </h2>";
+     echo "<h3  >Click <a href=\"index.html\">here</a> to try again.</h3>";
+                                
 }
 
 function resizeImage($file_name,$resize_name,$new_height) {

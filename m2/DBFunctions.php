@@ -11,7 +11,7 @@
  */
 class DB
 {
-    private $dbh = null; //database handler
+    public $dbh = null; //database handler
 
     /* Open the database connection when an instance of DB class is created*/
     public function __construct(){
@@ -41,10 +41,9 @@ class DB
         }
         if (array_key_exists('menu', $resArray)) {
             $fhMenu = fopen($resArray['menu'], 'rb');
-        }
+        }        
         
-        
-        $sql = "INSERT INTO  restaurant(name, food_category_name, owner_id, phone_no, address, thumbnail, description, "
+        $sql = "INSERT INTO restaurant(name, food_category_name, owner_id, phone_no, address, thumbnail, description, "
                 . "flag_new, menu, capacity) VALUES(:name, :food_category_name, :owner_id ,:phone_no, :address, :thumbnail, "
                 . ":description, :flag_new, :menu, :capacity)";
         $stmt = $this->dbh->prepare($sql);
@@ -100,7 +99,7 @@ class DB
         foreach ($words as $word) {
             $searchStr = $searchStr . $word . "%";
         }
-        $sql = "SELECT name, thumbnail, address, phone_no, food_category_name, description, menu "
+        $sql = "SELECT restaurant_id, name, address, phone_no, food_category_name, description, menu "
                 . "FROM restaurant WHERE name_address LIKE :str";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':str', $searchStr);
@@ -108,9 +107,31 @@ class DB
             return $stmt->fetchAll();
         } 
         else {
-            var_dump($stmt->errorInfo());
             return null;
         }
+    }
+    /* find restaurant by name only. Returns results in an array ($arr), with each index
+     * ($arr[0], $arr[1]...) being and assoiative array corresponding to a row from the table.
+     */
+    public function getAllRestaurants() {
+        
+        $sql = "SELECT * FROM restaurant LIMIT 100";
+        $stmt = $this->dbh->prepare($sql);
+      
+        if ($stmt->execute()){
+            return $stmt->fetchAll();
+        }
+        else {
+            return null;
+        }
+    }
+    
+    public function getRestaurantThumbnail($resId) {
+        $sql = "SELECT thumbnail FROM restaurant WHERE restaurant_id=:id";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':id', $resId);
+        $stmt->execute();
+        return $stmt->fetch();
     }
 }
 

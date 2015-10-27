@@ -89,20 +89,32 @@ class DB
             return null;
     }
     
+    public function findRestaurantsByCat($cat) {
+        $sql = "SELECT * FROM restaurant WHERE food_category_name LIKE :str";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':str', $cat);
+        if ($stmt->execute())
+            return $stmt->fetchAll();
+        else
+            return null;
+    }
+    
     /* find restaurant by name or address (i.e. any match in name or address will be returned).
      * Returns results in an array ($arr), with each index ($arr[0], $arr[1]...) 
      * being and assoiative array corresponding to a row from the table.
      */
-    public function findRestaurantsByNameAddress($nameAdd) {
+    public function findRestaurantsByNameAddress($nameAdd, $category) {
         $words = explode(" ", $nameAdd);
         $searchStr = "%";
         foreach ($words as $word) {
             $searchStr = $searchStr . $word . "%";
         }
         $sql = "SELECT restaurant_id, name, address, phone_no, food_category_name, description, menu "
-                . "FROM restaurant WHERE name_address LIKE :str";
+                . "FROM restaurant WHERE food_category_name LIKE :str2 AND name_address LIKE :str";
         $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':str2', $category);
         $stmt->bindParam(':str', $searchStr);
+        
         if ($stmt->execute()){
             return $stmt->fetchAll();
         } 

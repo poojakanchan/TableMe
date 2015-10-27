@@ -36,39 +36,22 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <img alt="Logo" src="http://lorempixel.com/140/140/" class="img-rounded" />
-
                 <nav class="navbar navbar-default" role="navigation">
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Please Choose Type of food<strong class="caret"></strong></a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li>
-                                        <a href="#1">American food</a>
-                                    </li>
-                                    <li>
-                                        <a href="#2">Italian</a>
-                                    </li>
-                                    <li>
-                                        <a href="#3">Chinese</a>
-                                    </li>
-                                    <li>
-                                        <a href="#4">Japanese</a>
-                                    </li>
-                                    <li>
-                                        <a href="#2">Fast food</a>
-                                    </li>
-                                    <li>
-                                        <a href="#2">Middle eastern</a>
-                                    </li>
-                                    <li>
-                                        <a href="#2">All</a>
-                                    </li>
-                                </ul>
-                            </li>
+
                         </ul>
                         <form class="navbar-form navbar-left" role="search" action=<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?> method="post">
+                            <select id="category" name="category">
+                                <option value="" disabled selected>Please Choose Type of food</option>
+                                <option value ="%">Any</option>
+                                <option value="American">American</option>
+                                <option value="Chinese">Chinese</option>
+                                <option value="Italian">Italian</option>
+                                <option value="Japanese">Japanese</option>
+                                <option value="Korean">Korean</option>
+                             </select>
                             <div class="form-group">
                                 <input type="text" class="form-control" name="searchText" id="searchText" required/>
                             </div> 
@@ -131,10 +114,16 @@
 
     <?php
     $result;
+    if (!empty($_POST['category'])) 
+     $category = $_POST['category']; 
+    else 
+         $category = "%"; 
+ 
+   
     if ($_POST) {
         $nameAdd = htmlspecialchars($_POST["searchText"]);
         $db = new DB();
-        $result = $db->findRestaurantsByNameAddress($nameAdd);
+        $result = $db->findRestaurantsByNameAddress($nameAdd, $category);
     }
     ?>
     <?php if ($_POST && !empty($result)): ?>

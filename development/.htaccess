@@ -1,0 +1,11 @@
+Options +SymLinksIfOwnerMatch +Indexes -MultiViews
+
+DirectoryIndex index.php
+
+RewriteEngine On
+RewriteBase /~pkanchan/
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]

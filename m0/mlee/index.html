@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Upload a photo!</title>
+    </head>
+    <body>
+        <h1>Please upload a photo!</h1>
+        
+        <form action="upload.php" method="post" enctype="multipart/form-data">
+            Choose a photo: <br/><br/>
+            <input type="file" name="file" id="file" /><br/><br/><br/>
+            Please enter a short description: <br/>
+            <input type="text" name="description" id="description" /><br/>
+            <input type="submit" name="submit" value="Upload" /><br/>
+        </form>
+        
+    </body>
+</html>

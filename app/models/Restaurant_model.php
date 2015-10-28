@@ -1,10 +1,5 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 class Restaurant_model  extends Database{
    public function __construct() {
         try{
@@ -20,22 +15,20 @@ class Restaurant_model  extends Database{
     }
     
     /* add a restaurant to the restaurant table. The restaurant information is in an associative array argument*/
-    public function addARestaurant($resArray) {
+    public function addRestaurant($resArray) {
+        
         $fhThumbnail = $fhMenu = null;
-        if (array_key_exists('thumbnail', $resArray)) {
+        if (!empty($resArray['thumbnail'])) {
             $fhThumbnail = fopen($resArray['thumbnail'], 'rb');
         }
-        if (array_key_exists('menu', $resArray)) {
+        if (!empty($resArray['menu'])) {
             $fhMenu = fopen($resArray['menu'], 'rb');
         }        
-        
-        $sql = "INSERT INTO restaurant(name, food_category_name, owner_id, phone_no, address, thumbnail, description, "
-                . "flag_new, menu, capacity) VALUES(:name, :food_category_name, :owner_id ,:phone_no, :address, :thumbnail, "
-                . ":description, :flag_new, :menu, :capacity)";
+       
+        $sql = "INSERT INTO restaurant(name, food_category_name, phone_no, address, thumbnail, description, flag_new, menu, capacity, people_half_hour, max_party_size, name_address) VALUES(:name, :food_category_name, :phone_no, :address, :thumbnail, :description, :flag_new, :menu, :capacity, :people_half_hour, :max_party_size, :name_address)";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':name', $resArray['name']);
         $stmt->bindParam(':food_category_name', $resArray['food_category_name']);
-        $stmt->bindParam(':owner_id', $resArray['owner_id']);
         $stmt->bindParam(':phone_no', $resArray['phone_no']);
         $stmt->bindParam(':address', $resArray['address']);
         $stmt->bindParam(':thumbnail', $fhThumbnail, PDO::PARAM_LOB);
@@ -43,9 +36,22 @@ class Restaurant_model  extends Database{
         $stmt->bindParam(':flag_new', $resArray['flag_new']);
         $stmt->bindParam(':menu', $fhMenu, PDO::PARAM_LOB);
         $stmt->bindParam(':capacity', $resArray['capacity']);
-        
-        return $this->insertDB($stmt);
-        
+        $stmt->bindParam(':people_half_hour', $resArray['people_half_hour']);
+        $stmt->bindParam(':max_party_size', $resArray['max_party_size']);
+        $nameAddress = $resArray['name']." ".$resArray['address'];
+        $stmt->bindParam(':name_address', $nameAddress);
+        try {
+            $this->dbh->beginTransaction();
+            if ($stmt->execute()) {
+                $lastId = intval($this->dbh->lastInsertId());
+                $this->dbh->commit();
+                return $lastId;
+            }
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
+        $this->dbh->rollBack();
+        return -1;
     }
     
     /* find restaurant by name only. Returns results in an array ($arr), with each index
@@ -60,24 +66,41 @@ class Restaurant_model  extends Database{
         $sql = "SELECT * FROM restaurant WHERE name LIKE :resName LIMIT 100";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':resName', $searchStr);
-        return $this->selectDB($stmt);
+        if ($stmt->execute()) {
+            return $stmt->fetchAll();
+        }
+        return null;
+    }
+    
+    public function findRestaurantsByCat($cat) {
+        $sql = "SELECT * FROM restaurant WHERE food_category_name LIKE :str";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':str', $cat);
+        if ($stmt->execute()) {
+            return $stmt->fetchAll();
+        }
+        return null;
     }
     
     /* find restaurant by name or address (i.e. any match in name or address will be returned).
      * Returns results in an array ($arr), with each index ($arr[0], $arr[1]...) 
      * being and assoiative array corresponding to a row from the table.
      */
-    public function findRestaurantsByNameAddress($nameAdd) {
+    public function findRestaurantsByNameAddress($nameAdd, $category) {
         $words = explode(" ", $nameAdd);
         $searchStr = "%";
         foreach ($words as $word) {
             $searchStr = $searchStr . $word . "%";
         }
-        $sql = "SELECT restaurant_id, name, address, phone_no, food_category_name, description, menu,thumbnail "
-                . "FROM restaurant WHERE name_address LIKE :str";
+        $sql = "SELECT * FROM restaurant WHERE food_category_name LIKE :str2 AND name_address LIKE :str";
         $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':str2', $category);
         $stmt->bindParam(':str', $searchStr);
-        return $this->selectDB($stmt);
+        
+        if ($stmt->execute()){
+            return $stmt->fetchAll();
+        } 
+        return null;
     }
     /* find restaurant by name only. Returns results in an array ($arr), with each index
      * ($arr[0], $arr[1]...) being and assoiative array corresponding to a row from the table.
@@ -87,7 +110,10 @@ class Restaurant_model  extends Database{
         $sql = "SELECT * FROM restaurant LIMIT 100";
         $stmt = $this->dbh->prepare($sql);
       
-        return $this->selectDB($stmt);
+        if ($stmt->execute()){
+            return $stmt->fetchAll();
+        }
+        return null;
     }
     
     public function getRestaurantThumbnail($resId) {
@@ -97,8 +123,67 @@ class Restaurant_model  extends Database{
         $stmt->execute();
         return $stmt->fetch();
     }
-
     
+    public function getLogin($username) {
+        $sql = "SELECT * FROM login WHERE username=:name";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':name', $username);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+    
+    public function addLogin($username, $password, $role) {
+        $sql = "INSERT INTO login(username, password, role) VALUES(:name, :pswd, :role)";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':name', $username);
+        $stmt->bindParam(':pswd', $password);
+        $stmt->bindParam(':role', $role);
+        try {
+            $this->dbh->beginTransaction();
+            if ($stmt->execute()) {
+                $this->dbh->commit();
+                return true;
+            }
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
+        $this->dbh->rollBack();
+        return false;
+    }
+    
+    public function addOwner($ownerArray) {
+        $sql = "INSERT INTO owner(name, email, contact_no, address, restaurant_id, username) "
+                . "VALUES(:name, :email, :contact_no, :address, :resId, :username)";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':name', $ownerArray['name']);
+        $stmt->bindParam(':email', $ownerArray['email']);
+        $stmt->bindParam(':contact_no', $ownerArray['phone']);
+        $stmt->bindParam(':address', $ownerArray['address']);
+        $stmt->bindParam(':resId', $ownerArray['resId'], PDO::PARAM_INT);
+        $stmt->bindParam(':username', $ownerArray['username']);
+        try {
+            $this->dbh->beginTransaction();
+            if ($stmt->execute()) {
+                $lastId = intval($this->dbh->lastInsertId());
+                $this->dbh->commit();
+                return $lastId;
+            }
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
+        $this->dbh->rollBack();
+        return -1;
+    }
+    
+    public function getRestaurantImages($resId) {
+        $sql = "SELECT * FROM multimedia WHERE restaurant_id=:resId AND type='image'";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':resId', $resId);
+        if ($stmt->execute()) {
+            return $stmt->fetchAll();
+        }
+        return null;
+    }
 }
 
 ?>

@@ -1,10 +1,5 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 class Restaurant_model  extends Database{
    public function __construct() {
         try{
@@ -71,20 +66,20 @@ class Restaurant_model  extends Database{
         $sql = "SELECT * FROM restaurant WHERE name LIKE :resName LIMIT 100";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':resName', $searchStr);
-        if ($stmt->execute())
+        if ($stmt->execute()) {
             return $stmt->fetchAll();
-        else
-            return null;
+        }
+        return null;
     }
     
     public function findRestaurantsByCat($cat) {
         $sql = "SELECT * FROM restaurant WHERE food_category_name LIKE :str";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':str', $cat);
-        if ($stmt->execute())
+        if ($stmt->execute()) {
             return $stmt->fetchAll();
-        else
-            return null;
+        }
+        return null;
     }
     
     /* find restaurant by name or address (i.e. any match in name or address will be returned).
@@ -97,8 +92,7 @@ class Restaurant_model  extends Database{
         foreach ($words as $word) {
             $searchStr = $searchStr . $word . "%";
         }
-        $sql = "SELECT restaurant_id, name, address, phone_no, food_category_name, description, menu "
-                . "FROM restaurant WHERE food_category_name LIKE :str2 AND name_address LIKE :str";
+        $sql = "SELECT * FROM restaurant WHERE food_category_name LIKE :str2 AND name_address LIKE :str";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':str2', $category);
         $stmt->bindParam(':str', $searchStr);
@@ -106,9 +100,7 @@ class Restaurant_model  extends Database{
         if ($stmt->execute()){
             return $stmt->fetchAll();
         } 
-        else {
-            return null;
-        }
+        return null;
     }
     /* find restaurant by name only. Returns results in an array ($arr), with each index
      * ($arr[0], $arr[1]...) being and assoiative array corresponding to a row from the table.
@@ -121,9 +113,7 @@ class Restaurant_model  extends Database{
         if ($stmt->execute()){
             return $stmt->fetchAll();
         }
-        else {
-            return null;
-        }
+        return null;
     }
     
     public function getRestaurantThumbnail($resId) {
@@ -183,6 +173,16 @@ class Restaurant_model  extends Database{
         }
         $this->dbh->rollBack();
         return -1;
+    }
+    
+    public function getRestaurantImages($resId) {
+        $sql = "SELECT * FROM multimedia WHERE restaurant_id=:resId AND type='image'";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':resId', $resId);
+        if ($stmt->execute()) {
+            return $stmt->fetchAll();
+        }
+        return null;
     }
 }
 

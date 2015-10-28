@@ -9,14 +9,23 @@
 <body>
     
     <?php
-        include ('header.php');
+    
+        require_once 'header.php';
+        require_once '../../core/Database.php';
+        require_once '../../models/Restaurant_model.php';
+        $db = new Restaurant_model();
+        $resId = (array_key_exists('resid', $_GET) ? htmlspecialchars($_GET['resid']) : 0);
+        $imgArray = $db->getRestaurantImages($resId);
+        $n = count($imgArray);
+        $i = 0;
+        $srcStr= "data:image/jpeg;base64,";
     ?>
     
     <div class="container-fluid">
         <div class="mainInfo col-md-8">
             <div class="restaurantprofile col-md-12">
                 <div class="restaurantpic col-md-4">
-                    <img alt="Logo" src="http://goo.gl/vrq2Cw" class="img-rounded" height="200" width="200" />
+                    <img src="<?php echo $i<$n ? $srcStr.base64_encode($imgArray[$i]["media"]) : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="200" width="200" />
                 </div>
                 <div class="restaurantname col-md-8">
                     <h1>Little Tokyo</h1>
@@ -27,11 +36,11 @@
             
             <div class="col-md-12">
 		<br>
-		<img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="75" width="75"/>
-                <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="75" width="75"/>
-                <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="75" width="75"/>
-                <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="75" width="75"/>
-                <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="75" width="75"/>
+		<img src="<?php echo $i<$n ? $srcStr.base64_encode($imgArray[$i]["media"]) : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
+                <img src="<?php echo $i<$n ? $srcStr.base64_encode($imgArray[$i]["media"]) : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
+                <img src="<?php echo $i<$n ? $srcStr.base64_encode($imgArray[$i]["media"]) : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
+                <img src="<?php echo $i<$n ? $srcStr.base64_encode($imgArray[$i]["media"]) : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
+                <img src="<?php echo $i<$n ? $srcStr.base64_encode($imgArray[$i]["media"]) : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
 		<br><br>
             </div>
             
@@ -48,6 +57,7 @@
             
             <div class="col-md-12">
                 <h1>Make a Reservation!</h1>
+                
                 <nav class="navbar navbar-default">
                     <div class="container-fluid">
                       <!-- Brand and toggle get grouped for better mobile display -->

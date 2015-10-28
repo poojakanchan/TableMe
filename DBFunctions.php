@@ -1,22 +1,36 @@
 <?php
 
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Class for interfacing with the MySQL database
+ * To use, construct an instance of the class, such as:
+ * $db = new DB();
+ * then call member functions, such as:
+ * $db->findRestaurantsByName($name);
+ * After database use is completed, set the pointer to DB instance to null:
+ * $db = null; //will close database connection
  */
-class Restaurant_model  extends Database{
-   public function __construct() {
-        try{
-            parent::__construct();
-        } catch (Exception $ex) {
-            echo "connection failed";
-        }
+class DB
+{
+    public $dbh = null; //database handler
+
+    /* Open the database connection when an instance of DB class is created*/
+    public function __construct(){
+        // open database connection
+        $connectionString = "mysql:host=localhost;dbname=student_f15g11";
+        try {
+            $this->dbh = new PDO($connectionString, "f15g11", "CSC648team11");
+            //for prior PHP 5.3.6
+            //$conn->exec("set names utf8");
+        } 
+        catch (PDOException $pe) {
+            print "Error!: " . $pe->getMessage() . "<br/>";
+            die();
+        } 
     }
-  
+    
+    /* close the database connection when an instance of DB class has no pointer*/
     public function __destruct() {
-        
-        parent::__destruct();
+        $this->dbh = null;
     }
     
     /* add a restaurant to the restaurant table. The restaurant information is in an associative array argument*/
@@ -43,9 +57,18 @@ class Restaurant_model  extends Database{
         $stmt->bindParam(':flag_new', $resArray['flag_new']);
         $stmt->bindParam(':menu', $fhMenu, PDO::PARAM_LOB);
         $stmt->bindParam(':capacity', $resArray['capacity']);
-        
-        return $this->insertDB($stmt);
-        
+        try {
+            $this->dbh->beginTransaction();
+            if ($stmt->execute()) {
+                $this->dbh->commit();
+                return true;
+            } else {
+                echo "insert operation unsuccessful";
+            }
+        } catch (Exception $ex) {
+            $this->dbh->rollBack();
+        }
+        return null;
     }
     
     /* find restaurant by name only. Returns results in an array ($arr), with each index
@@ -60,24 +83,44 @@ class Restaurant_model  extends Database{
         $sql = "SELECT * FROM restaurant WHERE name LIKE :resName LIMIT 100";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':resName', $searchStr);
-        return $this->selectDB($stmt);
+        if ($stmt->execute())
+            return $stmt->fetchAll();
+        else
+            return null;
+    }
+    
+    public function findRestaurantsByCat($cat) {
+        $sql = "SELECT * FROM restaurant WHERE food_category_name LIKE :str";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':str', $cat);
+        if ($stmt->execute())
+            return $stmt->fetchAll();
+        else
+            return null;
     }
     
     /* find restaurant by name or address (i.e. any match in name or address will be returned).
      * Returns results in an array ($arr), with each index ($arr[0], $arr[1]...) 
      * being and assoiative array corresponding to a row from the table.
      */
-    public function findRestaurantsByNameAddress($nameAdd) {
+    public function findRestaurantsByNameAddress($nameAdd, $category) {
         $words = explode(" ", $nameAdd);
         $searchStr = "%";
         foreach ($words as $word) {
             $searchStr = $searchStr . $word . "%";
         }
-        $sql = "SELECT restaurant_id, name, address, phone_no, food_category_name, description, menu,thumbnail "
-                . "FROM restaurant WHERE name_address LIKE :str";
+        $sql = "SELECT restaurant_id, name, address, phone_no, food_category_name, description, menu "
+                . "FROM restaurant WHERE food_category_name LIKE :str2 AND name_address LIKE :str";
         $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':str2', $category);
         $stmt->bindParam(':str', $searchStr);
-        return $this->selectDB($stmt);
+        
+        if ($stmt->execute()){
+            return $stmt->fetchAll();
+        } 
+        else {
+            return null;
+        }
     }
     /* find restaurant by name only. Returns results in an array ($arr), with each index
      * ($arr[0], $arr[1]...) being and assoiative array corresponding to a row from the table.
@@ -87,7 +130,12 @@ class Restaurant_model  extends Database{
         $sql = "SELECT * FROM restaurant LIMIT 100";
         $stmt = $this->dbh->prepare($sql);
       
-        return $this->selectDB($stmt);
+        if ($stmt->execute()){
+            return $stmt->fetchAll();
+        }
+        else {
+            return null;
+        }
     }
     
     public function getRestaurantThumbnail($resId) {
@@ -97,8 +145,6 @@ class Restaurant_model  extends Database{
         $stmt->execute();
         return $stmt->fetch();
     }
-
-    
 }
 
 ?>

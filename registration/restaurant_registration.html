@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Restaurant Registration</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="style.css"> 
+    </head>
+    <body>
+        <ul>
+            <li><a href="#home">EZ Restaurant</a></li>
+            <li><a href="#login">Register</a></li>
+            <li><a href="#login">Login</a></li>
+        </ul>
+
+        <div id="form">
+            <form action="action_page.php">
+
+                <fieldset>
+                    <legend>Login Information:</legend>
+                    
+                    Username:
+                    <input type="text" name="ownerUsername">
+                    <br>
+                    <br>
+                    
+                    Password:
+                    <input type="text" name="ownerPassword">
+
+                    Confirm Password:
+                    <input type="text" name="ownerConfirmPassword">
+                    <br>
+                </fieldset>
+
+                <br>
+                <fieldset>
+                    <legend>Personal Information:</legend>
+                    
+                    First Name:
+                    <input type="text" name="ownerFirstName">
+
+                    Last Name:
+                    <input type="text" name="ownerLastName">
+                    <br>
+                    <br>
+                    
+                    Phone Number:
+                    <input type="text" name="ownerPhone">
+
+                    Email:
+                    <input type="text" name="ownerEmail">
+                    <br>
+                </fieldset>
+
+                <br>
+                <fieldset>
+                    <legend>Restaurant Information:</legend>
+                    
+                    Restaurant Name:
+                    <input type="text" name="restaurantName">
+
+                    Address: 
+                    <input type="text" name="restaurantAddress">
+                    <br>
+                    <br>
+
+                    Description:
+                    <input type="text" name="description">
+
+                    Type of Food:
+                    <input type="text" name="typeofFood">
+                    <br>
+                    <br>
+
+                    Number of People Allowed Every Half Hour:
+                    <input type="text" name="peopleHalfHour">
+                    <br>
+                    <br>
+                    
+                    Total Number of People Per Reservation:
+                    <input type="text" name="peopleReservation">
+                    <br>
+                    <br>
+
+                    Total Restaurant Capacity:
+                    <input type="text" name="restauranCapacity">
+                    <br>
+                    <br>
+
+                    Hours Of Operation:
+                    <br>
+                    Monday:
+                    <input type="text" name="monday">
+                    <br>
+                    Tuesday:
+                    <input type="text" name="tuesday">
+                    <br>
+                    Wednesday:
+                    <input type="text" name="wednesday">
+                    <br>
+                    Thursday:
+                    <input type="text" name="thursday">
+                    <br>
+                    Friday:
+                    <input type="text" name="friday">
+                    <br>
+                    Saturday:
+                    <input type="text" name="saturday">
+                    <br>
+                    Sunday:
+                    <input type="text" name="sunday">
+                    <br>
+
+                    <p>Profile Picture:</p>
+                    <input type="file" name="fileToUpload" id="fileProfilePic">
+                    <br>
+                    
+                    <p>Menu:</p>
+                    <input type="file" name="fileToUpload" id="fileMenu">
+                    <br>
+
+                </fieldset>
+                <h3>Privacy Policy</h3>
+                <p>Talk about what they are agreeing to and how we are going to use their information.</p>
+                <p>If you agree please click "Register Restaurant" if not, please click "Cancel".</p>
+
+                <input type="submit" value="Cancel">
+                <input type="submit" value="Register Restaurant">
+            </form>
+        </div>
+    </body>
+</html>
+

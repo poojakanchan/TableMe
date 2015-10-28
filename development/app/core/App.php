@@ -6,7 +6,6 @@
    protected $params = array(0);
 
       public function __construct() {
-		
 	      $url = $this->parseURL();
 		if(file_exists('app/controllers/'.$url[0].'.php'))
 		{
@@ -26,13 +25,12 @@
 			}
                 }
 		  	$this->params = $url? array_values($url): array();
-				
+			//call controller->method with params array passed as parameter for method
 			call_user_func_array(array($this->controller,$this->method),$this->params);
 
 		
 	} 
 	public function parseURL() {
-	
 		if(isset($_GET['url'])) {
 		   echo $_GET['url'];
 	         	return $url =  explode('/',filter_var(rtrim($_GET['url'],'/'),FILTER_SANITIZE_URL));

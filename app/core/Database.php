@@ -8,9 +8,6 @@
 class Database {
 public $dbh = null;
 
-
-
-
     /* Open the database connection when an instance of DB class is created*/
     public function __construct(){
         $connectionString = "mysql:host=localhost;dbname=student_f15g11";

@@ -12,6 +12,17 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </head>
     <body>
+         <?php
+        session_start();
+       echo $_SESSION['ROOT'];
+       //include_once '/home/pkanchan/public_html/non-mvc/config.php';
+         $res = $_SESSION['ROOT'] .'/app/controllers/Restaurant_controller.php';
+         
+         require_once $res;
+         $restaurant = new Restaurant_controller();
+         $restaurant->add();
+        
+        ?>
         <nav class ="navbar navbar-default">
             <div class ="container-fluid">
                 <div class ="navbar-header">
@@ -33,7 +44,7 @@
 
 
         <div id="form">
-            <form action="action_page.php" method="post" enctype="multipart/form-data">
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
 
                 <fieldset>
                     <legend>Login Information:</legend>
@@ -44,10 +55,10 @@
                     <br>
                     
                     Password:
-                    <input type="text" name="ownerPassword" required />
+                    <input type="password" name="ownerPassword" required />
 
                     Confirm Password:
-                    <input type="text" name="ownerConfirmPassword" required />
+                    <input type="password" name="ownerConfirmPassword" required />
                     <br>
                 </fieldset>
 
@@ -91,49 +102,102 @@
 
                     Description:
                     <input type="text" name="description" />
-
+                    <br>
                     Type of Food:
-                    <input type="text" name="typeofFood" required />
+                    <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Please Choose Type of food<strong class="caret"></strong></a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" name="typeOfFood">
+                                    <li>
+                                        <a href="#1">American food</a>
+                                    </li>
+                                    <li>
+                                        <a href="#2">Italian</a>
+                                    </li>
+                                    <li>
+                                        <a href="#3">Chinese</a>
+                                    </li>
+                                    <li>
+                                        <a href="#4">Japanese</a>
+                                    </li>
+                                    <li>
+                                        <a href="#2">Fast food</a>
+                                    </li>
+                                    <li>
+                                        <a href="#2">Middle eastern</a>
+                                    </li>
+                                    <li>
+                                        <a href="#2">All</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    
+                    
+                    
+                    <!-- <input type="text" name="typeofFood" required /> -->
                     <br>
                     <br>
 
                     Number of people allowed every half Hour:
-                    <input type="text" name="peopleHalfHour" />
+                    <input type="number" name="peopleHalfHour" />
                     <br>
                     <br>
                     
                     Maximum party size per reservation:
-                    <input type="text" name="maxPartySize" />
+                    <input type="number" name="maxPartySize" />
                     <br>
                     <br>
 
                     Total Restaurant Capacity:
-                    <input type="text" name="restaurantCapacity" />
+                    <input type="number" name="restaurantCapacity" />
                     <br>
                     <br>
 
                     Hours Of Operation:
                     <br>
-                    Monday:
-                    <input type="text" name="monday">
+                    Monday
+                    From:
+                    <input type="text" name="mondayFrom"> 
+                   To:
+                    <input type="text" name="mondayTo">
                     <br>
                     Tuesday:
-                    <input type="text" name="tuesday">
+                    From:
+                    <input type="text" name="tuesdayFrom"> 
+                    To:
+                    <input type="text" name="tuesdayTo">
                     <br>
                     Wednesday:
-                    <input type="text" name="wednesday">
-                    <br>
+                    From:
+                    <input type="text" name="wednesdayFrom"> 
+                    To:
+                    <input type="text" name="wednesdayTo">
+                   <br>
                     Thursday:
-                    <input type="text" name="thursday">
-                    <br>
-                    Friday:
-                    <input type="text" name="friday">
+                    From:
+                    <input type="text" name="thursdayFrom"> 
+                    To:
+                    <input type="text" name="thursdayTo">
+                   <br>
+                   Friday:
+                   From:
+                    <input type="text" name="fridayFrom"> 
+                    To:
+                    <input type="text" name="fridayTo">
+                   
                     <br>
                     Saturday:
-                    <input type="text" name="saturday">
+                    From:
+                    <input type="text" name="saturdayFrom"> 
+                    To:
+                    <input type="text" name="saturdayTo">
                     <br>
                     Sunday:
-                    <input type="text" name="sunday">
+                    From:
+                    <input type="text" name="sundayFrom"> 
+                    To:
+                    <input type="text" name="sundayTo">
                     <br>
 
                     <p>Profile Picture:</p>
@@ -153,6 +217,8 @@
                 <button type="submit" value="submit" name="submit">Register Me</button>
             </form>
         </div>
+        
+       
     </body>
 </html>
 

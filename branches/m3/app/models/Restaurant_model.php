@@ -1,5 +1,9 @@
 <?php
 
+session_start();
+$database = $_SESSION['ROOT'].'/app/core/Database.php';
+ require_once $database;
+ 
 class Restaurant_model  extends Database{
    public function __construct() {
         try{
@@ -86,7 +90,28 @@ class Restaurant_model  extends Database{
      * Returns results in an array ($arr), with each index ($arr[0], $arr[1]...) 
      * being and assoiative array corresponding to a row from the table.
      */
-    public function findRestaurantsByNameAddress($nameAdd, $category) {
+    public function findRestaurantsByNameAddress($nameAdd) {
+        $words = explode(" ", $nameAdd);
+        $searchStr = "%";
+        foreach ($words as $word) {
+            $searchStr = $searchStr . $word . "%";
+        }
+        $sql = "SELECT * FROM restaurant WHERE name_address LIKE :str";
+        $stmt = $this->dbh->prepare($sql);
+       
+        $stmt->bindParam(':str', $searchStr);
+        
+        if ($stmt->execute()){
+            return $stmt->fetchAll();
+        } 
+        return null;
+    }
+    
+     /* find restaurant by name or address (i.e. any match in name or address will be returned).
+     * Returns results in an array ($arr), with each index ($arr[0], $arr[1]...) 
+     * being and assoiative array corresponding to a row from the table.
+     */
+    public function findRestaurantsByNameAddressAndCategory($nameAdd, $category) {
         $words = explode(" ", $nameAdd);
         $searchStr = "%";
         foreach ($words as $word) {
@@ -102,6 +127,7 @@ class Restaurant_model  extends Database{
         } 
         return null;
     }
+   
     /* find restaurant by name only. Returns results in an array ($arr), with each index
      * ($arr[0], $arr[1]...) being and assoiative array corresponding to a row from the table.
      */

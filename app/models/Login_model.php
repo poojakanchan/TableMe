@@ -6,10 +6,13 @@
  * and open the template in the editor.
  */
 
-session_start();
+if(!isset($_SESSION)) 
+    { 
+        session_start(); 
+    } 
 $database = $_SESSION['ROOT'].'/app/core/Database.php';
  require_once $database;
-
+ 
 class Login_model extends Database {
      public function __construct() {
         try{
@@ -38,17 +41,8 @@ public function getLogin($username) {
         $stmt->bindParam(':name', $username);
         $stmt->bindParam(':pswd', $password);
         $stmt->bindParam(':role', $role);
-        try {
-            $this->dbh->beginTransaction();
-            if ($stmt->execute()) {
-                $this->dbh->commit();
-                return true;
-            }
-        } catch (Exception $ex) {
-            echo $ex->getMessage();
-        }
-        $this->dbh->rollBack();
-        return false;
+        
+        return $this->insertDB($stmt);
     }
     
 }

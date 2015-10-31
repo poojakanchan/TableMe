@@ -11,7 +11,10 @@
  *
  * @author pooja
  */
-session_start();
+if(!isset($_SESSION)) 
+    { 
+        session_start(); 
+    } 
 $database = $_SESSION['ROOT'].'/app/core/Database.php';
  require_once $database;
 

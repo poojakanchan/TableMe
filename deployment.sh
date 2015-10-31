@@ -4,8 +4,6 @@ echo "Running deployment script..."
 echo "Please note that all  contents from public_html will be deleted."
 
 rm -rf public_html
-svn checkout http://sfsuswe.com/svn/f15g11/trunk
+svn export --username f15g11 --password CSC648team11  --non-interactive  http://sfsuswe.com/svn/f15g11/trunk public_html
 
-mv trunk public_html
-rm -rf public_html/.svn
 

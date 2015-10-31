@@ -1,31 +1,36 @@
 <?php
- session_start();
- $controller = $_SESSION['ROOT'].'/app/core/Controller.php';
- require_once $controller;
- 
-class Restaurant_controller extends Controller
-{
+
+// session_start();
+require_once 'Controller.php';
+
+class Restaurant_controller extends Controller {
+    private $restaurant;
+    
+    public function __construct() {
+        $this->restaurant = $this->model('Restaurant_model');
+    }
+
     public function index() {
-		
-        $restaurant = $this->model('Restaurant_model');
-            if ($_POST) {
-               
+        if ($_POST) {
             $nameAdd = htmlspecialchars($_POST["searchText"]);
-            $restaurant_array = $restaurant->findRestaurantsByNameAddress($nameAdd);  
+            $category = htmlspecialchars($_POST['foodCategory']);
+            $restaurant_array = $this->restaurant->findRestaurantsByNameAddress($nameAdd);
             return $restaurant_array;
-            } else {
-                //echo $name;		
-		//$user->name = $name;
-		$restaurant_array = $restaurant->getAllRestaurants();               
-                 return $restaurant_array;
-            }
-           
-          
-	}
-        
+        } else {
+            //echo $name;		
+            //$user->name = $name;
+            $restaurant_array = $this->restaurant->getAllRestaurants();
+            return $restaurant_array;
+        }
+    }
+    
+    public function getFoodCategories() {
+        return $this->restaurant->getFoodCategories();
+    }
+
     public function add() {
-            //Add login details
-        if(isset($_POST['submit'])) {
+        //Add login details
+        if (isset($_POST['submit'])) {
             $login = $this->model('Login_model');
             $username = htmlspecialchars($_POST["ownerUsername"]);
             $password = htmlspecialchars($_POST["ownerPassword"]);
@@ -61,7 +66,7 @@ class Restaurant_controller extends Controller
          echo $resId;    
             //Add Owner
             $owner = $this->model('Owner_model');
-            $ownerName = htmlspecialchars($_POST["ownerFirstName"])." ".htmlspecialchars($_POST["ownerLastName"]);
+            $ownerName = htmlspecialchars($_POST["ownerFirstName"]) . " " . htmlspecialchars($_POST["ownerLastName"]);
             $ownerPhone = preg_replace("/[^0-9]/", "", htmlspecialchars($_POST["ownerPhone"]));
             $ownerEmail = htmlspecialchars($_POST["ownerEmail"]);
             $ownerAddress = htmlspecialchars($_POST["ownerAddress"]);
@@ -74,10 +79,9 @@ class Restaurant_controller extends Controller
                 "username" => $username
             );
 //            echo var_dump($ownerArray)."\n";
-            if(!$owner->addOwner($ownerArray)) {
+            if (!$owner->addOwner($ownerArray)) {
                 exit("Error adding owner to database");
             }
-            
              $operation_hours = $this->model('OperationHours_model');
              
               $mondayFrom = htmlspecialchars($_POST["mondayFrom"]);
@@ -134,5 +138,4 @@ class Restaurant_controller extends Controller
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 ?>

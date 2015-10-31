@@ -13,21 +13,8 @@
     </head>
     <body>
          <?php
-         session_start();
-                
-          $res = $_SESSION['ROOT'] .'/app/controllers/Restaurant_controller.php';
-           require_once $res;
-           $restaurant = new Restaurant_controller();
-         $flag = $_GET['checkUsername'];
-         if($flag == null) {
-                     if ($_POST) {
-                       $restaurant->add();
-                 }
-                $food_category_array =$restaurant->getFoodCategory();
-         } else {
-             if($restaurant->checkUserName());
-                 
-         }
+        
+         $res = __DIR__. '/../../controllers/Restaurant_controller.php';
          
         ?>
         <nav class ="navbar navbar-default">

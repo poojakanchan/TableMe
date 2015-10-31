@@ -1,10 +1,7 @@
 <?php
- if(!isset($_SESSION)) 
-    { 
-        session_start(); 
-    } 
-$database = $_SESSION['ROOT'].'/app/core/Database.php';
- require_once $database;
+
+//session_start();
+require_once 'Database.php';
  
 class Restaurant_model  extends Database{
    public function __construct() {
@@ -207,6 +204,15 @@ class Restaurant_model  extends Database{
         $sql = "SELECT * FROM multimedia WHERE restaurant_id=:resId AND type='image'";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':resId', $resId);
+        if ($stmt->execute()) {
+            return $stmt->fetchAll();
+        }
+        return null;
+    }
+    
+    public function getFoodCategories() {
+        $sql = "SELECT name FROM food_category";
+        $stmt = $this->dbh->prepare($sql);
         if ($stmt->execute()) {
             return $stmt->fetchAll();
         }

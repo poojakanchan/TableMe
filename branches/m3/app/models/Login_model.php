@@ -6,12 +6,7 @@
  * and open the template in the editor.
  */
 
-if(!isset($_SESSION)) 
-    { 
-        session_start(); 
-    } 
-$database = $_SESSION['ROOT'].'/app/core/Database.php';
- require_once $database;
+ require_once 'Database.php';
  
 class Login_model extends Database {
      public function __construct() {

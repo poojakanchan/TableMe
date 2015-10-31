@@ -1,14 +1,11 @@
 <?php
 
-if(!isset($_SESSION)) 
-    { 
-        session_start(); 
-    }
+//session_start();
 
   class Controller {
 
  	public function model($model) {
-	require_once $_SESSION['ROOT'] .'/app/models/'. $model . '.php';
+	require_once __DIR__ . '/../models/'. $model . '.php';
 	return new $model;	
         }
         public function view($view, $data=array()) {

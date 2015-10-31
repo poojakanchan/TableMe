@@ -1,6 +1,8 @@
 <?php
-
-session_start();
+ if(!isset($_SESSION)) 
+    { 
+        session_start(); 
+    } 
 $database = $_SESSION['ROOT'].'/app/core/Database.php';
  require_once $database;
  
@@ -21,24 +23,24 @@ class Restaurant_model  extends Database{
     /* add a restaurant to the restaurant table. The restaurant information is in an associative array argument*/
     public function addRestaurant($resArray) {
         
-        $fhThumbnail = $fhMenu = null;
+       /* $fhThumbnail = $fhMenu = null;
         if (!empty($resArray['thumbnail'])) {
             $fhThumbnail = fopen($resArray['thumbnail'], 'rb');
         }
         if (!empty($resArray['menu'])) {
             $fhMenu = fopen($resArray['menu'], 'rb');
         }        
-       
+       */
         $sql = "INSERT INTO restaurant(name, food_category_name, phone_no, address, thumbnail, description, flag_new, menu, capacity, people_half_hour, max_party_size, name_address) VALUES(:name, :food_category_name, :phone_no, :address, :thumbnail, :description, :flag_new, :menu, :capacity, :people_half_hour, :max_party_size, :name_address)";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':name', $resArray['name']);
         $stmt->bindParam(':food_category_name', $resArray['food_category_name']);
         $stmt->bindParam(':phone_no', $resArray['phone_no']);
         $stmt->bindParam(':address', $resArray['address']);
-        $stmt->bindParam(':thumbnail', $fhThumbnail, PDO::PARAM_LOB);
+        $stmt->bindParam(':thumbnail', $resArray['thumbnail']);
         $stmt->bindParam(':description', $resArray['description']);
         $stmt->bindParam(':flag_new', $resArray['flag_new']);
-        $stmt->bindParam(':menu', $fhMenu, PDO::PARAM_LOB);
+        $stmt->bindParam(':menu', $resArray['menu']);
         $stmt->bindParam(':capacity', $resArray['capacity']);
         $stmt->bindParam(':people_half_hour', $resArray['people_half_hour']);
         $stmt->bindParam(':max_party_size', $resArray['max_party_size']);

@@ -39,11 +39,12 @@ public $dbh = null;
             } else {
                 echo "insert operation unsuccessful";
             }
+            
         } catch (Exception $ex) {
             $this->dbh->rollBack();
             echo "Error occurred while adding data ". $ex->getMessage(); 
         }
-        return null;
+        return false;
 
     }
     
@@ -70,6 +71,10 @@ public $dbh = null;
             echo "Error occurred while adding data ". $ex->getMessage(); 
         }
         return null;
+    }
+    
+    public function getLastInsertID() {
+       
     }
 }
 ?>

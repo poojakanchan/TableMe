@@ -13,15 +13,22 @@
     </head>
     <body>
          <?php
-        session_start();
-       echo $_SESSION['ROOT'];
-       //include_once '/home/pkanchan/public_html/non-mvc/config.php';
-         $res = $_SESSION['ROOT'] .'/app/controllers/Restaurant_controller.php';
+         session_start();
+                
+          $res = $_SESSION['ROOT'] .'/app/controllers/Restaurant_controller.php';
+           require_once $res;
+           $restaurant = new Restaurant_controller();
+         $flag = $_GET['checkUsername'];
+         if($flag == null) {
+                     if ($_POST) {
+                       $restaurant->add();
+                 }
+                $food_category_array =$restaurant->getFoodCategory();
+         } else {
+             if($restaurant->checkUserName());
+                 
+         }
          
-         require_once $res;
-         $restaurant = new Restaurant_controller();
-         $restaurant->add();
-        
         ?>
         <nav class ="navbar navbar-default">
             <div class ="container-fluid">
@@ -51,9 +58,10 @@
                     
                     Username:
                     <input type="text" name="ownerUsername" required />
+                   <button onclick="checkUserName()" name="checkUserName">Check User Name</button>>
+                     <br>
                     <br>
-                    <br>
-                    
+                    <label id="username" hidden="hidden"></label>>
                     Password:
                     <input type="password" name="ownerPassword" required />
 
@@ -103,39 +111,15 @@
                     Description:
                     <input type="text" name="description" />
                     <br>
-                    Type of Food:
-                    <ul class="nav navbar-nav">
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Please Choose Type of food<strong class="caret"></strong></a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" name="typeOfFood">
-                                    <li>
-                                        <a href="#1">American food</a>
-                                    </li>
-                                    <li>
-                                        <a href="#2">Italian</a>
-                                    </li>
-                                    <li>
-                                        <a href="#3">Chinese</a>
-                                    </li>
-                                    <li>
-                                        <a href="#4">Japanese</a>
-                                    </li>
-                                    <li>
-                                        <a href="#2">Fast food</a>
-                                    </li>
-                                    <li>
-                                        <a href="#2">Middle eastern</a>
-                                    </li>
-                                    <li>
-                                        <a href="#2">All</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    
-                    
-                    
-                    <!-- <input type="text" name="typeofFood" required /> -->
+                    Type of Food: 
+                    <select name ="food_category">
+                    <?php 
+                        foreach ($food_category_array as $category) {                            
+                            echo "<option value=".$category['name'].">". $category['name']."</option>";
+                        }
+                    ?>  
+                        <option value ="any" selected="selected">Select Food Type</option>
+                    </select>
                     <br>
                     <br>
 
@@ -158,46 +142,46 @@
                     <br>
                     Monday
                     From:
-                    <input type="text" name="mondayFrom"> 
+                    <input type="time" name="mondayFrom"> 
                    To:
-                    <input type="text" name="mondayTo">
+                    <input type="time" name="mondayTo">
                     <br>
                     Tuesday:
                     From:
-                    <input type="text" name="tuesdayFrom"> 
+                    <input type="time" name="tuesdayFrom"> 
                     To:
-                    <input type="text" name="tuesdayTo">
+                    <input type="time" name="tuesdayTo">
                     <br>
                     Wednesday:
                     From:
-                    <input type="text" name="wednesdayFrom"> 
+                    <input type="time" name="wednesdayFrom"> 
                     To:
-                    <input type="text" name="wednesdayTo">
+                    <input type="time" name="wednesdayTo">
                    <br>
                     Thursday:
                     From:
-                    <input type="text" name="thursdayFrom"> 
+                    <input type="time" name="thursdayFrom"> 
                     To:
-                    <input type="text" name="thursdayTo">
+                    <input type="time" name="thursdayTo">
                    <br>
                    Friday:
                    From:
-                    <input type="text" name="fridayFrom"> 
+                    <input type="time" name="fridayFrom"> 
                     To:
-                    <input type="text" name="fridayTo">
+                    <input type="time" name="fridayTo">
                    
                     <br>
                     Saturday:
                     From:
-                    <input type="text" name="saturdayFrom"> 
+                    <input type="time" name="saturdayFrom"> 
                     To:
-                    <input type="text" name="saturdayTo">
+                    <input type="time" name="saturdayTo">
                     <br>
                     Sunday:
                     From:
-                    <input type="text" name="sundayFrom"> 
+                    <input type="time" name="sundayFrom"> 
                     To:
-                    <input type="text" name="sundayTo">
+                    <input type="time" name="sundayTo">
                     <br>
 
                     <p>Profile Picture:</p>
@@ -220,5 +204,14 @@
         
        
     </body>
+    
+    <script type="text/javascript">
+        
+        function checkUserName() {
+            var name;
+            name = document.getElementByName("ownerUsername");
+           alert(name);
+        }
+        </script>
 </html>
 

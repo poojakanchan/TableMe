@@ -32,45 +32,33 @@ class Restaurant_controller extends Controller
             if (!$login->addLogin($username, $password, "owner")) {
                 exit("Error adding login information");
             }
-            
+           
             //Add Restaurant
-            $imgFile = null;
-            if (!empty($_FILES["menuFile"]["name"])) {
-                $imgFile = "../uploads/" . basename($_FILES["profilePic"]["name"]);
-                if (!move_uploaded_file($_FILES["profilePic"]["tmp_name"], $imgFile)) {
-                    exit("Error processing image file");
-                }
-            }
-            $imgFile = "../uploads/" . basename($_FILES["profilePic"]["name"]);
-            if (!move_uploaded_file($_FILES["profilePic"]["tmp_name"], $imgFile)) {
-                exit("Error processing image file");
-            }
-            $menuFile = null;
-            if (!empty($_FILES["menuFile"]["name"])) {
-                $menuFile = "../uploads/" . basename($_FILES["menuFile"]["name"]);
-                if (!move_uploaded_file($_FILES["menuFile"]["tmp_name"], $menuFile)) {
-                    exit("Error processing menu file");
-                }
-            }
+        $restaurant = $this->model('Restaurant_model');
+     
+         $thumbnail = addslashes(file_get_contents($_FILES["profilePic"]["tmp_name"]));
+         $menuFile = addslashes(file_get_contents($_FILES["menuFile"]["tmp_name"]));
             $resPhone = preg_replace("/[^0-9]/", "", htmlspecialchars($_POST["restaurantPhone"]));
             $resArray = array(
                 "name" => htmlspecialchars($_POST["restaurantName"]),
-                "food_category_name" => htmlspecialchars($_POST["typeofFood"]),
+               "food_category_name" => htmlspecialchars($_POST["food_category"]),
+                
                 "phone_no" => $resPhone,
                 "address" => htmlspecialchars($_POST["restaurantAddress"]),
-                "thumbnail" => $imgFile,
+                
                 "description" => htmlspecialchars($_POST["description"]),
                 "flag_new" => 1,
+                "thumbnail" => $thumbnail,
                 "menu" => $menuFile,
                 "capacity" => htmlspecialchars($_POST["restaurantCapacity"]),
                 "people_half_hour" => htmlspecialchars($_POST["peopleHalfHour"]),
                 "max_party_size" => htmlspecialchars($_POST["maxPartySize"])
                 );
-            if(!$this->restaurant->addRestaurant($resArray))
+            $resId = $restaurant->addRestaurant($resArray);
+            if($resId == -1)
                 exit("Error adding restaurant to database");
-            
-            
-            
+           
+         echo $resId;    
             //Add Owner
             $owner = $this->model('Owner_model');
             $ownerName = htmlspecialchars($_POST["ownerFirstName"])." ".htmlspecialchars($_POST["ownerLastName"]);
@@ -80,7 +68,7 @@ class Restaurant_controller extends Controller
             $ownerArray = array(
                 "name" => $ownerName,
                 "email" => $ownerEmail,
-                "phone" => $ownerPhone,
+                "phone" =>  $ownerPhone,
                 "address" => $ownerAddress,
                 "resId" => $resId,
                 "username" => $username
@@ -90,10 +78,57 @@ class Restaurant_controller extends Controller
                 exit("Error adding owner to database");
             }
             
+             $operation_hours = $this->model('OperationHours_model');
+             
+              $mondayFrom = htmlspecialchars($_POST["mondayFrom"]);
+              $mondayTo = htmlspecialchars($_POST["mondayTo"]);
+              $tuesdayFrom = htmlspecialchars($_POST["tuesdayFrom"]);
+              $tuesdayTo = htmlspecialchars($_POST["tuesdayTo"]);
+              $wednesFrom = htmlspecialchars($_POST["wednesdayFrom"]);
+              $wednesdayTo = htmlspecialchars($_POST["wednesdayTo"]);
+              $thursdayFrom = htmlspecialchars($_POST["thursdayFrom"]);
+              $thursdayTo = htmlspecialchars($_POST["thursdayTo"]);
+              $fridayFrom = htmlspecialchars($_POST["fridayFrom"]);
+              $fridayTo = htmlspecialchars($_POST["fridayTo"]);
+              $saturdayFrom = htmlspecialchars($_POST["saturdayFrom"]);
+              $saturdayTo = htmlspecialchars($_POST["saturdayTo"]);
+              $sundayFrom = htmlspecialchars($_POST["sundayFrom"]);
+              $sundayTo = htmlspecialchars($_POST["sundayTo"]);
+           
+               $operatinghours = array(
+               "resId" => $resId,   
+              "mondayFrom" => "'".$mondayFrom."'",
+              "mondayTo" => "'".$mondayTo."'",
+              "tuesdayFrom" => "'".$tuesdayFrom."'",
+              "tuesdayTo" => "'".$tuesdayTo."'",   
+              "wednesdayFrom" =>"'". $wednesFrom."'",
+              "wednesdayTo" => "'".$wednesdayTo."'",
+              "thursdayFrom" => "'".$thursdayFrom."'",
+              "thursdayTo" => "'".$thursdayTo."'",
+              "fridayFrom" => "'".$fridayFrom."'",
+              "fridayTo" => "'".$fridayTo."'",
+              "saturdayFrom" => "'".$saturdayFrom."'",
+              "saturdayTo" => "'".$saturdayTo."'",
+              "sundayFrom" => "'".$sundayFrom."'",
+              "sundayTo" => "'".$sundayTo."'"
+              );            
+            
+            $operation_hours->add_operating_hours($operatinghours);
+            }
         }
-        }
-}
+    public function getFoodCategory() {
+        $food_category = $this->model('FoodCategory_model');
+        return $food_category->getAllFoodCategories();
+        
+    }
 
+  
+    
+    
+    
+        }
+
+    
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates

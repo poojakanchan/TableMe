@@ -14,6 +14,10 @@
         require_once __DIR__ . '/../../models/Restaurant_model.php';
         $db = new Restaurant_model();
         $resId = (array_key_exists('resid', $_GET) ? htmlspecialchars($_GET['resid']) : 0);
+        $restaurant = $db->findRestaurantById($resId);
+        $resName = $restaurant[0]['name'];
+        $foodCategory = $restaurant[0]['food_category_name'];
+        $description = $restaurant[0]['description'];
         $imgArray = $db->getRestaurantImages($resId);
         $n = count($imgArray);
         $i = 0;
@@ -27,9 +31,9 @@
                     <img src="<?php echo $i<$n ? $srcStr.base64_encode($imgArray[$i]["media"]) : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="200" width="200" />
                 </div>
                 <div class="restaurantname col-md-8">
-                    <h1>Little Tokyo</h1>
-                    <h2>Japanese food</h2>
-                    <p>The greatest Japanese restaurant in town!</p>
+                    <h1><?php echo $resName; ?></h1>
+                    <h2><?php echo "Food category: " . $foodCategory; ?></h2>
+                    <p><?php echo $description; ?></p>
                 </div>
             </div>
             

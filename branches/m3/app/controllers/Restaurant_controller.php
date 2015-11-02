@@ -11,10 +11,20 @@ class Restaurant_controller extends Controller {
     }
 
     public function index() {
+        global $foodCategoryArray;
         if ($_POST) {
             $nameAdd = htmlspecialchars($_POST["searchText"]);
             $category = htmlspecialchars($_POST['foodCategory']);
-            $restaurant_array = $this->restaurant->findRestaurantsByNameAddress($nameAdd);
+            echo var_dump($category);
+            echo var_dump($foodCategoryArray);
+            exit();
+            if(in_array($category, $foodCategoryArray)) {
+                $restaurant_array = $this->restaurant->findRestaurantsByNameAddressAndCategory($nameAdd, $category);
+            }
+            else {
+                $restaurant_array = $this->restaurant->findRestaurantsByNameAddress($nameAdd);
+            }    
+            
             return $restaurant_array;
         } else {
             //echo $name;		

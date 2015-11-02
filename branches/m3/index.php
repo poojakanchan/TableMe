@@ -55,94 +55,179 @@
 
 <body>
     <?php
-
-    require_once 'app/controllers/Restaurant_controller.php';
+    require_once 'app/models/Restaurant_model.php';
     include 'header.php';
-    $restaurant = new Restaurant_controller();
-    $restaurant_array = $restaurant->index();
-    $foodCategoryArray = $restaurant->getFoodCategories();
-    ?>
+    define ("N_PER_PAGE", 5); //number of restaurants to display per page
+    $db;$restaurant_array; $foodCategoryArray; $restaurantListTitle;
+    $nameAdd = $category = '%';
+    $totalCount = 0; //total count of restaurants to display
+    $currentPage = $numberOfPages = $startPage = 1; //page number for navigating search results
+    if (!isset($db)) {
+        $db = new Restaurant_model();
+    }
+
+    if (empty($foodCategoryArray)) {
+        $foodCategoryArray = $db->getFoodCategories();
+    }
+
+    if ($_GET) {
+        $nameAdd = (empty($_GET['searchText']) ? '%' : htmlspecialchars($_GET['searchText']));
+        $category = (empty($_GET['foodCategory']) ? '%' : htmlspecialchars($_GET['foodCategory']));
+        $currentPage = (isset($_GET['pgnum']) ? htmlspecialchars($_GET['pgnum']) : 1);
+        $totalCount = $db->findRestaurantsCount($nameAdd, $category);
+        $restaurant_array = $db->findRestaurantsLimitOffset($nameAdd, $category, N_PER_PAGE, ($currentPage-1)*N_PER_PAGE);
+        $restaurantListTitle = "Your search found " . $totalCount . ($totalCount > 1 ? " restaurants" : " restaurant");
+    } 
+    else {
+        $totalCount = $db->getAllRestaurantsCount();
+        $restaurantListTitle = "All Restaurants (" . $totalCount . " total)";
+        if ($totalCount > N_PER_PAGE) {
+            $restaurant_array = $db->getAllRestaurantsLimitOffset(N_PER_PAGE, 0);
+        }
+    }
     
+    $numberOfPages = (int) ceil($totalCount/N_PER_PAGE);
+    
+    if ($currentPage <= 5) {
+        $startPage = 1;
+    }
+    else if ($currentPage > $numberOfPages-4) {
+        $startPage = ($numberOfPages-8<1 ? 1 : $numberOfPages-8);
+    }
+    
+    $pageArray = array();    
+    for ($i=0; $i<9 && $i<$numberOfPages; $i++) {
+        $pageArray[$i] = $startPage++;
+    }
+    
+    ?>
+
     <div class="jumbotron jumbotron-banner">
         <br><br><br>
         <center><h4> This Web site is for SFSU CSC648/848 Software Engineering Project </h4></center>
-        
-        <form class="input-group" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"> <!-- Class for Search box -->
+
+        <form class="input-group" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get"> <!-- Class for Search box -->
 
             <div class="input-group-btn"> <!-- Class for Dropdown Menu -->
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Food Type<span class="caret"></span>
+                    <?php echo ($category==='%' ? "Food Type " : $category." ") ?><span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
                     <li><a href="#">All</a></li>
                     <?php
                     foreach ($foodCategoryArray as $foodCat) {
-                        echo '<li><a href="#">' . $foodCat[0] . '</a></li><br>';
+                        echo '<li><a href="#">' . $foodCat[0] . '</a></li>';
                     }
                     ?>
                 </ul></div>  
             <input name="foodCategory" id="foodCategory" value="" hidden />
-            <input type="text" class="form-control" name = "searchText" id="searchText" required placeholder="Search Address or Name of the Restaurants."/>
+            <input type="text" class="form-control" name = "searchText" id="searchText" required placeholder="Search Address or Name of the Restaurants." value="<?php echo($nameAdd==='%' ? "" : $nameAdd);?>"/>
             <span class="input-group-btn">
-                <input class="btn btn-default" value="Search" type="submit" name="submit"/>
+                <input class="btn btn-default" type="submit" value="Search" />
             </span>
         </form> <!-- End of the Search box -->
     </div><!-- /.col-lg-6 -->
 
-
     <!-- 2nd Section of the Page (contains Ranking page & Events Page -->
     <div class ="container container_main">
-    <div class = "row">
-        <div class ="col-xs-6">
-            <div class ="jumbotron jumbotron-Ranking">
-                <center> <h2> Top Rated Restaurant </h2> </center>
-                <div class="panel panel-default">
-
-                    <?php
-                    foreach ($restaurant_array as $restaurant) {
-                        $image = base64_encode($restaurant['thumbnail']);
-                        $image_src = "data:image/jpeg;base64," . $image;
-                        //echo $image_src;  
-                        ?>
-
-                        <div class="panel-body"> <!-- Will work on the details later -->
-                            <a href="#restaurant view page"> <img width="100" height="100" src="<?php print $image_src; ?>" /> </a>
-                            <h3> <a href="#restaurant view page"> <?php echo $restaurant['name'] ?> </a> </h3>
-                            <p> <?php echo $restaurant['address'] ?> </p>
-                            <p>  <?php echo $restaurant['description'] ?> </p>
-                            <a href="#reservation page" class="btn btn-info" role="button"> Reservation </a>
-                        </div>
+        <div class = "row">
+            <div class ="col-xs-6">
+                <div class ="jumbotron jumbotron-Ranking">
+                    <center> <h2> <?php echo $restaurantListTitle ?> </h2> </center>
+                    <div class="panel panel-default">
 
                         <?php
+//                         echo '<br><br><br><br>'.var_dump($nameAdd).'<br>'.var_dump($category).'<br>'.var_dump($currentPage).'<br>'.var_dump($totalCount);
+                        foreach ($restaurant_array as $restaurant) {
+                            $image = base64_encode($restaurant['thumbnail']);
+                            $image_src = "data:image/jpeg;base64," . $image;
+                            //echo $image_src;  
+                            ?>
+
+                            <div class="panel-body"> <!-- Will work on the details later -->
+                                <a href="#restaurant view page"> <img width="100" height="100" src="<?php print $image_src; ?>" /> </a>
+                                <h3>  <a  href="<?php echo 'app/views/home/restaurant.php?resid=' . $restaurant['restaurant_id'] ?>" > <?php echo $restaurant['name'] ?> </a> </h3>
+                                <p> <?php echo $restaurant['address'] ?> </p>
+                                <p>  <?php echo $restaurant['description'] ?> </p>
+                                <a href="#reservation page" class="btn btn-info" role="button"> Reservation </a>
+                            </div>
+
+                            <?php
+                        }
+                        ?>
+                        
+                    </div>
+                    <?php
+                    if ($numberOfPages > 1) {
+                        echo '<ul class="pagination pagination-lg">';
+                        
+                        if ($currentPage==1) {
+                            echo '<li class="disabled"><a href="#">&laquo;</a></li>';
+                        }
+                        else {
+                            echo '<li><a href="index.php?searchText='.$nameAdd.'&foodCategory='.$category.'&pgnum='.($currentPage-1).'">&laquo;</a></li>';
+                        }
+                        
+                        for ($i=0; $i<9 && $i<$numberOfPages; $i++) {
+                            if ($pageArray[$i] == $currentPage) {
+                                echo '<li class="active"><a href="index.php?searchText='.$nameAdd.'&foodCategory='.$category.'&pgnum='.$pageArray[$i].'">'. $pageArray[$i] . '</a></li>';
+                            }
+                            else {
+                                echo '<li><a href="index.php?searchText='.$nameAdd.'&foodCategory='.$category.'&pgnum='.$pageArray[$i].'">'. $pageArray[$i] . '</a></li>';
+                            }
+                        }
+                        
+                        if ($currentPage==$numberOfPages) {
+                            echo '<li class="disabled"><a href="#">&raquo;</a></li>';
+                        }
+                        else {
+                            echo '<li><a href="index.php?searchText='.$nameAdd.'&foodCategory='.$category.'&pgnum='.($currentPage+1).'">&raquo;</a></li>';
+                        }
+                        
+                        echo '</ul>';
                     }
                     ?>
-
-                </div>
-            </div> <!-- End of Jumbotron -->
-        </div>
-        <div class ="col-xs-6">
-            <div class ="jumbotron jumbotron-Event">
-                <center> <h2> Upcoming Events </h2> </center> 
-                <div class="panel panel-default">
-                    <div class="panel panel-body">
-                        <h3> Event Name at Restaurant Name </h3>
-                        <p> Date: xx.xx.xx xx:xx-xx:xx </p>
-                        <p> Address <a href="#restaurant view page"> (View More) </a> </p>
-                        <a href="#reservation page" class="btn btn-info" role="button"> Reservation </a>
+<!--                    <ul class="pagination pagination-lg">
+                            <li><a href="#">&laquo;</a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li><a href="#">&raquo;</a></li>
+                        </ul>-->
+                </div> <!-- End of Jumbotron -->
+                
+            </div>
+            <div class ="col-xs-6">
+                <div class ="jumbotron jumbotron-Event">
+                    <center> <h2> Upcoming Events </h2> </center> 
+                    <div class="panel panel-default">
+                        <div class="panel panel-body">
+                            <h3> Event Name at Restaurant Name </h3>
+                            <p> Date: xx.xx.xx xx:xx-xx:xx </p>
+                            <p> Address <a href="#restaurant view page"> (View More) </a> </p>
+                            <a href="#reservation page" class="btn btn-info" role="button"> Reservation </a>
+                        </div>
                     </div>
-                </div>
-            </div> <!-- End of Jumbotron -->
-        </div>
-    </div> <!-- End of 2nd Section -->
+                </div> <!-- End of Jumbotron -->
+            </div>
+        </div> <!-- End of 2nd Section -->
     </div>
 
-<script>
+    <script>
         $(document).ready(function () {
-            $(".dropdown-menu li a").click(function () {
-                $(".btn.btn-default.dropdown-toggle").text($(this).text());
-                $("input#foodCategory").val($(this).text());
-            });
+            initDropdownMenu();
         });
+        var initDropdownMenu = function() {
+            $("input#foodCategory").val("<?php echo $category; ?>");
+            $(".dropdown-menu li a").click(function () {
+                var text = $(this).text();
+                $(".btn.btn-default.dropdown-toggle").text(text);
+                $("input#foodCategory").val(text==="All" ? "%" : text);
+            });
+        }
     </script>
+    
 </body>
 </html>

@@ -106,7 +106,23 @@
     <body>
         <?php
         $res = __DIR__ . '/../../controllers/Restaurant_controller.php';
+
+                
+           require_once $res;
+           $restaurant = new Restaurant_controller();
+         $flag = $_GET['checkUsername'];
+         if($flag == null) {
+                     if ($_POST) {
+                       $restaurant->add();
+                 }
+                $food_category_array =$restaurant->getFoodCategory();
+         } else {
+             if($restaurant->checkUserName());
+                 
+         }
+         
         ?>
+
         <nav class ="navbar navbar-default">
             <div class ="container-fluid">
                 <div class ="navbar-header">

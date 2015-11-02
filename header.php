@@ -14,7 +14,7 @@
                     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Register <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#UserRegister">User</a></li>
-                            <li><a href="#RestaurantRegister">Restaurant</a></li>
+                            <li><a href="app/views/home/restaurant_registration.php">Restaurant</a></li>
                         </ul>
                     </li>
                     <li> <a href ="#login">Login</a></li>

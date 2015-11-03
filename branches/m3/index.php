@@ -76,7 +76,12 @@
         $currentPage = (isset($_GET['pgnum']) ? htmlspecialchars($_GET['pgnum']) : 1);
         $totalCount = $db->findRestaurantsCount($nameAdd, $category);
         $restaurant_array = $db->findRestaurantsLimitOffset($nameAdd, $category, N_PER_PAGE, ($currentPage-1)*N_PER_PAGE);
-        $restaurantListTitle = "Your search found " . $totalCount . ($totalCount > 1 ? " restaurants" : " restaurant");
+        if ($nameAdd=='%' && $category=='%') {
+            $restaurantListTitle = "All Restaurants (" . $totalCount . " total)";
+        }
+        else {
+            $restaurantListTitle = "Your search found " . $totalCount . ($totalCount > 1 ? " restaurants" : " restaurant");
+        }
     } 
     else {
         $totalCount = $db->getAllRestaurantsCount();
@@ -221,7 +226,7 @@
         });
         var initDropdownMenu = function() {
             $("input#foodCategory").val("<?php echo $category; ?>");
-            $(".dropdown-menu li a").click(function () {
+            $(".input-group").find(".dropdown-menu li a").click(function () {
                 var text = $(this).text();
                 $(".btn.btn-default.dropdown-toggle").text(text);
                 $("input#foodCategory").val(text==="All" ? "%" : text);

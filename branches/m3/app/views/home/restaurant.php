@@ -9,7 +9,6 @@
 <body>
     
     <?php
-        //echo "hi there";
         require_once __DIR__ . '/../../../header.php';
         require_once __DIR__ . '/../../models/Restaurant_model.php';
         $db = new Restaurant_model();
@@ -60,138 +59,65 @@
             
             <div class="col-md-12">
                 <h1>Make a Reservation!</h1>
-                <div class="container">
-                    <form name="myForm" action="#.php" onsubmit="return validateForm()" method="post">
+                
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                      <!-- Brand and toggle get grouped for better mobile display -->
+                      <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                          <span class="sr-only">Toggle navigation</span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">Choose: </a>
+                      </div>
 
-                        <select class="selectpicker" id="month" name="month" required data-width="auto">
-                            <option value="" disabled selected>Month</option>
-                            <option value ="January">January</option>
-                            <option value="February">February</option>
-                            <option value="March">March</option>
-                            <option value="April">April</option>
-                            <option value="May">May</option>
-                            <option value="June">June</option>
-                            <option value ="July">July</option>
-                            <option value="August">August</option>
-                            <option value="September">September</option>
-                            <option value="October">October</option>
-                            <option value="November">November</option>
-                            <option value="December">December</option>
-                        </select>
-
-                        <select class="selectpicker" id="day" name="day" required data-width="auto">
-                            <option value="" disabled selected>Day</option>
-                            <option value ="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value ="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                            <option value="13">13</option>
-                            <option value="14">14</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value ="17">17</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                            <option value="20">20</option>
-                            <option value="21">21</option>
-                            <option value="22">22</option>
-                            <option value="23">23</option>
-                            <option value="24">24</option>
-                            <option value="25">25</option>
-                            <option value="26">26</option>
-                            <option value ="27">27</option>
-                            <option value="28">28</option>
-                            <option value="29">29</option>
-                            <option value="30">30</option>
-                            <option value="31">31</option>
-                        </select>
-
-                        <select class="selectpicker" id="guests" name="guests" required data-width="auto">
-                            <option value="" disabled selected>Number of Guests</option>
-                            <option value ="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value ="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                            <option value="13">13</option>
-                            <option value="14">14</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                            <option value="20">20</option>
-                        </select>
-
-                        <select class="selectpicker" id="time" name="time" required data-width="auto">
-                            <option value="" disabled selected>Time</option>
-                            <option value ="8am">8:00 AM</option>
-                            <option value="830am">8:30 AM</option>
-                            <option value="9am">9:00 AM</option>
-                            <option value="930am">9:30 AM</option>
-                            <option value="10am">10:00 AM</option>
-                            <option value="1030am">10:30 AM</option>
-                            <option value ="11am">11:00 AM</option>
-                            <option value="1130am">11:30 AM</option>
-                            <option value="12pm">12:00 PM</option>
-                            <option value="1230pm">12:30 PM</option>
-                            <option value="1pm">1:00 PM</option>
-                            <option value="130pm">1:30 PM</option>
-                            <option value="2pm">2:00 PM</option>
-                            <option value="230pm">2:30 PM</option>
-                            <option value="3pm">3:00 PM</option>
-                            <option value="330pm">3:30 PM</option>
-                            <option value="4pm">4:00 PM</option>
-                            <option value="430pm">4:30 PM</option>
-                            <option value="5pm">5:00 PM</option>
-                            <option value="530pm">5:30 PM</option>
-                            <option value="6pm">6:00 PM</option>
-                            <option value="630pm">6:30 PM</option>
-                            <option value="7pm">7:00 PM</option>
-                            <option value="730pm">7:30 PM</option>
-                            <option value="8pm">8:00 PM</option>
-                            <option value="830pm">8:30 PM</option>
-                            <option value="9pm">9:00 PM</option>
-                            <option value="930pm">9:30 PM</option>
-                            <option value="10pm">10:00 PM</option>
-                            <option value="1030pm">10:30 PM</option>
-                            <option value="11pm">11:00 PM</option>
-                            <option value="1130pm">11:30 PM</option>
-                            <option value="12am">12:00 AM</option>
-                            <option value="1230am">12:30 AM</option>
-                            <option value="1am">1:00 AM</option>
-                            <option value="130am">1:30 AM</option>
-                            <option value="2am">2:00 AM</option>
-                            <option value="230am">2:30 AM</option>
-                            <option value="3am">3:00 AM</option>
-                            <option value="330am">3:30 AM</option>
-                            <option value="4am">4:00 AM</option>
-                            <option value="430am">4:30 AM</option>
-                            <option value="5am">5:00 AM</option>
-                            <option value="530am">5:30 AM</option>
-                            <option value="6am">6:00 AM</option>
-                            <option value="630am">6:30 AM</option>
-                            <option value="7am">7:00 AM</option>
-                            <option value="730am">7:30 AM</option>
-                        </select>
-                        <button type="submit" class="btn btn-default" value="Submit">Make reservation</button>
-                    </form>
-                </div>
+                      <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                          <li class="dropdown month">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Month<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                              <li><a href="#">1</a></li>
+                              <li><a href="#">2</a></li>
+                              <li><a href="#">3</a></li>
+                            </ul>
+                          </li>
+                          <li class="dropdown day">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Day<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                              <li><a href="#">25</a></li>
+                              <li><a href="#">26</a></li>
+                              <li><a href="#">27</a></li>
+                            </ul>
+                          </li>
+                          <li class="dropdown time">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Time<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                              <li><a href="#">25</a></li>
+                              <li><a href="#">26</a></li>
+                              <li><a href="#">27</a></li>
+                            </ul>
+                          </li>
+                          <li class="dropdown numberofguest">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Number of guests<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                              <li><a href="#">1</a></li>
+                              <li><a href="#">2</a></li>
+                              <li><a href="#">3</a></li>
+                              <li><a href="#">4</a></li>
+                            </ul>
+                          </li>
+                        </ul>
+                        <form class="navbar-form navbar-left reserve" role="search">
+                          <button type="submit" class="btn btn-default">Reserve</button>
+                        </form>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+                
+            </div>
             <br><br><br><br><br>
             <div class="userreview col-md-12">
                 <h1>Reviews</h1>

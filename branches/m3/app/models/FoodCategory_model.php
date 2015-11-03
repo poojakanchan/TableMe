@@ -12,12 +12,7 @@
  * @author pooja
  */
 
-if(!isset($_SESSION)) 
-    { 
-        session_start(); 
-    } 
-$database = $_SESSION['ROOT'].'/app/core/Database.php';
- require_once $database;
+
 class FoodCategory_model extends Database {
     public function __construct() {
         try{

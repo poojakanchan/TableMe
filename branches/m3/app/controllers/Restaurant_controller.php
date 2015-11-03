@@ -128,6 +128,7 @@ class Restaurant_controller extends Controller {
               );            
             
             $operation_hours->add_operating_hours($operatinghours);
+            echo 'Your Restaurant was added successfully!!';
             }
         }
     public function getFoodCategory() {

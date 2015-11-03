@@ -5,12 +5,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-if(!isset($_SESSION)) 
+/*if(!isset($_SESSION)) 
     { 
         session_start(); 
     } 
 $database = $_SESSION['ROOT'].'/app/core/Database.php';
- require_once $database;
+ require_once $database;*/
 class OperationHours_model extends Database {
     
        public function __construct() {

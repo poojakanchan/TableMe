@@ -90,7 +90,7 @@
                     return false;
                 }
 
-                if (profilePic === null || profilePic === "") {
+             /*   if (profilePic === null || profilePic === "") {
                     alert("Restaurant must have a profile picture.");
                     return false;
                 }
@@ -99,7 +99,7 @@
                     alert("You must agree to the privacy policy.");
                     return false;
                 }
-
+*/
             }
         </script>
     </head>
@@ -111,14 +111,14 @@
         
         $restaurant = new Restaurant_controller();
 //         $flag = $_GET['checkUsername'];
-        if (isset($_GET['checkUsername']) && !empty($_GET['checkUsername'])) {
+      //  if (isset($_GET['checkUsername']) && !empty($_GET['checkUsername'])) {
             if ($_POST) {
                 $restaurant->add();
             }
             $food_category_array = $restaurant->getFoodCategory();
-        } else {
+       // } else {
 //             if($restaurant->checkUserName());
-        }
+       // }
         
         include  'header.php';
         ?>
@@ -166,11 +166,11 @@
                                 <div class="row">
                                     <div class="col-sm-6 form-group">
                                         <label>Password</label>
-                                        <input type="text" name="ownerPassword" placeholder="Please pick a password..." class="form-control" required>
+                                        <input type="password" name="ownerPassword" placeholder="Please pick a password..." class="form-control" required>
                                     </div>	
                                     <div class="col-sm-6 form-group">
                                         <label>Confirm Password</label>
-                                        <input type="text" name="ownerConfirmPassword" placeholder="Please confirm your password..." class="form-control" required>
+                                        <input type="password" name="ownerConfirmPassword" placeholder="Please confirm your password..." class="form-control" required>
                                     </div>		
                                 </div>
                             </fieldset>
@@ -230,8 +230,11 @@
 
                                 <div class="form-group">
                                     <label>Description</label>
-                                    <input type="text" name="description" 
+                                  <!--  <input type="text" name="description" 
                                            placeholder="Please enter a sentence that describes your restaurant..." class="form-control">
+                              -->
+                                 <textarea name="description" id="description" placeholder="Please enter a sentence that describes your restaurant..." class="form-control">
+                                    </textarea>
                                 </div>
 
                                 <div class="form-group">

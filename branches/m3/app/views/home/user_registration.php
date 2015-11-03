@@ -66,7 +66,10 @@
         </script>
     </head>
     <body>
-        <nav class ="navbar navbar-default">
+       <?php
+        include 'header.php';
+       ?>
+<!--        <nav class ="navbar navbar-default">
             <div class ="container-fluid">
                 <div class ="navbar-header">
                     <a class="navbar-brand" href="index.php">TableMe</a>
@@ -83,7 +86,7 @@
                     </ul>
                 </div>
             </div>
-        </nav>
+        </nav>-->
 
         <div class="container">
             <h1 class="well">User Registration Form</h1>

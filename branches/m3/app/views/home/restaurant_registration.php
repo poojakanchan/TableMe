@@ -106,24 +106,24 @@
     <body>
         <?php
         $res = __DIR__ . '/../../controllers/Restaurant_controller.php';
-
-                
-           require_once $res;
-           $restaurant = new Restaurant_controller();
-         $flag = $_GET['checkUsername'];
-         if($flag == null) {
-                     if ($_POST) {
-                       $restaurant->add();
-                 }
-                $food_category_array =$restaurant->getFoodCategory();
-         } else {
-             if($restaurant->checkUserName());
-                 
-         }
-         
+        require_once $res;
+        
+        
+        $restaurant = new Restaurant_controller();
+//         $flag = $_GET['checkUsername'];
+        if (isset($_GET['checkUsername']) && !empty($_GET['checkUsername'])) {
+            if ($_POST) {
+                $restaurant->add();
+            }
+            $food_category_array = $restaurant->getFoodCategory();
+        } else {
+//             if($restaurant->checkUserName());
+        }
+        
+        include  'header.php';
         ?>
 
-        <nav class ="navbar navbar-default">
+<!--        <nav class ="navbar navbar-default">
             <div class ="container-fluid">
                 <div class ="navbar-header">
                     <a class="navbar-brand" href="homepage.php">TableMe</a>
@@ -140,7 +140,7 @@
                     </ul>
                 </div>
             </div>
-        </nav>
+        </nav>-->
 
 
         <div class="container">
@@ -237,11 +237,11 @@
                                 <div class="form-group">
                                     <label>Type of Food</label>
                                     <select class="selectpicker" name ="food_category">
-                                        <?php
-                                        foreach ($food_category_array as $category) {
-                                            echo "<option value=" . $category['name'] . ">" . $category['name'] . "</option>";
-                                        }
-                                        ?>  
+<?php
+foreach ($food_category_array as $category) {
+    echo "<option value=" . $category['name'] . ">" . $category['name'] . "</option>";
+}
+?>  
                                         <option value ="any" selected="selected">Select Food Type</option>
                                     </select>
                                 </div>
@@ -351,12 +351,12 @@
                                         </div>
                                     </div> 
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label>Profile Picture</label>
                                     <input type="file" name="profilePic" id="profilePic" required />
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label>Menu</label>
                                     <input type="file" name="menuFile" id="profilePic"/>

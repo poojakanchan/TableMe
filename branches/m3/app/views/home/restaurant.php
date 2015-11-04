@@ -22,7 +22,7 @@
 <body>
     
     <?php
-        require_once __DIR__ . '/../../../header.php';
+        
         require_once __DIR__ . '/../../models/Restaurant_model.php';
         $db = new Restaurant_model();
         $resId = (array_key_exists('resid', $_GET) ? htmlspecialchars($_GET['resid']) : 0);
@@ -34,6 +34,7 @@
         $n = count($imgArray);
         $i = 0;
         $srcStr= "data:image/jpeg;base64,";
+        include 'header.php';
     ?>
     
     <div class="container-fluid">

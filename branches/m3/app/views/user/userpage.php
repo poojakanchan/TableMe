@@ -52,7 +52,7 @@
 <body>
 
     <!-- Navigation Bar -->
-    <?include ('header.php');?>
+    <?php include 'header.php'; ?>
     <br><br><br>
     <div class="container">
         <div class="row">

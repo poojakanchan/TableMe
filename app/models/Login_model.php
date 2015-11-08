@@ -36,9 +36,22 @@ public function getLogin($username) {
         $stmt->bindParam(':name', $username);
         $stmt->bindParam(':pswd', $password);
         $stmt->bindParam(':role', $role);
-        
-        return $this->insertDB($stmt);
+        return $stmt;
+     //   return $this->insertDB($stmt);
     }
+    
+    public function getAllUsernames() {
+        $sql = "SELECT * FROM login";
+        $stmt = $this->dbh->prepare($sql);
+        
+        if ($stmt->execute()) {
+            echo 'called!!';
+            return $stmt->fetchAll();
+        }
+        
+        return null;
+    }
+     
     
 }
 

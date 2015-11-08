@@ -41,59 +41,55 @@ class Restaurant_controller extends Controller {
     public function add() {
         //Add login details
         if (isset($_POST['submit'])) {
-            $login = $this->model('Login_model');
             $username = htmlspecialchars($_POST["ownerUsername"]);
             $password = htmlspecialchars($_POST["ownerPassword"]);
-            if (!$login->addLogin($username, $password, "owner")) {
-                exit("Error adding login information");
-            }
-           
+         
             //Add Restaurant
-        $restaurant = $this->model('Restaurant_model');
-     
-         $thumbnail = addslashes(file_get_contents($_FILES["profilePic"]["tmp_name"]));
-         $menuFile = addslashes(file_get_contents($_FILES["menuFile"]["tmp_name"]));
+            if (is_uploaded_file($_FILES['profilePic']['tmp_name'])) {
+                $thumbnail = file_get_contents($_FILES["profilePic"]["tmp_name"]);
+            }
+            if(is_uploaded_file($_FILES['menuFile']['tmp_name'])) {
+            $menuFile = file_get_contents($_FILES["menuFile"]["tmp_name"]);
+            } else {
+                $menuFile = null;
+            }
             $resPhone = preg_replace("/[^0-9]/", "", htmlspecialchars($_POST["restaurantPhone"]));
+            $rest_address = htmlspecialchars($_POST["restaurantStreet"])." " .
+                    htmlspecialchars($_POST["restaurantCity"]). " " .
+                    htmlspecialchars($_POST["restaurantState"]). " " .
+                    htmlspecialchars($_POST["restaurantZip"]);
+            
             $resArray = array(
                 "name" => htmlspecialchars($_POST["restaurantName"]),
-               "food_category_name" => htmlspecialchars($_POST["food_category"]),
-                
+               "food_category_name" => htmlspecialchars($_POST["food_category"]),            
                 "phone_no" => $resPhone,
-                "address" => htmlspecialchars($_POST["restaurantAddress"]),
-                
+                "address" => $rest_address,
                 "description" => htmlspecialchars($_POST["description"]),
                 "flag_new" => 1,
-                "thumbnail" => $thumbnail,
-                "menu" => $menuFile,
                 "capacity" => htmlspecialchars($_POST["restaurantCapacity"]),
-                "people_half_hour" => htmlspecialchars($_POST["peopleHalfHour"]),
-                "max_party_size" => htmlspecialchars($_POST["maxPartySize"])
+                "twos" => htmlspecialchars($_POST["tablesForTwo"]),
+               "fours" => htmlspecialchars($_POST["tablesForFour"]),
+               "sixes" => htmlspecialchars($_POST["tablesForSix"]),
                 );
-            $resId = $restaurant->addRestaurant($resArray);
-            if($resId == -1)
-                exit("Error adding restaurant to database");
            
-         echo $resId;    
             //Add Owner
-            $owner = $this->model('Owner_model');
+            
             $ownerName = htmlspecialchars($_POST["ownerFirstName"]) . " " . htmlspecialchars($_POST["ownerLastName"]);
             $ownerPhone = preg_replace("/[^0-9]/", "", htmlspecialchars($_POST["ownerPhone"]));
             $ownerEmail = htmlspecialchars($_POST["ownerEmail"]);
-            $ownerAddress = htmlspecialchars($_POST["ownerAddress"]);
+            $ownerAddress = htmlspecialchars($_POST["ownerStreet"]). " ".
+                            htmlspecialchars($_POST["ownerCity"]) . " ".
+                            htmlspecialchars($_POST["ownerState"]) . " ".
+                            htmlspecialchars($_POST["ownerZip"]);
+                   
             $ownerArray = array(
                 "name" => $ownerName,
                 "email" => $ownerEmail,
                 "phone" =>  $ownerPhone,
                 "address" => $ownerAddress,
-                "resId" => $resId,
                 "username" => $username
             );
-//            echo var_dump($ownerArray)."\n";
-            if (!$owner->addOwner($ownerArray)) {
-                exit("Error adding owner to database");
-            }
-             $operation_hours = $this->model('OperationHours_model');
-             
+//           
               $mondayFrom = htmlspecialchars($_POST["mondayFrom"]);
               $mondayTo = htmlspecialchars($_POST["mondayTo"]);
               $tuesdayFrom = htmlspecialchars($_POST["tuesdayFrom"]);
@@ -110,7 +106,7 @@ class Restaurant_controller extends Controller {
               $sundayTo = htmlspecialchars($_POST["sundayTo"]);
            
                $operatinghours = array(
-               "resId" => $resId,   
+               
               "mondayFrom" => "'".$mondayFrom."'",
               "mondayTo" => "'".$mondayTo."'",
               "tuesdayFrom" => "'".$tuesdayFrom."'",
@@ -127,10 +123,19 @@ class Restaurant_controller extends Controller {
               "sundayTo" => "'".$sundayTo."'"
               );            
             
-            $operation_hours->add_operating_hours($operatinghours);
-            echo 'Your Restaurant was added successfully!!';
+            $restaurant_registration = $this->model('Restaurant_Registration_model');
+            $res = $restaurant_registration->registerRestaurant($resArray,$ownerArray,$operatinghours,$username,$password,$thumbnail,$menuFile);
+             if($res > 0) {
+                 if($user_model->addUser($name,$phone,$email,$username,$password) > 0){
+                    $success = 'success_restaurant';
+                    header("Location:login.php/?message=".$success);
+            
+             } else {
+                 echo 'Error occurred while adding restaurant. Please try again!';
+             }
             }
         }
+    }
     public function getFoodCategory() {
         $food_category = $this->model('FoodCategory_model');
         return $food_category->getAllFoodCategories();
@@ -138,10 +143,13 @@ class Restaurant_controller extends Controller {
     }
 
   
+    public function getAllUserNames() {
+        $login = $this->model('Login_model');
+        
+        return $login->getAllUsernames();
+    }
     
-    
-    
-        }
+}
 
     
 /* 

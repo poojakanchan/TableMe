@@ -17,45 +17,6 @@ class Restaurant_model  extends Database{
         parent::__destruct();
     }
     
-    /* add a restaurant to the restaurant table. The restaurant information is in an associative array argument*/
-    public function addRestaurant($resArray) {
-        
-       /* $fhThumbnail = $fhMenu = null;
-        if (!empty($resArray['thumbnail'])) {
-            $fhThumbnail = fopen($resArray['thumbnail'], 'rb');
-        }
-        if (!empty($resArray['menu'])) {
-            $fhMenu = fopen($resArray['menu'], 'rb');
-        }        
-       */
-        $sql = "INSERT INTO restaurant(name, food_category_name, phone_no, address, thumbnail, description, flag_new, menu, capacity, people_half_hour, max_party_size, name_address) VALUES(:name, :food_category_name, :phone_no, :address, :thumbnail, :description, :flag_new, :menu, :capacity, :people_half_hour, :max_party_size, :name_address)";
-        $stmt = $this->dbh->prepare($sql);
-        $stmt->bindParam(':name', $resArray['name']);
-        $stmt->bindParam(':food_category_name', $resArray['food_category_name']);
-        $stmt->bindParam(':phone_no', $resArray['phone_no']);
-        $stmt->bindParam(':address', $resArray['address']);
-        $stmt->bindParam(':thumbnail', $resArray['thumbnail']);
-        $stmt->bindParam(':description', $resArray['description']);
-        $stmt->bindParam(':flag_new', $resArray['flag_new']);
-        $stmt->bindParam(':menu', $resArray['menu']);
-        $stmt->bindParam(':capacity', $resArray['capacity']);
-        $stmt->bindParam(':people_half_hour', $resArray['people_half_hour']);
-        $stmt->bindParam(':max_party_size', $resArray['max_party_size']);
-        $nameAddress = $resArray['name']." ".$resArray['address'];
-        $stmt->bindParam(':name_address', $nameAddress);
-        try {
-            $this->dbh->beginTransaction();
-            if ($stmt->execute()) {
-                $lastId = intval($this->dbh->lastInsertId());
-                $this->dbh->commit();
-                return $lastId;
-            }
-        } catch (Exception $ex) {
-            echo $ex->getMessage();
-        }
-        $this->dbh->rollBack();
-        return -1;
-    }
     
     /* find restaurant by name only. Returns results in an array ($arr), with each index
      * ($arr[0], $arr[1]...) being and assoiative array corresponding to a row from the table.

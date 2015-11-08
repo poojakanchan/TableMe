@@ -25,8 +25,34 @@
                 size: 4
             });
 
+        function checkUserName1(userArray) {
+                
+               var username = document.forms["form"]["ownerUsername"].value;
+              
+                alert(username);
+        //        var userArray = <?php echo json_encode($username_array); ?>; //getting php array into js
+                alert(userArray.length);
+                /*     for (var i = 0; i < userArray.length; i++) {
+                       if(userArray[i].match(username)){
+                           alert("username exists,Please select different. ");
+                           return false;
+                        } else {
+                            alert("username is available");
+                            return true;
+                       
+                           
+                } */
+            }
+                //no special characters in name
+                //email needs to be correct
+                // username no less than 4 no more than 10 letters numbers no space
+                // password just letters and numbers
+                // description 150 characters 
+                // max size of 500 mb for profile picture and menu 
+                // validate phone number
+            }
             function validateForm() {
-
+                   alert('validate');
                 var ownerUsername = document.forms["form"]["ownerUsername"].value;
                 var ownerPassword = document.forms["form"]["ownerPassword"].value;
                 var ownerConfirmPassword = document.forms["form"]["ownerConfirmPassword"].value;
@@ -93,14 +119,9 @@
                     return false;
                 }
 
-                //no special characters in name
-                //email needs to be correct
-                // username no less than 4 no more than 10 letters numbers no space
-                // password just letters and numbers
-                // description 150 characters 
-                // max size of 500 mb for profile picture and menu 
-                // validate phone number
+            
             }
+            
         </script>
     </head>
     <body>
@@ -116,6 +137,9 @@
             $restaurant->add();
         }
         $food_category_array = $restaurant->getFoodCategory();
+        $username_array = $restaurant->getAllUserNames();
+        echo $username_array;
+        
         // } else {
         //             if($restaurant->checkUserName());
         // }
@@ -140,7 +164,7 @@
                                         <div class="col-sm-4 form-group">
                                             <label>Username *</label>
                                             <input type="text" name="ownerUsername" placeholder="Please pick a username..." class="form-control" required> 
-                                            <button onclick="checkUserName()" name="checkUserName">Check User Name</button>
+                                            <button onclick="checkUserName1('<?php echo json_encode($username_array); ?>')"  name="checkUserName">Check User Name</button>
                                         </div>
                                     </div>
 
@@ -193,7 +217,7 @@
                                         </div>	
                                         <div class="col-sm-4 form-group">
                                             <label>Zip</label>
-                                            <input type="text" name="ownerZip" placeholder="Enter Zip Code Here.." class="form-control">
+                                            <input type="number" name="ownerZip" placeholder="Enter Zip Code Here.." class="form-control">
                                         </div>		
                                     </div>
 
@@ -242,7 +266,7 @@
                                         </div>	
                                         <div class="col-sm-4 form-group">
                                             <label>Zip</label>
-                                            <input type="text" name="restaurantZip" placeholder="Enter Zip Code Here.." class="form-control">
+                                            <input type="number" name="restaurantZip" placeholder="Enter Zip Code Here.." class="form-control">
                                         </div>		
                                     </div>
 
@@ -278,35 +302,35 @@
 
                                     <div class="row">
                                         <div class="col-sm-4 form-group">
-                                            <label>Number of Tables for Two Available Every Half Hour</label>
+                                            <label>Number of Tables for Two *</label>
                                             <input type="number" name="tablesForTwo" 
-                                                   placeholder="Please pick the total number of tables for two..." class="form-control" />
+                                                   placeholder="Please pick the total number of tables for two..." class="form-control" required/>
                                         </div>
 
 
                                         <div class="col-sm-4 form-group">
-                                            <label>Number of Tables for Four Available Every Half Hour</label>
+                                            <label>Number of Tables for Four *</label>
                                             <input type="number" name="tablesForFour" 
-                                                   placeholder="Please pick the total number of tables for four..." class="form-control" />
+                                                   placeholder="Please pick the total number of tables for four..." class="form-control" required />
                                         </div>
 
                                         <div class="col-sm-4 form-group">
-                                            <label>Number of Tables for Six Available Every Half Hour</label>
+                                            <label>Number of Tables for Six *</label>
                                             <input type="number" name="tablesForSix" 
-                                                   placeholder="Please pick the total number of tables for six..." class="form-control" />
+                                                   placeholder="Please pick the total number of tables for six..." class="form-control" required />
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-sm-4 form-group">
-                                            <label>Total Restaurant Capacity</label>
+                                            <label>Total Restaurant Capacity *</label>
                                             <input type="number" name="restaurantCapacity" 
-                                                   placeholder="Please enter total capacity of the restaurant..." class="form-control" />
+                                                   placeholder="Please enter total capacity of the restaurant..." class="form-control" required/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Hours Of Operation</label>
+                                        <label>Hours Of Operation *</label>
                                         <br>
                                         <label>Monday</label>
                                         <div class="row">
@@ -430,10 +454,6 @@
 
     <script type="text/javascript">
 
-        function checkUserName() {
-            var name;
-            name = document.getElementByName("ownerUsername");
-            alert(name);
-        }
+        
     </script>
 </html>

@@ -71,5 +71,9 @@ public $dbh = null;
         }
         return null;
     }
+    public function model($model) {
+	require_once $model . '.php';
+	return new $model;	
+        }
 }
 ?>

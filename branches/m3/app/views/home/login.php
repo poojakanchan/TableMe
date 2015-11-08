@@ -13,8 +13,16 @@
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
     <body>
-      <?php include 'header.php'; ?>
-
+      <?php include 'header.php'; 
+        $msg = (array_key_exists('message', $_GET) ? htmlspecialchars($_GET['message']) : 0);
+        
+        if($msg == 'success') {
+            echo '<p align ="center"> Registration is successful! Please login to continue.</p>';
+        } elseif ($msg == 'success_restaurant') {
+                echo '<p align ="center"> Your Restaurant was added successfully!! Please login to continue.</p>';
+        }
+      ?>
+  
         <div class="container">
             <div class="row">
                 <div class="col-md-offset-5 col-md-3">

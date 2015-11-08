@@ -30,6 +30,9 @@
         $resName = $restaurant[0]['name'];
         $foodCategory = $restaurant[0]['food_category_name'];
         $description = $restaurant[0]['description'];
+        $menu = base64_encode($restaurant[0]['menu']);
+        $address = $restaurant[0]['address'];
+        $phone = $restaurant[0]['phone_no'];
         $imgArray = $db->getRestaurantImages($resId);
         $n = count($imgArray);
         $i = 0;
@@ -46,8 +49,21 @@
                 <div class="restaurantname col-md-8">
                     <h1><?php echo $resName; ?></h1>
                     <h2><?php echo "Food category: " . $foodCategory; ?></h2>
-                    <p><?php echo $description; ?></p>
+                    <h4><?php echo $description; ?></h4>
+                    <h4><?php echo $address; ?></h4>
+                    <?php if($phone != null){ ?>
+                    <div  class="restaurantaddress col-md-1"> 
+                        <img height = 20 width = 20 required data-width="auto" src ="http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons/blue-jelly-icons-business/078614-blue-jelly-icon-business-phone-solid.png"/>
+                    </div>
+                    <div  class="restaurantaddress col-md-6" required data-width="auto"> 
+                         <h4><?php echo $phone; ?></h4>
+                    </div>
+                     <?php } ?>
+                    </div>
+                    
+                
                 </div>
+                
             </div>
             
             <div class="col-md-12">
@@ -66,13 +82,21 @@
 			<a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-721564" href="#panel-element-860877">Menu</a>
                     </div>
                     <div id="panel-element-860877" class="panel-collapse collapse">
-			<div class="panel-body">We will show the menu here!</div>
+			<div class="panel-body">
+                            <?php if($menu != null) {
+                             $menu = "data:image/jpeg;base64," . $menu;  ?>
+                            <img src="<?php echo $menu?>"/>
+                            <?php } else {?>
+                                Sorry,Menu is not available.
+                          <?php  } ?>
+
+                         </div>
                     </div>
 		</div>
             </div>
             
            <div class="col-md-12">
-                <h1>Make a Reservation!</h1>
+                <h3>Make a Reservation!</h3>
                 <div class="container">
                     <form name="myForm" action="#.php" onsubmit="return validateForm()" method="post">
 
@@ -193,9 +217,24 @@
                 </div>
                 
             </div>
+            
             <br><br><br><br><br>
             <div class="userreview col-md-12">
-                <h1>Reviews</h1>
+                <h3>Directions </h3>
+                <div class="media">
+                    <iframe
+                   width="600"
+                   accesskey=" "
+                   height="450"
+                   frameborder="0" style="border:0"
+                   class="" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBeVgOJNkJiPXUmp895wxNmaCP2_oP9ERg
+                        &q=<?php echo $address ?>" >
+                       </iframe>
+                </div> 
+        </div>
+               <br><br><br><br><br>
+            <div class="userreview col-md-12">
+                <h3>Reviews</h3>
                 <div class="media">
                     <a class="media-left" href="#">
                         <img src="https://goo.gl/GOzAhf" alt="user" height="50" width="50">

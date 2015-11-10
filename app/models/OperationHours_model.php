@@ -25,7 +25,15 @@ class OperationHours_model extends Database {
         
         parent::__destruct();
     }
-    
+     
+    public function getOperatingHoursByRestaurantId($resId) {
+         $sql = "SELECT * FROM operating_hours where restaurant_id =";
+         $sql = $sql. $resId;
+        $stmt = $this->dbh->prepare($sql);
+        return $this->selectDB($stmt);
+        
+        
+    }
    
 }
 

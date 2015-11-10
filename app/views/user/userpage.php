@@ -50,22 +50,47 @@
 </head>
 
 <body>
-
     <!-- Navigation Bar -->
-    <?php include 'header.php'; ?>
+    <?php 
+    include 'header.php';
+    require_once '../../models/User_model.php';
+    session_start();
+    
+    if(!isset($_SESSION['username'])) {
+        header('location: ../home/login.php');
+    }
+    
+    $db = new User_model();
+    $username = $_SESSION['username'];
+    $userInfo = $db->getUser($username);
+    $userReservations = $db->getReservationHistory($userInfo['user_id']);
+    
+    
+    if ($_POST) {
+        $newPhoneNum = htmlspecialchars($_POST['phone_number']);
+        $newEmail = htmlspecialchars($_POST['email']);
+        $newPassword = htmlspecialchars($_POST['password']);
+        $newImage = null;
+        $db->updateUser($username, $newPhoneNum, $newEmail, $newPassword, $newImage);
+        $userInfo = $db->getUser($username);
+    }
+    ?>
     <br><br><br>
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <img src="#" width="200" height="230">
+                
+                <?php 
+                echo '<img width="200" height="auto" src="data:image/jpeg;base64,' . base64_encode($userInfo['user_image']) . '"/>';
+                ?>
             </div>
             <div class="col-md-9">
                 <ul class="listed-group profile">
                     <li class="list-group-item text-muted"> Profile </li>
-                    <li class="list-group-item text-right"> <span class="pull-left"><strong>Name</strong></span>First_Name, Last_Name</li>
-                    <li class="list-group-item text-right"> <span class="pull-left"><strong>E-mail</strong></span>ex_username@example.com</li>
-                    <li class="list-group-item text-right"> <span class="pull-left"><strong>Username</strong></span>ex_username</li>
-                    <li class="list-group-item text-right"> <span class="pull-left"><strong>Phone Number</strong></span>xxx) xxx-xxxx</li>
+                    <li class="list-group-item text-right"> <span class="pull-left"><strong>Name</strong></span><?php echo $userInfo['name']; ?></li>
+                    <li class="list-group-item text-right"> <span class="pull-left"><strong>E-mail</strong></span><?php echo $userInfo['email']; ?></li>
+                    <li class="list-group-item text-right"> <span class="pull-left"><strong>Username</strong></span><?php echo $userInfo['username']; ?></li>
+                    <li class="list-group-item text-right"> <span class="pull-left"><strong>Phone Number</strong></span><?php echo $userInfo['contact']; ?></li>
                 </ul>
             </div>
         </div>    
@@ -93,12 +118,22 @@
                                     </tr>
                                 </thead>
                                 <tbody id="items">
-                                    <tr>
-                                        <td>xx.xx.xx</td>
-                                        <td>Name_Restaurant</td>
-                                        <td>xx:xxpm</td>
-                                        <td>#</td>
-                                        <td><a href="#review page" class="btn btn-info" role="button"> Review </a></td>
+                                    <?php
+                                    if (!empty($userReservations)) {
+                                        foreach ($userReservations as $reservation) {
+                                        echo '<tr>';
+                                        echo '<td>'.$reservation['date'] .'</td>';
+                                        echo '<td>'.$reservation['name'] .'</td>';
+                                        echo '<td>'.$reservation['time'] .'</td>';
+                                        echo '<td>'.$reservation['no_of_people'] .'</td>';
+                                        if (empty($reservation['review_description']))
+                                            echo '<td><a href="#review page" class="btn btn-info" role="button"> Review </a>';
+                                        else
+                                            echo '<td>'.$reservation['review_description'].'</td>';
+                                        echo '</tr>';
+                                        }
+                                    }
+                                    ?>
                                     </tr>
                                 </tbody>
                             </table>
@@ -108,11 +143,11 @@
                         <br>
                         <div class="col-md-3">
                             <div class="thumbnail">
-                                <div class="caption">
-                                    <h3> Name of Restaurant </h4>
+                                <!--<div class="caption">-->
+                                    <h3> Name of Restaurant </h3>
                                     <br>
                                     <h1><center><a href="" class="label label-default" rel="tooltip">Reservation</a></center></h1>
-                                </div>
+                                <!--</div>-->
                                 <img src="http://lorempixel.com/400/300/sports/1/">
                             </div>
                         </div>
@@ -122,31 +157,31 @@
                             <div class="form-group">
                                 <div class="col-xs-6">
                                     <label for="phone_number"><h4>Phone Number</h4></label>
-                                    <input type="text" class="form-control" name="phone_number" id="phone_number" placeholder="xxx) xxx-xxxx">
+                                    <input type="text" class="form-control" name="phone_number" id="phone_number" value="<?php echo $userInfo['contact']; ?>"  placeholder="(xxx) xxx-xxxx" required />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-xs-6">
                                     <label for="email"><h4>Email</h4></label>
-                                    <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com">
+                                    <input type="email" class="form-control" name="email" id="email" value="<?php echo $userInfo['email']; ?>" placeholder="you@email.com" />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-xs-6">
                                     <label for="password"><h4>Password</h4></label>
-                                    <input type="password" class="form-control" name="password" id="password" placeholder="enter your password">
+                                    <input type="password" class="form-control" name="password" id="password" placeholder="enter new password" />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-xs-6">
-                                    <label for="password2"><h4>Verify</h4></label>
-                                    <input type="password" class="form-control" name="password2" id="password2" placeholder="re-enter your password">
+                                    <label for="password2"><h4>Reenter password</h4></label>
+                                    <input type="password" class="form-control" name="password2" id="password2" placeholder="re-enter new password" />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-xs-12">
                                     <br>
-                                    <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                                    <button class="btn btn-lg btn-success" type="submit" id="submit_button"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
                                     <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
                                 </div>
                             </div>
@@ -162,7 +197,23 @@
                 $(".nav-tabs a").click(function () {
                     $(this).tab('show');
                 });
+                $("#submit_button").click(function() {
+                    if ($("#password").val() != $("#password2").val()) {
+                        alert('Passwords do not match');
+                        return false;
+                    }
+                    if (!validateEmail($('#email').val())) {
+                        $('#email').css({ "border": '#FF0000 1px solid'});
+                        return false;
+                    }
+                    return true;
+                });
             });
+            
+            function validateEmail(email) {
+                var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+                return re.test(email);
+            }
             
             $("[rel='tooltip']").tooltip();
 

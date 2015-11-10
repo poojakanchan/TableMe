@@ -13,8 +13,26 @@
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
     <body>
-      <?php include 'header.php'; 
-        $msg = (array_key_exists('message', $_GET) ? htmlspecialchars($_GET['message']) : 0);
+      <?php
+      include 'header.php';
+      require_once '../../models/Login_model.php';
+      $db = new Login_model();
+      $incorrectLogin = false;
+      
+      if (isset($_POST['username']) && isset($_POST['password'])) {
+          $username = $_POST['username'];
+          $password = $_POST['password'];
+          if ($db->validateLogin($username, $password)) {
+              session_start();
+              $_SESSION['username'] = $username;
+              header ('location: ../user/userpage.php');
+          }
+          else {
+              $incorrectLogin = true;
+          }
+      }
+      
+      $msg = (array_key_exists('message', $_GET) ? htmlspecialchars($_GET['message']) : '');
         
         if($msg == 'success') {
             echo '<p align ="center"> Registration is successful! Please login to continue.</p>';
@@ -22,21 +40,30 @@
                 echo '<p align ="center"> Your Restaurant was added successfully!! Please login to continue.</p>';
         }
       ?>
-  
+
         <div class="container">
             <div class="row">
                 <div class="col-md-offset-5 col-md-3">
                     <div class="form-login">
-                        <h4>Welcome back.</h4>
-                        <input type="text" id="userName" class="form-control input-sm chat-input" placeholder="username" />
-                        </br>
-                        <input type="text" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />
-                        </br>
+                       <?php
+                       if ($incorrectLogin) {
+                           echo '<h4 style="color:red">Incorrect login information</h4>';
+                       }
+                       else {
+                           echo '<h4>Welcome back</h4>';
+                       }
+                       ?> 
+                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <input type="text" id="username" name="username" class="form-control input-sm chat-input" placeholder="username" required />
+                        <br>
+                        <input type="text" id="password" name="password" class="form-control input-sm chat-input" placeholder="password" required/>
+                        <br>
                         <div class="wrapper">
                             <span class="group-btn">     
-                                <a href="#" class="btn btn-primary btn-md">login <i class="fa fa-sign-in"></i></a>
+                                <button type="submit" class="btn btn-primary btn-md" value="login">Login <i class="fa fa-sign-in"></i></button>
                             </span>
                         </div>
+                        </form>
                     </div>
 
                 </div>

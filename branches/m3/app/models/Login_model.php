@@ -22,12 +22,17 @@ class Login_model extends Database {
         parent::__destruct();
     }
     
-public function getLogin($username) {
-        $sql = "SELECT * FROM login WHERE username=:name";
+public function validateLogin($username, $password) {
+        $sql = "SELECT * FROM login WHERE username=:username AND password=:password";
         $stmt = $this->dbh->prepare($sql);
-        $stmt->bindParam(':name', $username);
-        $stmt->execute();
-        return $stmt->fetch();
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':password', $password);
+        if ($stmt->execute()) {
+            $result = $stmt->fetch();
+            if (!empty($result))
+                return true;
+        }
+        return false;
     }
     
     public function addLogin($username, $password, $role) {

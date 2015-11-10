@@ -149,6 +149,10 @@ class Restaurant_controller extends Controller {
         return $login->getAllUsernames();
     }
     
+    public function getOperatingHours($resId) {
+        $op_model = $this->model('OperationHours_model');
+        return $op_model-> getOperatingHoursByRestaurantId($resId);
+    }
 }
 
     

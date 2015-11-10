@@ -124,16 +124,17 @@ class Restaurant_controller extends Controller {
               );            
             
             $restaurant_registration = $this->model('Restaurant_Registration_model');
+            
+            
             $res = $restaurant_registration->registerRestaurant($resArray,$ownerArray,$operatinghours,$username,$password,$thumbnail,$menuFile);
              if($res > 0) {
-                 if($user_model->addUser($name,$phone,$email,$username,$password) > 0){
-                    $success = 'success_restaurant';
+                   $success = 'success_restaurant';
                     header("Location:login.php/?message=".$success);
             
              } else {
                  echo 'Error occurred while adding restaurant. Please try again!';
              }
-            }
+            
         }
     }
     public function getFoodCategory() {

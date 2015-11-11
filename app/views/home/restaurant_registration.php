@@ -25,24 +25,7 @@
                 size: 4
             });
 
-        function checkUserName1(userArray) {
-                
-               var username = document.forms["form"]["ownerUsername"].value;
-              
-                alert(username);
-        //        var userArray = <?php echo json_encode($username_array); ?>; //getting php array into js
-                alert(userArray.length);
-                /*     for (var i = 0; i < userArray.length; i++) {
-                       if(userArray[i].match(username)){
-                           alert("username exists,Please select different. ");
-                           return false;
-                        } else {
-                            alert("username is available");
-                            return true;
-                       
-                           
-                } */
-            }
+      
                 //no special characters in name
                 //email needs to be correct
                 // username no less than 4 no more than 10 letters numbers no space
@@ -50,7 +33,7 @@
                 // description 150 characters 
                 // max size of 500 mb for profile picture and menu 
                 // validate phone number
-            }
+            
             function validateForm() {
                    alert('validate');
                 var ownerUsername = document.forms["form"]["ownerUsername"].value;
@@ -156,9 +139,8 @@
 
                                     <div class="row">
                                         <div class="col-sm-4 form-group">
-                                            <label>Username *</label>
-                                            <input type="text" name="ownerUsername" placeholder="Please pick a username..." class="form-control" required> 
-                                            <button onclick="checkUserName1('<?php echo json_encode($username_array); ?>')"  name="checkUserName">Check User Name</button>
+                                            <label id="usernameLabel">Username *</label>
+                                            <input id="username" type="text" name="ownerUsername" placeholder="Please pick a username..." class="form-control" required> 
                                         </div>
                                     </div>
 
@@ -445,7 +427,24 @@
     </body>
 
     <script type="text/javascript">
-
+$(document).ready(function () {
+                $("#username").focusout(function () {
+                    var existingUsernames = <?php echo json_encode($username_array) ?>;
+                    var inputUsername = $("#username").val();
+                    if (!inputUsername) {
+                        $("#username").css("border", "#FF0000 1px solid");
+                        $("#usernameLabel").replaceWith ("<label id='usernameLabel'>Username*<i style='color:red'>Username cannot be empty</i></label>");
+                        return;
+                    }
+                    if (jQuery.inArray(inputUsername, existingUsernames) !== -1) {
+                        $("#username").css("border", "#FF0000 1px solid");
+                        $("#usernameLabel").replaceWith ("<label id='usernameLabel'>Username*<i style='color:red'>Username already taken</i></label>");
+                        return;
+                    }
+                    $("#username").css("border", "");
+                    $("#usernameLabel").replaceWith('<label id="usernameLabel">Username*</label>');
+                });
+            });
         
     </script>
 </html>

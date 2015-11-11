@@ -8,9 +8,10 @@
     <title>EZ Restaurant</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" type="text/css" media="all" href="css/bootstrap-responsive.min.css"> 
+    <link rel="stylesheet" type="text/css" media="all" href="css/bootstrap-responsive.min.css"> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    
     
     <!--
     Leave the CSS file in the .php file for now.
@@ -29,8 +30,8 @@
             height: 250px;
             background: url('banner.jpg') center center;
             background-size: cover;
-            padding-right: 100px;
-            padding-left: 100px;
+            padding-right: 250px;
+            padding-left: 250px;
             margin-bottom: 0px;       
         }
 
@@ -114,18 +115,6 @@
 
         <form class="input-group" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get"> <!-- Class for Search box -->
 
-            <div class="input-group-btn"> <!-- Class for Dropdown Menu -->
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?php echo ($category==='%' ? "Food Type " : $category." ") ?><span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a href="#">All</a></li>
-                    <?php
-                    foreach ($foodCategoryArray as $foodCat) {
-                        echo '<li><a href="#">' . $foodCat[0] . '</a></li>';
-                    }
-                    ?>
-                </ul></div>  
             <input name="foodCategory" id="foodCategory" value="" hidden />
             <input type="text" class="form-control" name = "searchText" id="searchText" required placeholder="Search Address or Name of the Restaurants." value="<?php echo($nameAdd==='%' ? "" : $nameAdd);?>"/>
             <span class="input-group-btn">
@@ -135,7 +124,7 @@
     </div><!-- /.col-lg-6 -->
 
     <!-- 2nd Section of the Page (contains Ranking page & Events Page -->
-    <div class ="container container_main">
+
         <div class = "row">
             <div class ="col-xs-6">
                 <div class ="jumbotron jumbotron-Ranking">
@@ -422,21 +411,8 @@
                 </div> <!-- End of Jumbotron -->
             </div>
         </div> <!-- End of 2nd Section -->
-    </div>
 
-    <script>
-        $(document).ready(function () {
-            initDropdownMenu();
-        });
-        var initDropdownMenu = function() {
-            $("input#foodCategory").val("<?php echo $category; ?>");
-            $(".input-group").find(".dropdown-menu li a").click(function () {
-                var text = $(this).text();
-                $(".btn.btn-default.dropdown-toggle").text(text);
-                $("input#foodCategory").val(text==="All" ? "%" : text);
-            });
-        }
-    </script>
+
     
 </body>
 </html>

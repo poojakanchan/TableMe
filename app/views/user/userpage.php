@@ -198,21 +198,38 @@
                     $(this).tab('show');
                 });
                 $("#submit_button").click(function() {
+                    var validated = true;
                     if ($("#password").val() != $("#password2").val()) {
                         alert('Passwords do not match');
-                        return false;
+                        validated = false;
                     }
                     if (!validateEmail($('#email').val())) {
-                        $('#email').css({ "border": '#FF0000 1px solid'});
-                        return false;
+                        $('#email').css("border", "#FF0000 1px solid");
+                        validated = false;
                     }
-                    return true;
+                    else {
+                        $('#email').css("border", "");
+                    }
+                    
+                    if (!validatePhoneNumber($('#phone_number').val())) {
+                        $('#phone_number').css("border", "#FF0000 1px solid");
+                        validated = false;
+                    }
+                    else {
+                        $('#phone_number').css("border", "");
+                    }
+                    return validated;
                 });
             });
             
             function validateEmail(email) {
                 var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
                 return re.test(email);
+            }
+            
+            function validatePhoneNumber(phoneNumber) {
+                var re = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+                return re.test(phoneNumber);
             }
             
             $("[rel='tooltip']").tooltip();

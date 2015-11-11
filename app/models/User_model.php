@@ -1,4 +1,4 @@
-<?php
+<?php //
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -74,5 +74,93 @@ class User_model extends Database{
         return -1;
             
      }
+     
+     
+     public function getUser($username) {
+        $sql = "SELECT * FROM user WHERE username=:username";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':username', $username);
+        if ($stmt->execute()) {
+            return $stmt->fetch();
+        }
+        return null;
+    }
+
+    public function getUserImage($username) {
+        $sql = "SELECT user_image FROM user WHERE username=:username";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':username', $username);
+        if ($stmt->execute()) {
+            return $stmt->fetch();
+        }
+        return null;
+    }
+
+    public function getReservationHistory($userId) {
+        $sql = "SELECT v.date, r.name, v.time, v.no_of_people, w.review_description, v.restaurant_id, v.user_id "
+                . "FROM reservation v INNER JOIN restaurant r ON v.restaurant_id=r.restaurant_id "
+                . "LEFT JOIN review w ON v.restaurant_id=w.restaurant_id AND v.user_id=w.user_id "
+                . "WHERE v.user_id=:userId "
+                . "ORDER BY v.date DESC";
+
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':userId', $userId);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return null;
+        }
+        return $stmt->fetchAll();
+    }
+
+
+    public function updateUser($username, $newContact, $newEmail, $newPassword, $newImage) {
+        if (!empty($newPassword)) {
+            $sql = "UPDATE login SET password=:newPassword WHERE username=:username";
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->bindParam(':newPassword', $newPassword);
+            $stmt->bindParam(':username', $username);
+            if (!$stmt->execute()) {
+                print_r($stmt->errorInfo());
+                return false;
+            }
+        }
+
+        if ($newImage != null) {
+            $sql = "UPDATE user SET contact=:newContact, email=:newEmail, user_image=:newImage "
+                    . "WHERE username=:username";
+        } else {
+            $sql = "UPDATE user SET contact=:newContact, email=:newEmail "
+                    . "WHERE username=:username";
+        }
+
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':newContact', $newContact);
+        $stmt->bindParam(':newEmail', $newEmail);
+        if ($newImage != null) {
+            $stmt->bindParam(':newImage', $newImage, PDO::PARAM_LOB);
+        }
+        $stmt->bindParam(':username', $username);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return false;
+        }
+        return true;
+    }
+    
+    
+
+//    public function getReview($restaurant_id, $user_id) {
+//        $sql = "SELECT review_description FROM review "
+//                . "WHERE restaurant_id=:restaurant_id AND user_id=:user_id";+
+//        $stmt = $this->dbh->prepare($sql);
+//        $stmt->bindParam(':restaurant_id', $restaurant_id, PDO::PARAM_INT);
+//        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+//        if ($stmt->execute()) {
+//            return $stmt->fetch();
+//        }
+//        return null;
+//    }
     
 }
+?>
+

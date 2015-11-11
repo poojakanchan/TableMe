@@ -72,12 +72,15 @@
        
         $user = __DIR__ . '/../../controllers/User_Controller.php';
         require_once $user;
+        require_once '../../models/Login_model.php';
+        $db = new Login_model();
         //         $flag = $_GET['checkUsername'];
         //  if (isset($_GET['checkUsername']) && !empty($_GET['checkUsername'])) {
         if ($_POST) {
             $user_controller = new User_controller();
             $user_controller->registerUser();
         }
+        $existingUsernames = $db->getAllUsernames();
         
         ?>
 
@@ -102,8 +105,8 @@
 
                             <div class="row">
                                 <div class="col-sm-6 form-group">
-                                <label>Username*</label>
-                                <input type="text" name="userUsername" placeholder="Please pick a username..." class="form-control" required>
+                                <label id="usernameLabel">Username*</label>
+                                <input type="text" name="userUsername" id="username" placeholder="Please pick a username..." class="form-control" required>
                                 </div>
                                 
                             </div>
@@ -150,6 +153,30 @@
                 </div>
             </div>
         </div>
-
+        
+        
+        <script>
+            $(document).ready(function () {
+                $("#username").focusout(function () {
+                    var existingUsernames = <?php echo json_encode($existingUsernames) ?>;
+                    var inputUsername = $("#username").val();
+                    if (!inputUsername) {
+                        $("#username").css("border", "#FF0000 1px solid");
+                        $("#usernameLabel").replaceWith ("<label id='usernameLabel'>Username*<i style='color:red'>Username cannot be empty</i></label>");
+                        return;
+                    }
+                    if (jQuery.inArray(inputUsername, existingUsernames) !== -1) {
+                        $("#username").css("border", "#FF0000 1px solid");
+                        $("#usernameLabel").replaceWith ("<label id='usernameLabel'>Username*<i style='color:red'>Username already taken</i></label>");
+                        return;
+                    }
+                    $("#username").css("border", "");
+                    $("#usernameLabel").replaceWith('<label id="usernameLabel">Username*</label>');
+                });
+            });
+            function validateUserName() {
+                
+            }
+        </script>   
     </body>
 </html>

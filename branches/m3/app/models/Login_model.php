@@ -46,15 +46,16 @@ public function validateLogin($username, $password) {
     }
     
     public function getAllUsernames() {
-        $sql = "SELECT * FROM login";
+        $sql = "SELECT username FROM login";
         $stmt = $this->dbh->prepare($sql);
         
         if ($stmt->execute()) {
-            echo 'called!!';
-            return $stmt->fetchAll();
+            return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
         }
-        
-        return null;
+        else {
+            print_r($stmt->errorInfo());
+            return null;
+        }
     }
      
     

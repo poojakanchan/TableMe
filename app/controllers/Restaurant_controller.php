@@ -122,17 +122,19 @@ class Restaurant_controller extends Controller {
               "sundayFrom" => "'".$sundayFrom."'",
               "sundayTo" => "'".$sundayTo."'"
               );            
-            
-            $restaurant_registration = $this->model('Restaurant_Registration_model');
-            
-            
+             $restaurant_registration = $this->model('Restaurant_Registration_model');
             $res = $restaurant_registration->registerRestaurant($resArray,$ownerArray,$operatinghours,$username,$password,$thumbnail,$menuFile);
              if($res > 0) {
-                   $success = 'success_restaurant';
-                    header("Location:login.php/?message=".$success);
+                 echo "<p style=\"color:green;text-align:center;font-weight: bold\" >Congratulations!!Restaurant registration is successful!!";
+                 echo "</p><br><p style = \"text-align:center;font-weight: bold \" > ";
+                 echo "The resturant needs to be approved by site administrator before it can be searched."
+                         . "Please contact site administrator for further questions  ";
+                 echo "<br> You can <a href =\"login.php\">Login </a> to view or modify restaurant information.</p>";
+              //   header("Location:login.php/?message=".'success_restaurant');
             
              } else {
-                 echo 'Error occurred while adding restaurant. Please try again!';
+                 echo "\n\n";
+                    echo "<p style=\"color:red;text-align:center;font-weight: bold\">Error occurred while registering restaurant. Please try again!</p>";
              }
             
         }

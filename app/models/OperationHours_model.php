@@ -36,4 +36,4 @@ class OperationHours_model extends Database {
     }
    
 }
-
+?>

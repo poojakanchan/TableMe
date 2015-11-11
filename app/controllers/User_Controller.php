@@ -26,7 +26,7 @@ class User_controller extends Controller {
                     header("Location:login.php/?message=".$success);
             }
             else{
-                echo 'Error occured while registestration,Please select different username.';
+                echo "<p style=\"color:red;text-align:center;font-weight: bold\">Error occured while registestration,Please select different username.</p>";
             }
                 
         }

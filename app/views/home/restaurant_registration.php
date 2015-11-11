@@ -123,13 +123,9 @@
             }
             
         </script>
-    </head>
-    <body>
-        <?php
+</head><?php include 'header.php';
         $res = __DIR__ . '/../../controllers/Restaurant_controller.php';
         require_once $res;
-
-
         $restaurant = new Restaurant_controller();
         //         $flag = $_GET['checkUsername'];
         //  if (isset($_GET['checkUsername']) && !empty($_GET['checkUsername'])) {
@@ -138,16 +134,14 @@
         }
         $food_category_array = $restaurant->getFoodCategory();
         $username_array = $restaurant->getAllUserNames();
-        echo $username_array;
+       // echo $username_array;
         
         // } else {
         //             if($restaurant->checkUserName());
         // }
-
-        include 'header.php';
-        ?>
-
-        <div class="container">
+       
+?><body>
+<div class="container">
             <h1 class="well">Restaurant Registration Form</h1>
             <div class="col-lg-12 well">
                 <div class="row">
@@ -290,13 +284,11 @@
 
                                     <div class="form-group">
                                         <label>Type of Food</label>
-                                        <select class="selectpicker" name ="food_category">
-                                            <?php
+                                        <select class="selectpicker" name ="food_category"><?php
                                             foreach ($food_category_array as $category) {
                                                 echo "<option value=" . $category['name'] . ">" . $category['name'] . "</option>";
                                             }
-                                            ?>  
-                                            <option value ="any" selected="selected">Select Food Type</option>
+                                            ?><option value ="any" selected="selected">Select Food Type</option>
                                         </select>
                                     </div>
 

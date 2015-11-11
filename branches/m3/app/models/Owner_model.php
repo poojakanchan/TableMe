@@ -31,6 +31,4 @@ class Owner_model extends Database{
     
    
 }
-
-    
-
+?>

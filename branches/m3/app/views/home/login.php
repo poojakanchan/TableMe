@@ -35,10 +35,9 @@
       $msg = (array_key_exists('message', $_GET) ? htmlspecialchars($_GET['message']) : '');
         
         if($msg == 'success') {
-            echo '<p align ="center"> Registration is successful! Please login to continue.</p>';
-        } elseif ($msg == 'success_restaurant') {
-                echo '<p align ="center"> Your Restaurant was added successfully!! Please login to continue.</p>';
-        }
+            echo "<p style=\"color:green;text-align:center;font-weight:bold\"> Registration is successful!</p>"
+            . " <p style=\"text-align:center;font-weight: bold\">Please login to continue.</p>";
+        } 
       ?>
 
         <div class="container">

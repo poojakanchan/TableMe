@@ -25,7 +25,7 @@
         
         require_once __DIR__ . '/../../models/Restaurant_model.php';
         require_once __DIR__ . '/../../models/OperationHours_model.php';
-        
+        require_once __DIR__ . '/../../models/Event_model.php';
         $db = new Restaurant_model();
         $resId = (array_key_exists('resid', $_GET) ? htmlspecialchars($_GET['resid']) : 0);
         $restaurant = $db->findRestaurantById($resId);
@@ -36,7 +36,11 @@
         $address = $restaurant[0]['address'];
         $phone = $restaurant[0]['phone_no'];
         $imgArray = $db->getRestaurantImages($resId);
+       
+        $event_model = new Event_model();
+        $events = $event_model->getEventsByRestaurantId($resId);
         
+        //print_r($events);
         $operating_hours_model = new OperationHours_model();
         $oprHours = $operating_hours_model->getOperatingHoursByRestaurantId($resId);
         
@@ -352,7 +356,7 @@
                      </div>
                  
                      <?php } else {?>
-                      <h4> Sorry, Operation Hours are not available.</h4>>
+                      <h4> Sorry, Operation Hours are not available.</h4>
                     <?php } ?>
                 </div>
              </div>

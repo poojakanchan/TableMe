@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-	<title>EZ Restaurant</title>
+	<title>TableMe</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
@@ -250,28 +250,46 @@
     <div class="container-fluid">
         <div class="mainInfo col-md-12">
             <h1>Profile</h1>
-            <div class="restaurantprofile col-md-12">
-                <div class="restaurantpic col-md-3">
-                    <img alt="Logo" src="http://goo.gl/vrq2Cw" class="img-rounded" height="200" width="200" />
+            <div class="row">
+                <div class="restaurantpic col-md-4">
+                    <img alt="Logo" src="http://goo.gl/vrq2Cw" class="img-rounded" height="300" width="300" />
+                    <br><br><br><br>
+                    <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="75" width="75"/>
+                    <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="75" width="75"/>
+                    <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="75" width="75"/>
+                    <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="75" width="75"/>
                 </div>
-                <div class="restaurantname col-md-9">
+                <div class="restaurant-detail1 col-md-4">
                     <h1>Little Tokyo</h1>
-                    <h2>Japanese food</h2>
-                    <form class = "descriptionform" role = "form">
-                        <div class = "form-group">
-                            <label for = "name">Description:</label>
-                            <textarea class = "form-control" rows = "3"></textarea>
-                        </div>
-
-                        <div class = "form-group">
-                            <button type = "submit" class = "btn btn-default">Change</button>
-                        </div>
-                     </form>
+                    <h3>Food type:</h3>
+                    <p>The restaurant Food type from db should be here!</p>
+                    <h3>Description:</h3>
+                    <p>The restaurant description from db should be here!</p>
+                    <h3>Address:</h3>
+                    <p>The restaurant address from db should be here!</p>
+                    <h3>Phone:</h3>
+                    <p>The restaurant phone number from db should be here!</p>
                 </div>
-                
+                <div class="restaurant-detail2 col-md-4">
+                    <h3>Operating Hours:</h3>
+                    <ul class="list-group operating-hour-list">
+                        <li class="list-group-item">Monday</li>
+                        <li class="list-group-item">Tuesday</li>
+                        <li class="list-group-item">Wednesday</li>
+                        <li class="list-group-item">Thursday</li>
+                        <li class="list-group-item">Friday</li>
+                        <li class="list-group-item">Saturday</li>
+                        <li class="list-group-item">Sunday</li>
+                    </ul>
+                </div>
+            </div>
+            <br><br><br>
+            <div class="row">
                 <div class="restaurantmenuchange col-md-12">
                     <ul class="nav nav-tabs">
-                        <li role="presentation" class="active"><a href="#change-photo" data-toggle="tab">Restaurant Photo</a></li>
+                        <li role="presentation" class="active"><a href="#change-detail" data-toggle="tab">Restaurant Detail</a></li>
+                        <li role="presentation"><a href="#change-photo" data-toggle="tab">Restaurant Photo</a></li>
+                        <li role="presentation"><a href="#change-hours" data-toggle="tab">Operating Hours</a></li>
                         <li role="presentation"><a href="#change-menu" data-toggle="tab">Menu</a></li>
                         <li role="presentation"><a href="#change-specialevent" data-toggle="tab">Special Events</a></li>
                         <li role="presentation"><a href="#change-hostaccount" data-toggle="tab">Host Accounts</a></li>
@@ -279,55 +297,212 @@
                 </div>
                 
                 <div id="myTabContent" class="tab-content">
-                    <div class="tab-pane fade in active" id="change-photo">
-                        <div class = "row">
-                            <div class = "col-sm-6 col-md-3">
-                                <div class = "thumbnail">
-                                    <img src = "https://goo.gl/GOzAhf" alt = "Restaurant photo" class="img-rounded" >
+                    <div class="tab-pane fade in active" id="change-detail">
+                        <br><br>
+                        <form class = "descriptionform" role = "form">
+                            <div class = "form-group">
+                                <br><br>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label>Type of Food:</label>
+                                        <select class="selectpicker" name="food_category" required data-width="auto">
+                                            <option value="" disabled selected>Food type</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <p>Upload a new photo:</p>
-                                <input type="file" name="file" id="file" /><br>
-                                <button type = "submit" class = "btn btn-default">Upload</button>
+                                <br>
+                                <label for = "name">Description:</label>
+                                <textarea class = "form-control" rows = "3"></textarea>
+                                <br><br>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <label>Address:</label>
+                                        <input type="text" name="restaurantStreet" placeholder="Please enter the restaurant's address..." class="form-control">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <label>City:</label>
+                                        <input type="text" name="restaurantCity" placeholder="Enter City Here..." class="form-control">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>State:</label>
+                                        <input type="text" name="restaurantState" placeholder="Enter State Here..." class="form-control">
+                                    </div>	
+                                    <div class="col-sm-4">
+                                        <label>Zip:</label>
+                                        <input type="number" name="restaurantZip" placeholder="Enter Zip Code Here..." class="form-control">
+                                    </div>
+                                </div>
+                                <br><br>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <label>Phone:</label>
+                                        <input type="text" name="restaurantPhone" placeholder="Please enter the restaurant's phone..." class="form-control">
+                                    </div>
+                                </div>
                             </div>
-                            <div class = "col-sm-6 col-md-3">
-                                <div class = "thumbnail">
-                                    <img src = "https://goo.gl/GOzAhf" alt = "Restaurant photo" class="img-rounded" >
+                            <br>
+                            <button type = "submit" class = "btn btn-default">Change</button>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="change-photo">
+                        <div class="restaurantmenuchange col-md-12">
+                            <div class="row">
+                                <h3>Profile Photo:</h3>
+                                <div class = "col-sm-6 col-md-3">
+                                    <div class = "thumbnail">
+                                        <img src = "http://goo.gl/vrq2Cw" alt = "Restaurant photo" class="img-rounded" >
+                                    </div>
+                                    <p>Upload a new photo:</p>
+                                    <input type="file" name="file" id="file" /><br>
+                                    <button type = "submit" class = "btn btn-default">Upload</button>
                                 </div>
-                                <p>Upload a new photo:</p>
-                                <input type="file" name="file" id="file" /><br>
-                                <button type = "submit" class = "btn btn-default">Upload</button>
                             </div>
-                            <div class = "col-sm-6 col-md-3">
-                                <div class = "thumbnail">
-                                    <img src = "https://goo.gl/GOzAhf" alt = "Restaurant photo" class="img-rounded" >
+                            <div class = "row">
+                                <br>
+                                <h3>Thumbnail Photo:</h3>
+                                <div class = "col-sm-6 col-md-3">
+                                    <div class = "thumbnail">
+                                        <img src = "https://goo.gl/GOzAhf" alt = "Restaurant photo" class="img-rounded" >
+                                    </div>
+                                    <p>Upload a new photo:</p>
+                                    <input type="file" name="file" id="file" /><br>
+                                    <button type = "submit" class = "btn btn-default">Upload</button>
                                 </div>
-                                <p>Upload a new photo:</p>
-                                <input type="file" name="file" id="file" /><br>
-                                <button type = "submit" class = "btn btn-default">Upload</button>
-                            </div>
-                            <div class = "col-sm-6 col-md-3">
-                                <div class = "thumbnail">
-                                    <img src = "https://goo.gl/GOzAhf" alt = "Restaurant photo" class="img-rounded" >
+                                <div class = "col-sm-6 col-md-3">
+                                    <div class = "thumbnail">
+                                        <img src = "https://goo.gl/GOzAhf" alt = "Restaurant photo" class="img-rounded" >
+                                    </div>
+                                    <p>Upload a new photo:</p>
+                                    <input type="file" name="file" id="file" /><br>
+                                    <button type = "submit" class = "btn btn-default">Upload</button>
                                 </div>
-                                <p>Upload a new photo:</p>
-                                <input type="file" name="file" id="file" /><br>
-                                <button type = "submit" class = "btn btn-default">Upload</button>
+                                <div class = "col-sm-6 col-md-3">
+                                    <div class = "thumbnail">
+                                        <img src = "https://goo.gl/GOzAhf" alt = "Restaurant photo" class="img-rounded" >
+                                    </div>
+                                    <p>Upload a new photo:</p>
+                                    <input type="file" name="file" id="file" /><br>
+                                    <button type = "submit" class = "btn btn-default">Upload</button>
+                                </div>
+                                <div class = "col-sm-6 col-md-3">
+                                    <div class = "thumbnail">
+                                        <img src = "https://goo.gl/GOzAhf" alt = "Restaurant photo" class="img-rounded" >
+                                    </div>
+                                    <p>Upload a new photo:</p>
+                                    <input type="file" name="file" id="file" /><br>
+                                    <button type = "submit" class = "btn btn-default">Upload</button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane fade" id="change-hours">
+                        <div class="form-group">
+                            <br><br>
+                            <h3>Hours of Operation:</h3>
+                            <br>
+                            <label>Monday</label>
+                            <div class="row">
+                                <div class="col-sm-4 form-group">
+                                    <label>From</label>
+                                    <input type="time" name="mondayFrom" class="form-control" >
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label>To</label>
+                                    <input type="time" name="mondayTo" class="form-control" >
+                                </div>
+                            </div>
+                            <label>Tuesday</label>
+                            <div class="row">
+                                <div class="col-sm-4 form-group">
+                                    <label>From</label>
+                                    <input type="time" name="tuesdayFrom" class="form-control" > 
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label>To</label>
+                                    <input type="time" name="tuesdayTo" class="form-control" >
+                                </div>
+                            </div>  
+                            <label>Wednesday</label>
+                            <div class="row">
+                                <div class="col-sm-4 form-group">
+                                    <label>From</label>
+                                    <input type="time" name="wednesdayFrom" class="form-control" > 
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label>To</label>
+                                    <input type="time" name="wednesdayTo" class="form-control" >
+                                </div>
+                            </div> 
+                            <label>Thursday</label>
+                            <div class="row">
+                                <div class="col-sm-4 form-group">
+                                    <label>From</label>
+                                    <input type="time" name="thursdayFrom" class="form-control" > 
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label>To</label>
+                                    <input type="time" name="thursdayTo" class="form-control" >
+                                </div>
+                            </div> 
+                            <label>Friday</label>
+                            <div class="row">
+                                <div class="col-sm-4 form-group">
+                                    <label>From</label>
+                                    <input type="time" name="fridayFrom" class="form-control" > 
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label>To</label>
+                                    <input type="time" name="fridayTo" class="form-control" >
+                                </div>
+                            </div>
+                            <label>Saturday</label>
+                            <div class="row">
+                                <div class="col-sm-4 form-group">
+                                    <label>From</label>
+                                    <input type="time" name="saturdayFrom" class="form-control" > 
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label>To</label>
+                                    <input type="time" name="saturdayTo" class="form-control" >
+                                </div>
+                            </div> 
+                            <label>Sunday</label>
+                            <div class="row">
+                                <div class="col-sm-4 form-group">
+                                    <label>From</label>
+                                    <input type="time" name="sundayFrom" class="form-control" > 
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <label>To</label>
+                                    <input type="time" name="sundayTo" class="form-control" >
+                                </div>
+                            </div>
+                        </div>
+                        <button type = "submit" class = "btn btn-default">Change</button>
+                    </div>
                     <div class="tab-pane fade" id="change-menu">
-                        <br><br>
-                        <p>Upload a new menu:</p>
-                        <input type="file" name="file" id="file" /><br>
-                        <button type = "submit" class = "btn btn-default">Upload</button>
-                        <br><br>
-                        <p>Current Menu:</p>
-                        <img src = "https://goo.gl/a3MbBt" alt = "Restaurant photo" class="img-rounded" >
+                        <div class="col-md-12">
+                            <h3>Upload a new menu:</h3>
+                            <input type="file" name="file" id="file" /><br>
+                            <button type = "submit" class = "btn btn-default">Upload</button>
+                            <br><br>
+                            <h3>Current Menu:</h3>
+                            <img src = "https://goo.gl/a3MbBt" alt = "Restaurant photo" class="img-rounded" >
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="change-specialevent">
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12 table-responsive">
+                                    <br><br>
                                     <table class="table table-bordered table-hover table-sortable" id="tab_logic">
                                         <thead>
                                             <tr>
@@ -335,7 +510,6 @@
                                                 <th class="text-center">Date</th>
                                                 <th class="text-center">Description</th>
                                                 <th class="text-center">Delete</th>
-                                                <th class="text-center" style="border-top: 1px solid #ffffff; border-right: 1px solid #ffffff;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -347,7 +521,6 @@
                                                     <input type="text" name='date0' placeholder='Event date' class="form-control"/>
                                                 </td>
                                                 <td data-name="desc">
-                                                    <!--<input type="text" name='desc0' placeholder='Event Description' class="form-control"/>-->
                                                     <textarea class = "form-control" name='desc0' placeholder='Event Description' rows = "3"></textarea>
                                                 </td>
                                                 <td data-name="del">
@@ -365,13 +538,13 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12 table-responsive">
+                                    <br><br>
                                     <table class="table table-bordered table-hover table-sortable" id="tab_account">
                                         <thead>
                                             <tr>
                                                 <th class="text-center">Host Account</th>
                                                 <th class="text-center">Password</th>
                                                 <th class="text-center">Delete</th>
-                                                <th class="text-center" style="border-top: 1px solid #ffffff; border-right: 1px solid #ffffff;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>

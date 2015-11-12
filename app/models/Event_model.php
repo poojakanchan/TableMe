@@ -54,4 +54,18 @@ class Event_model extends Database{
         }
         return null;
     }
+    public function getEventsByRestaurantId($resId) {
+        $sql = "SELECT e.restaurant_id, e.description, e.date, e.time, e.event_photo, r.name "
+                . "FROM special_event e "
+                . "INNER JOIN restaurant r "
+                . "WHERE e.restaurant_id=r.restaurant_id and r.restaurant_id ="
+                . $resId
+                . " ORDER BY e.date ASC";
+        $stmt = $this->dbh->prepare($sql);
+        if ($stmt->execute()) {
+            return $stmt->fetchAll();
+        }
+        return null;
+    }
+    
 }

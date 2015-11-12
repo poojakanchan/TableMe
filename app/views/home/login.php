@@ -55,7 +55,7 @@
                         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <input type="text" id="username" name="username" class="form-control input-sm chat-input" placeholder="username" required />
                         <br>
-                        <input type="text" id="password" name="password" class="form-control input-sm chat-input" placeholder="password" required/>
+                        <input type="password" id="password" name="password" class="form-control input-sm chat-input" placeholder="password" required/>
                         <br>
                         <div class="wrapper">
                             <span class="group-btn">     

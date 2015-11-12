@@ -34,4 +34,4 @@ class FoodCategory_model extends Database {
         
     }
     
-}
+} ?>

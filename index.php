@@ -56,7 +56,9 @@
 <body>
     <?php
     require_once 'app/models/Restaurant_model.php';
+    require_once 'app/models/Event_model.php';
     include 'header.php';
+    
     define ("N_PER_PAGE", 5); //number of restaurants to display per page
     $db;$restaurant_array; $foodCategoryArray; $restaurantListTitle;
     $nameAdd = $category = '%';
@@ -104,6 +106,10 @@
     for ($i=0; $i<9 && $i<$numberOfPages; $i++) {
         $pageArray[$i] = $startPage++;
     }
+    
+    //populates event array
+    $db = new Event_model();
+    $eventArray = $db->getAllEvents();
     
     ?>
 
@@ -208,12 +214,24 @@
                 <div class ="jumbotron jumbotron-Event">
                     <center> <h2> Upcoming Events </h2> </center> 
                     <div class="panel panel-default">
-                        <div class="panel panel-body">
+                        <?php
+                        foreach ($eventArray as $event) {
+                            $image = base64_encode($event['event_photo']);
+                            echo '<div class="panel panel-body">';
+                            echo '<a href="app/views/home/restaurant.php?resid='. $event['restaurant_id'] . '"> <img width="200" height="auto" src="data:image/jpeg;base64,' . $image . '"/></a>';
+                            echo '<a href="app/views/home/restaurant.php?resid='. $event['restaurant_id'] . '"> <h3>' . $event['name'] . '</h3></a>';
+                            echo '<p>' .$event['date'] . '</p>';
+                            echo '<p>' . $event['description'] . '</p>';
+                            echo '<a href="#reservation page" class="btn btn-info" role="button"> Reservation </a>';
+                            echo '</div>';
+                        }
+                        ?>
+<!--                        <div class="panel panel-body">
                             <h3> Event Name at Restaurant Name </h3>
                             <p> Date: xx.xx.xx xx:xx-xx:xx </p>
                             <p> Address <a href="#restaurant view page"> (View More) </a> </p>
                             <a href="#reservation page" class="btn btn-info" role="button"> Reservation </a>
-                        </div>
+                        </div>-->
                     </div>
                 </div> <!-- End of Jumbotron -->
             </div>

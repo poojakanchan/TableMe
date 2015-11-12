@@ -67,69 +67,71 @@
     </head>
     <body>
        <?php
+       
         include 'header.php';
-       ?>
-<!--        <nav class ="navbar navbar-default">
-            <div class ="container-fluid">
-                <div class ="navbar-header">
-                    <a class="navbar-brand" href="index.php">TableMe</a>
-                </div>
-                <div>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Register <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#UserRegister">User</a></li>
-                                <li><a href="#RestaurantRegister">Restaurant</a></li>
-                            </ul>
-                        </li>
-                        <li> <a href ="#login">Login</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>-->
+       
+        $user = __DIR__ . '/../../controllers/User_Controller.php';
+        require_once $user;
+        require_once '../../models/Login_model.php';
+        $db = new Login_model();
+        //         $flag = $_GET['checkUsername'];
+        //  if (isset($_GET['checkUsername']) && !empty($_GET['checkUsername'])) {
+        if ($_POST) {
+            $user_controller = new User_controller();
+            $user_controller->registerUser();
+        }
+        $existingUsernames = $db->getAllUsernames();
+        
+        ?>
 
         <div class="container">
             <h1 class="well">User Registration Form</h1>
             <div class="col-lg-12 well">
                 <div class="row">
-                    <form name="myForm" action="#.php"
+                    <form name="myForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>"
                           onsubmit="return validateForm()" method="post">
                         <div class="col-sm-12">
                             
                             <div class="row">
                                 <div class="col-sm-6 form-group">
-                                    <label>First Name</label>
+                                    <label>First Name*</label>
                                     <input type="text" name="userFirstName" placeholder="Please enter you first name..." class="form-control" required>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <label>Last Name</label>
+                                    <label>Last Name*</label>
                                     <input type="text" name="userLastName" placeholder="Please enter you last name..." class="form-control" required>
                                 </div>
                             </div>										 
 
-                            <div class="form-group">
-                                <label>Username</label>
-                                <input type="text" name="userUsername" placeholder="Please pick a username..." class="form-control" required>
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                <label id="usernameLabel">Username*</label>
+                                <input type="text" name="userUsername" id="username" placeholder="Please pick a username..." class="form-control" required>
+                                </div>
+                                
                             </div>
 
                             <div class="row">
                                 <div class="col-sm-6 form-group">
-                                    <label>Password</label>
-                                    <input type="text" name="userPassword" placeholder="Please pick a password..." class="form-control" required>
+                                    <label>Password*</label>
+                                    <input type="password" name="userPassword" placeholder="Please pick a password..." class="form-control" required>
                                 </div>	
                                 <div class="col-sm-6 form-group">
-                                    <label>Confirm Password</label>
-                                    <input type="text" name="userConfirmPassword" placeholder="Please confirm your password..." class="form-control" required>
+                                    <label>Confirm Password*</label>
+                                    <input type="password" name="userConfirmPassword" placeholder="Please confirm your password..." class="form-control" required>
                                 </div>		
                             </div>
 
-                            <div class="form-group">
-                                <label>Phone Number</label>
-                                <input type="text" name="userPhone" placeholder="Please enter your phone number..." class="form-control">
-                            </div>		
-                            <div class="form-group">
-                                <label>Email Address</label>
-                                <input type="email" name="userEmail" placeholder="Please enter your email address..." class="form-control" required>
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label>Phone Number</label>
+                                    <input type="text" name="userPhone" placeholder="Please enter your phone number..." class="form-control">
+                                </div>
+                          	
+                                <div class="col-sm-6 form-group">
+                                    <label>Email Address*</label>
+                                    <input type="email" name="userEmail" placeholder="Please enter your email address..." class="form-control" required>
+                                </div>
                             </div>
                             
                             <br>
@@ -151,6 +153,30 @@
                 </div>
             </div>
         </div>
-
+        
+        
+        <script>
+            $(document).ready(function () {
+                $("#username").focusout(function () {
+                    var existingUsernames = <?php echo json_encode($existingUsernames) ?>;
+                    var inputUsername = $("#username").val();
+                    if (!inputUsername) {
+                        $("#username").css("border", "#FF0000 1px solid");
+                        $("#usernameLabel").replaceWith ("<label id='usernameLabel'>Username*<i style='color:red'>Username cannot be empty</i></label>");
+                        return;
+                    }
+                    if (jQuery.inArray(inputUsername, existingUsernames) !== -1) {
+                        $("#username").css("border", "#FF0000 1px solid");
+                        $("#usernameLabel").replaceWith ("<label id='usernameLabel'>Username*<i style='color:red'>Username already taken</i></label>");
+                        return;
+                    }
+                    $("#username").css("border", "");
+                    $("#usernameLabel").replaceWith('<label id="usernameLabel">Username*</label>');
+                });
+            });
+            function validateUserName() {
+                
+            }
+        </script>   
     </body>
 </html>

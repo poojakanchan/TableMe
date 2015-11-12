@@ -4,6 +4,7 @@
         
     </head>
 <body>-->
+
         <nav class ="navbar navbar-default">
             <div class ="container-fluid">
                 <div class ="navbar-header">
@@ -17,7 +18,7 @@
                                 <li><a href="restaurant_registration.php">Restaurant</a></li>
                             </ul>
                         </li>
-                        <li> <a href ="#login">Login</a></li>
+                        <li> <a href ="login.php">Login</a></li>
                     </ul>
                 </div>
             </div>

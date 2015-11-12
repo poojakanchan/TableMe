@@ -24,13 +24,79 @@
     <?php
         
         require_once __DIR__ . '/../../models/Restaurant_model.php';
+        require_once __DIR__ . '/../../models/OperationHours_model.php';
+        
         $db = new Restaurant_model();
         $resId = (array_key_exists('resid', $_GET) ? htmlspecialchars($_GET['resid']) : 0);
         $restaurant = $db->findRestaurantById($resId);
         $resName = $restaurant[0]['name'];
         $foodCategory = $restaurant[0]['food_category_name'];
         $description = $restaurant[0]['description'];
+        $menu = base64_encode($restaurant[0]['menu']);
+        $address = $restaurant[0]['address'];
+        $phone = $restaurant[0]['phone_no'];
         $imgArray = $db->getRestaurantImages($resId);
+        
+        $operating_hours_model = new OperationHours_model();
+        $oprHours = $operating_hours_model->getOperatingHoursByRestaurantId($resId);
+        
+        $time_message = null;
+          $from = NULL;
+           $to = null;
+        if(! empty($oprHours))
+        {
+             $oprHours = $oprHours[0];
+              
+             date_default_timezone_set ("America/Los_Angeles");
+                $today = getdate();
+                
+               
+                 switch($today["weekday"]){
+                   case "Monday":
+                       $from = $oprHours["monday_from"];
+                       $to = $oprHours["monday_to"];
+                       break;
+                   case "Tuesday":
+                       $from = $oprHours["tuesday_from"];
+                       $to = $oprHours["tuesday_to"];
+                       break;
+                   case "Wednesday":
+                       $from = $oprHours["wednesday_from"];
+                       $to = $oprHours["wednesday_to"];
+                       break;
+                   case "Thursday":
+                       $from = $oprHours ["thursday_from"];
+                       $to = $oprHours["thursday_to"];
+                       break;
+                   case "Friday":
+                 $from = $oprHours["friday_from"];
+                 $to = $oprHours["friday_to"];
+                       break;
+                   case "Saturday":
+                       $from = $oprHours["saturday_from"];
+                       $to = $oprHours["saturday_to"];
+                       break;
+                   case "Sunday":
+                       $from = $oprHours["sunday_from"];
+                       $to = $oprHours["sunday_to"];
+                       break;
+                 }
+               //  print_r($today);
+                $totime = strtotime($to,time());
+                $fromtime = strtotime($from,time());
+ 
+                if (time() >= $fromtime && time()  < $totime) {
+                    $diff = abs(($totime - time())/60);
+                   if($diff <= 60){
+                    $time_message = "Closing soon.";
+                   } else {
+                       $time_message = "Open Now.";
+                   }
+                }else{
+                      $time_message ="Closed Now.";
+                   }
+        } 
+         
         $n = count($imgArray);
         $i = 0;
         $srcStr= "data:image/jpeg;base64,";
@@ -46,8 +112,34 @@
                 <div class="restaurantname col-md-8">
                     <h1><?php echo $resName; ?></h1>
                     <h2><?php echo "Food category: " . $foodCategory; ?></h2>
-                    <p><?php echo $description; ?></p>
+                    <h4><?php echo $description; ?></h4>
+                    <h4><?php echo $address; ?></h4>
+                    
+                    <?php if($phone != null){ ?>
+                    <div  class="restaurantaddress col-md-1"> 
+                        <img height = 20 width = 20 src ="http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons/blue-jelly-icons-business/078614-blue-jelly-icon-business-phone-solid.png"/>
+                    </div>
+                    <div  class="restaurantaddress col-md-7" > 
+                         <h4><?php echo $phone; ?></h4>
+                    </div>
+                     <?php } ?>
+                    
+                    <h4>                  
+                    <?php if($from != null && $to != null) { 
+                        echo "Today's Operating Hours: ".$from ." - ". $to;                  
+                    } ?>
+                    </h4>
+
+                    <h4>                  
+                    <?php if($time_message != null) { 
+                        echo $time_message;                  
+                    } ?>
+                    </h4>
                 </div>
+                    
+                
+                </div>
+                
             </div>
             
             <div class="col-md-12">
@@ -59,20 +151,50 @@
                 <img src="<?php echo $i<$n ? $srcStr.base64_encode($imgArray[$i]["media"]) : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
 		<br><br>
             </div>
-            
+           <!-- 
             <div class="col-md-12">
 		<div class="panel panel-default">
                     <div class="panel-heading">
 			<a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-721564" href="#panel-element-860877">Menu</a>
                     </div>
                     <div id="panel-element-860877" class="panel-collapse collapse">
-			<div class="panel-body">We will show the menu here!</div>
+			<div class="panel-body">
+                            <?php if($menu != null) {
+                             $menu = "data:image/jpeg;base64," . $menu;  ?>
+                            <img src="<?php echo $menu?>"/>
+                            <?php } else {?>
+                                Sorry,Menu is not available.
+                          <?php  } ?>
+
+                         </div>
                     </div>
 		</div>
             </div>
-            
+            -->
+         <div class="col-md-12">
+                <div class="container">
+                    <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#modal-menu">Menu</button>
+                    <div class="modal fade" id="modal-menu" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Menu</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="<?php echo "data:image/jpeg;base64,". $menu; ?>"  class="img-responsive">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
            <div class="col-md-12">
-                <h1>Make a Reservation!</h1>
+                <h3>Make a Reservation!</h3>
                 <div class="container">
                     <form name="myForm" action="#.php" onsubmit="return validateForm()" method="post">
 
@@ -135,21 +257,7 @@
                             <option value="4">4</option>
                             <option value="5">5</option>
                             <option value="6">6</option>
-                            <option value ="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                            <option value="13">13</option>
-                            <option value="14">14</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                            <option value="20">20</option>
-                        </select>
+                         </select>
 
                         <select class="selectpicker" id="time" name="time" required data-width="auto">
                             <option value="" disabled selected>Time</option>
@@ -207,9 +315,67 @@
                 </div>
                 
             </div>
+      
+              <br><br><br><br><br>
+             <div class="col-md-12">
+                <h3>Operating Hours</h3>
+                <div class="container">
+      
+            <?php if($oprHours != null) { ?>
+                    <div class="col-md-1"> <h4>Monday: </h4> </div>
+                    <div class="col-md-11">
+                        <h4> <?php echo $oprHours["monday_from"] . " - ".$oprHours["monday_to"]; ?> </h4>
+                    </div>
+                     <div class="col-md-1"> <h4>Tuesday: </h4></div>
+                     <div class="col-md-11"> 
+                        <h4> <?php echo $oprHours["tuesday_from"] . " - ".$oprHours["tuesday_to"]; ?> </h4>
+                   </div>  
+                     <div class="col-md-1"> <h4>Wednesday:</h4> </div>
+                     <div class="col-md-11"> 
+                        <h4> <?php echo  $oprHours["wednesday_from"] . " - ".$oprHours["wednesday_to"]; ?> </h4>
+                    </div>
+                    <div class="col-md-1"> <h4>Thursday: </h4> </div>
+                     <div class="col-md-11">
+                        <h4> <?php echo $oprHours["thursday_from"] . " - ".$oprHours["thursday_to"]; ?> </h4>
+                   </div>
+                    <div class="col-md-1"><h4> Friday: </h4> </div>
+                     <div class="col-md-11">
+                         <h4> <?php echo  $oprHours["friday_from"] . " - ".$oprHours["friday_to"]; ?> </h4>
+                    </div>
+                    <div class="col-md-1"><h4> Saturday:</h4> </div>
+                     <div class="col-md-11">
+                        <h4> <?php echo  $oprHours["saturday_from"] . " - ".$oprHours["saturday_to"]; ?> </h4>
+                     </div>
+                    <div class="col-md-1"> <h4> Sunday:</h4> </div>
+                     <div class="col-md-11">
+                        <h4> <?php echo $oprHours["sunday_from"] . " - ".$oprHours["sunday_to"]; ?> </h4>
+                     </div>
+                 
+                     <?php } else {?>
+                      <h4> Sorry, Operation Hours are not available.</h4>>
+                    <?php } ?>
+                </div>
+             </div>
+           
+           
             <br><br><br><br><br>
+            
             <div class="userreview col-md-12">
-                <h1>Reviews</h1>
+                <h3>Directions </h3>
+                <div class="media">
+                    <iframe
+                   width="600"
+                   accesskey=" "
+                   height="450"
+                   frameborder="0" style="border:0"
+                   class="" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBeVgOJNkJiPXUmp895wxNmaCP2_oP9ERg
+                        &q=<?php echo $address ?>" >
+                       </iframe>
+                </div> 
+        </div>
+               <br><br><br><br><br>
+            <div class="userreview col-md-12">
+                <h3>Reviews</h3>
                 <div class="media">
                     <a class="media-left" href="#">
                         <img src="https://goo.gl/GOzAhf" alt="user" height="50" width="50">

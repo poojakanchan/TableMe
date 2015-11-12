@@ -25,8 +25,17 @@
                 size: 4
             });
 
+      
+                //no special characters in name
+                //email needs to be correct
+                // username no less than 4 no more than 10 letters numbers no space
+                // password just letters and numbers
+                // description 150 characters 
+                // max size of 500 mb for profile picture and menu 
+                // validate phone number
+            
             function validateForm() {
-
+                   alert('validate');
                 var ownerUsername = document.forms["form"]["ownerUsername"].value;
                 var ownerPassword = document.forms["form"]["ownerPassword"].value;
                 var ownerConfirmPassword = document.forms["form"]["ownerConfirmPassword"].value;
@@ -37,8 +46,6 @@
                 var restaurantName = document.forms["form"]["restaurantName"].value;
                 var restaurantAddress = document.forms["form"]["restaurantAddress"].value;
                 var restaurantPhone = document.forms["form"]["restaurantPhone"].value;
-                var profilePic = document.forms["form"]["profilePic"].value;
-                var checkbox = document.forms["form"]["checkbox"].value;
 
                 if (ownerUsername === null || ownerUsername === "") {
                     alert("Username must be filled out.");
@@ -52,6 +59,11 @@
 
                 if (ownerConfirmPassword === null || ownerConfirmPassword === "") {
                     alert("You must confirm your password.");
+                    return false;
+                }
+
+                if (ownerPassword !== ownerConfirmPassword) {
+                    alert("Your passwords don't match.");
                     return false;
                 }
 
@@ -90,60 +102,29 @@
                     return false;
                 }
 
-             /*   if (profilePic === null || profilePic === "") {
-                    alert("Restaurant must have a profile picture.");
-                    return false;
-                }
-
-                if (checkbox === null || checkbox === "") {
-                    alert("You must agree to the privacy policy.");
-                    return false;
-                }
-*/
+            
             }
+            
         </script>
-    </head>
-    <body>
-        <?php
+</head><?php include 'header.php';
         $res = __DIR__ . '/../../controllers/Restaurant_controller.php';
         require_once $res;
-        
-        
         $restaurant = new Restaurant_controller();
-//         $flag = $_GET['checkUsername'];
-      //  if (isset($_GET['checkUsername']) && !empty($_GET['checkUsername'])) {
-            if ($_POST) {
-                $restaurant->add();
-            }
-            $food_category_array = $restaurant->getFoodCategory();
-       // } else {
-//             if($restaurant->checkUserName());
-       // }
+        //         $flag = $_GET['checkUsername'];
+        //  if (isset($_GET['checkUsername']) && !empty($_GET['checkUsername'])) {
+        if ($_POST) {
+            $restaurant->add();
+        }
+        $food_category_array = $restaurant->getFoodCategory();
+        $username_array = $restaurant->getAllUserNames();
+       // echo $username_array;
         
-        include  'header.php';
-        ?>
-
-<!--        <nav class ="navbar navbar-default">
-            <div class ="container-fluid">
-                <div class ="navbar-header">
-                    <a class="navbar-brand" href="homepage.php">TableMe</a>
-                </div>
-                <div>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Register <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#UserRegister">User</a></li>
-                                <li><a href="#RestaurantRegister">Restaurant</a></li>
-                            </ul>
-                        </li>
-                        <li> <a href ="#login">Login</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>-->
-
-
-        <div class="container">
+        // } else {
+        //             if($restaurant->checkUserName());
+        // }
+       
+?><body>
+<div class="container">
             <h1 class="well">Restaurant Registration Form</h1>
             <div class="col-lg-12 well">
                 <div class="row">
@@ -153,216 +134,272 @@
 
 
                             <fieldset>
-                                <legend>Login Information:</legend>
+                                <div class="col-lg-12 well">
+                                    <legend>Login Information:</legend>
 
-                                <div class="form-group">
-                                    <label>Username</label>
-                                    <input type="text" name="ownerUsername" placeholder="Please pick a username..." class="form-control" required>
-                                    <button onclick="checkUserName()" name="checkUserName">Check User Name</button>
-                                </div>
+                                    <div class="row">
+                                        <div class="col-sm-4 form-group">
+                                            <label id="usernameLabel">Username *</label>
+                                            <input id="username" type="text" name="ownerUsername" placeholder="Please pick a username..." class="form-control" required> 
+                                        </div>
+                                    </div>
 
-
-
-                                <div class="row">
-                                    <div class="col-sm-6 form-group">
-                                        <label>Password</label>
-                                        <input type="password" name="ownerPassword" placeholder="Please pick a password..." class="form-control" required>
-                                    </div>	
-                                    <div class="col-sm-6 form-group">
-                                        <label>Confirm Password</label>
-                                        <input type="password" name="ownerConfirmPassword" placeholder="Please confirm your password..." class="form-control" required>
-                                    </div>		
+                                    <div class="row">
+                                        <div class="col-sm-4 form-group">
+                                            <label>Password *</label>
+                                            <input type="password" name="ownerPassword" placeholder="Please pick a password..." class="form-control" required>
+                                        </div>	
+                                        <div class="col-sm-4 form-group">
+                                            <label>Confirm Password *</label>
+                                            <input type="password" name="ownerConfirmPassword" placeholder="Please confirm your password..." class="form-control" required>
+                                        </div>		
+                                    </div>
                                 </div>
                             </fieldset>
 
                             <br>
 
                             <fieldset>
-                                <legend>Personal Information:</legend>
+                                <div class="col-lg-12 well">
+                                    <legend>Personal Information:</legend>
 
-                                <div class="row">
-                                    <div class="col-sm-6 form-group">
-                                        <label>First Name</label>
-                                        <input type="text" name="ownerFirstName" placeholder="Please enter you first name..." class="form-control" required>
-                                    </div>
-                                    <div class="col-sm-6 form-group">
-                                        <label>Last Name</label>
-                                        <input type="text" name="ownerLastName" placeholder="Please enter you last name..." class="form-control" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Address</label>
-                                    <input type="text" name="ownerAddress" placeholder="Please enter your address..." class="form-control">
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-sm-6 form-group">
-                                        <label>Phone Number</label>
-                                        <input type="text" name="ownerPhone" placeholder="Please enter your phone number..." class="form-control" required>
-                                    </div>
-                                    <div class="col-sm-6 form-group">
-                                        <label>Email</label>
-                                        <input type="text" name="ownerEmail" placeholder="Please enter you email address..." class="form-control" required>
-                                    </div>
-                                </div>                  
-                            </fieldset>
-
-                            <br>
-
-                            <fieldset>
-                                <legend>Restaurant Information:</legend>
-
-                                <div class="form-group">
-                                    <label>Restaurant Name</label>
-                                    <input type="text" name="restaurantName" placeholder="Please enter the restaurant's name..." class="form-control" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Address</label>
-                                    <input type="text" name="restaurantAddress" placeholder="Please enter the restaurant's address..." class="form-control" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Phone Number</label>
-                                    <input type="text" name="restaurantPhone" placeholder="Please enter the restaurant's phone number..." class="form-control" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Description</label>
-                                  <!--  <input type="text" name="description" 
-                                           placeholder="Please enter a sentence that describes your restaurant..." class="form-control">
-                              -->
-                                 <textarea name="description" id="description" placeholder="Please enter a sentence that describes your restaurant..." class="form-control">
-                                    </textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Type of Food</label>
-                                    <select class="selectpicker" name ="food_category">
-<?php
-foreach ($food_category_array as $category) {
-    echo "<option value=" . $category['name'] . ">" . $category['name'] . "</option>";
-}
-?>  
-                                        <option value ="any" selected="selected">Select Food Type</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Number of People Allowed Every Half Hour</label>
-                                    <input type="number" name="peopleHalfHour" 
-                                           placeholder="Please pick the total number of people you will allow for reservations every half hour..." class="form-control" />
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Maximum Party Size Per Reservation</label>
-                                    <input type="number" name="maxPartySize" 
-                                           placeholder="Please pick the maximum party size allowed for each reservation..." class="form-control" />
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Total Restaurant Capacity</label>
-                                    <input type="number" name="restaurantCapacity" 
-                                           placeholder="Please enter the total capacity of the restaurant..." class="form-control" />
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Hours Of Operation</label>
-                                    <br>
-                                    <label>Monday</label>
                                     <div class="row">
-                                        <div class="col-sm-6 form-group">
-                                            <label>From</label>
-                                            <input type="time" name="mondayFrom" class="form-control" > 
+                                        <div class="col-sm-4 form-group">
+                                            <label>First Name *</label>
+                                            <input type="text" name="ownerFirstName" placeholder="Please enter you first name..." class="form-control" required>
                                         </div>
-                                        <div class="col-sm-6 form-group">
-                                            <label>To</label>
-                                            <input type="time" name="mondayTo" class="form-control" >
+                                        <div class="col-sm-4 form-group">
+                                            <label>Last Name *</label>
+                                            <input type="text" name="ownerLastName" placeholder="Please enter you last name..." class="form-control" required>
                                         </div>
-                                    </div>     
+                                    </div>
 
-                                    <label>Tuesday</label>
                                     <div class="row">
-                                        <div class="col-sm-6 form-group">
-                                            <label>From</label>
-                                            <input type="time" name="tuesdayFrom" class="form-control" > 
+                                        <div class="col-sm-4 form-group">
+                                            <label>Address</label>
+                                            <input type="text" name="ownerStreet" placeholder="Please enter your address..."
+                                                   rows="3" class="form-control">
                                         </div>
-                                        <div class="col-sm-6 form-group">
-                                            <label>To</label>
-                                            <input type="time" name="tuesdayTo" class="form-control" >
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4 form-group">
+                                            <label>City</label>
+                                            <input type="text" name="ownerCity" placeholder="Enter City Name Here.." class="form-control">
+                                        </div>	
+                                        <div class="col-sm-4 form-group">
+                                            <label>State</label>
+                                            <input type="text" name="ownerState" placeholder="Enter State Name Here.." class="form-control">
+                                        </div>	
+                                        <div class="col-sm-4 form-group">
+                                            <label>Zip</label>
+                                            <input type="number" name="ownerZip" placeholder="Enter Zip Code Here.." class="form-control">
+                                        </div>		
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4 form-group">
+                                            <label>Phone Number *</label>
+                                            <input type="text" name="ownerPhone" placeholder="Please enter your phone number..." class="form-control" required>
+                                        </div>
+                                        <div class="col-sm-4 form-group">
+                                            <label>Email *</label>
+                                            <input type="text" name="ownerEmail" placeholder="Please enter you email address..." class="form-control" required>
                                         </div>
                                     </div>  
-
-                                    <label>Wednesday</label>
-                                    <div class="row">
-                                        <div class="col-sm-6 form-group">
-                                            <label>From</label>
-                                            <input type="time" name="wednesdayFrom" class="form-control" > 
-                                        </div>
-                                        <div class="col-sm-6 form-group">
-                                            <label>To</label>
-                                            <input type="time" name="wednesdayTo" class="form-control" >
-                                        </div>
-                                    </div> 
-
-                                    <label>Thursday</label>
-                                    <div class="row">
-                                        <div class="col-sm-6 form-group">
-                                            <label>From</label>
-                                            <input type="time" name="thursdayFrom" class="form-control" > 
-                                        </div>
-                                        <div class="col-sm-6 form-group">
-                                            <label>To</label>
-                                            <input type="time" name="thursdayTo" class="form-control" >
-                                        </div>
-                                    </div> 
-
-                                    <label>Friday</label>
-                                    <div class="row">
-                                        <div class="col-sm-6 form-group">
-                                            <label>From</label>
-                                            <input type="time" name="fridayFrom" class="form-control" > 
-                                        </div>
-                                        <div class="col-sm-6 form-group">
-                                            <label>To</label>
-                                            <input type="time" name="fridayTo" class="form-control" >
-                                        </div>
-                                    </div> 
-
-                                    <label>Saturday</label>
-                                    <div class="row">
-                                        <div class="col-sm-6 form-group">
-                                            <label>From</label>
-                                            <input type="time" name="saturdayFrom" class="form-control" > 
-                                        </div>
-                                        <div class="col-sm-6 form-group">
-                                            <label>To</label>
-                                            <input type="time" name="saturdayTo" class="form-control" >
-                                        </div>
-                                    </div> 
-
-                                    <label>Sunday</label>
-                                    <div class="row">
-                                        <div class="col-sm-6 form-group">
-                                            <label>From</label>
-                                            <input type="time" name="sundayFrom" class="form-control" > 
-                                        </div>
-                                        <div class="col-sm-6 form-group">
-                                            <label>To</label>
-                                            <input type="time" name="sundayTo" class="form-control" >
-                                        </div>
-                                    </div> 
                                 </div>
+                            </fieldset>
 
-                                <div class="form-group">
-                                    <label>Profile Picture</label>
-                                    <input type="file" name="profilePic" id="profilePic" required />
-                                </div>
+                            <br>
 
-                                <div class="form-group">
-                                    <label>Menu</label>
-                                    <input type="file" name="menuFile" id="profilePic"/>
+                            <fieldset>
+                                <div class="col-lg-12 well">
+                                    <legend>Restaurant Information:</legend>
+
+                                    <div class="row">
+                                        <div class="col-sm-4 form-group">
+                                            <label>Restaurant Name *</label>
+                                            <input type="text" name="restaurantName" placeholder="Please enter the restaurant's name..." class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4 form-group">
+                                            <label>Address</label>
+                                            <input type="text" name="restaurantStreet" placeholder="Please enter the restaurant's address..."
+                                                   rows="3" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4 form-group">
+                                            <label>City</label>
+                                            <input type="text" name="restaurantCity" placeholder="Enter City Name Here.." class="form-control">
+                                        </div>	
+                                        <div class="col-sm-4 form-group">
+                                            <label>State</label>
+                                            <input type="text" name="restaurantState" placeholder="Enter State Name Here.." class="form-control">
+                                        </div>	
+                                        <div class="col-sm-4 form-group">
+                                            <label>Zip</label>
+                                            <input type="number" name="restaurantZip" placeholder="Enter Zip Code Here.." class="form-control">
+                                        </div>		
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4 form-group">
+                                            <label>Phone Number *</label>
+                                            <input type="text" name="restaurantPhone" placeholder="Please enter the restaurant's phone number..." class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4 form-group">
+                                            <label>Description</label>
+                                          <!--  <input type="text" name="description" 
+                                                   placeholder="Please enter a sentence that describes your restaurant..." class="form-control">
+                                            -->
+                                            <textarea name="description" id="description" placeholder="Please enter a sentence that describes your restaurant..." class="form-control">
+                                            </textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Type of Food</label>
+                                        <select class="selectpicker" name ="food_category"><?php
+                                            foreach ($food_category_array as $category) {
+                                                echo "<option value=" . $category['name'] . ">" . $category['name'] . "</option>";
+                                            }
+                                            ?><option value ="any" selected="selected">Select Food Type</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4 form-group">
+                                            <label>Number of Tables for Two *</label>
+                                            <input type="number" name="tablesForTwo" 
+                                                   placeholder="Please pick the total number of tables for two..." class="form-control" required/>
+                                        </div>
+
+
+                                        <div class="col-sm-4 form-group">
+                                            <label>Number of Tables for Four *</label>
+                                            <input type="number" name="tablesForFour" 
+                                                   placeholder="Please pick the total number of tables for four..." class="form-control" required />
+                                        </div>
+
+                                        <div class="col-sm-4 form-group">
+                                            <label>Number of Tables for Six *</label>
+                                            <input type="number" name="tablesForSix" 
+                                                   placeholder="Please pick the total number of tables for six..." class="form-control" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4 form-group">
+                                            <label>Total Restaurant Capacity *</label>
+                                            <input type="number" name="restaurantCapacity" 
+                                                   placeholder="Please enter total capacity of the restaurant..." class="form-control" required/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Hours Of Operation *</label>
+                                        <br>
+                                        <label>Monday</label>
+                                        <div class="row">
+                                            <div class="col-sm-4 form-group">
+                                                <label>From</label>
+                                                <input type="time" name="mondayFrom" class="form-control" > 
+                                            </div>
+                                            <div class="col-sm-4 form-group">
+                                                <label>To</label>
+                                                <input type="time" name="mondayTo" class="form-control" >
+                                            </div>
+                                        </div>     
+
+                                        <label>Tuesday</label>
+                                        <div class="row">
+                                            <div class="col-sm-4 form-group">
+                                                <label>From</label>
+                                                <input type="time" name="tuesdayFrom" class="form-control" > 
+                                            </div>
+                                            <div class="col-sm-4 form-group">
+                                                <label>To</label>
+                                                <input type="time" name="tuesdayTo" class="form-control" >
+                                            </div>
+                                        </div>  
+
+                                        <label>Wednesday</label>
+                                        <div class="row">
+                                            <div class="col-sm-4 form-group">
+                                                <label>From</label>
+                                                <input type="time" name="wednesdayFrom" class="form-control" > 
+                                            </div>
+                                            <div class="col-sm-4 form-group">
+                                                <label>To</label>
+                                                <input type="time" name="wednesdayTo" class="form-control" >
+                                            </div>
+                                        </div> 
+
+                                        <label>Thursday</label>
+                                        <div class="row">
+                                            <div class="col-sm-4 form-group">
+                                                <label>From</label>
+                                                <input type="time" name="thursdayFrom" class="form-control" > 
+                                            </div>
+                                            <div class="col-sm-4 form-group">
+                                                <label>To</label>
+                                                <input type="time" name="thursdayTo" class="form-control" >
+                                            </div>
+                                        </div> 
+
+                                        <label>Friday</label>
+                                        <div class="row">
+                                            <div class="col-sm-4 form-group">
+                                                <label>From</label>
+                                                <input type="time" name="fridayFrom" class="form-control" > 
+                                            </div>
+                                            <div class="col-sm-4 form-group">
+                                                <label>To</label>
+                                                <input type="time" name="fridayTo" class="form-control" >
+                                            </div>
+                                        </div> 
+
+                                        <label>Saturday</label>
+                                        <div class="row">
+                                            <div class="col-sm-4 form-group">
+                                                <label>From</label>
+                                                <input type="time" name="saturdayFrom" class="form-control" > 
+                                            </div>
+                                            <div class="col-sm-4 form-group">
+                                                <label>To</label>
+                                                <input type="time" name="saturdayTo" class="form-control" >
+                                            </div>
+                                        </div> 
+
+                                        <label>Sunday</label>
+                                        <div class="row">
+                                            <div class="col-sm-4 form-group">
+                                                <label>From</label>
+                                                <input type="time" name="sundayFrom" class="form-control" > 
+                                            </div>
+                                            <div class="col-sm-4 form-group">
+                                                <label>To</label>
+                                                <input type="time" name="sundayTo" class="form-control" >
+                                            </div>
+                                        </div> 
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Profile Picture *</label>
+                                        <input type="file" name="profilePic" id="profilePic" required />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Menu</label>
+                                        <input type="file" name="menuFile" id="profilePic"/>
+                                    </div>
                                 </div>
                             </fieldset>
 
@@ -390,11 +427,24 @@ foreach ($food_category_array as $category) {
     </body>
 
     <script type="text/javascript">
-
-        function checkUserName() {
-            var name;
-            name = document.getElementByName("ownerUsername");
-            alert(name);
-        }
+$(document).ready(function () {
+                $("#username").focusout(function () {
+                    var existingUsernames = <?php echo json_encode($username_array) ?>;
+                    var inputUsername = $("#username").val();
+                    if (!inputUsername) {
+                        $("#username").css("border", "#FF0000 1px solid");
+                        $("#usernameLabel").replaceWith ("<label id='usernameLabel'>Username*<i style='color:red'>Username cannot be empty</i></label>");
+                        return;
+                    }
+                    if (jQuery.inArray(inputUsername, existingUsernames) !== -1) {
+                        $("#username").css("border", "#FF0000 1px solid");
+                        $("#usernameLabel").replaceWith ("<label id='usernameLabel'>Username*<i style='color:red'>Username already taken</i></label>");
+                        return;
+                    }
+                    $("#username").css("border", "");
+                    $("#usernameLabel").replaceWith('<label id="usernameLabel">Username*</label>');
+                });
+            });
+        
     </script>
 </html>

@@ -22,12 +22,17 @@ class Login_model extends Database {
         parent::__destruct();
     }
     
-public function getLogin($username) {
-        $sql = "SELECT * FROM login WHERE username=:name";
+public function validateLogin($username, $password) {
+        $sql = "SELECT * FROM login WHERE username=:username AND password=:password";
         $stmt = $this->dbh->prepare($sql);
-        $stmt->bindParam(':name', $username);
-        $stmt->execute();
-        return $stmt->fetch();
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':password', $password);
+        if ($stmt->execute()) {
+            $result = $stmt->fetch();
+            if (!empty($result))
+                return true;
+        }
+        return false;
     }
     
     public function addLogin($username, $password, $role) {
@@ -36,9 +41,23 @@ public function getLogin($username) {
         $stmt->bindParam(':name', $username);
         $stmt->bindParam(':pswd', $password);
         $stmt->bindParam(':role', $role);
-        
-        return $this->insertDB($stmt);
+        return $stmt;
+     //   return $this->insertDB($stmt);
     }
+    
+    public function getAllUsernames() {
+        $sql = "SELECT username FROM login";
+        $stmt = $this->dbh->prepare($sql);
+        
+        if ($stmt->execute()) {
+            return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+        }
+        else {
+            print_r($stmt->errorInfo());
+            return null;
+        }
+    }
+     
     
 }
 

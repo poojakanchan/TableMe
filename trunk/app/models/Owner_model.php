@@ -29,20 +29,6 @@ class Owner_model extends Database{
         parent::__destruct();
     }
     
-    public function addOwner($ownerArray) {
-        $sql = "INSERT INTO owner(name, email, contact_no, address, restaurant_id, username) "
-                . "VALUES(:name, :email, :contact_no, :address, :resId, :username)";
-        $stmt = $this->dbh->prepare($sql);
-        $stmt->bindParam(':name', $ownerArray['name']);
-        $stmt->bindParam(':email', $ownerArray['email']);
-        $stmt->bindParam(':contact_no', $ownerArray['phone']);
-        $stmt->bindParam(':address', $ownerArray['address']);
-        $stmt->bindParam(':resId', $ownerArray['resId'], PDO::PARAM_INT);
-        $stmt->bindParam(':username', $ownerArray['username']);
-        return $this ->insertDB($stmt);
-        
-    }
+   
 }
-
-    
-
+?>

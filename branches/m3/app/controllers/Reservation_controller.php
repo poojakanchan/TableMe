@@ -16,7 +16,7 @@ class Reservation_controller extends Controller {
     }
     public function add() {
         
-        if (isset($_POST['submit'])) {
+        if (isset($_POST['submit-reservation']) || isset($_POST['submit'])) {
            
  
             //retrieve user_id if possible
@@ -35,6 +35,7 @@ class Reservation_controller extends Controller {
             $reserveTime = date("H:i", strtotime(htmlspecialchars($_POST["time"])));
             $reserve_user_id=1;
             $restaurantID = htmlspecialchars($_POST["restaurant"]);
+            
             
             //$testPeople = 4;
             //$testInstruct = "DEAD";
@@ -62,14 +63,14 @@ class Reservation_controller extends Controller {
             {
                 $capacity = "num_six_tables";
             }
-            $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime);
+            $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime, $restaurantID);
             $restaurantCapacity=$this->reservation->getTableCount($restaurantID, $capacity );
             echo "COUNT: ".$reservationCount."\n";
             echo "CAPACITY: ".$restaurantCapacity."\n";
 
             if($reservationCount < $restaurantCapacity)
             {
-                if(!$reservation->addReservation($reserveArray)) {
+                if(!$reservation->addReservation($reserveArray)){
                     exit("Error adding reservation.");
                 }
                 else

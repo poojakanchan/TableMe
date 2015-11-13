@@ -30,7 +30,7 @@ public function validateLogin($username, $password) {
         if ($stmt->execute()) {
             $result = $stmt->fetch();
             if (!empty($result))
-                return true;
+                return $result;
         }
         return false;
     }

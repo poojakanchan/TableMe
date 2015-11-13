@@ -21,11 +21,11 @@ class Reservation_model  extends Database{
        
         $sql = "INSERT INTO reservation(restaurant_id, user_name, date, time, user_id, no_of_people, contact_no, special_instruct) VALUES(:restaurant_id, :user_name, :date, :time, :user_id, :no_of_people, :contact_no, :special_instruct)";
         $stmt = $this->dbh->prepare($sql);
-        $stmt->bindParam(':restaurant_id', $reserveArray['restaurant_id']);
+        $stmt->bindParam(':restaurant_id', $reserveArray['restaurant_id'], PDO::PARAM_INT);
         $stmt->bindParam(':user_name', $reserveArray['user_name']);
         $stmt->bindParam(':date', $reserveArray['date']);
         $stmt->bindParam(':time', $reserveArray['time']);
-        $stmt->bindParam(':user_id', $reserveArray['user_id']);
+        $stmt->bindParam(':user_id', $reserveArray['user_id'], PDO::PARAM_INT);
         $stmt->bindParam(':no_of_people', $reserveArray['no_of_people']);
         $stmt->bindParam(':contact_no', $reserveArray['contact_no']);
         $stmt->bindParam(':special_instruct', $reserveArray['special_instruct']);
@@ -73,12 +73,13 @@ class Reservation_model  extends Database{
     }
     
     //get count for reservation validity
-    public function countReservation($date, $time)
+    public function countReservation($date, $time, $resId)
     {
-        $sql = "SELECT COUNT(*) FROM reservation WHERE date=:date AND time IN(:time, SUBTIME(:time, '00:30:00'), ADDTIME(:time, '00:30:00'))";
+        $sql = "SELECT COUNT(*) FROM reservation WHERE restaurant_id = :resId AND date=:date AND time IN(:time, SUBTIME(:time, '00:30:00'), ADDTIME(:time, '00:30:00'))";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':date', $date);
         $stmt->bindParam(':time', $time);
+        $stmt->bindParam(':resId', $resId, PDO::PARAM_INT);
         if ($stmt->execute()){
             $result = $stmt->fetch();
             //return $result;
@@ -91,7 +92,7 @@ class Reservation_model  extends Database{
     {
         $sql = "SELECT ".$capacity." FROM restaurant WHERE restaurant_id = :resId";
         $stmt = $this->dbh->prepare($sql);
-        $stmt->bindParam(':resId', $resId);
+        $stmt->bindParam(':resId', $resId, PDO::PARAM_INT);
         if ($stmt->execute()) {
             $result = $stmt->fetch();
             //echo var_dump($result)."\n\n";

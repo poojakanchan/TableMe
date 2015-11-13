@@ -18,17 +18,26 @@
       require_once '../../models/Login_model.php';
       $db = new Login_model();
       $incorrectLogin = false;
-      
+      $loginRole;
       if (isset($_POST['username']) && isset($_POST['password'])) {
           $username = $_POST['username'];
           $password = $_POST['password'];
-          if ($db->validateLogin($username, $password)) {
-              session_start();
-              $_SESSION['username'] = $username;
-              header ('location: ../user/userpage.php');
+          $loginRole = $db->validateLogin($username, $password);
+//          var_dump($loginRole);
+//          exit();
+          if (!$loginRole) {
+              $incorrectLogin = true;
           }
           else {
-              $incorrectLogin = true;
+              session_start();
+              $_SESSION['username'] = $username;
+              if ($loginRole['role'] == "user") {
+                  header ('location: ../user/userpage.php');
+              }
+              else {
+                  header ('location: ../owner/ownerpage.php');
+              }
+              
           }
       }
       

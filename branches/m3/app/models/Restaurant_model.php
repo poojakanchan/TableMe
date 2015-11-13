@@ -46,15 +46,15 @@ class Restaurant_model  extends Database{
         return null;
     }
     
-    public function findRestaurantsByCat($cat) {
-        $sql = "SELECT * FROM restaurant WHERE food_category_name LIKE :str";
-        $stmt = $this->dbh->prepare($sql);
-        $stmt->bindParam(':str', $cat);
-        if ($stmt->execute()) {
-            return $stmt->fetchAll();
-        }
-        return null;
-    }
+//    public function findRestaurantsByCat($cat) {
+//        $sql = "SELECT * FROM restaurant WHERE food_category_name LIKE :str";
+//        $stmt = $this->dbh->prepare($sql);
+//        $stmt->bindParam(':str', $cat);
+//        if ($stmt->execute()) {
+//            return $stmt->fetchAll();
+//        }
+//        return null;
+//    }
     
     /* find restaurant by name or address (i.e. any match in name or address will be returned).
      * Returns results in an array ($arr), with each index ($arr[0], $arr[1]...) 
@@ -98,50 +98,69 @@ class Restaurant_model  extends Database{
 //        return null;
 //    }
     
-    public function findRestaurantsCount($nameAdd, $category) {
-         $searchStr = "%";
-         if($nameAdd != "%") {
-             $words = explode(" ", $nameAdd);
-             foreach ($words as $word) {
-                $searchStr = $searchStr . $word . "%";
+    public function findRestaurantsCount($nameAddCat) {
+        $sql = "SELECT COUNT(*) FROM restaurant WHERE name_address_category LIKE ";
+        $searchWord;
+         if($nameAddCat != "%") {
+             $words = explode(" ", $nameAddCat);
+             $searchWord = " '%". $words[0] . "%' ";
+             $sql = $sql . $searchWord;
+             for ($i=1; $i<count($words); ++$i) {
+                $searchWord = " '%" . $words[$i] ."%' ";
+                $sql = $sql . " AND name_address_category LIKE". $searchWord; 
              }
          }
+         else {
+             $sql = $sql . $nameAddCat;
+         }        
         
-        $sql = "SELECT COUNT(*) FROM restaurant WHERE food_category_name LIKE :cat AND name_address LIKE :nameAdd";
         $stmt = $this->dbh->prepare($sql);
-        $stmt->bindParam(':cat', $category);
-        $stmt->bindParam(':nameAdd', $searchStr);
-        
-        if ($stmt->execute()){
-            $result = $stmt->fetch();
-            return intval($result[0]);
-        } 
-        return -1;
-    }
-    
-    public function findRestaurantsLimitOffset($nameAdd, $category, $limit, $offset) {
-        $searchStr = "%";
-         if($nameAdd != "%") {
-             $words = explode(" ", $nameAdd);
-             foreach ($words as $word) {
-                $searchStr = $searchStr . $word . "%";
-             }
-         }
-        
-        $sql = "SELECT * FROM restaurant WHERE food_category_name LIKE :cat AND name_address LIKE :nameAdd LIMIT :lim OFFSET :off";
-        $stmt = $this->dbh->prepare($sql);
-        $stmt->bindParam(':cat', $category);
-        $stmt->bindParam(':nameAdd', $searchStr);
-        $stmt->bindParam(':lim', $limit, PDO::PARAM_INT);
-        $stmt->bindParam(':off', $offset, PDO::PARAM_INT);
 //        echo '<br><br>'.var_dump($searchStr).'<br>'.var_dump($nameAdd).'<br>'.var_dump($limit).'<br>'.var_dump($offset);
 //        exit();
         if ($stmt->execute()){
 //            echo var_dump($stmt->fetch());
 //            exit();
-            return $stmt->fetchAll();
+            $count = $stmt->fetch(PDO::FETCH_NUM);
+            return intval($count[0]);
         } 
-        return null;
+        return -1;
+    }
+    
+    public function findRestaurantsLimitOffset($nameAddCat, $limit, $offset) {
+        $sql = "SELECT * FROM restaurant WHERE name_address_category LIKE "; 
+        
+        $searchWord;
+         if($nameAddCat != "%") {
+             $words = explode(" ", $nameAddCat);
+             $searchWord = " '%". $words[0] . "%' ";
+             $sql = $sql . $searchWord;
+             for ($i=1; $i<count($words); ++$i) {
+                $searchWord = " '%" . $words[$i] ."%' ";
+                $sql = $sql . " AND name_address_category LIKE". $searchWord; 
+             }
+         }
+         else {
+             $sql = $sql . $nameAddCat;
+         }
+         $sql = $sql . " LIMIT :lim OFFSET :off";
+        
+//         echo "<br><br>".$sql;
+//         exit();
+        
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':lim', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':off', $offset, PDO::PARAM_INT);
+//        echo '<br><br>'.var_dump($searchStr).'<br>'.var_dump($nameAdd).'<br>'.var_dump($limit).'<br>'.var_dump($offset);
+//        exit();
+        if (!$stmt->execute()){
+//            echo var_dump($stmt->fetch());
+//            exit();
+            print_r ($stmt->errorInfo());
+            exit();
+            return null;
+            
+        }         
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     public function getAllRestaurantsCount() {

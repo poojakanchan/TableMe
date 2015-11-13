@@ -252,12 +252,102 @@
             <h1>Profile</h1>
             <div class="row">
                 <div class="restaurantpic col-md-4">
-                    <img alt="Logo" src="http://goo.gl/vrq2Cw" class="img-rounded" height="300" width="300" />
+                    <a href="#" data-toggle="modal" data-target="#modal-logo">
+                        <img alt="Logo" src="http://goo.gl/vrq2Cw" class="img-rounded" height="300" width="300"/>
+                    </a>
                     <br><br><br><br>
-                    <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="75" width="75"/>
-                    <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="75" width="75"/>
-                    <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="75" width="75"/>
-                    <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="75" width="75"/>
+                    <a href="#" data-toggle="modal" data-target="#modal-thumbnail1">
+                        <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="100" width="100"/>
+                    </a>
+                    <a href="#" data-toggle="modal" data-target="#modal-thumbnail2">
+                        <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="100" width="100"/>
+                    </a>
+                    <a href="#" data-toggle="modal" data-target="#modal-thumbnail3">
+                        <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="100" width="100"/>
+                    </a>
+                    <a href="#" data-toggle="modal" data-target="#modal-thumbnail4">
+                        <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="100" width="100"/>
+                    </a>
+                    <div class="modal fade" id="modal-logo" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Logo</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="http://goo.gl/vrq2Cw" class="img-responsive">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modal-thumbnail1" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Thumbnail1</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="https://goo.gl/GOzAhf" class="img-responsive">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modal-thumbnail2" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Thumbnail2</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="https://goo.gl/GOzAhf" class="img-responsive">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modal-thumbnail3" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Thumbnail3</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="https://goo.gl/GOzAhf" class="img-responsive">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modal-thumbnail4" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Thumbnail4</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="https://goo.gl/GOzAhf" class="img-responsive">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="restaurant-detail1 col-md-4">
                     <h1>Little Tokyo</h1>

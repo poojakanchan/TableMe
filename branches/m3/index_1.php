@@ -58,16 +58,24 @@
 <body>
     <?php
     require_once 'app/models/Restaurant_model.php';
+    require_once 'app/controllers/Reservation_controller.php';
     include 'header.php';
     define ("N_PER_PAGE", 5); //number of restaurants to display per page
-    $db;$restaurant_array; $foodCategoryArray; $restaurantListTitle;
+    $db;$restaurant_array; $foodCategoryArray; $restaurantListTitle; $reservation;
     $nameAdd = $category = '%';
     $totalCount = 0; //total count of restaurants to display
     $currentPage = $numberOfPages = $startPage = 1; //page number for navigating search results
     if (!isset($db)) {
         $db = new Restaurant_model();
     }
-
+    if(!isset($reservation))
+    {
+        $reservation = new Reservation_controller();
+    }
+    if($_POST)
+    {
+        $reservation->add();
+    }
     if (empty($foodCategoryArray)) {
         $foodCategoryArray = $db->getFoodCategories();
     }
@@ -136,6 +144,7 @@
                         foreach ($restaurant_array as $restaurant) {
                             $image = base64_encode($restaurant['thumbnail']);
                             $image_src = "data:image/jpeg;base64," . $image;
+                            $resId = $restaurant['restaurant_id'];
                             //echo $image_src;  
                             ?>
 
@@ -161,16 +170,17 @@
                                       <div class="modal-body">
                                          <div class="col-lg-12 well">
                                             <div class="row">
-                                               
+                                               <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
+                                               <?php echo $resId ?>
                                                     <div class="col-sm-12">          
 
                                                         <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
                                                             <option value="" disabled selected>Number of Guests</option>
-                                                            <option value ="1">1</option>
+                                                            
                                                             <option value="2">2</option>
-                                                            <option value="3">3</option>
+                                                           
                                                             <option value="4">4</option>
-                                                            <option value="5">5</option>
+                                                            
                                                             <option value="6">6</option>
                                                            </select>
 
@@ -238,7 +248,7 @@
                                                         <select class="selectpicker" data-width="auto" id="time" name="time" required>
                                                             <option value="" disabled selected>Time</option>
                                                             <option value ="8am">8:00 AM</option>
-                                                            <option value="830am">8:30 AM</option>
+                                                            <option value="8:30am">8:30 AM</option>
                                                             <option value="9am">9:00 AM</option>
                                                             <option value="930am">9:30 AM</option>
                                                             <option value="10am">10:00 AM</option>
@@ -291,6 +301,8 @@
                                                         <br>
 
                                                         <div class="row">
+                                                            
+                                                           
                                                             <div class="col-sm-6 form-group">
                                                                 <label>First Name</label>
                                                                 <input type="text" name="reservationFirstName" placeholder="Please enter your first name..." class="form-control" required>
@@ -325,10 +337,11 @@
                                       </div>
                                       <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary" value="submit" name="submit" >Make reservation</button>
+                                        <button type="submit" class="btn btn-primary" value="submit-reservation" name="submit-reservation" >Make reservation</button>
                                       </div>
                                     </div>
                                   </div>
+
                                 </form>
                                 </div>                       
                                                     <!--

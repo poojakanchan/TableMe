@@ -153,11 +153,11 @@
                                 <h3>  <a  href="<?php echo 'app/views/home/restaurant.php?resid=' . $restaurant['restaurant_id'] ?>" > <?php echo $restaurant['name'] ?> </a> </h3>
                                 <p> <?php echo $restaurant['address'] ?> </p>
                                 <p>  <?php echo $restaurant['description'] ?> </p>
-                                <button class="btn btn-info" data-toggle="modal" data-id="<?php echo $restaurant['restaurant_id'] ?>" data-target="#reservation" >
+                                <button class="btn btn-info" data-toggle="modal" data-id="<?php echo $restaurant['restaurant_id'] ?>" data-target="#reservation-<?php echo $restaurant['restaurant_id'] ?>" >
                                     Reservation
                                 </button>
 
-                                <div  class="modal fade" id="reservation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div  class="modal fade" id="reservation-<?php echo $restaurant['restaurant_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                    
                                     <form name="myForm" action="#.php"
                                                       onsubmit="return validateForm()" method="post">
@@ -171,6 +171,7 @@
                                          <div class="col-lg-12 well">
                                             <div class="row">
                                                <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
+                                               <!-- for debug purposes, displays restaurant ID -->
                                                <?php echo $resId ?>
                                                     <div class="col-sm-12">          
 

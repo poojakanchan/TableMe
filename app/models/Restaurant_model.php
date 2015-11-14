@@ -199,12 +199,27 @@ class Restaurant_model  extends Database{
 //        return null;
 //    }
     
-    public function getRestaurantThumbnail($resId) {
-        $sql = "SELECT thumbnail FROM restaurant WHERE restaurant_id=:id";
+    public function getRestaurantImageWithOffset ($resId, $offset) {
+        $sql = "SELECT media FROM multimedia WHERE restaurant_id=:resId LIMIT 1 OFFSET :offset";
         $stmt = $this->dbh->prepare($sql);
-        $stmt->bindParam(':id', $resId);
-        $stmt->execute();
-        return $stmt->fetch();
+        $stmt->bindParam(':resId', $resId, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        if (!$stmt->execute()) {
+            print_r ($stmt->errorInfo());
+            return false;
+        }
+        return $stmt->fetch(PDO::FETCH_NUM);
+    }
+    
+    public function getRestaurantImageCount ($resId) {
+        $sql = "SELECT COUNT(*) FROM multimedia WHERE restaurant_id=:resId";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':resId', $resId);
+        if (!$stmt->execute()) {
+            print_r ($stmt->errorInfo());
+            return false;
+        }
+        return $stmt->fetch(PDO::FETCH_NUM);
     }
     
     public function getLogin($username) {

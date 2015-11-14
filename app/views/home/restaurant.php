@@ -29,13 +29,24 @@
         $db = new Restaurant_model();
         $resId = (array_key_exists('resid', $_GET) ? htmlspecialchars($_GET['resid']) : 0);
         $restaurant = $db->findRestaurantById($resId);
+        if (empty($restaurant)) {
+            echo '<h1>Restaurant with $resId='. $resId .' does not exist </h1>';
+            return;
+        }
+        
         $resName = $restaurant[0]['name'];
         $foodCategory = $restaurant[0]['food_category_name'];
         $description = $restaurant[0]['description'];
         $menu = base64_encode($restaurant[0]['menu']);
+        
+//        var_dump($restaurant);
+//        echo '<br><br>';
+//        var_dump($menu);
+//        exit();
+        
         $address = $restaurant[0]['address'];
         $phone = $restaurant[0]['phone_no'];
-        $imgArray = $db->getRestaurantImages($resId);
+//        $imgArray = $db->getRestaurantImages($resId);
        
         $event_model = new Event_model();
         $events = $event_model->getEventsByRestaurantId($resId);
@@ -101,9 +112,10 @@
                    }
         } 
          
-        $n = count($imgArray);
+        $cnt = $db->getRestaurantImageCount($resId);
+        $n = intval($cnt[0]);
         $i = 0;
-        $srcStr= "data:image/jpeg;base64,";
+//        $srcStr= "data:image/jpeg;base64,";
         include 'header.php';
     ?>
     
@@ -111,7 +123,7 @@
         <div class="mainInfo col-md-8">
             <div class="restaurantprofile col-md-12">
                 <div class="restaurantpic col-md-4">
-                    <img src="<?php echo $i<$n ? $srcStr.base64_encode($imgArray[$i]["media"]) : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="200" width="200" />
+                    <img src="<?php echo $i<$n ? "getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="200" width="200" />
                 </div>
                 <div class="restaurantname col-md-8">
                     <h1><?php echo $resName; ?></h1>
@@ -148,11 +160,11 @@
             
             <div class="col-md-12">
 		<br>
-		<img src="<?php echo $i<$n ? $srcStr.base64_encode($imgArray[$i]["media"]) : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
-                <img src="<?php echo $i<$n ? $srcStr.base64_encode($imgArray[$i]["media"]) : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
-                <img src="<?php echo $i<$n ? $srcStr.base64_encode($imgArray[$i]["media"]) : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
-                <img src="<?php echo $i<$n ? $srcStr.base64_encode($imgArray[$i]["media"]) : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
-                <img src="<?php echo $i<$n ? $srcStr.base64_encode($imgArray[$i]["media"]) : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
+		<img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
+                <img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
+                <img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
+                <img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
+                <img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
 		<br><br>
             </div>
            <!-- 
@@ -163,13 +175,7 @@
                     </div>
                     <div id="panel-element-860877" class="panel-collapse collapse">
 			<div class="panel-body">
-                            <?php if($menu != null) {
-                             $menu = "data:image/jpeg;base64," . $menu;  ?>
-                            <img src="<?php echo $menu?>"/>
-                            <?php } else {?>
-                                Sorry,Menu is not available.
-                          <?php  } ?>
-
+                                
                          </div>
                     </div>
 		</div>
@@ -186,6 +192,7 @@
                                     <h4 class="modal-title">Menu</h4>
                                 </div>
                                 <div class="modal-body">
+                                   
                                     <img src="<?php echo "data:image/jpeg;base64,". $menu; ?>"  class="img-responsive">
                                 </div>
                                 <div class="modal-footer">

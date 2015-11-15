@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-	<title>EZ Restaurant</title>
+	<title>TableMe</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
@@ -9,6 +9,136 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
         
         <!-- Will merge into js file after all is done. -->
+        <style>
+    
+    .event-list {
+		list-style: none;
+		margin: 0px;
+		padding: 0px;
+	}
+	.event-list > li {
+		background-color: rgb(255, 255, 255);
+		box-shadow: 0px 0px 5px rgb(51, 51, 51);
+		box-shadow: 0px 0px 5px rgba(51, 51, 51, 0.7);
+		padding: 0px;
+		margin: 0px 0px 20px;
+	}
+	.event-list > li > time {
+		display: inline-block;
+		width: 100%;
+		color: rgb(255, 255, 255);
+		background-color: rgb(197, 44, 102);
+		padding: 5px;
+		text-align: center;
+		text-transform: uppercase;
+	}
+	.event-list > li:nth-child(even) > time {
+		background-color: rgb(165, 82, 167);
+	}
+	.event-list > li > time > span {
+		display: none;
+	}
+	.event-list > li > time > .day {
+		display: block;
+		font-size: 45pt;
+		font-weight: 100;
+		line-height: 1;
+	}
+	.event-list > li time > .month {
+		display: block;
+		font-size: 24pt;
+		font-weight: 900;
+		line-height: 1;
+	}
+	.event-list > li > img {
+		width: 100%;
+	}
+	.event-list > li > .info {
+		padding-top: 5px;
+		text-align: center;
+	}
+	.event-list > li > .info > .title {
+		font-size: 13pt;
+		font-weight: 700;
+		margin: 0px;
+	}
+	.event-list > li > .info > .desc {
+		font-size: 10pt;
+		font-weight: 300;
+		margin: 0px;
+	}
+	.event-list > li > .info > ul{
+		display: table;
+		list-style: none;
+		margin: 10px 0px 0px;
+		padding: 0px;
+		width: 100%;
+		text-align: center;
+	}
+	.event-list > li > .info > ul > li{
+		display: table-cell;
+		cursor: pointer;
+		color: rgb(30, 30, 30);
+		font-size: 11pt;
+		font-weight: 300;
+        padding: 3px 0px;
+	}
+    .event-list > li > .info > ul > li > a {
+		display: block;
+		width: 100%;
+		color: rgb(30, 30, 30);
+		text-decoration: none;
+	}
+	.event-list > li > .info > ul > li:hover{
+		color: rgb(30, 30, 30);
+		background-color: rgb(200, 200, 200);
+	}
+
+	@media (min-width: 768px) {
+		.event-list > li {
+			position: relative;
+			display: block;
+			width: 100%;
+			height: 90px;
+			padding: 0px;
+		}
+		.event-list > li > time,
+		.event-list > li > img  {
+			display: inline-block;
+		}
+		.event-list > li > time,
+		.event-list > li > img {
+			width: 90px;
+			float: left;
+		}
+		.event-list > li > .info {
+			background-color: rgb(245, 245, 245);
+			overflow: hidden;
+		}
+		.event-list > li > time,
+		.event-list > li > img {
+			width: 90px;
+			height: 90px;
+			padding: 0px;
+			margin: 0px;
+		}
+		.event-list > li > .info {
+			position: relative;
+			height: 90px;
+			text-align: left;
+			padding-right: 40px;
+		}	
+		.event-list > li > .info > .title, 
+		.event-list > li > .info > .desc {
+			padding: 0px 10px;
+		}
+		.event-list > li > .info > ul {
+			position: absolute;
+			left: 0px;
+			bottom: 0px;
+		}
+	}
+        </style>
         <script>
             $('.selectpicker').selectpicker();
 
@@ -122,22 +252,117 @@
     <div class="container-fluid">
         <div class="mainInfo col-md-8">
             <div class="restaurantprofile col-md-12">
-                <div class="restaurantpic col-md-4">
-                    <img src="<?php echo $i<$n ? "getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="200" width="200" />
+                <div class="restaurantpic col-md-6">
+                    <a href="#" data-toggle="modal" data-target="#modal-logo">
+                        <img src="<?php echo $i<$n ? "getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="300" width="300" />
+                    </a>
+                    <br><br>
+                    <a href="#" data-toggle="modal" data-target="#modal-thumbnail1">
+                        <img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
+                    </a>
+                    <a href="#" data-toggle="modal" data-target="#modal-thumbnail2">
+                        <img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
+                    </a>
+                    <a href="#" data-toggle="modal" data-target="#modal-thumbnail3">
+                        <img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
+                    </a>
+                    <a href="#" data-toggle="modal" data-target="#modal-thumbnail4">
+                        <img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
+                    </a>
+                    <div class="modal fade" id="modal-logo" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Logo</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="http://goo.gl/vrq2Cw" class="img-responsive">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modal-thumbnail1" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Thumbnail1</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modal-thumbnail2" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Thumbnail2</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modal-thumbnail3" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Thumbnail3</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modal-thumbnail4" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Thumbnail4</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="restaurantname col-md-8">
+                <div class="restaurantname col-md-6">
                     <h1><?php echo $resName; ?></h1>
-                    <h2><?php echo "Food category: " . $foodCategory; ?></h2>
+                    <h2><?php echo $foodCategory; ?></h2>
+                    <br>
                     <h4><?php echo $description; ?></h4>
+                    <br>
                     <h4><?php echo $address; ?></h4>
                     
                     <?php if($phone != null){ ?>
-                    <div  class="restaurantaddress col-md-1"> 
-                        <img height = 20 width = 20 src ="http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons/blue-jelly-icons-business/078614-blue-jelly-icon-business-phone-solid.png"/>
-                    </div>
-                    <div  class="restaurantaddress col-md-7" > 
-                         <h4><?php echo $phone; ?></h4>
-                    </div>
+                    <h4>
+                        <span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>
+                        <?php echo $phone; ?>
+                    </h4>
                      <?php } ?>
                     
                     <h4>                  
@@ -151,38 +376,180 @@
                         echo $time_message;                  
                     } ?>
                     </h4>
-                </div>
                     
-                
+                    <button class="btn btn-info" data-toggle="modal" data-id="<?php //echo $restaurant['restaurant_id'] ?>" data-target="#reservation-<?php //echo $restaurant['restaurant_id'] ?>" >
+                                Make a Reservation
+                    </button>
+                    <div  class="modal fade" id="reservation-<?php //echo $restaurant['restaurant_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <form name="myForm" action="#.php" onsubmit="return validateForm()" method="post">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <label class="modal-title" name ="myModalLabel" id="myModalLabel">Make reservation at restaurant </label>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="col-lg-12 well">
+                                            <div class="row">
+                                                <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
+                                                <div class="col-sm-12">
+                                                    <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
+                                                        <option value="" disabled selected>Number of Guests</option>
+                                                        <option value="2">2</option>
+                                                        <option value="4">4</option>
+                                                        <option value="6">6</option>
+                                                    </select>
+                                                    <br><br>
+                                                    <select class="selectpicker" data-width="auto" id="month" name="month" required>
+                                                        <option value="" disabled selected>Month</option>
+                                                        <option value ="January">January</option>
+                                                        <option value="February">February</option>
+                                                        <option value="March">March</option>
+                                                        <option value="April">April</option>
+                                                        <option value="May">May</option>
+                                                        <option value="June">June</option>
+                                                        <option value ="July">July</option>
+                                                        <option value="August">August</option>
+                                                        <option value="September">September</option>
+                                                        <option value="October">October</option>
+                                                        <option value="November">November</option>
+                                                        <option value="December">December</option>
+                                                    </select>
+                                                    <select class="selectpicker" data-width="auto" id="day" name="day" required>
+                                                        <option value="" disabled selected>Day</option>
+                                                        <option value ="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value ="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                        <option value="10">10</option>
+                                                        <option value="11">11</option>
+                                                        <option value="12">12</option>
+                                                        <option value="13">13</option>
+                                                        <option value="14">14</option>
+                                                        <option value="15">15</option>
+                                                        <option value="16">16</option>
+                                                        <option value ="17">17</option>
+                                                        <option value="18">18</option>
+                                                        <option value="19">19</option>
+                                                        <option value="20">20</option>
+                                                        <option value="21">21</option>
+                                                        <option value="22">22</option>
+                                                        <option value="23">23</option>
+                                                        <option value="24">24</option>
+                                                        <option value="25">25</option>
+                                                        <option value="26">26</option>
+                                                        <option value ="27">27</option>
+                                                        <option value="28">28</option>
+                                                        <option value="29">29</option>
+                                                        <option value="30">30</option>
+                                                        option value="31">31</option>
+                                                    </select>
+
+                                                    <select class="selectpicker" data-width="auto" id="year" name="year" required>
+                                                        <option value="" disabled selected>Year</option>
+                                                        <option value ="2015">2015</option>
+                                                        <option value="2016">2016</option>
+                                                        <option value="2017">2017</option>
+                                                    </select>
+
+                                                    <select class="selectpicker" data-width="auto" id="time" name="time" required>
+                                                        <option value="" disabled selected>Time</option>
+                                                        <option value ="8am">8:00 AM</option>
+                                                        <option value="8:30am">8:30 AM</option>
+                                                        <option value="9am">9:00 AM</option>
+                                                        <option value="930am">9:30 AM</option>
+                                                        <option value="10am">10:00 AM</option>
+                                                        <option value="1030am">10:30 AM</option>
+                                                        <option value ="11am">11:00 AM</option>
+                                                        <option value="1130am">11:30 AM</option>
+                                                        <option value="12pm">12:00 PM</option>
+                                                        <option value="1230pm">12:30 PM</option>
+                                                        <option value="1pm">1:00 PM</option>
+                                                        <option value="130pm">1:30 PM</option>
+                                                        <option value="2pm">2:00 PM</option>
+                                                        <option value="230pm">2:30 PM</option>
+                                                        <option value="3pm">3:00 PM</option>
+                                                        <option value="330pm">3:30 PM</option>
+                                                        <option value="4pm">4:00 PM</option>
+                                                        <option value="430pm">4:30 PM</option>
+                                                        <option value="5pm">5:00 PM</option>
+                                                        <option value="530pm">5:30 PM</option>
+                                                        <option value="6pm">6:00 PM</option>
+                                                        <option value="630pm">6:30 PM</option>
+                                                        <option value="7pm">7:00 PM</option>
+                                                        <option value="730pm">7:30 PM</option>
+                                                        <option value="8pm">8:00 PM</option>
+                                                        <option value="830pm">8:30 PM</option>
+                                                        <option value="9pm">9:00 PM</option>
+                                                        <option value="930pm">9:30 PM</option>
+                                                        <option value="10pm">10:00 PM</option>
+                                                        <option value="1030pm">10:30 PM</option>
+                                                        <option value="11pm">11:00 PM</option>
+                                                        <option value="1130pm">11:30 PM</option>
+                                                        <option value="12am">12:00 AM</option>
+                                                        <option value="1230am">12:30 AM</option>
+                                                        <option value="1am">1:00 AM</option>
+                                                        <option value="130am">1:30 AM</option>
+                                                        <option value="2am">2:00 AM</option>
+                                                        <option value="230am">2:30 AM</option>
+                                                        <option value="3am">3:00 AM</option>
+                                                        <option value="330am">3:30 AM</option>
+                                                        <option value="4am">4:00 AM</option>
+                                                        <option value="430am">4:30 AM</option>
+                                                        <option value="5am">5:00 AM</option>
+                                                        <option value="530am">5:30 AM</option>
+                                                        <option value="6am">6:00 AM</option>
+                                                        <option value="630am">6:30 AM</option>
+                                                        <option value="7am">7:00 AM</option>
+                                                        <option value="730am">7:30 AM</option>
+                                                    </select>
+                                                    <br><br>
+                                                    <div class="row">
+                                                        <div class="col-sm-6 form-group">
+                                                            <label>First Name</label>
+                                                            <input type="text" name="reservationFirstName" placeholder="Please enter your first name..." class="form-control" required>
+                                                        </div>
+                                                        <div class="col-sm-6 form-group">
+                                                            <label>Last Name</label>
+                                                            <input type="text" name="reservationLastName" placeholder="Please enter your last name..." class="form-control" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-6 form-group">
+                                                            <label>Email</label>
+                                                            <input type="email" name="reservationEmail" placeholder="Please enter your email address..." class="form-control" required>
+                                                        </div>
+                                                        <div class="col-sm-6 form-group">
+                                                            <label>Phone Number</label>
+                                                            <input type="text" name="reservationPhone" placeholder="Please enter your phone number..." class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Accommodations</label>
+                                                        <input type="text" name="accommodations" placeholder="Please enter any special requests you may have..." class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary" value="submit-reservation" name="submit-reservation" >Make reservation</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                
             </div>
-            
             <div class="col-md-12">
-		<br>
-		<img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
-                <img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
-                <img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
-                <img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
-                <img src="<?php echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="75" width="75"/>
-		<br><br>
-            </div>
-           <!-- 
-            <div class="col-md-12">
-		<div class="panel panel-default">
-                    <div class="panel-heading">
-			<a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-721564" href="#panel-element-860877">Menu</a>
-                    </div>
-                    <div id="panel-element-860877" class="panel-collapse collapse">
-			<div class="panel-body">
-                                
-                         </div>
-                    </div>
-		</div>
-            </div>
-            -->
-         <div class="col-md-12">
-                <div class="container">
+                <div class="container col-md-6">
+                    <br><br>
                     <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#modal-menu">Menu</button>
                     <div class="modal fade" id="modal-menu" role="dialog">
                         <div class="modal-dialog modal-lg">
@@ -192,8 +559,7 @@
                                     <h4 class="modal-title">Menu</h4>
                                 </div>
                                 <div class="modal-body">
-                                   
-                                    <img src="<?php echo "data:image/jpeg;base64,". $menu; ?>"  class="img-responsive">
+                                    <img src="<?php echo "data:image/jpeg;base64,". $menu; ?>" class="img-responsive">
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -203,193 +569,12 @@
                     </div>
                 </div>
             </div>
-        
-           <div class="col-md-12">
-                <h3>Make a Reservation!</h3>
-                <div class="container">
-                    <form name="myForm" action="#.php" onsubmit="return validateForm()" method="post">
-
-                        <select class="selectpicker" id="month" name="month" required data-width="auto">
-                            <option value="" disabled selected>Month</option>
-                            <option value ="January">January</option>
-                            <option value="February">February</option>
-                            <option value="March">March</option>
-                            <option value="April">April</option>
-                            <option value="May">May</option>
-                            <option value="June">June</option>
-                            <option value ="July">July</option>
-                            <option value="August">August</option>
-                            <option value="September">September</option>
-                            <option value="October">October</option>
-                            <option value="November">November</option>
-                            <option value="December">December</option>
-                        </select>
-
-                        <select class="selectpicker" id="day" name="day" required data-width="auto">
-                            <option value="" disabled selected>Day</option>
-                            <option value ="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value ="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                            <option value="13">13</option>
-                            <option value="14">14</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value ="17">17</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                            <option value="20">20</option>
-                            <option value="21">21</option>
-                            <option value="22">22</option>
-                            <option value="23">23</option>
-                            <option value="24">24</option>
-                            <option value="25">25</option>
-                            <option value="26">26</option>
-                            <option value ="27">27</option>
-                            <option value="28">28</option>
-                            <option value="29">29</option>
-                            <option value="30">30</option>
-                            <option value="31">31</option>
-                        </select>
-
-                        <select class="selectpicker" id="guests" name="guests" required data-width="auto">
-                            <option value="" disabled selected>Number of Guests</option>
-                            <option value ="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                         </select>
-
-                        <select class="selectpicker" id="time" name="time" required data-width="auto">
-                            <option value="" disabled selected>Time</option>
-                            <option value ="8am">8:00 AM</option>
-                            <option value="830am">8:30 AM</option>
-                            <option value="9am">9:00 AM</option>
-                            <option value="930am">9:30 AM</option>
-                            <option value="10am">10:00 AM</option>
-                            <option value="1030am">10:30 AM</option>
-                            <option value ="11am">11:00 AM</option>
-                            <option value="1130am">11:30 AM</option>
-                            <option value="12pm">12:00 PM</option>
-                            <option value="1230pm">12:30 PM</option>
-                            <option value="1pm">1:00 PM</option>
-                            <option value="130pm">1:30 PM</option>
-                            <option value="2pm">2:00 PM</option>
-                            <option value="230pm">2:30 PM</option>
-                            <option value="3pm">3:00 PM</option>
-                            <option value="330pm">3:30 PM</option>
-                            <option value="4pm">4:00 PM</option>
-                            <option value="430pm">4:30 PM</option>
-                            <option value="5pm">5:00 PM</option>
-                            <option value="530pm">5:30 PM</option>
-                            <option value="6pm">6:00 PM</option>
-                            <option value="630pm">6:30 PM</option>
-                            <option value="7pm">7:00 PM</option>
-                            <option value="730pm">7:30 PM</option>
-                            <option value="8pm">8:00 PM</option>
-                            <option value="830pm">8:30 PM</option>
-                            <option value="9pm">9:00 PM</option>
-                            <option value="930pm">9:30 PM</option>
-                            <option value="10pm">10:00 PM</option>
-                            <option value="1030pm">10:30 PM</option>
-                            <option value="11pm">11:00 PM</option>
-                            <option value="1130pm">11:30 PM</option>
-                            <option value="12am">12:00 AM</option>
-                            <option value="1230am">12:30 AM</option>
-                            <option value="1am">1:00 AM</option>
-                            <option value="130am">1:30 AM</option>
-                            <option value="2am">2:00 AM</option>
-                            <option value="230am">2:30 AM</option>
-                            <option value="3am">3:00 AM</option>
-                            <option value="330am">3:30 AM</option>
-                            <option value="4am">4:00 AM</option>
-                            <option value="430am">4:30 AM</option>
-                            <option value="5am">5:00 AM</option>
-                            <option value="530am">5:30 AM</option>
-                            <option value="6am">6:00 AM</option>
-                            <option value="630am">6:30 AM</option>
-                            <option value="7am">7:00 AM</option>
-                            <option value="730am">7:30 AM</option>
-                        </select>
-                        <button type="submit" class="btn btn-default" value="Submit">Make reservation</button>
-                    </form>
-                </div>
-                
-            </div>
-      
-              <br><br><br><br><br>
-             <div class="col-md-12">
-                <h3>Operating Hours</h3>
-                <div class="container">
-      
-            <?php if($oprHours != null) { ?>
-                    <div class="col-md-1"> <h4>Monday: </h4> </div>
-                    <div class="col-md-11">
-                        <h4> <?php echo $oprHours["monday_from"] . " - ".$oprHours["monday_to"]; ?> </h4>
-                    </div>
-                     <div class="col-md-1"> <h4>Tuesday: </h4></div>
-                     <div class="col-md-11"> 
-                        <h4> <?php echo $oprHours["tuesday_from"] . " - ".$oprHours["tuesday_to"]; ?> </h4>
-                   </div>  
-                     <div class="col-md-1"> <h4>Wednesday:</h4> </div>
-                     <div class="col-md-11"> 
-                        <h4> <?php echo  $oprHours["wednesday_from"] . " - ".$oprHours["wednesday_to"]; ?> </h4>
-                    </div>
-                    <div class="col-md-1"> <h4>Thursday: </h4> </div>
-                     <div class="col-md-11">
-                        <h4> <?php echo $oprHours["thursday_from"] . " - ".$oprHours["thursday_to"]; ?> </h4>
-                   </div>
-                    <div class="col-md-1"><h4> Friday: </h4> </div>
-                     <div class="col-md-11">
-                         <h4> <?php echo  $oprHours["friday_from"] . " - ".$oprHours["friday_to"]; ?> </h4>
-                    </div>
-                    <div class="col-md-1"><h4> Saturday:</h4> </div>
-                     <div class="col-md-11">
-                        <h4> <?php echo  $oprHours["saturday_from"] . " - ".$oprHours["saturday_to"]; ?> </h4>
-                     </div>
-                    <div class="col-md-1"> <h4> Sunday:</h4> </div>
-                     <div class="col-md-11">
-                        <h4> <?php echo $oprHours["sunday_from"] . " - ".$oprHours["sunday_to"]; ?> </h4>
-                     </div>
-                 
-                     <?php } else {?>
-                      <h4> Sorry, Operation Hours are not available.</h4>
-                    <?php } ?>
-                </div>
-             </div>
-           
-           
-            <br><br><br><br><br>
-            
-            <div class="userreview col-md-12">
-                <h3>Directions </h3>
-                <div class="media">
-                    <iframe
-                   width="600"
-                   accesskey=" "
-                   height="450"
-                   frameborder="0" style="border:0"
-                   class="" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBeVgOJNkJiPXUmp895wxNmaCP2_oP9ERg
-                        &q=<?php echo $address ?>" >
-                       </iframe>
-                </div> 
-        </div>
-               <br><br><br><br><br>
-            <div class="userreview col-md-12">
+            <div class="col-md-12">
+            <div class="userreview col-md-6">
                 <h3>Reviews</h3>
                 <div class="media">
                     <a class="media-left" href="#">
-                        <img src="https://goo.gl/GOzAhf" alt="user" height="50" width="50">
+                        <img src="http://www.telikin.com/joomla/components/com_joomblog/images/user.png" alt="user" height="50" width="50">
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading">Larry</h4>
@@ -398,7 +583,7 @@
                 </div>
                 <div class="media">
                     <a class="media-left" href="#">
-                        <img src="https://goo.gl/GOzAhf" alt="user" height="50" width="50">
+                        <img src="http://www.telikin.com/joomla/components/com_joomblog/images/user.png" alt="user" height="50" width="50">
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading">Potter</h4>
@@ -406,19 +591,92 @@
                     </div>
                 </div>
             </div>
-
-        </div>
-        <div class="specialEvent col-md-4">
-            <p>This is the special event info</p>
-            <div class="list-group">
-                <a href="#" class="list-group-item">Band perform</a>
-                <a href="#" class="list-group-item">Dancing</a>
-                <a href="#" class="list-group-item">Conference meeting</a>
-                <a href="#" class="list-group-item">Happy hour</a>
+            <div class="col-md-6">
+                <h3>Operating Hours</h3>
+                <div class="container">
+                    <?php if($oprHours != null) { ?>
+                    <div class="col-md-1"> <h4>Monday: </h4> </div>
+                    <div class="col-md-11">
+                        <h4> <?php echo $oprHours["monday_from"] . " - ".$oprHours["monday_to"]; ?> </h4>
+                    </div>
+                    <div class="col-md-1"> <h4>Tuesday: </h4></div>
+                    <div class="col-md-11">
+                        <h4> <?php echo $oprHours["tuesday_from"] . " - ".$oprHours["tuesday_to"]; ?> </h4>
+                    </div>  
+                    <div class="col-md-1"> <h4>Wednesday:</h4> </div>
+                    <div class="col-md-11"> 
+                        <h4> <?php echo  $oprHours["wednesday_from"] . " - ".$oprHours["wednesday_to"]; ?> </h4>
+                    </div>
+                    <div class="col-md-1"> <h4>Thursday: </h4> </div>
+                    <div class="col-md-11">
+                        <h4> <?php echo $oprHours["thursday_from"] . " - ".$oprHours["thursday_to"]; ?> </h4>
+                    </div>
+                    <div class="col-md-1"><h4> Friday: </h4> </div>
+                    <div class="col-md-11">
+                        <h4> <?php echo  $oprHours["friday_from"] . " - ".$oprHours["friday_to"]; ?> </h4>
+                    </div>
+                    <div class="col-md-1"><h4> Saturday:</h4> </div>
+                    <div class="col-md-11">
+                        <h4> <?php echo  $oprHours["saturday_from"] . " - ".$oprHours["saturday_to"]; ?> </h4>
+                    </div>
+                    <div class="col-md-1"> <h4> Sunday:</h4> </div>
+                    <div class="col-md-11">
+                        <h4> <?php echo $oprHours["sunday_from"] . " - ".$oprHours["sunday_to"]; ?> </h4>
+                    </div>
+                    <?php } else {?>
+                    <h4> Sorry, Operation Hours are not available.</h4>
+                    <?php } ?>
+                </div>
             </div>
         </div>
+        </div>
+        <div class="specialEvent col-md-4">
+                <h4>Special events:</h4>
+                <div class="col-md-12">
+                    <ul class="event-list">
+                        <li>
+                            <time datetime="2015-11-15">
+                                <span class="day">15</span>
+                                <span class="month">Nov</span>
+                                <span class="year">2015</span>
+                                <span class="time">ALL DAY</span>
+                            </time>
+                            <img src="http://www.callingallgigs.com/wp-content/uploads/2012/02/band.jpg" />
+                            <div class="info">
+                                <h2 class="title">Band perform</h2>
+                                <p class="desc">Come enjoy the best band in town!</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="event-list">
+                        <li>
+                            <time datetime="2015-11-16">
+                                <span class="day">16</span>
+                                <span class="month">Nov</span>
+                                <span class="year">2015</span>
+                                <span class="time">ALL DAY</span>
+                            </time>
+                            <img src="http://st.depositphotos.com/1031343/2759/v/950/depositphotos_27594397-Happy-Hour-stamp.jpg" />
+                            <div class="info">
+                                <h2 class="title">Happy hour</h2>
+                                <p class="desc">Come enjoy the Happy hour for 30% off!</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="userreview col-md-12">
+                    <h3>Directions:</h3>
+                    <div class="row">
+                        <iframe
+                            width=100%
+                            height="300"
+                            frameborder="0"
+                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBeVgOJNkJiPXUmp895wxNmaCP2_oP9ERg&q=<?php echo $address ?>" >
+                        </iframe>
+                    </div> 
+                </div>
+        </div>
     </div>
-
     <div class = "navbar navbar-default navbar-bottom">
         <div class = "container">
             <p class="navbar-text navbar-left">This website belongs to SFSU Course CSC648/CSC848 Fall 15 Group 11</p>

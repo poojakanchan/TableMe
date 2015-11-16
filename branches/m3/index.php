@@ -94,6 +94,7 @@
     <?php
     require_once 'app/models/Restaurant_model.php';
     require_once 'app/models/Event_model.php';
+    require_once 'app/controllers/Reservation_controller.php';
     include 'header.php';
 
     define("N_PER_PAGE", 5); //number of restaurants to display per page
@@ -104,12 +105,21 @@
     $nameAddCat = '%';
     $totalCount = 0; //total count of restaurants to display
     $currentPage = $numberOfPages = $startPage = 1; //page number for navigating search results
+    $reservation;
     if (!isset($db)) {
         $db = new Restaurant_model();
     }
 
     if (empty($foodCategoryArray)) {
         $foodCategoryArray = $db->getFoodCategories();
+    }
+        if(!isset($reservation))
+    {
+        $reservation = new Reservation_controller();
+    }
+    if($_POST)
+    {
+        $reservation->add();
     }
 
     if ($_GET) {

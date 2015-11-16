@@ -43,10 +43,9 @@ $username_array = $restaurant->getAllUserNames();
             });
 
 
-            //no special characters in name
-            //email needs to be correct
+            
+            
             // username no less than 4 no more than 10 letters numbers no space
-            // password just letters and numbers
             // description 150 characters 
             // max size of 500 mb for profile picture and menu 
             // validate phone number
@@ -66,6 +65,11 @@ $username_array = $restaurant->getAllUserNames();
 
                 if (ownerUsername === null || ownerUsername === "") {
                     alert("Username must be filled out.");
+                    return false;
+                }
+                
+                if(!/[a-zA-Z0-9]+/.test(ownerUsername)) {
+                    alert("Username can only be letters and numbers.");
                     return false;
                 }
 
@@ -88,9 +92,19 @@ $username_array = $restaurant->getAllUserNames();
                     alert("First name must be filled out.");
                     return false;
                 }
+                
+                if(!/[a-zA-Z]+/.test(ownerFirstName)) {
+                    alert("First name can only be letters.");
+                    return false;
+                }
 
                 if (ownerLastName === null || ownerLastName === "") {
                     alert("Last name must be filled out.");
+                    return false;
+                }
+                
+                if(!/[a-zA-Z]+/.test(ownerLastName)) {
+                    alert("Last name can only be letters.");
                     return false;
                 }
 
@@ -98,9 +112,14 @@ $username_array = $restaurant->getAllUserNames();
                     alert("Phone must be filled out.");
                     return false;
                 }
+                
+                if(!/[0-9]+/.test(ownerPhone)) {
+                    alert("Phone can only be numbers.");
+                    return false;
+                }
 
                 if (ownerEmail === null || ownerEmail === "") {
-                    alert("Day must be filled out.");
+                    alert("Email must be filled out.");
                     return false;
                 }
 
@@ -116,6 +135,11 @@ $username_array = $restaurant->getAllUserNames();
 
                 if (restaurantPhone === null || restaurantPhone === "") {
                     alert("Restaurant phone must be filled out.");
+                    return false;
+                }
+                
+                if(!/[0-9]+/.test(restaurantPhone)) {
+                    alert("Phone can only be numbers.");
                     return false;
                 }
 

@@ -381,8 +381,8 @@ if(!isset($_SESSION['username'])) {
             <div class="row">
                 <div class="restaurantmenuchange col-md-12">
                     <ul class="nav nav-tabs">
-                        <li role="presentation" class="active"><a href="#change-detail" data-toggle="tab">Restaurant Detail</a></li>
-                        <li role="presentation"><a href="#change-photo" data-toggle="tab">Restaurant Photo</a></li>
+                        <li role="presentation" class="active"><a href="#change-detail" data-toggle="tab">Restaurant Details</a></li>
+                        <li role="presentation"><a href="#change-photo" data-toggle="tab">Gallery </a></li>
                         <li role="presentation"><a href="#change-hours" data-toggle="tab">Operating Hours</a></li>
                         <li role="presentation"><a href="#change-menu" data-toggle="tab">Menu</a></li>
                         <li role="presentation"><a href="#change-specialevent" data-toggle="tab">Special Events</a></li>
@@ -461,7 +461,7 @@ if(!isset($_SESSION['username'])) {
                             </div>
                             <div class = "row">
                                 <br>
-                                <h3>Thumbnail Photo:</h3>
+                                <h3>Gallery:</h3>
                                 <div class = "col-sm-6 col-md-3">
                                     <div class = "thumbnail">
                                         <img src = "https://goo.gl/GOzAhf" alt = "Restaurant photo" class="img-rounded" >
@@ -636,6 +636,8 @@ if(!isset($_SESSION['username'])) {
                                     <table class="table table-bordered table-hover table-sortable" id="tab_account">
                                         <thead>
                                             <tr>
+                                                <th class="text-center">Host Name</th>
+                                                <th class="text-center">Email Address</th>
                                                 <th class="text-center">Host Account</th>
                                                 <th class="text-center">Password</th>
                                                 <th class="text-center">Delete</th>
@@ -643,11 +645,18 @@ if(!isset($_SESSION['username'])) {
                                         </thead>
                                         <tbody>
                                             <tr id='addr0' data-id="0" class="hidden">
-                                                <td data-name="account">
-                                                    <input type="text" name='account0'  placeholder='Account Name' class="form-control"/>
+                                                <td data-name="hostName">
+                                                    <input type="text" name='hostName'  placeholder='Host Name' class="form-control"/>
                                                 </td>
+                                                 <td data-name="hostAccount">
+                                                    <input type="text" name='hostAccount'  placeholder='User Name' class="form-control"/>
+                                                </td>
+                                                 <td data-name="hostEmail">
+                                                    <input type="text" name='hostEmail'  placeholder='Email' class="form-control"/>
+                                                </td>
+                                                
                                                 <td data-name="password">
-                                                    <input type="text" name='pass0' placeholder='Password' class="form-control"/>
+                                                    <input type="text" name='password' placeholder='Password' class="form-control"/>
                                                 </td>
                                                 <td data-name="del">
                                                     <button nam"del0" class='btn btn-danger glyphicon glyphicon-remove row-remove'></button>

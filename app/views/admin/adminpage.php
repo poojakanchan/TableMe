@@ -43,7 +43,7 @@
             </div>
         </div> <!-- End of Row -->
         <ul class="nav nav-tabs"> <!-- Tab for the UserSection -->
-            <li class="active"><a href="#restaurants">Restaurants</a></li>
+            <li class="active"><a href="#restaurants">Newly Registered Restaurants</a></li>
             <li> <a href="#reports">Bug Reports</a></li>
             <li> <a href="#reviews">Reviews</a></li> 
             <li> <a href="#users">User List</a></li> 
@@ -55,7 +55,6 @@
                         <thead>
                             <tr>
                                 <th>Date Registered</th>
-                                <th>Time</th>
                                 <th>Name</th>
                                 <th>Details</th>
                                 <th>Actions</th>
@@ -64,7 +63,6 @@
                         <tbody id="items">
                             <tr>
                                 <td>DATE</td>
-                                <td>Time Registered</td>
                                 <td>Name of Restaurant</td>
                                 <td>
                                     <a href="#RestaurantSignUpPage" class="btn btn-info" role="button"> Details </a>

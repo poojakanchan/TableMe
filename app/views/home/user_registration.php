@@ -72,9 +72,9 @@
     </head>
     <body>
        <?php
-       /*
-        include 'header.php';
        
+        include 'header.php';
+       /*
         $user = __DIR__ . '/../../controllers/User_Controller.php';
         require_once $user;
         require_once '../../models/Login_model.php';

@@ -460,6 +460,26 @@ if(!isset($_SESSION['username'])) {
                     <br><br>
                     <a href="#" class="list-group-item">
                         <div class="media">
+                            <button class="btn btn-danger pull-right" data-toggle="modal" data-target="#confirmDelete">
+                                Delete
+                            </button>
+                            <div class="modal fade" id="confirmDelete" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                      <h4 class="modal-title">Delete Parmanently</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                      <p>Are you sure about this ?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                      <button type="button" class="btn btn-danger" id="confirm">Delete</button>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
                             <div class="pull-left">
                                 <img class="media-object" src="https://goo.gl/GOzAhf" alt="user" height="120" width="120">
                             </div>

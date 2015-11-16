@@ -432,17 +432,68 @@ foreach ($food_category_array as $category) {
                             <h4><input type="checkbox" name="checkbox" value="privacypolicy" required> 
                                 I agree to the 
                                 <a href="JavaScript:newPopup
-                                   ('sfsuswe.com/~f15g11/m3/app/views/home/privacy_policy.html');">
-                                    Privacy Policy</a>.</h4>
+                                   ('privacy_policy.html');" data-toggle="modal" data-target="#privacy_policy">
+                                      Privacy Policy</a>.</h4>
+                            <br>
+                              <div  class="modal fade"  id = "privacy_policy" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <label class="modal-title" name ="myModalLabel" id="myModalLabel">Privacy Policy </label>
+                                                </div>
+                                                <div class="modal-body">
+                                                   
+                                                      <p>
+                                                          <b>
+                                                              What Information we collect?
+                                                          </b>
+                                                      <p>
+                                                          While registering on our site, you may be asked to enter:your name, email , contact number.
+                                                          However you may visit our website anonymously.
+                                                          </p>
+                                                          <b>
+                                                              What do we use Information for?
+                                                          </b>
+                                                          <p>
+                                                              Any Information we collect form you may be used in one of the following ways:</p>
+                                                              <p>
+                                                              - To improve customer service (to display history of reservations, to display
+                                                                    already visited restaurants etc.
+                                                             </p>
+                                                              <p>
+                                                              - To send confirmation emails
+                                                              </p>
+                                                          
+                                                          <b>
+                                                              How do we protect Information
+                                                          </b>
+                                                          <p>
+                                                              We do not sell, transfer or trade your information to outside parties.
+                                                              However some of the information may be displayed on our website.
+                                                              </p>
+                                                              
+                                                          <b>
+                                                              By using our site, you consent to our privacy policy
+                                                          </b>    
+                                                                           
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                </div>
+                                    
+                                   <input type="button" class="btn btn-primary" value="Cancel Registration" onclick="index.php"> 
+                            <br>
+                            <br>
                             <br>
 
-                            <h4>If you do not agree please cancel.</h4>
-                            <input type="button" class="btn btn-primary" value="Cancel Registration" onclick="index.php"> 
-                            <br>
-                            <br>
-                            <br>
-
-
+                             <h4>If you do not agree please cancel.</h4>
                             <button type="reset" class="btn btn-lg btn-primary" value="reset" name="reset">Reset Form</button>
                             <button type="submit" class="btn btn-lg btn-primary" value="submit" name="submit" style="float: right">Register Restaurant</button>
                         </div>

@@ -152,7 +152,6 @@
 <body>
     
     <?php
-        
         require_once __DIR__ . '/../../models/Restaurant_model.php';
         require_once __DIR__ . '/../../models/OperationHours_model.php';
         require_once __DIR__ . '/../../models/Event_model.php';
@@ -243,9 +242,7 @@
         } 
          
         $cnt = $db->getRestaurantImageCount($resId);
-        $n = intval($cnt[0]);
-        $i = 0;
-//        $srcStr= "data:image/jpeg;base64,";
+        $n = intval($cnt[0])>=5 ? 5 : intval($cnt[0]); //total number of images for the restaurant in multimedia table
         include 'header.php';
     ?>
     
@@ -254,7 +251,7 @@
             <div class="restaurantprofile col-md-12">
                 <div class="restaurantpic col-md-6">
                     <a href="#" data-toggle="modal" data-target="#modal-logo">
-                        <img src="<?php echo $i<$n ? "getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="300" width="300" />
+                        <img src="<?php $i=0; echo $i<$n ? "getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="300" width="300" />
                     </a>
                     <br><br>
                     <a href="#" data-toggle="modal" data-target="#modal-thumbnail1">
@@ -277,7 +274,7 @@
                                     <h4 class="modal-title">Logo</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <img src="http://goo.gl/vrq2Cw" class="img-responsive">
+                                    <img src="<?php $i=0; echo $i<$n ? "./getResImages.php?resId=".$resId."&offset=".$i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

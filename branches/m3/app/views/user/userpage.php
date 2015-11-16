@@ -124,7 +124,7 @@
                                         <td>Name of the Restaurant</td>
                                         <td>4</td>
                                         <td>
-                                            <a href="#cancel" class="btn btn-info" role="button"> Delete </a>
+                                            <a href="#cancel" class="btn btn-info" role="button"> Cancel Reservation </a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -153,7 +153,7 @@
                                             echo '<td>' . $reservation['time'] . '</td>';
                                             echo '<td>' . $reservation['no_of_people'] . '</td>';
                                             if (empty($reservation['review_description']))
-                                                echo '<td><a href="#review page" class="btn btn-info" role="button"> Review </a>';
+                                                echo '<td><a href="#review page" class="btn btn-info" role="button"> Write A Review </a>';
                                             else
                                                 echo '<td>' . $reservation['review_description'] . '</td>';
                                             echo '</tr>';

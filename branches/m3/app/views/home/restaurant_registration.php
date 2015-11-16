@@ -406,7 +406,10 @@ foreach ($food_category_array as $category) {
 
                             <br>
                             <h4><input type="checkbox" name="checkbox" value="privacypolicy" required> 
-                                I agree to the Privacy Policy.</h4>
+                                I agree to the 
+                                <a href="JavaScript:newPopup
+                                   ('sfsuswe.com/~f15g11/m3/app/views/home/privacy_policy.html');">
+                                    Privacy Policy</a>.</h4>
                             <br>
 
                             <h4>If you do not agree please cancel.</h4>

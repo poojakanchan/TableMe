@@ -1,4 +1,12 @@
 <html lang="en">
+<?php
+
+require_once 'header.php';
+if(!isset($_SESSION['username'])) {
+    header('location: ../home/login.php');
+}
+
+?>  
 <head>
 	<title>TableMe</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -242,10 +250,6 @@
         
 </head>
 <body>
-    
-    <?php
-        include ('header.php');
-    ?>
     
     <div class="container-fluid">
         <div class="mainInfo col-md-12">

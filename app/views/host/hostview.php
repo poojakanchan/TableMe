@@ -1,3 +1,11 @@
+<?php
+
+require_once 'header.php';
+if(!isset($_SESSION['username'])) {
+    header('location: ../home/login.php');
+}
+
+?>
 <html lang="en">
 <head>
 	<title>TableMe</title>
@@ -234,11 +242,6 @@
        
 </head>
 <body>
-    
-    <?php
-        include 'header.php';
-    ?>
-    
     <div class="container-fluid">
         <div class="mainInfo col-md-12">
             <div class="row col-md-offset-6">

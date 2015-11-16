@@ -52,9 +52,9 @@
 <body>
     <!-- Navigation Bar -->
     <?php 
-    include 'header.php';
+    require_once 'header.php';
     require_once '../../models/User_model.php';
-    session_start();
+//    session_start();
     
     if(!isset($_SESSION['username'])) {
         header('location: ../home/login.php');
@@ -74,6 +74,7 @@
         $db->updateUser($username, $newPhoneNum, $newEmail, $newPassword, $newImage);
         $userInfo = $db->getUser($username);
     }
+    
     ?>
     <br><br><br>
     <div class="container">

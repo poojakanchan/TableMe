@@ -111,7 +111,7 @@ class Restaurant_model  extends Database{
              }
          }
          else {
-             $sql = $sql . $nameAddCat;
+             $sql = $sql . "'" .$nameAddCat . "'";
          }        
         
         $stmt = $this->dbh->prepare($sql);
@@ -140,7 +140,7 @@ class Restaurant_model  extends Database{
              }
          }
          else {
-             $sql = $sql . $nameAddCat;
+             $sql = $sql . "'" . $nameAddCat . "'";
          }
          $sql = $sql . " LIMIT :lim OFFSET :off";
         

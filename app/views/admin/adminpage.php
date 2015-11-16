@@ -22,7 +22,12 @@
     </script> 
 
     <!-- Navigation Bar -->
-    <?php include 'header.php'; ?>
+    <?php 
+    require_once 'header.php';
+    if(!isset($_SESSION['username'])) {
+        header('location: ../home/login.php');
+    }
+    ?>
 
     <br><br><br>
     <div class="container">

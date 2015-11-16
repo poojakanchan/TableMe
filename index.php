@@ -57,11 +57,12 @@
 
 <body>
     <?php
+    require_once 'header.php';
     require_once 'app/models/Restaurant_model.php';
     require_once 'app/models/Event_model.php';
-    include 'header.php';
-
+    
     define("N_PER_PAGE", 5); //number of restaurants to display per page
+   
     $db;
     $restaurant_array;
     $foodCategoryArray;
@@ -77,29 +78,29 @@
         $foodCategoryArray = $db->getFoodCategories();
     }
 
-    if ($_GET) {
-        $nameAddCat = (empty($_GET['searchText']) ? '%' : htmlspecialchars($_GET['searchText']));
-        $currentPage = (isset($_GET['pgnum']) ? htmlspecialchars($_GET['pgnum']) : 1);
-        $totalCount = $db->findRestaurantsCount($nameAddCat);
-        $restaurant_array = $db->findRestaurantsLimitOffset($nameAddCat, N_PER_PAGE, ($currentPage - 1) * N_PER_PAGE);
-        
+//    if ($_GET) {
+    $nameAddCat = ((!isset($_GET['searchText']) || empty($_GET['searchText'])) ? '%' : htmlspecialchars($_GET['searchText']));
+    $currentPage = (isset($_GET['pgnum']) ? htmlspecialchars($_GET['pgnum']) : 1);
+    $totalCount = $db->findRestaurantsCount($nameAddCat);
+    $restaurant_array = $db->findRestaurantsLimitOffset($nameAddCat, N_PER_PAGE, ($currentPage - 1) * N_PER_PAGE);
+
 //        var_dump($totalCount);
 //        echo '<br>';
 //        var_dump($restaurant_array);
 //        exit();
-        
-        if ($nameAddCat == '%') {
-            $restaurantListTitle = "All Restaurants (" . $totalCount . " total)";
-        } else {
-            $restaurantListTitle = "Your search found " . $totalCount . ($totalCount > 1 ? " restaurants" : " restaurant");
-        }
-    } else {
-        $totalCount = $db->getAllRestaurantsCount();
+
+    if ($nameAddCat == '%') {
         $restaurantListTitle = "All Restaurants (" . $totalCount . " total)";
-        if ($totalCount > N_PER_PAGE) {
-            $restaurant_array = $db->getAllRestaurantsLimitOffset(N_PER_PAGE, 0);
-        }
+    } else {
+        $restaurantListTitle = "Your search found " . $totalCount . ($totalCount > 1 ? " restaurants" : " restaurant");
     }
+//    } else {
+//        $totalCount = $db->getAllRestaurantsCount();
+//        $restaurantListTitle = "All Restaurants (" . $totalCount . " total)";
+//        if ($totalCount > N_PER_PAGE) {
+//            $restaurant_array = $db->getAllRestaurantsLimitOffset(N_PER_PAGE, 0);
+//        }
+//    }
 
     $numberOfPages = (int) ceil($totalCount / N_PER_PAGE);
 
@@ -117,6 +118,7 @@
     //populates event array
     $db = new Event_model();
     $eventArray = $db->getAllEvents();
+    
     ?>
 
     <div class="jumbotron jumbotron-banner">
@@ -147,11 +149,10 @@
                         $image = base64_encode($restaurant['thumbnail']);
                         $image_src = "data:image/jpeg;base64," . $image;
                         $resId = $restaurant['restaurant_id'];
-                        //echo $image_src;  
                         ?>
 
                         <div class="panel-body"> <!-- Will work on the details later -->
-                            <a href="#restaurant view page"> <img width="100" height="100" src="<?php print $image_src; ?>" /> </a>
+                            <a href="#restaurant view page"> <img width="100" height="100" src="<?php echo $image_src; ?>" /> </a>
                             <h3>  <a  href="<?php echo 'app/views/home/restaurant.php?resid=' . $restaurant['restaurant_id'] ?>" > <?php echo $restaurant['name'] ?> </a> </h3>
                             <p> <?php echo $restaurant['address'] ?> </p>
                             <p>  <?php echo $restaurant['description'] ?> </p>

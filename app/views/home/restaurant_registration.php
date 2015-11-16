@@ -1,3 +1,20 @@
+<?php
+include 'header.php';
+$res = __DIR__ . '/../../controllers/Restaurant_controller.php';
+require_once $res;
+$restaurant = new Restaurant_controller();
+//         $flag = $_GET['checkUsername'];
+//  if (isset($_GET['checkUsername']) && !empty($_GET['checkUsername'])) {
+if ($_POST) {
+    $restaurant->add();
+}
+$food_category_array = $restaurant->getFoodCategory();
+$username_array = $restaurant->getAllUserNames();
+// echo $username_array;
+// } else {
+//             if($restaurant->checkUserName());
+// }
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -25,17 +42,17 @@
                 size: 4
             });
 
-      
-                //no special characters in name
-                //email needs to be correct
-                // username no less than 4 no more than 10 letters numbers no space
-                // password just letters and numbers
-                // description 150 characters 
-                // max size of 500 mb for profile picture and menu 
-                // validate phone number
-            
+
+            //no special characters in name
+            //email needs to be correct
+            // username no less than 4 no more than 10 letters numbers no space
+            // password just letters and numbers
+            // description 150 characters 
+            // max size of 500 mb for profile picture and menu 
+            // validate phone number
+
             function validateForm() {
-                   alert('validate');
+                alert('validate');
                 var ownerUsername = document.forms["form"]["ownerUsername"].value;
                 var ownerPassword = document.forms["form"]["ownerPassword"].value;
                 var ownerConfirmPassword = document.forms["form"]["ownerConfirmPassword"].value;
@@ -102,29 +119,13 @@
                     return false;
                 }
 
-            
+
             }
-            
+
         </script>
-</head><?php include 'header.php';
-        $res = __DIR__ . '/../../controllers/Restaurant_controller.php';
-        require_once $res;
-        $restaurant = new Restaurant_controller();
-        //         $flag = $_GET['checkUsername'];
-        //  if (isset($_GET['checkUsername']) && !empty($_GET['checkUsername'])) {
-        if ($_POST) {
-            $restaurant->add();
-        }
-        $food_category_array = $restaurant->getFoodCategory();
-        $username_array = $restaurant->getAllUserNames();
-       // echo $username_array;
-        
-        // } else {
-        //             if($restaurant->checkUserName());
-        // }
-       
-?><body>
-<div class="container">
+    </head>
+    <body>
+        <div class="container">
             <h1 class="well">Restaurant Registration Form</h1>
             <div class="col-lg-12 well">
                 <div class="row">
@@ -267,10 +268,10 @@
                                     <div class="form-group">
                                         <label>Type of Food</label>
                                         <select class="selectpicker" name ="food_category"><?php
-                                            foreach ($food_category_array as $category) {
-                                                echo "<option value=" . $category['name'] . ">" . $category['name'] . "</option>";
-                                            }
-                                            ?><option value ="any" selected="selected">Select Food Type</option>
+foreach ($food_category_array as $category) {
+    echo "<option value=" . $category['name'] . ">" . $category['name'] . "</option>";
+}
+?><option value ="any" selected="selected">Select Food Type</option>
                                         </select>
                                     </div>
 
@@ -427,24 +428,24 @@
     </body>
 
     <script type="text/javascript">
-$(document).ready(function () {
-                $("#username").focusout(function () {
-                    var existingUsernames = <?php echo json_encode($username_array) ?>;
-                    var inputUsername = $("#username").val();
-                    if (!inputUsername) {
-                        $("#username").css("border", "#FF0000 1px solid");
-                        $("#usernameLabel").replaceWith ("<label id='usernameLabel'>Username*<i style='color:red'>Username cannot be empty</i></label>");
-                        return;
-                    }
-                    if (jQuery.inArray(inputUsername, existingUsernames) !== -1) {
-                        $("#username").css("border", "#FF0000 1px solid");
-                        $("#usernameLabel").replaceWith ("<label id='usernameLabel'>Username*<i style='color:red'>Username already taken</i></label>");
-                        return;
-                    }
-                    $("#username").css("border", "");
-                    $("#usernameLabel").replaceWith('<label id="usernameLabel">Username*</label>');
-                });
+        $(document).ready(function () {
+            $("#username").focusout(function () {
+                var existingUsernames = <?php echo json_encode($username_array) ?>;
+                var inputUsername = $("#username").val();
+                if (!inputUsername) {
+                    $("#username").css("border", "#FF0000 1px solid");
+                    $("#usernameLabel").replaceWith("<label id='usernameLabel'>Username*<i style='color:red'>Username cannot be empty</i></label>");
+                    return;
+                }
+                if (jQuery.inArray(inputUsername, existingUsernames) !== -1) {
+                    $("#username").css("border", "#FF0000 1px solid");
+                    $("#usernameLabel").replaceWith("<label id='usernameLabel'>Username*<i style='color:red'>Username already taken</i></label>");
+                    return;
+                }
+                $("#username").css("border", "");
+                $("#usernameLabel").replaceWith('<label id="usernameLabel">Username*</label>');
             });
-        
+        });
+
     </script>
 </html>

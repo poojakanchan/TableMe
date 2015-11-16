@@ -51,6 +51,11 @@
                     alert("You must confirm the password.");
                     return false;
                 }
+                
+                if(userPassword !== userConfirmPassword) {
+                    alert("Your passwords don't match.");
+                    return false; 
+                }
 
                 if (userEmail === null || userEmail === "") {
                     alert("Email must be filled out.");

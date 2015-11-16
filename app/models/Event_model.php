@@ -55,7 +55,7 @@ class Event_model extends Database{
         return null;
     }
     public function getEventsByRestaurantId($resId) {
-        $sql = "SELECT e.restaurant_id, e.description, e.date, e.time, e.event_photo, r.name "
+        $sql = "SELECT e.restaurant_id, e.title, e.description, e.date, e.time, e.event_photo, r.name "
                 . "FROM special_event e "
                 . "INNER JOIN restaurant r "
                 . "WHERE e.restaurant_id=r.restaurant_id and r.restaurant_id ="

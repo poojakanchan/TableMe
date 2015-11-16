@@ -26,9 +26,8 @@ $phone = $restaurant[0]['phone_no'];
 //        $imgArray = $db->getRestaurantImages($resId);
 
 $event_model = new Event_model();
-$events = $event_model->getEventsByRestaurantId($resId);
+$events = $event_model->getEventsByRestaurantId($resId);;
 
-//print_r($events);
 $operating_hours_model = new OperationHours_model();
 $oprHours = $operating_hours_model->getOperatingHoursByRestaurantId($resId);
 
@@ -658,7 +657,27 @@ if ($time_message != null) {
             <div class="specialEvent col-md-4">
                 <h4>Special events:</h4>
                 <div class="col-md-12">
-                    <ul class="event-list">
+                    <?php
+                    foreach ($events as $event) {
+                        echo '<ul class="event-list">';
+                        echo '<li>';
+                        echo '<time datetime="' . $event['date'] . '">';
+                        $dateNum = explode("-", $event['date']);
+                        echo '<span class="day">'. $dateNum[2] . '</span>';
+                        $dt = DateTime::createFromFormat('!m', $dateNum[1]);
+                        echo '<span class="month">' . $dt->format('M') . '</span>';
+                        echo '<span class="year">'. $dateNum[0] . '</span>';
+                        echo '<span class="time">'. $event['time'] . '</span></time>';
+                        echo '<img src="data:image/jpeg;base64,' . base64_encode($event['event_photo']) . '"/>';
+                        echo '<div class="info">
+                                <h2 class="title">' . $event['title'] . '</h2>
+                                <p class="desc">' . $event['description'] . '</p>
+                            </div>
+                        </li>
+                    </ul>';
+                    }
+                    ?>
+<!--                    <ul class="event-list">
                         <li>
                             <time datetime="2015-11-15">
                                 <span class="day">15</span>
@@ -672,8 +691,8 @@ if ($time_message != null) {
                                 <p class="desc">Come enjoy the best band in town!</p>
                             </div>
                         </li>
-                    </ul>
-                    <ul class="event-list">
+                    </ul>-->
+<!--                    <ul class="event-list">
                         <li>
                             <time datetime="2015-11-16">
                                 <span class="day">16</span>
@@ -687,7 +706,7 @@ if ($time_message != null) {
                                 <p class="desc">Come enjoy the Happy hour for 30% off!</p>
                             </div>
                         </li>
-                    </ul>
+                    </ul>-->
                 </div>
                 <div class="userreview col-md-12">
                     <h3>Directions:</h3>

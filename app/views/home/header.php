@@ -5,6 +5,7 @@ if (session_id() == '') {
 if (isset($_GET['logout'])) {
     unset($_SESSION['username']);
     unset($_GET['logout']);
+    header('location: login.php');
 }
 ?>
 <nav class ="navbar navbar-default">

@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    
+
     <script>
         $(document).ready(function () {
             $(".nav-tabs a").click(function () {
@@ -22,13 +22,12 @@
     </script> 
 
     <!-- Navigation Bar -->
-    <?php 
+    <?php
     require_once 'header.php';
-    if(!isset($_SESSION['username'])) {
+    if (!isset($_SESSION['username'])) {
         header('location: ../home/login.php');
     }
     ?>
-
     <br><br><br>
     <div class="container">
         <div class="row">
@@ -45,9 +44,9 @@
         </div> <!-- End of Row -->
         <ul class="nav nav-tabs"> <!-- Tab for the UserSection -->
             <li class="active"><a href="#restaurants">Restaurants</a></li>
-            <li> <a href="#reports">Reports</a></li>
+            <li> <a href="#reports">Bug Reports</a></li>
             <li> <a href="#reviews">Reviews</a></li> 
-            <li> <a href="#owners">Owners</a></li> 
+            <li> <a href="#users">User List</a></li> 
         </ul> <!-- Done with the tab --> 
         <div class="tab-content">
             <div id="restaurants" class="tab-pane fade in active">
@@ -55,20 +54,20 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>DATE</th>
-                                <th>Restaurant Name</th>
+                                <th>Date Registered</th>
                                 <th>Time</th>
-                                <th>File</th>
-                                <th>Action</th>
+                                <th>Name</th>
+                                <th>Details</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="items">
                             <tr>
                                 <td>DATE</td>
-                                <td>TIME</td>
+                                <td>Time Registered</td>
                                 <td>Name of Restaurant</td>
                                 <td>
-                                    <a href="#RestaurantSignUpPage" class="btn btn-info" role="button"> Review </a>
+                                    <a href="#RestaurantSignUpPage" class="btn btn-info" role="button"> Details </a>
                                 </td>
                                 <td>
                                     <a href="#Approve" class="btn btn-info" role="button"> Approve </a>
@@ -98,7 +97,7 @@
                                 <td>UserReported</td>
                                 <td>Report Title</td>
                                 <td>
-                                    <a href="#ReportPage" class="btn btn-info" role="button"> Review </a>
+                                    <a href="#ReportPage" class="btn btn-info" role="button"> Details </a>
                                 </td>
                             </tr>
                         </tbody>
@@ -123,7 +122,7 @@
                                 <td>RestaurantReported</td>
                                 <td>ReportTitle</td>
                                 <td>
-                                    <a href="#RestaurantSignUpPage" class="btn btn-info" role="button"> Review </a>
+                                    <a href="#RestaurantSignUpPage" class="btn btn-info" role="button"> Details </a>
                                 </td>
                                 <td>
                                     <a href="#Approve" class="btn btn-info" role="button"> Approve </a>
@@ -134,25 +133,39 @@
                     </table>
                 </div>
             </div> <!-- End of Review Tab -->
-            <div id="owners" class="tab-pane fade">
+            <div id="users" class="tab-pane fade">
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Name of Restaurant</th>
                                 <th>Registered Date</th>
-                                <th>Owner Name</th>
-                                <th>Owner ID</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>E-mail</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="items">
                             <tr>
-                                <td>Restaurant_Name</td>
-                                <td>date</td>
-                                <td>NameOfOwner</td>
-                                <td>UserID_Owner</td>
+                                <td>2015.10.28</td>
+                                <td>SeungKeun Kim</td>
+                                <td>User</td>
+                                <td>tjdrms@mail.sfsu.edu</td>
+                                <td>
+                                    <a href="#Delete" class="btn btn-info" role="button"> Delete </a>
+                                </td>  
+                            </tr>
+                            <tr>
+                                <td>2015.10.28</td>
+                                <td>James Smith</td>
+                                <td>Owner (Restaurant Name)</td>
+                                <td>abc@example.com</td>
+                                <td>
+                                    <a href="#Delete" class="btn btn-info" role="button"> Delete </a>
+                                </td>  
                             </tr>
                         </tbody>
+
                     </table>
                 </div>                    
             </div> <!-- End of Owners Table -->

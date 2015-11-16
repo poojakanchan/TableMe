@@ -67,7 +67,7 @@
     </head>
     <body>
        <?php
-       
+       /*
         include 'header.php';
        
         $user = __DIR__ . '/../../controllers/User_Controller.php';
@@ -81,7 +81,7 @@
             $user_controller->registerUser();
         }
         $existingUsernames = $db->getAllUsernames();
-        
+        */
         ?>
 
         <div class="container">
@@ -134,9 +134,22 @@
                                 </div>
                             </div>
                             
+                            <script type="text/javascript">
+                                // Popup window code
+                                function newPopup(url) {
+                                    popupWindow = window.open(
+                                    url,'popUpWindow','height=300,width=400,\n\
+                                    left=10,top=10,resizable=yes,scrollbars=yes,toolbar=yes,\n\
+                                    menubar=no,location=no,directories=no,status=yes')
+                                }
+                            </script>
+                                                                                                                                                                   
                             <br>
                             <h4><input type="checkbox" name="checkbox" value="privacypolicy" required> 
-                                I agree to the Privacy Policy.</h4>
+                                I agree to the 
+                                <a href="JavaScript:newPopup
+                                   ('sfsuswe.com/~f15g11/m3/app/views/home/privacy_policy.html');">
+                                    Privacy Policy</a>.</h4>
                             <br>
 
                             <h4>If you do not agree please cancel.

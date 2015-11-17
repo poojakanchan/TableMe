@@ -17,7 +17,7 @@ if(!isset($_SESSION['username'])) {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
         
-        <!-- Will merge into js file after all is done. -->
+        <!-- Will merge the style and script code into CSS and JS file after all is done. -->
         <style>
             .hovereffect {
             width: 100%;
@@ -387,6 +387,7 @@ if(!isset($_SESSION['username'])) {
                         <li role="presentation"><a href="#change-menu" data-toggle="tab">Menu</a></li>
                         <li role="presentation"><a href="#change-specialevent" data-toggle="tab">Special Events</a></li>
                         <li role="presentation"><a href="#change-hostaccount" data-toggle="tab">Host Accounts</a></li>
+                        <li role="presentation"><a href="#change-profile" data-toggle="tab">Edit Profile</a></li>
                     </ul>
                 </div>
                 
@@ -669,7 +670,41 @@ if(!isset($_SESSION['username'])) {
                             <a id="add_row_account" class="btn btn-default pull-right">Add Account</a>
                         </div>
                     </div>
-                    
+                    <div id="change-profile" class="tab-pane fade">
+                        <form class="form" action="##" method="post" id="editregistrationform">
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="phone_number"><h4>Phone Number</h4></label>
+                                    <input type="tel" class="form-control" name="phone_number" id="phone_number" value=" "  placeholder="(xxx) xxx-xxxx" required />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="email"><h4>Email</h4></label>
+                                    <input type="email" class="form-control" name="email" id="email" value=" " placeholder="you@email.com" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="password"><h4>Password</h4></label>
+                                    <input type="password" class="form-control" name="password" id="password" placeholder="enter new password" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="password2"><h4>Reenter password</h4></label>
+                                    <input type="password" class="form-control" name="password2" id="password2" placeholder="re-enter new password" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <br>
+                                    <button class="btn btn-default" type="submit" id="submit_button"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                                    <button class="btn btn-default" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
+                                </div>
+                            </div>
+                        </form> <!-- End of the edit the profile form -->
+                    </div><!-- End of the Setting -->
                 </div>
                 
             </div>

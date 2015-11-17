@@ -94,7 +94,7 @@ class Restaurant_registration_model extends Database {
         }        
        */
         
-        $sql = "INSERT INTO restaurant(name, food_category_name, phone_no, address, thumbnail, description, flag_new, menu, capacity, num_two_tables, num_four_tables,num_six_tables, name_address) VALUES(:name, :food_category_name, :phone_no, :address, :thumbnail, :description, :flag_new, :menu, :capacity, :num_two_tables, :num_four_tables,:num_six_tables, :name_address)";
+        $sql = "INSERT INTO restaurant(name, food_category_name, phone_no, address, thumbnail, description, flag_new, menu, capacity, num_two_tables, num_four_tables,num_six_tables, name_address_category) VALUES(:name, :food_category_name, :phone_no, :address, :thumbnail, :description, :flag_new, :menu, :capacity, :num_two_tables, :num_four_tables,:num_six_tables, :name_address)";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':name', $resArray['name']);
         $stmt->bindParam(':food_category_name', $resArray['food_category_name']);
@@ -108,7 +108,7 @@ class Restaurant_registration_model extends Database {
         $stmt->bindParam(':num_two_tables', $resArray['twos']);
         $stmt->bindParam(':num_four_tables', $resArray['fours']);
         $stmt->bindParam(':num_six_tables', $resArray['sixes']);
-        $nameAddress = $resArray['name']." ".$resArray['address'];
+        $nameAddress = $resArray['name']." ".$resArray['address']. " " . $resArray['food_category_name'];
         $stmt->bindParam(':name_address', $nameAddress);
         return $stmt;
     }
@@ -163,8 +163,9 @@ class Restaurant_registration_model extends Database {
                }
             }
     }catch (Exception $ex) {
-         //   echo $ex->getMessage();
+         //   
         }
+        echo $ex->getMessage();
         $this->dbh->rollBack();
         $this->dbh->setAttribute(PDO::ATTR_AUTOCOMMIT,1);
         return -1;

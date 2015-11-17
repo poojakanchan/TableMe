@@ -3,14 +3,13 @@
 // session_start();
 require_once 'Controller.php';
 
-
 class Reservation_controller extends Controller {
     private $reservation;
-    private $restaurant;
+    //private $restaurant;
     
     public function __construct() {
         $this->reservation = $this->model('Reservation_model');
-        $this->restaurant = $this->model('Restaurant_model');
+        //$this->restaurant = $this->model('Restaurant_model');
     }
     public function getRestaurantNamesAll() {
         return $this->reservation->getRestaurantNamesAll();
@@ -70,8 +69,9 @@ class Reservation_controller extends Controller {
             //$test=60;
             $operatingHoursArray=$this->reservation->getOperatingHoursByDay($opening, $closing, $restaurantID);
            // echo var_dump($operatingHoursArray);
-            echo $operatingHoursArray[0][0];
-            echo $operatingHoursArray[0][1];
+           // OUTPUTS THE OPENING AND CLOSING TIMES AS READ FROM DATABASE
+            //echo $operatingHoursArray[0][0];
+            //echo $operatingHoursArray[0][1];
             $openingTime=strtotime($operatingHoursArray[0][0]);
             $closingTime=strtotime($operatingHoursArray[0][1]);
             $reservationTime=strtotime($_POST['time']);
@@ -79,31 +79,36 @@ class Reservation_controller extends Controller {
             {
                 $closingTime=strtotime("+1 day", $closingTime);
             }
-            echo $openingTime."-";
-            echo $closingTime;
-            
-            if($openingTime <= $reservationTime && $reservationTime <= $closingTime)
-                echo"VALID TIME RESERVED";
+            //FOR DEBUGGING, OUTPUTS UNIX TIMESTAMPS FOR THE OPENING/CLOSING/RESERVATION TIMES
+            //echo $openingTime."-";
+            //echo $closingTime;
+            //echo "reservation time: ".$reservationTime;
             $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime, $restaurantID);
             $restaurantCapacity=$this->reservation->getTableCount($restaurantID, $capacity );
-            echo "COUNT: ".$reservationCount."\n";
-            echo "CAPACITY: ".$restaurantCapacity."\n";
-
-            if($reservationCount < $restaurantCapacity)
+            //FOR DEBUGGING, OUTPUTS THE CURRENT COUNT OF RESERVATIONS FOR TIMESLOT
+            //echo "COUNT: ".$reservationCount."\n";
+            //echo "CAPACITY: ".$restaurantCapacity."\n";
+            if($reservationTime >= $openingTime && $reservationTime <= $closingTime)
             {
-               
-                if(!$reservation->addReservation($reserveArray)){
-                    exit("Error adding reservation.");
+                if($reservationCount < $restaurantCapacity)
+                {
+
+                    if(!$reservation->addReservation($reserveArray)){
+                        exit("Error adding reservation.");
+                    }
+                    else
+                        echo " Reservation added successfully.";
                 }
                 else
-                    echo " Reservation added successfully.";
+                        echo "Reservations are full for given timeslot.";
             }
             else
-                    echo "Reservations are full for given timeslot.";
-            
- 
-            }
+                echo "The restaurant is not open at the selected time or date. Please select another.";
         }
+    }
+    public function test(){
+        echo "TEST COMPLETE.";
+    }
 }
 
 ?>

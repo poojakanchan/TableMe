@@ -1,18 +1,22 @@
 <?php
 
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * class to handle http requests related to user.
  */
 
 require_once 'Controller.php';
 
 class User_controller extends Controller {
     
+/*
+ *  function to handle user registration. It collects all the post variables and
+ *  call database function to store login details and user details. 
+ */
     public function registerUser() {
          if (isset($_POST['submit'])) {
-            $username = htmlspecialchars($_POST["userUsername"]);
+         
+             //retrive post variables.
+             $username = htmlspecialchars($_POST["userUsername"]);
             $password = htmlspecialchars($_POST["userPassword"]);
          
             
@@ -20,6 +24,7 @@ class User_controller extends Controller {
             $name = htmlspecialchars($_POST["userFirstName"]) . " " . htmlspecialchars($_POST["userLastName"]);
             $email = htmlspecialchars($_POST["userEmail"]);
   
+            // call to database function.
             $user_model = $this->model('User_model');
             if($user_model->addUser($name,$phone,$email,$username,$password) > 0){
                     $success = 'success';

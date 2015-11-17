@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * class to handle database functions of reservation table. 
+ */
+
 //session_start();
 require_once 'Database.php';
  
@@ -16,6 +20,10 @@ class Reservation_model  extends Database{
         
         parent::__destruct();
     }
+    
+    /*
+     * function to add reservation table to the database.
+     */
     
     public function addReservation($reserveArray) {
        
@@ -55,7 +63,7 @@ class Reservation_model  extends Database{
         }
         return null;
     }
-    //del old reservations
+    //delete old reservations
     
     public function deleteOldReservation()
     {
@@ -88,6 +96,7 @@ class Reservation_model  extends Database{
         return -1;
     }
     
+    
     public function getTableCount($resId, $capacity)
     {
         $sql = "SELECT ".$capacity." FROM restaurant WHERE restaurant_id = :resId";
@@ -114,7 +123,9 @@ class Reservation_model  extends Database{
         }
         return null;
     }
-
+/*
+ * function to get restaurant name and ID of all the restuarants.
+ */
     public function getRestaurantNamesAll()
     {
         $sql = "SELECT restaurant_id, name FROM restaurant";
@@ -126,6 +137,10 @@ class Reservation_model  extends Database{
         }
         return null;
     }
+    
+    /*
+     * function to retrive operating hours of the provided restuarant. 
+     */
     public function getOperatingHoursByDay($from, $to, $resId)
     {
         //DATE_FORMAT(mytime, '%l:%i %p')

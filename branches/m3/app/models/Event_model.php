@@ -1,10 +1,6 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 /**
  * Provides access to special_event table
@@ -14,7 +10,7 @@
  require_once 'Database.php';
 
 class Event_model extends Database{
-    //put your code here
+   
     
      public function __construct() {
         try{
@@ -29,6 +25,9 @@ class Event_model extends Database{
         parent::__destruct();
     }
     
+    /*
+     * function to add special event to database.
+     */
     public function addEvent($eventArray) {
         $sql = "INSERT INTO special_event(restaurant_id, description, date, time, event_photo) "
                 . "VALUES(:resId, :desc, :date, :time, :photo)";
@@ -42,6 +41,9 @@ class Event_model extends Database{
         return $this ->insertDB($stmt);
     }
     
+    /*
+     * function to retrive all the special events for restaurant.
+     */
     public function getAllEvents() {
         $sql = "SELECT e.restaurant_id, e.description, e.date, e.time, e.event_photo, r.name "
                 . "FROM special_event e "
@@ -54,6 +56,8 @@ class Event_model extends Database{
         }
         return null;
     }
+    
+    
     public function getEventsByRestaurantId($resId) {
         $sql = "SELECT e.restaurant_id, e.title, e.description, e.date, e.time, e.event_photo, r.name "
                 . "FROM special_event e "

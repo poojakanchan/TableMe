@@ -7,14 +7,13 @@
  */
 
 /**
- * Description of Owner_model
- *
+ * class to handle databse functions of the owner table.
  * @author pooja
  */
  require_once 'Database.php';
 
 class Owner_model extends Database{
-    //put your code here
+    
     
      public function __construct() {
         try{

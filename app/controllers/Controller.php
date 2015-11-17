@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * base class to provide common functions of controller.
+ */
 //session_start();
 
   class Controller {

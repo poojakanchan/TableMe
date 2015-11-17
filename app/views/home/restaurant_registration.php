@@ -460,7 +460,7 @@ foreach ($food_category_array as $category) {
                                                               Any Information we collect form you may be used in one of the following ways:</p>
                                                               <p>
                                                               - To improve customer service (to display history of reservations, to display
-                                                                    already visited restaurants etc.
+                                                                    already visited restaurants etc.)
                                                              </p>
                                                               <p>
                                                               - To send confirmation emails

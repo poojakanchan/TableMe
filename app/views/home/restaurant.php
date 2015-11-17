@@ -40,7 +40,6 @@ if (!empty($oprHours)) {
     date_default_timezone_set("America/Los_Angeles");
     $today = getdate();
 
-
     switch ($today["weekday"]) {
         case "Monday":
             $from = $oprHours["monday_from"];
@@ -375,7 +374,7 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                         <br>
                         <h4>                  
                         <?php if ($from != null && $to != null) {
-                            echo "Today's Operating Hours: <br>" . $from . " - " . $to;
+                            echo "Today's Operating Hours: <br>" . date_format(new DateTime($from), "h:i A") . " - " . date_format(new DateTime($to), "h:i A");
                         }?>
                         </h4>
 
@@ -582,33 +581,34 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                         <h3>Operating Hours</h3>
                         <div class="container">
                             <?php if ($oprHours != null) { ?>
-                                <div class="col-md-1"> <h4>Mon: </h4> </div>
-                                <div class="col-md-11">
-                                    <h4> <?php echo $oprHours["monday_from"] . " - " . $oprHours["monday_to"]; ?> </h4>
+                                <div class="col-md-2"> <h4>Monday: </h4> </div>
+                                <div class="col-md-10">
+                                    <!--<h4> <?php //echo $oprHours["monday_from"] . " - " . $oprHours["monday_to"]; ?> </h4>-->
+                                    <h4> <?php echo date_format(new DateTime($oprHours["monday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["monday_to"]), "h:i A"); ?> </h4>
                                 </div>
-                                <div class="col-md-1"> <h4>Tue: </h4></div>
-                                <div class="col-md-11">
-                                    <h4> <?php echo $oprHours["tuesday_from"] . " - " . $oprHours["tuesday_to"]; ?> </h4>
+                                <div class="col-md-2"> <h4>Tuesday: </h4></div>
+                                <div class="col-md-10">
+                                    <h4> <?php echo date_format(new DateTime($oprHours["tuesday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["tuesday_to"]), "h:i A"); ?> </h4>
                                 </div>  
-                                <div class="col-md-1"> <h4>Wed:</h4> </div>
-                                <div class="col-md-11"> 
-                                    <h4> <?php echo $oprHours["wednesday_from"] . " - " . $oprHours["wednesday_to"]; ?> </h4>
+                                <div class="col-md-2"> <h4>Wednesday: </h4> </div>
+                                <div class="col-md-10"> 
+                                    <h4> <?php echo date_format(new DateTime($oprHours["wednesday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["wednesday_to"]), "h:i A"); ?> </h4>
                                 </div>
-                                <div class="col-md-1"> <h4>Thur: </h4> </div>
-                                <div class="col-md-11">
-                                    <h4> <?php echo $oprHours["thursday_from"] . " - " . $oprHours["thursday_to"]; ?> </h4>
+                                <div class="col-md-2"> <h4>Thursday: </h4> </div>
+                                <div class="col-md-10">
+                                    <h4> <?php echo date_format(new DateTime($oprHours["thursday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["thursday_to"]), "h:i A"); ?> </h4>
                                 </div>
-                                <div class="col-md-1"><h4> Fri: </h4> </div>
-                                <div class="col-md-11">
-                                    <h4> <?php echo $oprHours["friday_from"] . " - " . $oprHours["friday_to"]; ?> </h4>
+                                <div class="col-md-2"><h4> Friday: </h4> </div>
+                                <div class="col-md-10">
+                                    <h4> <?php echo date_format(new DateTime($oprHours["friday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["friday_to"]), "h:i A"); ?> </h4>
                                 </div>
-                                <div class="col-md-1"><h4> Sat:</h4> </div>
-                                <div class="col-md-11">
-                                    <h4> <?php echo $oprHours["saturday_from"] . " - " . $oprHours["saturday_to"]; ?> </h4>
+                                <div class="col-md-2"><h4> Saturday: </h4> </div>
+                                <div class="col-md-10">
+                                    <h4> <?php echo date_format(new DateTime($oprHours["saturday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["saturday_to"]), "h:i A"); ?> </h4>
                                 </div>
-                                <div class="col-md-1"> <h4> Sun:</h4> </div>
-                                <div class="col-md-11">
-                                    <h4> <?php echo $oprHours["sunday_from"] . " - " . $oprHours["sunday_to"]; ?> </h4>
+                                <div class="col-md-2"> <h4> Sunday: </h4> </div>
+                                <div class="col-md-10">
+                                    <h4> <?php echo date_format(new DateTime($oprHours["sunday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["sunday_to"]), "h:i A"); ?> </h4>
                                 </div>
                                 <?php } else { ?>
                                 <h4> Sorry, Operation Hours are not available.</h4>

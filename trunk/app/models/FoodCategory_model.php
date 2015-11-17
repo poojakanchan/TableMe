@@ -7,8 +7,7 @@
  */
 
 /**
- * Description of FoodCategory_model
- *
+ * class to handle database functions of food category table.
  * @author pooja
  */
 
@@ -27,6 +26,9 @@ class FoodCategory_model extends Database {
         parent::__destruct();
     }
  
+    /*
+     * database function to get all food categories.
+     */
     public function getAllFoodCategories() {
          $sql = "SELECT * FROM food_category";
         $stmt = $this->dbh->prepare($sql);

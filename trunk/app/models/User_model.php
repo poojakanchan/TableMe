@@ -1,16 +1,11 @@
 <?php //
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of User_model
- *
+ * class to handle database functions of user class.
  * @author pooja
  */
+
+
 require_once 'Database.php';
 class User_model extends Database{
  public function __construct() {
@@ -26,6 +21,9 @@ class User_model extends Database{
         parent::__destruct();
     }
     
+    /*
+     * function to add login details in the database.
+     */
     public function addLogin($username, $password, $role) {
         $sql = "INSERT INTO login(username, password, role) VALUES(:name, :pswd, :role)";
         $stmt = $this->dbh->prepare($sql);
@@ -35,6 +33,10 @@ class User_model extends Database{
         return $stmt;
      //   return $this->insertDB($stmt);
     }
+    
+    /*
+     * function to build database query to add user to database.
+     */
     public function prepareUserQuery($name,$email,$phone,$username) {
         $sql = "INSERT INTO user(name,email,contact,username) VALUES(:name,:email, :contact,:username)";
         $stmt = $this->dbh->prepare($sql);
@@ -45,6 +47,9 @@ class User_model extends Database{
        return $stmt;
     }
     
+    /*
+     * function to add user to database.
+     */
     public function addUser($name,$phone,$email,$username,$password) {
    
     try {
@@ -67,14 +72,18 @@ class User_model extends Database{
                 }
             }
     }catch (Exception $ex) {
- //           echo $ex->getMessage();
+ //           
         }
+        echo $ex->getMessage();
         $this->dbh->rollBack();
         $this->dbh->setAttribute(PDO::ATTR_AUTOCOMMIT,1);
         return -1;
             
      }
      
+     /*
+      * function to get user details from database for the provided user name.
+      */
      
      public function getUser($username) {
         $sql = "SELECT * FROM user WHERE username=:username";
@@ -86,6 +95,9 @@ class User_model extends Database{
         return null;
     }
 
+    /*
+     * function to retrive profile picture of the user.
+     */
     public function getUserImage($username) {
         $sql = "SELECT user_image FROM user WHERE username=:username";
         $stmt = $this->dbh->prepare($sql);
@@ -96,6 +108,9 @@ class User_model extends Database{
         return null;
     }
 
+    /*
+     * function to retrive reservation history of the provided user.
+     */
     public function getReservationHistory($userId) {
         $sql = "SELECT v.date, r.name, v.time, v.no_of_people, w.review_description, v.restaurant_id, v.user_id "
                 . "FROM reservation v INNER JOIN restaurant r ON v.restaurant_id=r.restaurant_id "
@@ -113,6 +128,9 @@ class User_model extends Database{
     }
 
 
+    /*
+     * function to update user information like email id, password, contact details.
+     */
     public function updateUser($username, $newContact, $newEmail, $newPassword, $newImage) {
         if (!empty($newPassword)) {
             $sql = "UPDATE login SET password=:newPassword WHERE username=:username";

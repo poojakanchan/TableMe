@@ -1,15 +1,29 @@
 <?php
 
+/*
+ * Controller class to handle http requests related to restaurant.
+ */
+
 // session_start();
 require_once 'Controller.php';
 
 class Restaurant_controller extends Controller {
     private $restaurant;
-    
+
+    /*
+     * Constructor of the class.
+     * Creates an object of resturant model class and stores in the variable for future use.
+     */
     public function __construct() {
         $this->restaurant = $this->model('Restaurant_model');
     }
 
+    /*
+     * method retrieves restaurants and returns in form of array
+     * if search text is not set, it retrives all the restaurants 
+     * if search text is set, it filters the results by calling appropriate databasd query
+     *  and return them.
+     */
     public function index() {
         global $foodCategoryArray;
         if ($_POST) {
@@ -34,10 +48,18 @@ class Restaurant_controller extends Controller {
         }
     }
     
+    /*
+     * function to return all food categories from database.
+     */
     public function getFoodCategories() {
         return $this->restaurant->getFoodCategories();
     }
 
+    /*
+     * function to register a  restaurant with the system
+     * It gets all post variables, store in arrays and call database functions to store
+     *  owner, login details of the owner and restaurant details.
+     */
     public function add() {
         //Add login details
         if (isset($_POST['submit'])) {
@@ -139,19 +161,30 @@ class Restaurant_controller extends Controller {
             
         }
     }
+    
+    /*
+     * 
+     */
+    
     public function getFoodCategory() {
         $food_category = $this->model('FoodCategory_model');
         return $food_category->getAllFoodCategories();
         
     }
 
-  
+  /*
+   * function to get all the user names from login model.
+   */
     public function getAllUserNames() {
         $login = $this->model('Login_model');
         
         return $login->getAllUsernames();
     }
     
+    /*
+     * function to retrive opertaing hours of the provided restaurant ID.
+     *  
+     */
     public function getOperatingHours($resId) {
         $op_model = $this->model('OperationHours_model');
         return $op_model-> getOperatingHoursByRestaurantId($resId);

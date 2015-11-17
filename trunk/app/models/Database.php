@@ -1,15 +1,15 @@
 <?php
 
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * base class to provide common database functions.
+ * All models extend this class.
  */
 class Database {
 public $dbh = null;
 
     /* Open the database connection when an instance of DB class is created*/
     public function __construct(){
+        // MYSQL DB connection details
         $connectionString = "mysql:host=localhost;dbname=student_f15g11";
         $username ="f15g11";
     $password ="CSC648team11";
@@ -47,6 +47,9 @@ public $dbh = null;
 
     }
     
+    /*
+     * function to fetch the results.
+     */
     public function selectDB($stmt) {
         if ($stmt->execute()){
             return $stmt->fetchAll();
@@ -56,6 +59,9 @@ public $dbh = null;
         }
     }
  
+    /*
+     * update the table function.
+     */
     public function updateDB($stmt) {
         try {
             $this->dbh->beginTransaction();

@@ -72,8 +72,9 @@ class User_model extends Database{
                 }
             }
     }catch (Exception $ex) {
- //           echo $ex->getMessage();
+ //           
         }
+        echo $ex->getMessage();
         $this->dbh->rollBack();
         $this->dbh->setAttribute(PDO::ATTR_AUTOCOMMIT,1);
         return -1;

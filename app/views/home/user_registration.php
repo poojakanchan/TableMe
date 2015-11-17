@@ -74,7 +74,7 @@
        <?php
        
         include 'header.php';
-       /*
+       
         $user = __DIR__ . '/../../controllers/User_Controller.php';
         require_once $user;
         require_once '../../models/Login_model.php';
@@ -86,7 +86,7 @@
             $user_controller->registerUser();
         }
         $existingUsernames = $db->getAllUsernames();
-        */
+        
         ?>
 
         <div class="container">

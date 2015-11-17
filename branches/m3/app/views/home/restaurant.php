@@ -3,6 +3,17 @@ require_once 'header.php';
 require_once __DIR__ . '/../../models/Restaurant_model.php';
 require_once __DIR__ . '/../../models/OperationHours_model.php';
 require_once __DIR__ . '/../../models/Event_model.php';
+require_once __DIR__ . '/../../controllers/Reservation_controller.php';
+
+$reservation;
+if(!isset($reservation))
+{
+      $reservation = new Reservation_controller();
+}
+if($_POST)
+{
+      $reservation->add();
+}
 $db = new Restaurant_model();
 $resId = (array_key_exists('resid', $_GET) ? htmlspecialchars($_GET['resid']) : 0);
 $restaurant = $db->findRestaurantById($resId);
@@ -385,10 +396,10 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                         }?>
                         </h4>
 
-                        <button class="btn btn-info" data-toggle="modal" data-id="<?php //echo $restaurant['restaurant_id']   ?>" data-target="#reservation-<?php //echo $restaurant['restaurant_id']   ?>" >
+                        <button class="btn btn-info" data-toggle="modal" data-id="<?php echo $resId   ?>" data-target="#reservation-<?php echo $resId   ?>" >
                             Make a Reservation
                         </button>
-                        <div  class="modal fade" id="reservation-<?php //echo $restaurant['restaurant_id']   ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div  class="modal fade" id="reservation-<?php echo $resId   ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <form name="myForm" action="#.php" onsubmit="return validateForm()" method="post">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -455,7 +466,7 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                                                             <option value="28">28</option>
                                                             <option value="29">29</option>
                                                             <option value="30">30</option>
-                                                            option value="31">31</option>
+                                                            <option value="31">31</option>
                                                         </select>
 
                                                         <select class="selectpicker" data-width="auto" id="year" name="year" required>
@@ -470,51 +481,51 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                                                             <option value ="8am">8:00 AM</option>
                                                             <option value="8:30am">8:30 AM</option>
                                                             <option value="9am">9:00 AM</option>
-                                                            <option value="930am">9:30 AM</option>
+                                                            <option value="9:30am">9:30 AM</option>
                                                             <option value="10am">10:00 AM</option>
-                                                            <option value="1030am">10:30 AM</option>
+                                                            <option value="10:30am">10:30 AM</option>
                                                             <option value ="11am">11:00 AM</option>
-                                                            <option value="1130am">11:30 AM</option>
+                                                            <option value="11:30am">11:30 AM</option>
                                                             <option value="12pm">12:00 PM</option>
-                                                            <option value="1230pm">12:30 PM</option>
+                                                            <option value="12:30pm">12:30 PM</option>
                                                             <option value="1pm">1:00 PM</option>
-                                                            <option value="130pm">1:30 PM</option>
+                                                            <option value="1:30pm">1:30 PM</option>
                                                             <option value="2pm">2:00 PM</option>
-                                                            <option value="230pm">2:30 PM</option>
+                                                            <option value="2:30pm">2:30 PM</option>
                                                             <option value="3pm">3:00 PM</option>
-                                                            <option value="330pm">3:30 PM</option>
+                                                            <option value="3:30pm">3:30 PM</option>
                                                             <option value="4pm">4:00 PM</option>
-                                                            <option value="430pm">4:30 PM</option>
+                                                            <option value="4:30pm">4:30 PM</option>
                                                             <option value="5pm">5:00 PM</option>
-                                                            <option value="530pm">5:30 PM</option>
+                                                            <option value="5:30pm">5:30 PM</option>
                                                             <option value="6pm">6:00 PM</option>
-                                                            <option value="630pm">6:30 PM</option>
+                                                            <option value="6:30pm">6:30 PM</option>
                                                             <option value="7pm">7:00 PM</option>
-                                                            <option value="730pm">7:30 PM</option>
+                                                            <option value="7:30pm">7:30 PM</option>
                                                             <option value="8pm">8:00 PM</option>
-                                                            <option value="830pm">8:30 PM</option>
+                                                            <option value="8:30pm">8:30 PM</option>
                                                             <option value="9pm">9:00 PM</option>
-                                                            <option value="930pm">9:30 PM</option>
+                                                            <option value="9:30pm">9:30 PM</option>
                                                             <option value="10pm">10:00 PM</option>
-                                                            <option value="1030pm">10:30 PM</option>
+                                                            <option value="10:30pm">10:30 PM</option>
                                                             <option value="11pm">11:00 PM</option>
-                                                            <option value="1130pm">11:30 PM</option>
+                                                            <option value="11:30pm">11:30 PM</option>
                                                             <option value="12am">12:00 AM</option>
-                                                            <option value="1230am">12:30 AM</option>
+                                                            <option value="12:30am">12:30 AM</option>
                                                             <option value="1am">1:00 AM</option>
-                                                            <option value="130am">1:30 AM</option>
+                                                            <option value="1:30am">1:30 AM</option>
                                                             <option value="2am">2:00 AM</option>
-                                                            <option value="230am">2:30 AM</option>
+                                                            <option value="2:30am">2:30 AM</option>
                                                             <option value="3am">3:00 AM</option>
-                                                            <option value="330am">3:30 AM</option>
+                                                            <option value="3:30am">3:30 AM</option>
                                                             <option value="4am">4:00 AM</option>
-                                                            <option value="430am">4:30 AM</option>
+                                                            <option value="4:30am">4:30 AM</option>
                                                             <option value="5am">5:00 AM</option>
-                                                            <option value="530am">5:30 AM</option>
+                                                            <option value="5:30am">5:30 AM</option>
                                                             <option value="6am">6:00 AM</option>
-                                                            <option value="630am">6:30 AM</option>
+                                                            <option value="6:30am">6:30 AM</option>
                                                             <option value="7am">7:00 AM</option>
-                                                            <option value="730am">7:30 AM</option>
+                                                            <option value="7:30am">7:30 AM</option>
                                                         </select>
                                                         <br><br>
                                                         <div class="row">

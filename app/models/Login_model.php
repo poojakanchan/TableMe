@@ -1,9 +1,7 @@
 <?php
 
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * class to handle database functions of login table.
  */
 
  require_once 'Database.php';
@@ -22,6 +20,9 @@ class Login_model extends Database {
         parent::__destruct();
     }
     
+    /*
+     * function to validate login credentials: username and password.
+     */
 public function validateLogin($username, $password) {
         $sql = "SELECT * FROM login WHERE username=:username AND password=:password";
         $stmt = $this->dbh->prepare($sql);
@@ -30,11 +31,14 @@ public function validateLogin($username, $password) {
         if ($stmt->execute()) {
             $result = $stmt->fetch();
             if (!empty($result))
-                return true;
+                return $result;
         }
         return false;
     }
     
+    /*
+     * function to add login details to database.
+     */
     public function addLogin($username, $password, $role) {
         $sql = "INSERT INTO login(username, password, role) VALUES(:name, :pswd, :role)";
         $stmt = $this->dbh->prepare($sql);
@@ -45,6 +49,9 @@ public function validateLogin($username, $password) {
      //   return $this->insertDB($stmt);
     }
     
+    /*
+     * get all user names from the table.
+     */
     public function getAllUsernames() {
         $sql = "SELECT username FROM login";
         $stmt = $this->dbh->prepare($sql);

@@ -51,21 +51,21 @@
 
 <body>
     <!-- Navigation Bar -->
-    <?php 
-    include 'header.php';
+    <?php
+    require_once 'header.php';
     require_once '../../models/User_model.php';
-    session_start();
-    
-    if(!isset($_SESSION['username'])) {
+//    session_start();
+
+    if (!isset($_SESSION['username'])) {
         header('location: ../home/login.php');
     }
-    
+
     $db = new User_model();
     $username = $_SESSION['username'];
     $userInfo = $db->getUser($username);
     $userReservations = $db->getReservationHistory($userInfo['user_id']);
-    
-    
+
+
     if ($_POST) {
         $newPhoneNum = htmlspecialchars($_POST['phone_number']);
         $newEmail = htmlspecialchars($_POST['email']);
@@ -79,8 +79,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                
-                <?php 
+
+                <?php
                 echo '<img width="200" height="auto" src="data:image/jpeg;base64,' . base64_encode($userInfo['user_image']) . '"/>';
                 ?>
             </div>
@@ -99,13 +99,39 @@
         <div class="row">
             <div class="col-sm-12">
                 <ul class="nav nav-tabs"> <!-- Tab for the UserSection -->
-                    <li class="active"><a href="#history">History</a></li>
-                    <li> <a href="#favorite">Favorite</a></li>
+                    <li class="active"><a href="#reservation">Reservation</a></li>
+                    <li><a href="#history">History</a></li>
                     <li> <a href="#edit">Edit Profile</a></li>         
                 </ul> <!-- Done with the tab -->
 
                 <div class="tab-content">
-                    <div id="history" class="tab-pane fade in active">
+                    <div id="reservation" class="tab-pane fade in active">
+                        <div class="table-resposive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>DATE</th>
+                                        <th>TIME</th>
+                                        <th>Name of Restaurant</th>
+                                        <th># of People</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>date</td>
+                                        <td>time</td>
+                                        <td>Name of the Restaurant</td>
+                                        <td>4</td>
+                                        <td>
+                                            <a href="#cancel" class="btn btn-info" role="button"> Cancel Reservation </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="history" class="tab-pane fade">
                         <div class="table-responsive">
                             <table class="table table hover">
                                 <thead>
@@ -121,16 +147,16 @@
                                     <?php
                                     if (!empty($userReservations)) {
                                         foreach ($userReservations as $reservation) {
-                                        echo '<tr>';
-                                        echo '<td>'.$reservation['date'] .'</td>';
-                                        echo '<td>'.$reservation['name'] .'</td>';
-                                        echo '<td>'.$reservation['time'] .'</td>';
-                                        echo '<td>'.$reservation['no_of_people'] .'</td>';
-                                        if (empty($reservation['review_description']))
-                                            echo '<td><a href="#review page" class="btn btn-info" role="button"> Review </a>';
-                                        else
-                                            echo '<td>'.$reservation['review_description'].'</td>';
-                                        echo '</tr>';
+                                            echo '<tr>';
+                                            echo '<td>' . $reservation['date'] . '</td>';
+                                            echo '<td>' . $reservation['name'] . '</td>';
+                                            echo '<td>' . $reservation['time'] . '</td>';
+                                            echo '<td>' . $reservation['no_of_people'] . '</td>';
+                                            if (empty($reservation['review_description']))
+                                                echo '<td><a href="#review page" class="btn btn-info" role="button"> Write A Review </a>';
+                                            else
+                                                echo '<td>' . $reservation['review_description'] . '</td>';
+                                            echo '</tr>';
                                         }
                                     }
                                     ?>
@@ -139,19 +165,6 @@
                             </table>
                         </div>
                     </div> <!-- End of history -->  
-                    <div id="favorite" class="tab-pane fade">
-                        <br>
-                        <div class="col-md-3">
-                            <div class="thumbnail">
-                                <!--<div class="caption">-->
-                                    <h3> Name of Restaurant </h3>
-                                    <br>
-                                    <h1><center><a href="" class="label label-default" rel="tooltip">Reservation</a></center></h1>
-                                <!--</div>-->
-                                <img src="http://lorempixel.com/400/300/sports/1/">
-                            </div>
-                        </div>
-                    </div>
                     <div id="edit" class="tab-pane fade">
                         <form class="form" action="##" method="post" id="editregistrationform">
                             <div class="form-group">
@@ -197,7 +210,7 @@
                 $(".nav-tabs a").click(function () {
                     $(this).tab('show');
                 });
-                $("#submit_button").click(function() {
+                $("#submit_button").click(function () {
                     var validated = true;
                     if ($("#password").val() != $("#password2").val()) {
                         alert('Passwords do not match');
@@ -210,7 +223,7 @@
                     else {
                         $('#email').css("border", "");
                     }
-                    
+
                     if (!validatePhoneNumber($('#phone_number').val())) {
                         $('#phone_number').css("border", "#FF0000 1px solid");
                         validated = false;
@@ -221,27 +234,19 @@
                     return validated;
                 });
             });
-            
+
             function validateEmail(email) {
                 var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
                 return re.test(email);
             }
-            
+
             function validatePhoneNumber(phoneNumber) {
                 var re = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
                 return re.test(phoneNumber);
             }
-            
-            $("[rel='tooltip']").tooltip();
 
-            $('.thumbnail').hover(
-                    function () {
-                        $(this).find('.caption').slideDown(250); 
-                    },
-                    function () {
-                        $(this).find('.caption').slideUp(250);
-                    }
-            );
+            $("[rel='tooltip']").tooltip();
+            
         </script>   
 
 </body>

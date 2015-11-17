@@ -1,3 +1,20 @@
+<?php
+include 'header.php';
+$res = __DIR__ . '/../../controllers/Restaurant_controller.php';
+require_once $res;
+$restaurant = new Restaurant_controller();
+//         $flag = $_GET['checkUsername'];
+//  if (isset($_GET['checkUsername']) && !empty($_GET['checkUsername'])) {
+if ($_POST) {
+    $restaurant->add();
+}
+$food_category_array = $restaurant->getFoodCategory();
+$username_array = $restaurant->getAllUserNames();
+// echo $username_array;
+// } else {
+//             if($restaurant->checkUserName());
+// }
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -25,17 +42,16 @@
                 size: 4
             });
 
-      
-                //no special characters in name
-                //email needs to be correct
-                // username no less than 4 no more than 10 letters numbers no space
-                // password just letters and numbers
-                // description 150 characters 
-                // max size of 500 mb for profile picture and menu 
-                // validate phone number
+
             
+            
+            // username no less than 4 no more than 10 letters numbers no space
+            // description 150 characters 
+            // max size of 500 mb for profile picture and menu 
+            // validate phone number
+
             function validateForm() {
-                   alert('validate');
+                
                 var ownerUsername = document.forms["form"]["ownerUsername"].value;
                 var ownerPassword = document.forms["form"]["ownerPassword"].value;
                 var ownerConfirmPassword = document.forms["form"]["ownerConfirmPassword"].value;
@@ -49,6 +65,11 @@
 
                 if (ownerUsername === null || ownerUsername === "") {
                     alert("Username must be filled out.");
+                    return false;
+                }
+                
+                if(!/[a-zA-Z0-9]+/.test(ownerUsername)) {
+                    alert("Username can only be letters and numbers.");
                     return false;
                 }
 
@@ -71,9 +92,19 @@
                     alert("First name must be filled out.");
                     return false;
                 }
+                
+                if(!/[a-zA-Z]+/.test(ownerFirstName)) {
+                    alert("First name can only be letters.");
+                    return false;
+                }
 
                 if (ownerLastName === null || ownerLastName === "") {
                     alert("Last name must be filled out.");
+                    return false;
+                }
+                
+                if(!/[a-zA-Z]+/.test(ownerLastName)) {
+                    alert("Last name can only be letters.");
                     return false;
                 }
 
@@ -81,9 +112,14 @@
                     alert("Phone must be filled out.");
                     return false;
                 }
+                
+                if(!/[0-9]+/.test(ownerPhone)) {
+                    alert("Phone can only be numbers.");
+                    return false;
+                }
 
                 if (ownerEmail === null || ownerEmail === "") {
-                    alert("Day must be filled out.");
+                    alert("Email must be filled out.");
                     return false;
                 }
 
@@ -101,30 +137,19 @@
                     alert("Restaurant phone must be filled out.");
                     return false;
                 }
+                
+                if(!/[0-9]+/.test(restaurantPhone)) {
+                    alert("Phone can only be numbers.");
+                    return false;
+                }
 
-            
+
             }
-            
+
         </script>
-</head><?php include 'header.php';
-        $res = __DIR__ . '/../../controllers/Restaurant_controller.php';
-        require_once $res;
-        $restaurant = new Restaurant_controller();
-        //         $flag = $_GET['checkUsername'];
-        //  if (isset($_GET['checkUsername']) && !empty($_GET['checkUsername'])) {
-        if ($_POST) {
-            $restaurant->add();
-        }
-        $food_category_array = $restaurant->getFoodCategory();
-        $username_array = $restaurant->getAllUserNames();
-       // echo $username_array;
-        
-        // } else {
-        //             if($restaurant->checkUserName());
-        // }
-       
-?><body>
-<div class="container">
+    </head>
+    <body>
+        <div class="container">
             <h1 class="well">Restaurant Registration Form</h1>
             <div class="col-lg-12 well">
                 <div class="row">
@@ -267,10 +292,10 @@
                                     <div class="form-group">
                                         <label>Type of Food</label>
                                         <select class="selectpicker" name ="food_category"><?php
-                                            foreach ($food_category_array as $category) {
-                                                echo "<option value=" . $category['name'] . ">" . $category['name'] . "</option>";
-                                            }
-                                            ?><option value ="any" selected="selected">Select Food Type</option>
+foreach ($food_category_array as $category) {
+    echo "<option value=" . $category['name'] . ">" . $category['name'] . "</option>";
+}
+?><option value ="any" selected="selected">Select Food Type</option>
                                         </select>
                                     </div>
 
@@ -405,15 +430,70 @@
 
                             <br>
                             <h4><input type="checkbox" name="checkbox" value="privacypolicy" required> 
-                                I agree to the Privacy Policy.</h4>
+                                I agree to the 
+                                <a href="JavaScript:newPopup
+                                   ('privacy_policy.html');" data-toggle="modal" data-target="#privacy_policy">
+                                      Privacy Policy</a>.</h4>
                             <br>
+                              <div  class="modal fade"  id = "privacy_policy" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 
-                            <h4>If you do not agree please cancel.</h4>
-                            <input type="button" class="btn btn-primary" value="Cancel Registration" onclick="index.php"> 
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <label class="modal-title" name ="myModalLabel" id="myModalLabel">Privacy Policy </label>
+                                                </div>
+                                                <div class="modal-body">
+                                                   
+                                                      <p>
+                                                          <b>
+                                                              What Information we collect?
+                                                          </b>
+                                                      <p>
+                                                          While registering on our site, you may be asked to enter:your name, email , contact number.
+                                                          However you may visit our website anonymously.
+                                                          </p>
+                                                          <b>
+                                                              What do we use Information for?
+                                                          </b>
+                                                          <p>
+                                                              Any Information we collect form you may be used in one of the following ways:</p>
+                                                              <p>
+                                                              - To improve customer service (to display history of reservations, to display
+                                                                    already visited restaurants etc.)
+                                                             </p>
+                                                              <p>
+                                                              - To send confirmation emails
+                                                              </p>
+                                                          
+                                                          <b>
+                                                              How do we protect Information
+                                                          </b>
+                                                          <p>
+                                                              We do not sell, transfer or trade your information to outside parties.
+                                                              However some of the information may be displayed on our website.
+                                                              </p>
+                                                              
+                                                          <b>
+                                                              By using our site, you consent to our privacy policy
+                                                          </b>    
+                                                                           
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                </div>
+                                    
+                            
+                            <h4>If you do not agree please cancel.
+                            <input type="button" class="btn btn-primary" value="Cancel Registration" onclick="index.php">
+                            </h4>
                             <br>
                             <br>
-                            <br>
-
 
                             <button type="reset" class="btn btn-lg btn-primary" value="reset" name="reset">Reset Form</button>
                             <button type="submit" class="btn btn-lg btn-primary" value="submit" name="submit" style="float: right">Register Restaurant</button>
@@ -427,24 +507,24 @@
     </body>
 
     <script type="text/javascript">
-$(document).ready(function () {
-                $("#username").focusout(function () {
-                    var existingUsernames = <?php echo json_encode($username_array) ?>;
-                    var inputUsername = $("#username").val();
-                    if (!inputUsername) {
-                        $("#username").css("border", "#FF0000 1px solid");
-                        $("#usernameLabel").replaceWith ("<label id='usernameLabel'>Username*<i style='color:red'>Username cannot be empty</i></label>");
-                        return;
-                    }
-                    if (jQuery.inArray(inputUsername, existingUsernames) !== -1) {
-                        $("#username").css("border", "#FF0000 1px solid");
-                        $("#usernameLabel").replaceWith ("<label id='usernameLabel'>Username*<i style='color:red'>Username already taken</i></label>");
-                        return;
-                    }
-                    $("#username").css("border", "");
-                    $("#usernameLabel").replaceWith('<label id="usernameLabel">Username*</label>');
-                });
+        $(document).ready(function () {
+            $("#username").focusout(function () {
+                var existingUsernames = <?php echo json_encode($username_array) ?>;
+                var inputUsername = $("#username").val();
+                if (!inputUsername) {
+                    $("#username").css("border", "#FF0000 1px solid");
+                    $("#usernameLabel").replaceWith("<label id='usernameLabel'>Username*<i style='color:red'>Username cannot be empty</i></label>");
+                    return;
+                }
+                if (jQuery.inArray(inputUsername, existingUsernames) !== -1) {
+                    $("#username").css("border", "#FF0000 1px solid");
+                    $("#usernameLabel").replaceWith("<label id='usernameLabel'>Username*<i style='color:red'>Username already taken</i></label>");
+                    return;
+                }
+                $("#username").css("border", "");
+                $("#usernameLabel").replaceWith('<label id="usernameLabel">Username*</label>');
             });
-        
+        });
+
     </script>
 </html>

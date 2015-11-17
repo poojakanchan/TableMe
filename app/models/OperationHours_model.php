@@ -1,16 +1,9 @@
 <?php
 
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * class to handle database functions of the table operating hours.
  */
-/*if(!isset($_SESSION)) 
-    { 
-        session_start(); 
-    } 
-$database = $_SESSION['ROOT'].'/app/core/Database.php';
- require_once $database;*/
+
 class OperationHours_model extends Database {
     
        public function __construct() {
@@ -26,6 +19,9 @@ class OperationHours_model extends Database {
         parent::__destruct();
     }
      
+    /*
+     * funtion to get operating hours of the provided resturant
+     */
     public function getOperatingHoursByRestaurantId($resId) {
          $sql = "SELECT * FROM operating_hours where restaurant_id =";
          $sql = $sql. $resId;

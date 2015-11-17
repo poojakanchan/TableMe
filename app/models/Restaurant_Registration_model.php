@@ -1,9 +1,10 @@
 <?php
 
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * class to handle restaurant registration process.
+ * the class handles database transactions while registering.
+ * If error occurs, all the database transactions are tolled back. If registration is successful, 
+ *  database transactions are commited. 
  */
 
 class Restaurant_registration_model extends Database {
@@ -33,6 +34,10 @@ class Restaurant_registration_model extends Database {
        // return $this ->insertDB($stmt);
         return $stmt;
     }
+    
+    /*
+     * build  databse query to add operating hours to database.
+     */
      public function add_operating_hours($operArray) {
         $sql = "INSERT INTO operating_hours(restaurant_id,monday_from,tuesday_from,wednesday_from,thursday_from,friday_from,"
                 . "saturday_from,sunday_from,monday_to,tuesday_to,wednesday_to,thursday_to,friday_to,"
@@ -61,6 +66,9 @@ class Restaurant_registration_model extends Database {
        // return $this ->insertDB($stmt);
         
     }
+    /*
+     * build  databse query to add login details to database.
+     */
     public function addLogin($username, $password, $role) {
         $sql = "INSERT INTO login(username, password, role) VALUES(:name, :pswd, :role)";
         $stmt = $this->dbh->prepare($sql);
@@ -71,7 +79,10 @@ class Restaurant_registration_model extends Database {
      //   return $this->insertDB($stmt);
     }
     
-    /* add a restaurant to the restaurant table. The restaurant information is in an associative array argument*/
+    /*
+     * build  databse query to add restuarant details  to database.
+     */
+     
     public function addRestaurant($resArray,$thumbnail,$menuFile) {
         
        /* $fhThumbnail = $fhMenu = null;
@@ -83,7 +94,7 @@ class Restaurant_registration_model extends Database {
         }        
        */
         
-        $sql = "INSERT INTO restaurant(name, food_category_name, phone_no, address, thumbnail, description, flag_new, menu, capacity, num_two_tables, num_four_tables,num_six_tables, name_address) VALUES(:name, :food_category_name, :phone_no, :address, :thumbnail, :description, :flag_new, :menu, :capacity, :num_two_tables, :num_four_tables,:num_six_tables, :name_address)";
+        $sql = "INSERT INTO restaurant(name, food_category_name, phone_no, address, thumbnail, description, flag_new, menu, capacity, num_two_tables, num_four_tables,num_six_tables, name_address_category) VALUES(:name, :food_category_name, :phone_no, :address, :thumbnail, :description, :flag_new, :menu, :capacity, :num_two_tables, :num_four_tables,:num_six_tables, :name_address)";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':name', $resArray['name']);
         $stmt->bindParam(':food_category_name', $resArray['food_category_name']);
@@ -97,12 +108,16 @@ class Restaurant_registration_model extends Database {
         $stmt->bindParam(':num_two_tables', $resArray['twos']);
         $stmt->bindParam(':num_four_tables', $resArray['fours']);
         $stmt->bindParam(':num_six_tables', $resArray['sixes']);
-        $nameAddress = $resArray['name']." ".$resArray['address'];
+        $nameAddress = $resArray['name']." ".$resArray['address']. " " . $resArray['food_category_name'];
         $stmt->bindParam(':name_address', $nameAddress);
         return $stmt;
     }
-    
-    
+    /*
+     *  add a restaurant to the database.
+     * The restaurant information is in an associative arrays passed as arguments.
+     * All the database operations are put in single transaction to allow rollback if error occurs 
+     * while registering. 
+     */
     public function registerRestaurant($resArray,$ownerArray,$operatinghours,$username, $password,$thumbnail,$menuFile) {
         
     
@@ -148,8 +163,9 @@ class Restaurant_registration_model extends Database {
                }
             }
     }catch (Exception $ex) {
-         //   echo $ex->getMessage();
+         //   
         }
+        echo $ex->getMessage();
         $this->dbh->rollBack();
         $this->dbh->setAttribute(PDO::ATTR_AUTOCOMMIT,1);
         return -1;

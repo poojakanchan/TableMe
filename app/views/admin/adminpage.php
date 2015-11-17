@@ -44,7 +44,7 @@
         </div> <!-- End of Row -->
         <ul class="nav nav-tabs"> <!-- Tab for the UserSection -->
             <li class="active"><a href="#restaurants">Newly Registered Restaurants</a></li>
-            <li> <a href="#reports">Bug Reports</a></li>
+            <li> <a href="#rest_list">Restaurant List</a></li>
             <li> <a href="#reviews">Reviews</a></li> 
             <li> <a href="#users">User List</a></li> 
         </ul> <!-- Done with the tab --> 
@@ -76,26 +76,26 @@
                     </table>
                 </div>
             </div> <!-- End of Restaurant Tab -->
-            <div id="reports" class="tab-pane fade">
+            <div id="rest_list" class="tab-pane fade">
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>DATE</th>
-                                <th>TIME</th>
-                                <th>Username</th>
-                                <th>Title</th>
-                                <th>Review</th>
+                                <th>Restaurant Name</th>
+                                <th>Owner Name</th>
+                                <th>Type of Food</th>
+                                <th>Phone Number</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="items">
                             <tr>
-                                <td>date</td>
-                                <td>time</td>
-                                <td>UserReported</td>
-                                <td>Report Title</td>
+                                <td>Name of the Restaurant</td>
+                                <td>Name of Owner</td>
+                                <td>FoodType</td>
+                                <td>XXX-XXX-XXXX</td>
                                 <td>
-                                    <a href="#ReportPage" class="btn btn-info" role="button"> Details </a>
+                                    <a href="#ReportPage" class="btn btn-info" role="button"> DELETE </a>
                                 </td>
                             </tr>
                         </tbody>

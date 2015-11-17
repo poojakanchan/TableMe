@@ -51,7 +51,7 @@ $username_array = $restaurant->getAllUserNames();
             // validate phone number
 
             function validateForm() {
-                alert('validate');
+                
                 var ownerUsername = document.forms["form"]["ownerUsername"].value;
                 var ownerPassword = document.forms["form"]["ownerPassword"].value;
                 var ownerConfirmPassword = document.forms["form"]["ownerConfirmPassword"].value;

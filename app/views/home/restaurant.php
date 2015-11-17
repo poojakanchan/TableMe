@@ -93,16 +93,15 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
 <html lang="en">
     <head>
         <title>TableMe</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
 
-        <!-- Will merge into js file after all is done. -->
+        <!-- Will merge the style and script code into CSS and JS file after all is done. -->
         <style>
-
             .event-list {
                 list-style: none;
                 margin: 0px;
@@ -218,7 +217,6 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                     position: relative;
                     height: 90px;
                     text-align: left;
-                    padding-right: 40px;
                 }	
                 .event-list > li > .info > .title, 
                 .event-list > li > .info > .desc {
@@ -242,40 +240,25 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
 
     </head>
     <body>
-
-
-
         <div class="container-fluid">
             <div class="mainInfo col-md-8">
                 <div class="restaurantprofile col-md-12">
                     <div class="restaurantpic col-md-6">
                         <a href="#" data-toggle="modal" data-target="#modal-logo">
-                            <img src="<?php
-                            $i = 0;
-                            echo $i < $n ? "getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw";
-                            $i++;
-                            ?>" class="img-rounded" height="300" width="300" />
+                            <img src="<?php $i = 0; echo $i < $n ? "getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="300" width="300" />
                         </a>
                         <br><br>
                         <a href="#" data-toggle="modal" data-target="#modal-thumbnail1">
-                            <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw";
-                            $i++;
-                            ?>" class="img-rounded" height="80" width="80"/>
+                            <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
                         </a>
                         <a href="#" data-toggle="modal" data-target="#modal-thumbnail2">
-                            <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw";
-                            $i++;
-                            ?>" class="img-rounded" height="80" width="80"/>
+                            <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
                         </a>
                         <a href="#" data-toggle="modal" data-target="#modal-thumbnail3">
-                            <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw";
-                            $i++;
-                            ?>" class="img-rounded" height="80" width="80"/>
+                            <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
                         </a>
                         <a href="#" data-toggle="modal" data-target="#modal-thumbnail4">
-                            <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw";
-                                 $i++;
-                            ?>" class="img-rounded" height="80" width="80"/>
+                            <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
                         </a>
                         <div class="modal fade" id="modal-logo" role="dialog">
                             <div class="modal-dialog modal-lg">
@@ -285,11 +268,7 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                                         <h4 class="modal-title">Logo</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <img src="<?php
-                                 $i = 0;
-                                 echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw";
-                                 $i++;
-                            ?>" class="img-rounded img-responsive"/>
+                                        <img src="<?php $i = 0; echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -305,9 +284,7 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                                         <h4 class="modal-title">Thumbnail1</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw";
-                                 $i++;
-                            ?>" class="img-rounded img-responsive"/>
+                                        <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -323,9 +300,7 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                                         <h4 class="modal-title">Thumbnail2</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw";
-                                 $i++;
-                            ?>" class="img-rounded img-responsive"/>
+                                        <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -341,9 +316,7 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                                         <h4 class="modal-title">Thumbnail3</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw";
-                                 $i++;
-                            ?>" class="img-rounded img-responsive"/>
+                                        <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -359,12 +332,30 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                                         <h4 class="modal-title">Thumbnail4</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw";
-                                 $i++;
-                            ?>" class="img-rounded img-responsive"/>
+                                        <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <br><br>
+                            <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#modal-menu">Menu</button>
+                            <div class="modal fade" id="modal-menu" role="dialog">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Menu</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img src="<?php echo "data:image/jpeg;base64," . $menu; ?>" class="img-responsive">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -377,28 +368,22 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                         <h4><?php echo $description; ?></h4>
                         <br>
                         <h4><?php echo $address; ?></h4>
-
-                            <?php if ($phone != null) { ?>
-                            <h4>
-                                <span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span>
-                                <?php echo $phone; ?>
-                            </h4>
-                            <?php } ?>
-
+                        <br>
+                        <?php if ($phone != null) { ?>
+                        <h4><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span><?php echo $phone; ?></h4>
+                        <?php } ?>
+                        <br>
                         <h4>                  
-                            <?php
-                            if ($from != null && $to != null) {
-                                echo "Today's Operating Hours: " . $from . " - " . $to;
-                            }
-                            ?>
+                        <?php if ($from != null && $to != null) {
+                            echo "Today's Operating Hours: <br>" . $from . " - " . $to;
+                        }?>
                         </h4>
 
                         <h4>                  
-<?php
-if ($time_message != null) {
-    echo $time_message;
-}
-?>
+                        <?php
+                        if ($time_message != null) {
+                            echo $time_message;
+                        }?>
                         </h4>
 
                         <button class="btn btn-info" data-toggle="modal" data-id="<?php //echo $restaurant['restaurant_id']   ?>" data-target="#reservation-<?php //echo $restaurant['restaurant_id']   ?>" >
@@ -572,28 +557,6 @@ if ($time_message != null) {
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <div class="container col-md-6">
-                        <br><br>
-                        <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#modal-menu">Menu</button>
-                        <div class="modal fade" id="modal-menu" role="dialog">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Menu</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src="<?php echo "data:image/jpeg;base64," . $menu; ?>" class="img-responsive">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
                     <div class="userreview col-md-6">
                         <h3>Reviews</h3>
                         <div class="media">
@@ -618,38 +581,38 @@ if ($time_message != null) {
                     <div class="col-md-6">
                         <h3>Operating Hours</h3>
                         <div class="container">
-<?php if ($oprHours != null) { ?>
-                                <div class="col-md-1"> <h4>Monday: </h4> </div>
+                            <?php if ($oprHours != null) { ?>
+                                <div class="col-md-1"> <h4>Mon: </h4> </div>
                                 <div class="col-md-11">
                                     <h4> <?php echo $oprHours["monday_from"] . " - " . $oprHours["monday_to"]; ?> </h4>
                                 </div>
-                                <div class="col-md-1"> <h4>Tuesday: </h4></div>
+                                <div class="col-md-1"> <h4>Tue: </h4></div>
                                 <div class="col-md-11">
                                     <h4> <?php echo $oprHours["tuesday_from"] . " - " . $oprHours["tuesday_to"]; ?> </h4>
                                 </div>  
-                                <div class="col-md-1"> <h4>Wednesday:</h4> </div>
+                                <div class="col-md-1"> <h4>Wed:</h4> </div>
                                 <div class="col-md-11"> 
                                     <h4> <?php echo $oprHours["wednesday_from"] . " - " . $oprHours["wednesday_to"]; ?> </h4>
                                 </div>
-                                <div class="col-md-1"> <h4>Thursday: </h4> </div>
+                                <div class="col-md-1"> <h4>Thur: </h4> </div>
                                 <div class="col-md-11">
                                     <h4> <?php echo $oprHours["thursday_from"] . " - " . $oprHours["thursday_to"]; ?> </h4>
                                 </div>
-                                <div class="col-md-1"><h4> Friday: </h4> </div>
+                                <div class="col-md-1"><h4> Fri: </h4> </div>
                                 <div class="col-md-11">
                                     <h4> <?php echo $oprHours["friday_from"] . " - " . $oprHours["friday_to"]; ?> </h4>
                                 </div>
-                                <div class="col-md-1"><h4> Saturday:</h4> </div>
+                                <div class="col-md-1"><h4> Sat:</h4> </div>
                                 <div class="col-md-11">
                                     <h4> <?php echo $oprHours["saturday_from"] . " - " . $oprHours["saturday_to"]; ?> </h4>
                                 </div>
-                                <div class="col-md-1"> <h4> Sunday:</h4> </div>
+                                <div class="col-md-1"> <h4> Sun:</h4> </div>
                                 <div class="col-md-11">
                                     <h4> <?php echo $oprHours["sunday_from"] . " - " . $oprHours["sunday_to"]; ?> </h4>
                                 </div>
-<?php } else { ?>
+                                <?php } else { ?>
                                 <h4> Sorry, Operation Hours are not available.</h4>
-<?php } ?>
+                                <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -677,36 +640,6 @@ if ($time_message != null) {
                     </ul>';
                     }
                     ?>
-<!--                    <ul class="event-list">
-                        <li>
-                            <time datetime="2015-11-15">
-                                <span class="day">15</span>
-                                <span class="month">Nov</span>
-                                <span class="year">2015</span>
-                                <span class="time">ALL DAY</span>
-                            </time>
-                            <img src="http://www.callingallgigs.com/wp-content/uploads/2012/02/band.jpg" />
-                            <div class="info">
-                                <h2 class="title">Band perform</h2>
-                                <p class="desc">Come enjoy the best band in town!</p>
-                            </div>
-                        </li>
-                    </ul>-->
-<!--                    <ul class="event-list">
-                        <li>
-                            <time datetime="2015-11-16">
-                                <span class="day">16</span>
-                                <span class="month">Nov</span>
-                                <span class="year">2015</span>
-                                <span class="time">ALL DAY</span>
-                            </time>
-                            <img src="http://st.depositphotos.com/1031343/2759/v/950/depositphotos_27594397-Happy-Hour-stamp.jpg" />
-                            <div class="info">
-                                <h2 class="title">Happy hour</h2>
-                                <p class="desc">Come enjoy the Happy hour for 30% off!</p>
-                            </div>
-                        </li>
-                    </ul>-->
                 </div>
                 <div class="userreview col-md-12">
                     <h3>Directions:</h3>

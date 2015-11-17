@@ -126,6 +126,19 @@ class Reservation_model  extends Database{
         }
         return null;
     }
+    public function getOperatingHoursByDay($from, $to, $resId)
+    {
+        //DATE_FORMAT(mytime, '%l:%i %p')
+        $sql = "SELECT DATE_FORMAT(".$from.", '%l:%i %p'), DATE_FORMAT(".$to.", '%l:%i %p') FROM operating_hours WHERE restaurant_id = :resId";
+        echo $sql;
+        $stmt=$this->dbh->prepare($sql);
+        $stmt->bindParam(':resId', $resId, PDO::PARAM_INT);
+        if($stmt->execute())
+        {
+            return $stmt->fetchAll();
+        }
+        return null;
+    }
     //Add retrieval for user reservations
 }
 

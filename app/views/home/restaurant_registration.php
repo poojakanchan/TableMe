@@ -488,12 +488,13 @@ foreach ($food_category_array as $category) {
                                     
                                 </div>
                                     
-                                   <input type="button" class="btn btn-primary" value="Cancel Registration" onclick="index.php"> 
-                            <br>
+                            
+                            <h4>If you do not agree please cancel.
+                            <input type="button" class="btn btn-primary" value="Cancel Registration" onclick="index.php">
+                            </h4>
                             <br>
                             <br>
 
-                             <h4>If you do not agree please cancel.</h4>
                             <button type="reset" class="btn btn-lg btn-primary" value="reset" name="reset">Reset Form</button>
                             <button type="submit" class="btn btn-lg btn-primary" value="submit" name="submit" style="float: right">Register Restaurant</button>
                         </div>

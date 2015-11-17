@@ -63,6 +63,26 @@ class Reservation_controller extends Controller {
             {
                 $capacity = "num_six_tables";
             }
+            $dayOfWeek=date('l', strtotime($reserveDate));
+            $opening=strtolower($dayOfWeek."_from");
+            $closing=strtolower($dayOfWeek."_to");
+            //$test=60;
+            $operatingHoursArray=$this->reservation->getOperatingHoursByDay($opening, $closing, $restaurantID);
+           // echo var_dump($operatingHoursArray);
+            echo $operatingHoursArray[0][0];
+            echo $operatingHoursArray[0][1];
+            $openingTime=strtotime($operatingHoursArray[0][0]);
+            $closingTime=strtotime($operatingHoursArray[0][1]);
+            $reservationTime=strtotime($_POST['time']);
+            if($closingTime < $openingTime)
+            {
+                $closingTime=strtotime("+1 day", $closingTime);
+            }
+            echo $openingTime."-";
+            echo $closingTime;
+            
+            if($openingTime <= $reservationTime && $reservationTime <= $closingTime)
+                echo"VALID TIME RESERVED";
             $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime, $restaurantID);
             $restaurantCapacity=$this->reservation->getTableCount($restaurantID, $capacity );
             echo "COUNT: ".$reservationCount."\n";
@@ -70,6 +90,7 @@ class Reservation_controller extends Controller {
 
             if($reservationCount < $restaurantCapacity)
             {
+               
                 if(!$reservation->addReservation($reserveArray)){
                     exit("Error adding reservation.");
                 }

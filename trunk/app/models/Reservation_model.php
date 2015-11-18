@@ -21,8 +21,11 @@ class Reservation_model  extends Database{
         parent::__destruct();
     }
     
-    /*
-     * function to add reservation table to the database.
+    /* adds a reservation to the reservation table in the database.
+     * Takes an array containing the restaurant ID, the user's name, the date, 
+     * time, number of people, contact number, and any special instructions.
+     * If user is logged in, the user ID is added as well, otherwise should be
+     * set as empty in the array before passing.
      */
     
     public function addReservation($reserveArray) {
@@ -50,9 +53,12 @@ class Reservation_model  extends Database{
         $this->dbh->rollBack();
         return -1;
     }
-    //get restaurant id from name --> restaurant model
+
     
-    //get reservations for date
+    /* Retrieves all reservations for a specified date. Used for hosts.
+     * Requires a date string in the form "xxx-xx-xx"
+     * Returns a large array containing all the reservations found for that date.
+     */
     public function getReservation($date)
     {
         $sql = "SELECT * FROM reservation WHERE date=:date";
@@ -63,12 +69,20 @@ class Reservation_model  extends Database{
         }
         return null;
     }
-    //delete old reservations
     
+    /* Deletes old reservations. Supposed to be run after a set period on a 
+     * normal schedule to delete unused entries in the reservation table.
+     */
     public function deleteOldReservation()
     {
         $sql = "DELETE FROM reservation WHERE date < CURRENT_DATE()";
     }
+    
+    /*
+     * Deletes a reservation given a reservation id. Used for the hostess or
+     * when sent to the user through confirmation email/user's account management.
+     * Returns 1 if successful, otherwise null.
+     */
     public function deleteReservation($resId)
     {
         $sql = "DELETE FROM reservation WHERE reservation_id=:resId";
@@ -80,7 +94,12 @@ class Reservation_model  extends Database{
         return null;
     }
     
-    //get count for reservation validity
+    /* Counts the reservations in the table for a given date, time, and restaurant.
+     * The query also retrieves reservations for times 30 minutes before and 30 minutes after.
+     * This is to account for 1 hour eating sessions and can be changed later.
+     * Returns the count of the reservations if any or -1 if the query was unsuccessful.
+     * NOTE: should return 0 if none are found.
+     */
     public function countReservation($date, $time, $resId)
     {
         $sql = "SELECT COUNT(*) FROM reservation WHERE restaurant_id = :resId AND date=:date AND time IN(:time, SUBTIME(:time, '00:30:00'), ADDTIME(:time, '00:30:00'))";
@@ -96,7 +115,13 @@ class Reservation_model  extends Database{
         return -1;
     }
     
-    
+    /* retrieves the number of tables owner inputted during registration.
+     * Tables are either for 2, 4, or 6. Requires a restaurant id and a formatted
+     * string in $capacity of the form num_two_tables, num_four_tables, etc.
+     * Returns an integer value from the table or -1 if unsuccessful.
+     * NOTE: since the column exists and defaults to 0 if the owner did not enter
+     * a number, the value returned should be 0 or greater.
+     */
     public function getTableCount($resId, $capacity)
     {
         $sql = "SELECT ".$capacity." FROM restaurant WHERE restaurant_id = :resId";
@@ -111,6 +136,11 @@ class Reservation_model  extends Database{
         return -1;
     }
     
+    /* Retrieves any current reservations associated with a user id.
+     * This is used specifically to show any reservations for the user under his
+     * account management.
+     * Returns an array of the user's reservations if any.
+     */
     public function getUserReservations($user_id)
     {
         $sql = "SELECT * FROM reservations WHERE user_id = :user_id";
@@ -123,9 +153,11 @@ class Reservation_model  extends Database{
         }
         return null;
     }
-/*
- * function to get restaurant name and ID of all the restuarants.
- */
+
+    /* Retrieves all the names of every restaurant in the restaurant table.
+     * Used to fill restaurant names in reservation form.
+     * NOTE: no longer used due to design changes.
+     */
     public function getRestaurantNamesAll()
     {
         $sql = "SELECT restaurant_id, name FROM restaurant";
@@ -138,14 +170,17 @@ class Reservation_model  extends Database{
         return null;
     }
     
-    /*
-     * function to retrive operating hours of the provided restuarant. 
+    /* Retrieves operating hours of a restaurant by a selected day.
+     * Requires a restaurant ID, and two formatted strings in $from and $to in 
+     * the form of "xxday_from" and "xxday_to" respectively. Must be preformatted
+     * or query will fail.
+     * Returns the two columns selected in an array for use.
      */
     public function getOperatingHoursByDay($from, $to, $resId)
     {
         //DATE_FORMAT(mytime, '%l:%i %p')
         $sql = "SELECT DATE_FORMAT(".$from.", '%l:%i %p'), DATE_FORMAT(".$to.", '%l:%i %p') FROM operating_hours WHERE restaurant_id = :resId";
-        echo $sql;
+        //echo $sql;
         $stmt=$this->dbh->prepare($sql);
         $stmt->bindParam(':resId', $resId, PDO::PARAM_INT);
         if($stmt->execute())
@@ -154,7 +189,7 @@ class Reservation_model  extends Database{
         }
         return null;
     }
-    //Add retrieval for user reservations
+
 }
 
 ?>

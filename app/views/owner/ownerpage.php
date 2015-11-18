@@ -385,7 +385,7 @@
                             <li role="presentation"><a href="#change-menu" data-toggle="tab">Menu</a></li>
                             <li role="presentation"><a href="#change-specialevent" data-toggle="tab">Special Events</a></li>
                             <li role="presentation"><a href="#change-hostaccount" data-toggle="tab">Host Accounts</a></li>
-                            <li role="presentation"><a href="#report-reviews" data-toggle="tab">Review Report</a></li>
+                            <li role="presentation"><a href="#reviews" data-toggle="tab">Review</a></li>
                             <li role="presentation"><a href="#change-profile" data-toggle="tab">Edit Profile</a></li>
                         </ul>
                     </div>
@@ -669,27 +669,18 @@
                                 <a id="add_row_account" class="btn btn-default pull-right">Add Account</a>
                             </div>
                         </div>
-                        <div id="report-reviews" class="tab-pane fade">
-                            <form class="form" action="##" method="post" id="reportreviewform">
-                                <div class="row">
-                                    <div class="form-group">
-                                        <label for="reporttitle"><h4>Title</h4></label>
-                                        <input type="title" class="form-control" name="reporttitle" id="reporttitle" value=" " placeholder="Title" required/>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group">
-                                        <label type="reportcontent"><h4>Report</h4></label>
-                                        <input type="content" class="form-control" name="reportcontent" id="reportcontent" value=" " placeholder="Contents" required/>
-                                    </div>
-                                </div>
-                            </form>
-                            <div class="form-group">
-                                    <div class="col-xs-12">
-                                        <br>
-                                        <button class="btn btn-default" type="submit" id="submit_button"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
-                                        <button class="btn btn-default" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
-                                    </div>
+                        <div id="reviews" class="tab-pane fade">
+                            <h4> Reviews from Users </h4>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <tbody id="item">
+                                        <tr>
+                                            <td>
+                                                
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div> <!-- Report review End -->
                         <div id="change-profile" class="tab-pane fade">

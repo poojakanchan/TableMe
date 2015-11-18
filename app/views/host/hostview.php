@@ -12,9 +12,9 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css">
         <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         
         <!-- Will merge the style and script code into CSS and JS file after all is done. -->
         <style>
@@ -235,36 +235,47 @@
 <body>
     <div class="container-fluid">
         <div class="mainInfo col-md-12">
-            <div class="row col-md-offset-6">
-                <h1>Little Tokyo</h1>
-            </div>
-            <!--Restaurant infomation-->
             <div class="row">
-                <div class="restaurantLogo col-md-4">
-                    <img alt="Logo" src="http://goo.gl/vrq2Cw" class="img-rounded" height="300" width="300"/>
+                <div class="col-md-1">
+                    <img alt="Logo" src="http://goo.gl/vrq2Cw" class="img-rounded" height="100" width="100"/>
                 </div>
-                <div class="restaurantDetail1 col-md-4">
-                    <h3>Food type:</h3>
-                    <p>The restaurant Food type from db should be here!</p>
-                    <h3>Description:</h3>
-                    <p>The restaurant description from db should be here!</p>
-                </div>
-                <div class="restaurantDetail2 col-md-4">
-                    <h3>Address:</h3>
-                    <p>The restaurant address from db should be here!</p>
-                    <h3>Phone:</h3>
-                    <p>The restaurant phone number from db should be here!</p>
+                <div class="col-md-11">
+                    <h1>Little Tokyo</h1>
                 </div>
             </div>
             
             <!--Reservation-->
             <br><br>
             <h1>Reservations:</h1>
-            <button class="reservationButton btn btn-info pull-right" data-toggle="modal" data-id="<?php //echo $restaurant['restaurant_id'] ?>" data-target="#reservation-<?php //echo $restaurant['restaurant_id'] ?>" >
+            
+            <!--Date picker-->
+            <div class="row">
+                <div class="datePicker col-md-4 col-md-offset-4">
+                    <div class="date-picker pagination-centered"  data-date="2015/11/09" data-keyboard="true">
+                        <div class="date-container pull-left">
+                            <h4 class="weekday">Monday</h4>
+                            <h2 class="date">November 9th</h2>
+                            <h4 class="year pull-right">2015</h4>
+                        </div>
+                        <span data-toggle="datepicker" data-type="subtract" class="fa fa-angle-left"></span>
+                        <span data-toggle="datepicker" data-type="add" class="fa fa-angle-right"></span>
+                        <div class="input-group input-datepicker">
+                            <input type="text" class="form-control" data-format="YYYY/MM/DD" placeholder="YYYY/MM/DD">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">Go!</button>
+                            </span>
+                        </div>
+                        <span data-toggle="calendar" class="fa fa-calendar"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!--Make reservation button-->
+            <button class="reservationButton btn btn-info col-md-offset-8" data-toggle="modal" data-id="<?php //echo $restaurant['restaurant_id'] ?>" data-target="#reservation-<?php //echo $restaurant['restaurant_id'] ?>" >
                 Make a Reservation
             </button>
             
-            <!--Reservation pop up-->
+            <!--Make reservation pop up-->
             <div  class="modal fade" id="reservation-<?php //echo $restaurant['restaurant_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <form name="myForm" action="#.php" onsubmit="return validateForm()" method="post">
                     <div class="modal-dialog">
@@ -429,28 +440,6 @@
                 </form>
             </div>
             
-            <!--Date picker-->
-            <div class="row">
-                <div class="datePicker col-md-4 col-md-offset-4">
-                    <div class="date-picker pagination-centered"  data-date="2015/11/09" data-keyboard="true">
-                        <div class="date-container pull-left">
-                            <h4 class="weekday">Monday</h4>
-                            <h2 class="date">November 9th</h2>
-                            <h4 class="year pull-right">2015</h4>
-                        </div>
-                        <span data-toggle="datepicker" data-type="subtract" class="fa fa-angle-left"></span>
-                        <span data-toggle="datepicker" data-type="add" class="fa fa-angle-right"></span>
-                        <div class="input-group input-datepicker">
-                            <input type="text" class="form-control" data-format="YYYY/MM/DD" placeholder="YYYY/MM/DD">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">Go!</button>
-                            </span>
-                        </div>
-                        <span data-toggle="calendar" class="fa fa-calendar"></span>
-                    </div>
-                </div>
-            </div>
-            
             <!--List of reservations-->
             <div class="row">
                 <div class="reservationInfo col-md-6 col-md-offset-3">
@@ -460,7 +449,22 @@
                     <a href="#" class="list-group-item">
                         <div class="media">
                             
-                            <!--Cancellation-->
+                            <!--Arrived check box-->
+                            <span class="button-checkbox pull-right">
+                                <button type="button" class="btn btn-success" data-color="primary">Arrived</button>
+                                <input type="checkbox" class="hidden"/>
+                            </span>
+                            
+                            <!--Reservation info-->
+                            <div class="pull-left">
+                                <img class="media-object" src="https://goo.gl/GOzAhf" alt="user" height="120" width="120">
+                            </div>
+                            <div class="media-body">
+                                <h2 class="media-heading">John Smith</h2>
+                                <h3>2 people</h3>
+                                <h4>Accommodations</h4>
+                            </div>
+                             <!--Cancellation-->
                             <button class="cancelButton btn btn-danger pull-right" data-toggle="modal" data-target="#confirmDelete">
                                 Cancel Reservation
                             </button>
@@ -483,22 +487,6 @@
                                   </div>
                                 </div>
                             </div>
-                            
-                            <!--Reservation info-->
-                            <div class="pull-left">
-                                <img class="media-object" src="https://goo.gl/GOzAhf" alt="user" height="120" width="120">
-                            </div>
-                            <div class="media-body">
-                                <h2 class="media-heading">John Smith</h2>
-                                <h3>2 people</h3>
-                                <h4>Accommodations</h4>
-                            </div>
-                            
-                            <!--Arrived check box-->
-                            <span class="button-checkbox pull-right">
-                                <button type="button" class="btn" data-color="primary">Arrived</button>
-                                <input type="checkbox" class="hidden"/>
-                            </span>
                         </div>
                     </a></div>
                 </div>

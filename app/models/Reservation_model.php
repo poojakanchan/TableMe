@@ -180,7 +180,7 @@ class Reservation_model  extends Database{
     {
         //DATE_FORMAT(mytime, '%l:%i %p')
         $sql = "SELECT DATE_FORMAT(".$from.", '%l:%i %p'), DATE_FORMAT(".$to.", '%l:%i %p') FROM operating_hours WHERE restaurant_id = :resId";
-        echo $sql;
+        //echo $sql;
         $stmt=$this->dbh->prepare($sql);
         $stmt->bindParam(':resId', $resId, PDO::PARAM_INT);
         if($stmt->execute())

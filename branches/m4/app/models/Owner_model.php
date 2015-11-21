@@ -28,6 +28,16 @@ class Owner_model extends Database{
         parent::__destruct();
     }
     
+    public function getOwnerInfo($username) {
+        $sql = "SELECT * FROM owner WHERE username=:username";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':username', $username);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return false;
+        }
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
    
 }
 ?>

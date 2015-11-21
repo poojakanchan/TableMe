@@ -22,18 +22,18 @@ if (empty($restaurant)) {
     return;
 }
 
-$resName = $restaurant[0]['name'];
-$foodCategory = $restaurant[0]['food_category_name'];
-$description = $restaurant[0]['description'];
-$menu = base64_encode($restaurant[0]['menu']);
+$resName = $restaurant['name'];
+$foodCategory = $restaurant['food_category_name'];
+$description = $restaurant['description'];
+$menu = base64_encode($restaurant['menu']);
 
 //        var_dump($restaurant);
 //        echo '<br><br>';
 //        var_dump($menu);
 //        exit();
 
-$address = $restaurant[0]['address'];
-$phone = $restaurant[0]['phone_no'];
+$address = $restaurant['address'];
+$phone = $restaurant['phone_no'];
 //        $imgArray = $db->getRestaurantImages($resId);
 
 $event_model = new Event_model();
@@ -99,6 +99,8 @@ if (!empty($oprHours)) {
 
 $cnt = $db->getRestaurantImageCount($resId);
 $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for the restaurant in multimedia table
+
+$reviews = $db->getRestaurantReviews($resId);
 ?>
 <html lang="en">
     <head>
@@ -255,11 +257,11 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                 <div class="restaurantprofile col-md-12">
                     <div class="restaurantpic col-md-6">
                         <a href="#" data-toggle="modal" data-target="#modal-logo">
-                            <img src="<?php $i = 0; echo $i < $n ? "getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="300" width="300" />
+                            <img src="<?php echo 'data:image/jpeg;base64,' . base64_encode($restaurant['thumbnail']) ?>" class="img-rounded" height="300" width="300" />
                         </a>
                         <br><br>
                         <a href="#" data-toggle="modal" data-target="#modal-thumbnail1">
-                            <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
+                            <img src="<?php $i=0; echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
                         </a>
                         <a href="#" data-toggle="modal" data-target="#modal-thumbnail2">
                             <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
@@ -278,7 +280,7 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                                         <h4 class="modal-title">Logo</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <img src="<?php $i = 0; echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
+                                        <img src="<?php echo 'data:image/jpeg;base64,' . base64_encode($restaurant['thumbnail']) ?>" class="img-rounded img-responsive"/>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -294,7 +296,7 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                                         <h4 class="modal-title">Thumbnail1</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
+                                        <img src="<?php $i=0; echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -569,7 +571,28 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                 <div class="col-md-12">
                     <div class="userreview col-md-6">
                         <h3>Reviews</h3>
-                        <div class="media">
+                        <?php
+                        if(empty($reviews)) {
+                            echo '<p>No reviews yet</p>';
+                        }
+                        else {
+                            $altImage = "http://www.telikin.com/joomla/components/com_joomblog/images/user.png";
+                            foreach ($reviews as $review) {
+                                echo '<div class="media">
+                                        <a class="media-left" href="#">';
+//                                var_dump($review);
+//                                exit();
+                                echo '<img src="' . (empty($review['user_image'])>0 ? $altImage : "data:image/jpeg;base64,".base64_encode($review['user_image'])) . '" alt="user" height="50" width="50">';
+                                echo '</a>
+                                        <div class="media-body">';
+                                echo '<h4 class="media-heading">' . $review['name'] . '</h4>';
+                                echo '<p>' . $review['review_description'] . '</p>';
+                                echo '</div>
+                                    </div>';
+                            }
+                        }
+                        ?>
+<!--                        <div class="media">
                             <a class="media-left" href="#">
                                 <img src="http://www.telikin.com/joomla/components/com_joomblog/images/user.png" alt="user" height="50" width="50">
                             </a>
@@ -586,7 +609,7 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                                 <h4 class="media-heading">Potter</h4>
                                 <p>I like this restaurant too!</p>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                     <div class="col-md-6">
                         <h3>Operating Hours</h3>
@@ -629,7 +652,7 @@ $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for th
                 </div>
             </div>
             <div class="specialEvent col-md-4">
-                <h4>Special events:</h4>
+                <?php echo empty($events) ? '' : '<h4>Special events:</h4>'; ?>
                 <div class="col-md-12">
                     <?php
                     foreach ($events as $event) {

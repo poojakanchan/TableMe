@@ -20,24 +20,6 @@ class Restaurant_model  extends Database{
         parent::__destruct();
     }
     
-    
-    /* find restaurant by name only. Returns results in an array ($arr), with each index
-     * ($arr[0], $arr[1]...) being and assoiative array corresponding to a row from the table.
-     */
-//    public function findRestaurantsByName($name) {
-//        $words = explode(" ", $name);
-//        $searchStr = "%";
-//        foreach ($words as $word) {
-//            $searchStr = $searchStr . $word . "%";
-//        }
-//        $sql = "SELECT * FROM restaurant WHERE name LIKE :resName LIMIT 100";
-//        $stmt = $this->dbh->prepare($sql);
-//        $stmt->bindParam(':resName', $searchStr);
-//        if ($stmt->execute()) {
-//            return $stmt->fetchAll();
-//        }
-//        return null;
-//    }
   
     /*
      * function to find restaurant by passed Id.
@@ -46,63 +28,13 @@ class Restaurant_model  extends Database{
         $sql = "SELECT * FROM restaurant WHERE restaurant_id=:resId";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':resId', $id);
-        if ($stmt->execute()) {
-            return $stmt->fetchAll();
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return null;
         }
-        return null;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
-//    public function findRestaurantsByCat($cat) {
-//        $sql = "SELECT * FROM restaurant WHERE food_category_name LIKE :str";
-//        $stmt = $this->dbh->prepare($sql);
-//        $stmt->bindParam(':str', $cat);
-//        if ($stmt->execute()) {
-//            return $stmt->fetchAll();
-//        }
-//        return null;
-//    }
-    
-    /* find restaurant by name or address (i.e. any match in name or address will be returned).
-     * Returns results in an array ($arr), with each index ($arr[0], $arr[1]...) 
-     * being and assoiative array corresponding to a row from the table.
-     */
-//    public function findRestaurantsByNameAddress($nameAdd) {
-//        $words = explode(" ", $nameAdd);
-//        $searchStr = "%";
-//        foreach ($words as $word) {
-//            $searchStr = $searchStr . $word . "%";
-//        }
-//        $sql = "SELECT * FROM restaurant WHERE name_address LIKE :str";
-//        $stmt = $this->dbh->prepare($sql);
-//       
-//        $stmt->bindParam(':str', $searchStr);
-//        
-//        if ($stmt->execute()){
-//            return $stmt->fetchAll();
-//        } 
-//        return null;
-//    }
-    
-     /* find restaurant by name/address and category.
-     * Returns results in an array ($arr), with each index ($arr[0], $arr[1]...) 
-     * being and assoiative array corresponding to a row from the table.
-     */
-//    public function findRestaurantsByNameAddressAndCategory($nameAdd, $category) {
-//        $words = explode(" ", $nameAdd);
-//        $searchStr = "%";
-//        foreach ($words as $word) {
-//            $searchStr = $searchStr . $word . "%";
-//        }
-//        $sql = "SELECT * FROM restaurant WHERE food_category_name LIKE :str2 AND name_address LIKE :str";
-//        $stmt = $this->dbh->prepare($sql);
-//        $stmt->bindParam(':str2', $category);
-//        $stmt->bindParam(':str', $searchStr);
-//        
-//        if ($stmt->execute()){
-//            return $stmt->fetchAll();
-//        } 
-//        return null;
-//    }
     
     /*
      * get count of restaurants for given seeach string.
@@ -299,6 +231,19 @@ class Restaurant_model  extends Database{
             return $stmt->fetchAll();
         }
         return null;
+    }
+    
+    public function getRestaurantReviews($resId) {
+        $sql = "SELECT * FROM review INNER JOIN user "
+                . " ON review.user_id=user.user_id AND review.restaurant_id=:resId "
+                . " ORDER BY date_posted DESC";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':resId', $resId, PDO::PARAM_INT);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return null;
+        }
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 

@@ -1,8 +1,38 @@
 <html lang="en">
     <?php
     require_once 'header.php';
+    require_once '../../models/Owner_model.php';
+    require_once '../../models/Restaurant_model.php';
+    require_once '../../models/OperationHours_model.php';
+    require_once '../../models/Event_model.php';
+
     if (!isset($_SESSION['username'])) {
         header('location: ../home/login.php');
+    }
+    $username = $_SESSION['username'];
+    $db = new Owner_model();
+    $ownerInfo = $db->getOwnerInfo($username);
+    $resId = intval($ownerInfo['restaurant_id']);
+    $db = new Restaurant_model();
+    $restaurantInfo = $db->findRestaurantById($resId);
+    $restaurantImages = $db->getRestaurantImages($resId);
+    $imageCount = count($restaurantImages) >= 5 ? 5 : count($restaurantImages); //total number of images for the restaurant in multimedia table
+    $foodCategory = $db->getFoodCategories();
+    
+    $db = new OperationHours_model();
+    $oprHours = $db->getOperatingHoursByRestaurantId($resId);
+
+    if (!empty($oprHours)) {
+        $oprHours = $oprHours[0];
+    }
+    
+    if ($_POST) {
+        $restaurantUpdate = array(
+            "food_category_name" => isset($_POST['foodCategory']) ? htmlspecialchars($_POST['foodCategory']) : null,
+            "description" => isset($_POST['restaurantDescription']) ? substr(htmlspecialchars($_POST['restaurantDescription']), 0, 150) : null,
+            "address" => isset($_POST['restaurantAddress']) ? substr(htmlspecialchars($_POST['restaurantAddress']), 0, 100) : null,
+            "phone_no" => isset($_POST['restaurantPhone']) ? substr(htmlspecialchars($_POST['restaurantPhone']), 0, 20) : null
+            );
     }
     ?>  
     <head>
@@ -255,21 +285,18 @@
                 <div class="row">
                     <div class="restaurantpic col-md-4">
                         <a href="#" data-toggle="modal" data-target="#modal-logo">
-                            <img alt="Logo" src="http://goo.gl/vrq2Cw" class="img-rounded" height="300" width="300"/>
+                             <img src="<?php echo 'data:image/jpeg;base64,' . base64_encode($restaurantInfo['thumbnail']) ?>" class="img-rounded" height="300" width="300" />
                         </a>
-                        <br><br><br><br>
-                        <a href="#" data-toggle="modal" data-target="#modal-thumbnail1">
-                            <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="100" width="100"/>
-                        </a>
-                        <a href="#" data-toggle="modal" data-target="#modal-thumbnail2">
-                            <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="100" width="100"/>
-                        </a>
-                        <a href="#" data-toggle="modal" data-target="#modal-thumbnail3">
-                            <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="100" width="100"/>
-                        </a>
-                        <a href="#" data-toggle="modal" data-target="#modal-thumbnail4">
-                            <img alt="Restaurant photo" src="https://goo.gl/GOzAhf" class="img-rounded" height="100" width="100"/>
-                        </a>
+                        <br><br>
+                        
+                        <?php
+                        for ($i=0; $i<$imageCount; ++$i) {
+                            echo '<a href="#" data-toggle="modal" data-target="#modal-thumbnail' . $i . '">';
+                            echo '<img src="data:image/jpeg;base64,' . base64_encode($restaurantImages[$i]['media']) . '" class="img-rounded" height="80" width="80"/>';
+                            echo '</a>   ';
+                        }
+                        ?>
+                        
                         <div class="modal fade" id="modal-logo" role="dialog">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
@@ -278,7 +305,7 @@
                                         <h4 class="modal-title">Logo</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <img src="http://goo.gl/vrq2Cw" class="img-responsive">
+                                        <img src="<?php echo 'data:image/jpeg;base64,' . base64_encode($restaurantInfo['thumbnail'])?>" class="img-rounded img-responsive"/>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -286,92 +313,51 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal fade" id="modal-thumbnail1" role="dialog">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Thumbnail1</h4>
+                        
+                        <?php    
+                        for ($i=0; $i<$imageCount; ++$i) {
+                            echo '<div class="modal fade" id="modal-thumbnail' . $i . '" role="dialog">';
+                            echo   '<div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>';
+                                        echo    '<h4 class="modal-title">Thumbnail' . $i .'</h4>';
+                                        echo '</div>
+                                            <div class="modal-body">';
+                                        echo '<img src="data:image/jpeg;base64,' . base64_encode($restaurantImages[$i]['media']) . '" class="img-rounded img-responsive"/>';
+                                        echo '</div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-body">
-                                        <img src="https://goo.gl/GOzAhf" class="img-responsive">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal fade" id="modal-thumbnail2" role="dialog">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Thumbnail2</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src="https://goo.gl/GOzAhf" class="img-responsive">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal fade" id="modal-thumbnail3" role="dialog">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Thumbnail3</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src="https://goo.gl/GOzAhf" class="img-responsive">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal fade" id="modal-thumbnail4" role="dialog">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Thumbnail4</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src="https://goo.gl/GOzAhf" class="img-responsive">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                </div>';
+                        } 
+                        ?>
+                       
                     </div>
                     <div class="restaurant-detail1 col-md-4">
-                        <h1>Little Tokyo</h1>
+                        <h1><?php echo $restaurantInfo['name'];?></h1>
                         <h3>Food type:</h3>
-                        <p>The restaurant Food type from db should be here!</p>
+                        <p><?php echo $restaurantInfo['food_category_name'];?></p>
                         <h3>Description:</h3>
-                        <p>The restaurant description from db should be here!</p>
+                        <p><?php echo $restaurantInfo['description'];?></p>
                         <h3>Address:</h3>
-                        <p>The restaurant address from db should be here!</p>
+                        <p><?php echo $restaurantInfo['address'];?></p>
                         <h3>Phone:</h3>
-                        <p>The restaurant phone number from db should be here!</p>
+                        <p><?php echo $restaurantInfo['phone_no'];?></p>
                     </div>
                     <div class="restaurant-detail2 col-md-4">
                         <h3>Operating Hours:</h3>
                         <ul class="list-group operating-hour-list">
-                            <li class="list-group-item">Monday</li>
-                            <li class="list-group-item">Tuesday</li>
-                            <li class="list-group-item">Wednesday</li>
-                            <li class="list-group-item">Thursday</li>
-                            <li class="list-group-item">Friday</li>
-                            <li class="list-group-item">Saturday</li>
-                            <li class="list-group-item">Sunday</li>
+                            <?php $show = !empty($oprHours); ?>
+                            <li class="list-group-item"><b>Monday </b><?php echo $show ? $oprHours["monday_from"] . " - " . $oprHours["monday_to"] : ''; ?></li>
+                            <li class="list-group-item"><b>Tuesday </b><?php echo $show ? $oprHours["tuesday_from"] . " - " . $oprHours["tuesday_to"] : ''; ?></li>
+                            <li class="list-group-item"><b>Wednesday </b><?php echo $show ? $oprHours["wednesday_from"] . " - " . $oprHours["wednesday_to"] : ''; ?></li>
+                            <li class="list-group-item"><b>Thursday </b><?php echo $show ? $oprHours["thursday_from"] . " - " . $oprHours["thursday_to"] : ''; ?></li>
+                            <li class="list-group-item"><b>Friday </b><?php echo $show ? $oprHours["friday_from"] . " - " . $oprHours["friday_to"] : ''; ?></li>
+                            <li class="list-group-item"><b>Saturday </b><?php echo $show ? $oprHours["saturday_from"] . " - " . $oprHours["saturday_to"] : ''; ?></li>
+                            <li class="list-group-item"><b>Sunday </b><?php echo $show ? $oprHours["sunday_from"] . " - " . $oprHours["sunday_to"] : ''; ?></li>
                         </ul>
                     </div>
                 </div>
@@ -401,49 +387,34 @@
                                             <label>Type of Food:</label>
                                             <select class="selectpicker" name="food_category" required data-width="auto">
                                                 <option value="" disabled selected>Food type</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
+                                                <?php
+                                                foreach ($foodCategory as $category) {
+                                                    echo '<option value="' . $category['name'] . '">' . $category['name'] . '</option>';
+                                                }
+                                                ?>
                                             </select>
                                         </div>
                                     </div>
                                     <br>
-                                    <label for = "name">Description:</label>
-                                    <textarea class = "form-control" rows = "3"></textarea>
+                                    <label for = "name">Description (150 characters max):</label>
+                                    <textarea class="form-control" rows="3" placeholder="" name="restaurantDescription" id="restaurantDescription"><?php echo $restaurantInfo['description']; ?></textarea>
                                     <br><br>
                                     <div class="row">
                                         <div class="col-sm-4">
-                                            <label>Address:</label>
-                                            <input type="text" name="restaurantStreet" placeholder="Please enter the restaurant's address..." class="form-control">
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                            <label>City:</label>
-                                            <input type="text" name="restaurantCity" placeholder="Enter City Here..." class="form-control">
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <label>State:</label>
-                                            <input type="text" name="restaurantState" placeholder="Enter State Here..." class="form-control">
-                                        </div>	
-                                        <div class="col-sm-4">
-                                            <label>Zip:</label>
-                                            <input type="number" name="restaurantZip" placeholder="Enter Zip Code Here..." class="form-control">
+                                            <label>Address (100 characters max):</label>
+                                            <input type="text" name="restaurantAddress" id="restaurantAddress" value="<?php echo $restaurantInfo['address']; ?>" class="form-control">
                                         </div>
                                     </div>
                                     <br><br>
                                     <div class="row">
                                         <div class="col-sm-4">
-                                            <label>Phone:</label>
-                                            <input type="text" name="restaurantPhone" placeholder="Please enter the restaurant's phone..." class="form-control">
+                                            <label>Phone (20 characters max):</label>
+                                            <input type="text" name="restaurantPhone" id="restaurantPhone" value="<?php echo $restaurantInfo['phone_no']; ?>" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                                 <br>
-                                <button type = "submit" class = "btn btn-default">Change</button>
+                                <button type="submit" id="restaurant_detail_submit" class="btn btn-default">Change</button>
                             </form>
                         </div>
                         <div class="tab-pane fade" id="change-photo">
@@ -461,7 +432,7 @@
                                 </div>
                                 <div class = "row">
                                     <br>
-                                    <h3>Gallery:</h3>
+                                    <h3>Thumbnail Photo:</h3>
                                     <div class = "col-sm-6 col-md-3">
                                         <div class = "thumbnail">
                                             <img src = "https://goo.gl/GOzAhf" alt = "Restaurant photo" class="img-rounded" >
@@ -636,8 +607,6 @@
                                         <table class="table table-bordered table-hover table-sortable" id="tab_account">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-center">Host Name</th>
-                                                    <th class="text-center">Email Address</th>
                                                     <th class="text-center">Host Account</th>
                                                     <th class="text-center">Password</th>
                                                     <th class="text-center">Delete</th>
@@ -645,21 +614,14 @@
                                             </thead>
                                             <tbody>
                                                 <tr id='addr0' data-id="0" class="hidden">
-                                                    <td data-name="hostName">
-                                                        <input type="text" name='hostName'  placeholder='Host Name' class="form-control"/>
+                                                    <td data-name="account">
+                                                        <input type="text" name='account0'  placeholder='Account Name' class="form-control"/>
                                                     </td>
-                                                    <td data-name="hostAccount">
-                                                        <input type="text" name='hostAccount'  placeholder='User Name' class="form-control"/>
-                                                    </td>
-                                                    <td data-name="hostEmail">
-                                                        <input type="text" name='hostEmail'  placeholder='Email' class="form-control"/>
-                                                    </td>
-
                                                     <td data-name="password">
-                                                        <input type="text" name='password' placeholder='Password' class="form-control"/>
+                                                        <input type="text" name='pass0' placeholder='Password' class="form-control"/>
                                                     </td>
                                                     <td data-name="del">
-                                                        <button nam"del0" class='btn btn-danger glyphicon glyphicon-remove row-remove'></button>
+                                                        <button name="del0" class='btn btn-danger glyphicon glyphicon-remove row-remove'></button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -730,6 +692,51 @@
                 <p class="navbar-text navbar-left">This website belongs to SFSU Course CSC648/CSC848 Fall 15 Group 11</p>
             </div>
         </div>
+        <script>
+                $(document).ready(function () {
+                $("#restaurant_detail_submit").click(function () {
+                    var validated = true;
+                    
+                    if (!validatePhoneNumber($('#restaurantPhone').val())) {
+                        $('#restaurantPhone').css("border", "#FF0000 1px solid");
+                        validated = false;
+                    }
+                    else {
+                        $('#restaurantPhone').css("border", "");
+                    }
+                    
+                    if (!validateAddress($('#restaurantAddress').val())) {
+                        $('#restaurantAddress').css("border", "#FF0000 1px solid");
+                        validated = false;
+                    }
+                    else {
+                        $('#restaurantAddress').css("border", "");
+                    }
+                    
+                    if (!validateDescription($('#restaurantDescription').val())) {
+                        $('#restaurantDescription').css("border", "#FF0000 1px solid");
+                        validated = false;
+                    }
+                    else {
+                        $('#restaurantDescription').css("border", "");
+                    }
+                    
+                    return validated;
+                });
+            });
+            
+            function validateAddress(address) {
+                return address.length <= 100;
+            }
+            
+            function validateDescription(description) {
+                return address.length <= 150;
+            }
 
+            function validatePhoneNumber(phoneNumber) {
+                var re = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+                return re.test(phoneNumber);
+            }
+        </script>
     </body>
 </html>

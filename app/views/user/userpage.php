@@ -65,8 +65,8 @@
     $db = new User_model();
     $username = $_SESSION['username'];
     $userInfo = $db->getUser($username);
-    $userReservations = $db->getReservationHistory($userInfo['user_id']);
-
+    $userReviews = $db->getUserReviews($userInfo['user_id']);
+    $userReservations = $db->getUserReservations($userInfo['user_id']);
 
     if ($_POST) {
         $newPhoneNum = htmlspecialchars($_POST['phone_number']);
@@ -102,7 +102,7 @@
             <div class="col-sm-12">
                 <ul class="nav nav-tabs"> <!-- Tab for the UserSection -->
                     <li class="active"><a href="#reservation">Reservation</a></li>
-                    <li><a href="#history">History</a></li>
+                    <li><a href="#history">My Reviews</a></li>
                     <li> <a href="#edit">Edit Profile</a></li>         
                 </ul> <!-- Done with the tab -->
 
@@ -120,15 +120,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>date</td>
-                                        <td>time</td>
-                                        <td>Name of the Restaurant</td>
-                                        <td>4</td>
-                                        <td>
-                                            <a href="#cancel" class="btn btn-info" role="button"> Cancel Reservation </a>
-                                        </td>
-                                    </tr>
+                                    <?php
+                                    $currentDate = date("Y-mm-dd");
+                                    $currentTime = date("H:i:s");
+                                    foreach ($userReservations as $reservation) {
+                                        echo '<tr>';
+                                        echo '<td>' . $reservation['date'] . '</td>';
+                                        echo '<td>' . $reservation['time'] . '</td>';
+                                        echo '<td>' . $reservation['name'] . '</td>';
+                                        echo '<td>' . $reservation['no_of_people'] . '</td>';
+                                        echo '<td>';
+                                        if ($reservation['date']>$currentDate || ($reservation['date']==$currentDate && $reservation['time']>$currentTime)) {
+                                            echo '<a name="" class="btn btn-info cancelReserv" role="button" data-reservationid="' . $reservation['reservation_id'] . '"> Cancel Reservation </a>';
+                                        }
+                                        echo '</td>';
+                                        echo '</tr>';
+                                    }
+                                    ?>
+
                                 </tbody>
                             </table>
                         </div>
@@ -138,31 +147,36 @@
                             <table class="table table hover">
                                 <thead>
                                     <tr>
-                                        <th>DATE</th>
+                                        <!--<th>DATE</th>-->
                                         <th>Restaurant Name</th>
-                                        <th>Time</th>
-                                        <th>Number of People</th>
+                                        <!--<th>Time</th>-->
+                                        <!--<th>Number of People</th>-->
                                         <th>Review</th>
+                                        <th>Date posted</th>
                                     </tr>
                                 </thead>
                                 <tbody id="items">
                                     <?php
-                                    if (!empty($userReservations)) {
-                                        foreach ($userReservations as $reservation) {
+                                    if (!empty($userReviews)) {
+                                        foreach ($userReviews as $review) {
                                             echo '<tr>';
-                                            echo '<td>' . $reservation['date'] . '</td>';
-                                            echo '<td>' . $reservation['name'] . '</td>';
-                                            echo '<td>' . $reservation['time'] . '</td>';
-                                            echo '<td>' . $reservation['no_of_people'] . '</td>';
-                                            if (empty($reservation['review_description']))
+//                                            echo '<td>' . $reservation['date'] . '</td>';
+                                            echo '<td>' . $review['name'] . '</td>';
+//                                            echo '<td>' . $reservation['time'] . '</td>';
+//                                            echo '<td>' . $reservation['no_of_people'] . '</td>';
+                                            if (empty($review['review_description'])) {
                                                 echo '<td><a href="#review page" class="btn btn-info" data-toggle="modal" data-target="#modal-review" role="button"> Write A Review </a>';
-                                            else
-                                                echo '<td>' . $reservation['review_description'] . '</td>';
+                                            }
+                                            else {
+                                              echo '<td>' . $review['review_description'] . '</td>';  
+                                            }
+                                            
+                                            echo empty($review['date_posted']) ? '<td></td>' : '<td>' . $review['date_posted'] . '</td>';
                                             echo '</tr>';
                                         }
                                     }
                                     ?>
-                                    <div class="modal fade" id="modal-review" role="dialog">
+                                <div class="modal fade" id="modal-review" role="dialog">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -248,6 +262,7 @@
                 $(".nav-tabs a").click(function () {
                     $(this).tab('show');
                 });
+                
                 $("#submit_button").click(function () {
                     var validated = true;
                     if ($("#password").val() != $("#password2").val()) {
@@ -271,6 +286,10 @@
                     }
                     return validated;
                 });
+                
+                $(".btn.btn-info.cancelReserv").click(function() {
+                    cancelReservation($(this).data("reservationid"));
+                });
             });
 
             function validateEmail(email) {
@@ -285,6 +304,17 @@
 
             $("[rel='tooltip']").tooltip();
             
+            function cancelReservation(reservationId) {
+                 var request = $.ajax({
+                    url: "userPageAjax.php",
+                    data: {functionName: 'cancelReservation', args: reservationId},
+                    dataType: "json",
+                });
+                
+                request.done(function() {
+                    $("a[data-reservationid="+reservationId+"]").parent().parent().remove();
+                });
+            }   
         </script>   
 
 </body>

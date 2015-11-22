@@ -33,6 +33,8 @@
             "address" => isset($_POST['restaurantAddress']) ? substr(htmlspecialchars($_POST['restaurantAddress']), 0, 100) : null,
             "phone_no" => isset($_POST['restaurantPhone']) ? substr(htmlspecialchars($_POST['restaurantPhone']), 0, 20) : null
             );
+        var_dump($restaurantUpdate);
+        exit();
     }
     ?>  
     <head>

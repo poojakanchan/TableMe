@@ -109,14 +109,12 @@ class User_model extends Database{
     }
 
     /*
-     * function to retrive reservation history of the provided user.
+     * function to retrive reviews of the provided user.
      */
-    public function getReservationHistory($userId) {
-        $sql = "SELECT v.date, r.name, v.time, v.no_of_people, w.review_description, v.restaurant_id, v.user_id "
-                . "FROM reservation v INNER JOIN restaurant r ON v.restaurant_id=r.restaurant_id "
-                . "LEFT JOIN review w ON v.restaurant_id=w.restaurant_id AND v.user_id=w.user_id "
-                . "WHERE v.user_id=:userId "
-                . "ORDER BY v.date DESC";
+    public function getUserReviews($userId) {
+        $sql = "SELECT r.name, r.restaurant_id, w.review_description, w.date_posted "
+                . " FROM review w, restaurant r "
+                . " WHERE w.user_id=:userId AND w.restaurant_id=r.restaurant_id";
 
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':userId', $userId);
@@ -124,7 +122,23 @@ class User_model extends Database{
             print_r($stmt->errorInfo());
             return null;
         }
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    /*
+     * function to retrive reservations of the provided user.
+     */
+    public function getUserReservations($userId) {
+        $sql = "SELECT n.reservation_id, n.date, n.time, r.name, n.no_of_people FROM reservation n, restaurant r "
+                . " WHERE n.user_id=:userId AND n.restaurant_id=r.restaurant_id "
+                . " ORDER BY n.date DESC";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':userId', $userId);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return null;
+        }
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 

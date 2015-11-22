@@ -4,11 +4,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>EZ Restaurant</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <title>TableMe</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
 
     <!--
     Leave the CSS file in the .php file for now.
@@ -153,13 +155,49 @@
                                             echo '<td>' . $reservation['time'] . '</td>';
                                             echo '<td>' . $reservation['no_of_people'] . '</td>';
                                             if (empty($reservation['review_description']))
-                                                echo '<td><a href="#review page" class="btn btn-info" role="button"> Write A Review </a>';
+                                                echo '<td><a href="#review page" class="btn btn-info" data-toggle="modal" data-target="#modal-review" role="button"> Write A Review </a>';
                                             else
                                                 echo '<td>' . $reservation['review_description'] . '</td>';
                                             echo '</tr>';
                                         }
                                     }
                                     ?>
+                                    <div class="modal fade" id="modal-review" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Review</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                
+                                                    <div class="row row-name">
+                                                        <div class="col-md-12">
+                                                            <h4> Name of the Restaurant </h4>  
+                                                        </div>
+                                                                                                          
+                                                    </div>
+                                                    <div class="row row-rating">
+                                                        <div class="col-md-12">
+                                                            <p> Where we should have the rating (Uploaded Later)</p>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="row row-content">
+                                                        <div class="col-md-12">
+                                                            <textarea class = "form-control" rows = "5"></textarea>
+                                                        </div>
+                                                        
+                                                    </div>  
+                                                
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary" value="submit-reservation" name="submit-reservation">Submit Review</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                     </tr>
                                 </tbody>
                             </table>

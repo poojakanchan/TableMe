@@ -69,6 +69,34 @@ class Reservation_model  extends Database{
         }
         return null;
     }
+    /* Retrieves all reservations for a specified date and restaurant ID. Used for hosts.
+     * Requires a date string in the form "xxx-xx-xx"
+     * Returns a large array containing all the reservations found for that date.
+     */
+    public function getReservationByDateAndRestaurantId($date,$resId)
+    {
+       $sql = "SELECT * FROM reservation WHERE date=".$date . "and restaurant_id=" . $resId; 
+        $stmt = $this->dbh->prepare($sql);
+        //$stmt->bindParam(':date', $date);
+         //$stmt->bindParam(':resId', $resId);
+            
+        if ($stmt->execute()) {
+            return $stmt->fetchAll();
+        }
+        return null;
+    }
+    
+    /* Retrieves  reservation for a specified Id.  */
+    public function getReservationById($reservationId)
+    {
+        $sql = "SELECT * FROM reservation WHERE reservation_id=$reservationId";
+        $stmt = $this->dbh->prepare($sql);
+     
+        if ($stmt->execute()) {
+            return $stmt->fetchAll();
+        }
+        return null;
+    }
     
     /* Deletes old reservations. Supposed to be run after a set period on a 
      * normal schedule to delete unused entries in the reservation table.
@@ -189,7 +217,24 @@ class Reservation_model  extends Database{
         }
         return null;
     }
-
+  public function markArrived($reservation_id){
+      try{
+         $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "UPDATE reservation SET mark_arrived=1 WHERE reservation_id= " . $reservation_id;
+        $stmt = $this->dbh->prepare($sql);
+        if($stmt->execute())
+        {
+            return 1;
+        }
+        return -1;
+      }catch (Exception $ex) {
+         //         
+        echo $ex->getMessage();
+       
+        return -1;
+            
+     }
+  }
 }
 
 ?>

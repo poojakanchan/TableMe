@@ -3,6 +3,27 @@
     if(!isset($_SESSION['username'])) {
         header('location: ../home/login.php');
     }
+    require_once "../../controllers/Host_controller.php";
+   $host_controller = new Host_controller();
+    $restuarant = $host_controller -> getRestaurant($_SESSION['username']);
+    $resId = $restuarant['res_id'];
+    $res_name = $restuarant['res_name'];
+    $thumbnail = $restuarant['thumbnail'];
+    date_default_timezone_set("America/Los_Angeles");
+    $date = date('Y/m/d');
+    
+     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+         if(isset($_POST['reservation_id'])){
+         $reservation_id = $_POST['reservation_id'];
+        // echo 'reservation id' . $reservation_id;
+         $date = $host_controller ->getReservationDate($reservation_id);
+        $host_controller->cancelReservation($resId,$reservation_id);
+         }else if(isset($_POST['reservationFirstName'])) {
+             $host_controller->makeReservation();
+         }
+    }
+   
 ?>
 <html lang="en">
 <head>
@@ -121,10 +142,81 @@
                         $datepicker.find('.date-container > .year').text(cur_date.format(format.year));
                         $datepicker.data('date', cur_date.format('YYYY/MM/DD'));
                         $datepicker.find('.input-datepicker').removeClass('show-input');
-                    }
+                     
+                        $.ajax({
+                            url: "../../controllers/Host_controller.php",
+                            type:"POST",
+                            async:false,
+                            data: {date: JSON.stringify(cur_date.format('YYYY/MM/DD')),resId:JSON.stringify(<?php echo $resId ?>)},
+                            dataType:"html",
+                            success: function(response) {
+                                $('[id=reservation_info]').each(function(){
+                                $(this).hide();
+                             //   alert('hide');
+                            });
+                               // console.log(response);
+                              //  alert(response);
+                               var reservations = $.parseJSON(response);
+                                
+                                for (var i = 0; i < reservations.length; i++) {
+                                     var clone = $('#reservation_info').first().clone();
+                                    
+                                    var first = $('#reservation_info').first();
+                                    
+                                            first.after(clone.show());
+                                            var time = reservations[i]['time'].toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+                                             if (time.length > 1) { // If time format correct
+                                             time = time.slice (1);  // Remove full string match value
+                                              time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+                                                 time[0] = +time[0] % 12 || 12; // Adjust hours
+                                                
+                                                 time[3] = "";
+                                             }
+                                        var formattedTime= time.join (''); // return adjusted time or original string
+                                      
+                                     clone.find("#time").text(formattedTime);
+                                      clone.find("#guest_name").text(reservations[i]['user_name']);
+                                      clone.find("#no_of_people").text('Number of People: ' + reservations[i]['no_of_people']);
+                                      
+                                        if(reservations[i]['special_instruct'] === "" || reservations[i]['special_instruct'].trim().length === 0){
+                                        clone.find("#accomodations").text('Special Instructions: None');
+                                        } else {
+                                        clone.find("#accomodations").text('Special Instructions: ' + reservations[i]['special_instruct']);
+                                        
+                                        }
+                                        clone.find("#reservation_id").attr('value',reservations[i]['reservation_id']);
+                                        clone.find("#user_id").attr('value',reservations[i]['user_id']);
+                                    //   alert('marked ' + reservations[i]['mark_arrived']);
+                                        if(reservations[i]['mark_arrived'] == 1){
+                                             //alert('if');
+                                         clone.find("#cancel_reservation").addClass('disabled');
+                                       //  alert(clone.find("input:checkbox").is(':checked'));
+                                         clone.find("input:checkbox").prop('checked',true);
+                                         clone.find("#mark_arrived")
+                                         .removeClass('btn-default')
+                                            .addClass('disabled');
+                                         } else {
+                                             
+                                        /* clone.find("#cancel_reservation").removeClass('disabled');
+                                           clone.find("#mark_arrived")
+                                         .removeClass('disabled')
+                                            .addClass('btn-default');
+                                          clone.find("input:checkbox").prop('checked', false);*/
+                                         }
+                                    //    alert(clone.find("#user_id").val());
+                                    }
+                                    initCheckbox();
+                                },
+                            error: function(jqXHR, textStatus, errorThrown){
+                                         alert(textStatus, errorThrown);
+                             }
+                        });
+                        
+                     }
 
                     updateDisplay(cur_date);
-
+                    
                     $datepicker.on('click', '[data-toggle="calendar"]', function(event) {
                         event.preventDefault();
                         $datepicker.find('.input-datepicker').toggleClass('show-input');
@@ -168,10 +260,10 @@
                         });
                     }
                 });
-            });
-            
-            //Check box function
-            $(function () {
+        });    
+                //Check box function
+           // $(function () {
+          function initCheckbox(){
                 $('.button-checkbox').each(function () {
 
                     // Settings
@@ -195,7 +287,7 @@
                         updateDisplay();
                     });
                     $checkbox.on('change', function () {
-                        updateDisplay();
+                    //    updateDisplay();
                     });
 
                     // Actions
@@ -209,15 +301,37 @@
                             .addClass('state-icon ' + settings[$button.data('state')].icon);
                         // Update the button's color
                         if (isChecked) {
-                            $button
-                                .removeClass('btn-default')
-                                .addClass('btn-' + color + ' active');
+                         //   alert('checked');
+                                 $button
+                                    .removeClass('btn-default')
+                                    .addClass('btn-' + color + ' disabled');
+                                    
+                                  
+                                 var parent = $checkbox.closest('div');
+                            
+                               parent.find("#cancel_reservation").addClass('disabled');
+                                // alert(parent.find("#user_id").val());
+                                     
+                                    
+                                 $.ajax({
+                                url: "../../controllers/Host_controller.php",
+                                type:"POST",
+                                async:false,
+                                data: {resId: JSON.stringify(<?php echo $resId ?>),
+                                    reservationId:JSON.stringify(parent.find("#reservation_id").val())},
+                                dataType:"html",
+                                success: function(response) {
+                                 //   alert(response);
+                                }
+                               });
+                          
                         }
                         else {
                             $button
                                 .removeClass('btn-' + color + ' active')
                                 .addClass('btn-default');
                         }
+                        
                     }
 
                     function init() {
@@ -229,7 +343,9 @@
                     }
                     init();
                 });
-            });
+            }
+         //   });
+ 
         </script>
 </head>
 <body>
@@ -237,10 +353,10 @@
         <div class="mainInfo col-md-12">
             <div class="row">
                 <div class="col-md-1">
-                    <img alt="Logo" src="http://goo.gl/vrq2Cw" class="img-rounded" height="100" width="100"/>
+                    <img alt="Logo" src="<?php echo 'data:image/jpeg;base64,' . $thumbnail ?>" class="img-rounded" height="100" width="100"/>
                 </div>
                 <div class="col-md-11">
-                    <h1>Little Tokyo</h1>
+                    <h1><?php echo $res_name ?></h1>
                 </div>
             </div>
             
@@ -251,7 +367,7 @@
             <!--Date picker-->
             <div class="row">
                 <div class="datePicker col-md-4 col-md-offset-4">
-                    <div class="date-picker pagination-centered"  data-date="2015/11/09" data-keyboard="true">
+                    <div class="date-picker pagination-centered"  data-date="<?php echo $date; ?>" data-keyboard="true">
                         <div class="date-container pull-left">
                             <h4 class="weekday">Monday</h4>
                             <h2 class="date">November 9th</h2>
@@ -274,10 +390,10 @@
             <button class="reservationButton btn btn-info col-md-offset-8" data-toggle="modal" data-id="<?php //echo $restaurant['restaurant_id'] ?>" data-target="#reservation-<?php //echo $restaurant['restaurant_id'] ?>" >
                 Make a Reservation
             </button>
-            
+             
             <!--Make reservation pop up-->
             <div  class="modal fade" id="reservation-<?php //echo $restaurant['restaurant_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <form name="myForm" action="#.php" onsubmit="return validateForm()" method="post">
+                <form name="myForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>"  method="post">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -441,34 +557,45 @@
             </div>
             
             <!--List of reservations-->
-            <div class="row">
+            
+            
+            <div class="row" id ="reservation_info" hidden>
+              <form method = "post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                              
                 <div class="reservationInfo col-md-6 col-md-offset-3">
                 <div class="list-group">
                     <br><br>
-                    <h2>12:00 PM</h2>
-                    <a href="#" class="list-group-item">
+                    <h2 id="time">12:00 PM</h2>
+                   
                         <div class="media">
                             
                             <!--Arrived check box-->
                             <span class="button-checkbox pull-right">
-                                <button type="button" class="btn btn-success" data-color="primary">Arrived</button>
+                                <button id="mark_arrived" type="button" class="btn btn-success" data-color="primary">Arrived</button>
                                 <input type="checkbox" class="hidden"/>
                             </span>
                             
+                             
                             <!--Reservation info-->
                             <div class="pull-left">
                                 <img class="media-object" src="https://goo.gl/GOzAhf" alt="user" height="120" width="120">
                             </div>
                             <div class="media-body">
-                                <h2 class="media-heading">John Smith</h2>
-                                <h3>2 people</h3>
-                                <h4>Accommodations</h4>
+                                <h2 class="media-heading" id ="guest_name">John Smith</h2>
+                                <h3 id ="no_of_people"> 2 people</h3>
+                                <h4 id="accomodations">Accommodations</h4>
+                              <!--  <h2 hidden id="reservation_id">1</h2>
+                                <h2 hidden id="user_id">1</h2> -->
+                                <input type="hidden" id="reservation_id" name="reservation_id" value="">
+                                 <input type="hidden" id="user_id" name="user_id" value="">
                             </div>
                              <!--Cancellation-->
-                            <button class="cancelButton btn btn-danger pull-right" data-toggle="modal" data-target="#confirmDelete">
+                            
+                            <button id="cancel_reservation" class="cancelButton btn btn-danger pull-right" data-toggle="modal" data-target="#confirmDelete">
                                 Cancel Reservation
                             </button>
                             
+                             
                             <!--Cancel pop up-->
                             <div class="cancelPopup modal fade" id="confirmDelete" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -487,10 +614,14 @@
                                   </div>
                                 </div>
                             </div>
+                              
                         </div>
-                    </a></div>
+                    </div>
                 </div>
+              </form>  
+           
             </div>
+            
         </div>
     </div>
     

@@ -112,17 +112,36 @@ class User_model extends Database{
      * function to retrive reviews of the provided user.
      */
     public function getUserReviews($userId) {
-        $sql = "SELECT r.name, r.restaurant_id, w.review_description, w.date_posted "
+        $sql = "SELECT r.name, r.restaurant_id, r.name, w.review_description, w.date_posted "
                 . " FROM review w, restaurant r "
                 . " WHERE w.user_id=:userId AND w.restaurant_id=r.restaurant_id";
 
         $stmt = $this->dbh->prepare($sql);
-        $stmt->bindParam(':userId', $userId);
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
         if (!$stmt->execute()) {
             print_r($stmt->errorInfo());
             return null;
         }
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    /*
+     * function to add a review
+     */
+    public function submitReview($restaurantId, $userId, $reviewText) {
+        $sql = "UPDATE review SET review_description=:reviewText, date_posted=:dateTime "
+                . " WHERE restaurant_id=:restaurantId AND user_id=:userId";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':restaurantId', $restaurantId, PDO::PARAM_INT);
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':reviewText', $reviewText, PDO::PARAM_STR);
+        date_default_timezone_set("America/Los_Angeles");
+        $dateTime = date("Y-m-d H:i:s");
+        $stmt->bindParam(':dateTime', $dateTime, PDO::PARAM_STR);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return false;
+        }
+        return $dateTime;
     }
     
     /*

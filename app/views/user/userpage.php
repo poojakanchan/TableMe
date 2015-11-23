@@ -131,7 +131,7 @@
                                         echo '<td>' . $reservation['no_of_people'] . '</td>';
                                         echo '<td>';
                                         if ($reservation['date']>$currentDate || ($reservation['date']==$currentDate && $reservation['time']>$currentTime)) {
-                                            echo '<a name="" class="btn btn-info cancelReserv" role="button" data-reservationid="' . $reservation['reservation_id'] . '"> Cancel Reservation </a>';
+                                            echo '<a name="" class="btn btn-info cancel-reservation" role="button" data-reservationid="' . $reservation['reservation_id'] . '"> Cancel Reservation </a>';
                                         }
                                         echo '</td>';
                                         echo '</tr>';
@@ -165,7 +165,9 @@
 //                                            echo '<td>' . $reservation['time'] . '</td>';
 //                                            echo '<td>' . $reservation['no_of_people'] . '</td>';
                                             if (empty($review['review_description'])) {
-                                                echo '<td><a href="#review page" class="btn btn-info" data-toggle="modal" data-target="#modal-review" role="button"> Write A Review </a>';
+                                                echo '<td><a href="#review page" class="btn btn-info write-review" data-toggle="modal" '
+                                                . 'data-target="#modal-review" data-restaurantid="' . $review['restaurant_id'] . 
+                                                        '" data-restaurantname="'. $review['name'] . '" role="button"> Write A Review </a>';
                                             }
                                             else {
                                               echo '<td>' . $review['review_description'] . '</td>';  
@@ -181,13 +183,13 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title">Review</h4>
+                                                <h3 class="modal-title" id="restaurant-name"></h3>
                                             </div>
                                             <div class="modal-body">
                                                 
                                                     <div class="row row-name">
                                                         <div class="col-md-12">
-                                                            <h4> Name of the Restaurant </h4>  
+                                                            <h4 id="write-review">Write your review here (1000 characters left)</h4>  
                                                         </div>
                                                                                                           
                                                     </div>
@@ -199,7 +201,7 @@
                                                     </div>
                                                     <div class="row row-content">
                                                         <div class="col-md-12">
-                                                            <textarea class = "form-control" rows = "5"></textarea>
+                                                            <textarea class = "form-control" rows = "5" id="review-text"></textarea>
                                                         </div>
                                                         
                                                     </div>  
@@ -207,12 +209,11 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary" value="submit-reservation" name="submit-reservation">Submit Review</button>
+                                                <button type="submit" class="btn btn-primary" value="submit-review" name="submit-review" id="submit-review" data-restaurantid="">Submit Review</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -287,9 +288,32 @@
                     return validated;
                 });
                 
-                $(".btn.btn-info.cancelReserv").click(function() {
+                $(".btn.btn-info.cancel-reservation").click(function() {
                     cancelReservation($(this).data("reservationid"));
                 });
+                
+                $(".btn.btn-info.write-review").click(function() {
+                    var name = $(this).data("restaurantname");
+                    var id = $(this).data("restaurantid");
+                    $("h3#restaurant-name").text(name);
+                    $("button#submit-review").data("restaurantid", id);
+                });
+                
+                var maxChar = 1000;
+                $("textarea#review-text").keyup(function() {
+                    var charRemaining = maxChar-$(this).val().length;
+                    if (charRemaining<=1) {
+                        $(this).val($(this).val().substring(0, maxChar));
+                    }
+                    $("h4#write-review").text("Write your review here ("+ charRemaining + " characters left)");
+                });
+                
+                $("button#submit-review").click(function() {
+                    var str = $("textarea#review-text").val().substring(0, 1000);
+                    submitReview($(this).data("restaurantid"), str);
+                });
+                
+                
             });
 
             function validateEmail(email) {
@@ -307,14 +331,33 @@
             function cancelReservation(reservationId) {
                  var request = $.ajax({
                     url: "userPageAjax.php",
-                    data: {functionName: 'cancelReservation', args: reservationId},
-                    dataType: "json",
+                    data: {functionName: 'cancelReservation', reservationId: reservationId},
+                    dataType: "json"
                 });
                 
                 request.done(function() {
                     $("a[data-reservationid="+reservationId+"]").parent().parent().remove();
                 });
-            }   
+            }
+            
+            function submitReview(restaurantId, reviewText) {
+                var request = $.ajax({
+                   url: "userPageAjax.php",
+                   data: {functionName: 'submitReview', restaurantId: restaurantId, 
+                       userId: <?php echo $userInfo['user_id']; ?>, reviewText: reviewText},
+                   dataType: "json"
+                });
+                
+                request.done(function(data){
+                    var dateTime = data.dateTime;
+                    var reviewButton = $('a[data-restaurantid="' + restaurantId + '"]');
+                    var nextTd = $(reviewButton).parent().next('td');
+                    reviewButton.replaceWith(reviewText);
+                    nextTd.text(dateTime);
+                   
+                    $('div#modal-review').modal('hide');
+                });
+            }
         </script>   
 
 </body>

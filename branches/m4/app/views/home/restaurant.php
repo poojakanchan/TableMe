@@ -159,6 +159,7 @@ $reviews = $db->getRestaurantReviews($resId);
             .event-list > li > .info {
                 padding-top: 5px;
                 text-align: center;
+                color:#000000;
             }
             .event-list > li > .info > .title {
                 font-size: 13pt;
@@ -240,6 +241,28 @@ $reviews = $db->getRestaurantReviews($resId);
                     bottom: 0px;
                 }
             }
+            
+            body{
+                background: url(background.jpg) no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+                /*background-color:#2E52E0;*/
+                /*background-image: url("background.jpg");*/
+                color:#FFFFFF;
+            }
+            .containerMain{
+                /*background-color:#2E52E0!important;*/
+                background-color:rgba(0,0,0,0)!important;
+            }
+            .container-fluid{
+                margin: 10px 10px 10px 10px;
+                border-radius: 25px;
+                /*border: 6px solid #2E52E0;*/
+                /*background-color:#FFFFFF;*/
+                /*background-color:rgba(0,0,0,0.5)*/
+            }
         </style>
         <script>
             $('.selectpicker').selectpicker();
@@ -252,118 +275,121 @@ $reviews = $db->getRestaurantReviews($resId);
 
     </head>
     <body>
-        <div class="container-fluid">
+        <div class="container-fluid containerMain">
             <div class="mainInfo col-md-8">
                 <div class="restaurantprofile col-md-12">
                     <div class="restaurantpic col-md-6">
-                        <a href="#" data-toggle="modal" data-target="#modal-logo">
-                            <img src="<?php echo 'data:image/jpeg;base64,' . base64_encode($restaurant['thumbnail']) ?>" class="img-rounded" height="300" width="300" />
-                        </a>
-                        <br><br>
-                        <a href="#" data-toggle="modal" data-target="#modal-thumbnail1">
-                            <img src="<?php $i=0; echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
-                        </a>
-                        <a href="#" data-toggle="modal" data-target="#modal-thumbnail2">
-                            <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
-                        </a>
-                        <a href="#" data-toggle="modal" data-target="#modal-thumbnail3">
-                            <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
-                        </a>
-                        <a href="#" data-toggle="modal" data-target="#modal-thumbnail4">
-                            <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
-                        </a>
-                        <div class="modal fade" id="modal-logo" role="dialog">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Logo</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src="<?php echo 'data:image/jpeg;base64,' . base64_encode($restaurant['thumbnail']) ?>" class="img-rounded img-responsive"/>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal fade" id="modal-thumbnail1" role="dialog">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Thumbnail1</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src="<?php $i=0; echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal fade" id="modal-thumbnail2" role="dialog">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Thumbnail2</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal fade" id="modal-thumbnail3" role="dialog">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Thumbnail3</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal fade" id="modal-thumbnail4" role="dialog">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Thumbnail4</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
+                        <div class="container-fluid">
+                            <a href="#" data-toggle="modal" data-target="#modal-logo">
+                                <img src="<?php echo 'data:image/jpeg;base64,' . base64_encode($restaurant['thumbnail']) ?>" class="img-rounded" height="300" width="300" />
+                            </a>
                             <br><br>
-                            <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#modal-menu">Menu</button>
-                            <div class="modal fade" id="modal-menu" role="dialog">
+                            <a href="#" data-toggle="modal" data-target="#modal-thumbnail1">
+                                <img src="<?php $i=0; echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
+                            </a>
+                            <a href="#" data-toggle="modal" data-target="#modal-thumbnail2">
+                                <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
+                            </a>
+                            <a href="#" data-toggle="modal" data-target="#modal-thumbnail3">
+                                <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
+                            </a>
+                            <a href="#" data-toggle="modal" data-target="#modal-thumbnail4">
+                                <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
+                            </a>
+                            <br><br>
+                            <div class="col-md-7">
+                                <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#modal-menu">Menu</button>
+                                <div class="modal fade" id="modal-menu" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Menu</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <img src="<?php echo "data:image/jpeg;base64," . $menu; ?>" class="img-responsive">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br><br>
+                            <div class="modal fade" id="modal-logo" role="dialog">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">Menu</h4>
+                                            <h4 class="modal-title">Logo</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <img src="<?php echo "data:image/jpeg;base64," . $menu; ?>" class="img-responsive">
+                                            <img src="<?php echo 'data:image/jpeg;base64,' . base64_encode($restaurant['thumbnail']) ?>" class="img-rounded img-responsive"/>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="modal-thumbnail1" role="dialog">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Thumbnail1</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img src="<?php $i=0; echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="modal-thumbnail2" role="dialog">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Thumbnail2</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="modal-thumbnail3" role="dialog">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Thumbnail3</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="modal-thumbnail4" role="dialog">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Thumbnail4</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded img-responsive"/>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -374,33 +400,36 @@ $reviews = $db->getRestaurantReviews($resId);
                         </div>
                     </div>
                     <div class="restaurantname col-md-6">
-                        <h1><?php echo $resName; ?></h1>
-                        <h2><?php echo $foodCategory; ?></h2>
-                        <br>
-                        <h4><?php echo $description; ?></h4>
-                        <br>
-                        <h4><?php echo $address; ?></h4>
-                        <br>
-                        <?php if ($phone != null) { ?>
-                        <h4><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span><?php echo $phone; ?></h4>
-                        <?php } ?>
-                        <br>
-                        <h4>                  
-                        <?php if ($from != null && $to != null) {
-                            echo "Today's Operating Hours: <br>" . date_format(new DateTime($from), "h:i A") . " - " . date_format(new DateTime($to), "h:i A");
-                        }?>
-                        </h4>
+                        <div class="container-fluid">
+                            <h1><?php echo $resName; ?></h1>
+                            <h2><?php echo $foodCategory; ?></h2>
+                            <br>
+                            <h4><?php echo $description; ?></h4>
+                            <br>
+                            <h4><?php echo $address; ?></h4>
+                            <br>
+                            <?php if ($phone != null) { ?>
+                            <h4><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span><?php echo $phone; ?></h4>
+                            <?php } ?>
+                            <br>
+                            <h4>                  
+                            <?php if ($from != null && $to != null) {
+                                echo "Today's Operating Hours: <br>" . date_format(new DateTime($from), "h:i A") . " - " . date_format(new DateTime($to), "h:i A");
+                            }?>
+                            </h4>
 
-                        <h4>                  
-                        <?php
-                        if ($time_message != null) {
-                            echo $time_message;
-                        }?>
-                        </h4>
+                            <h4>                  
+                            <?php
+                            if ($time_message != null) {
+                                echo $time_message;
+                            }?>
+                            </h4>
 
-                        <button class="btn btn-info" data-toggle="modal" data-id="<?php echo $resId   ?>" data-target="#reservation-<?php echo $resId   ?>" >
-                            Make a Reservation
-                        </button>
+                            <button class="btn btn-info" data-toggle="modal" data-id="<?php echo $resId   ?>" data-target="#reservation-<?php echo $resId   ?>" >
+                                Make a Reservation
+                            </button>
+                            <br><br>
+                        </div>
                         <div  class="modal fade" id="reservation-<?php echo $resId   ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <form name="myForm" action="#.php" onsubmit="return validateForm()" method="post">
                                 <div class="modal-dialog">
@@ -570,130 +599,119 @@ $reviews = $db->getRestaurantReviews($resId);
                 </div>
                 <div class="col-md-12">
                     <div class="userreview col-md-6">
-                        <h3>Reviews</h3>
-                        <?php
-                        if(empty($reviews)) {
-                            echo '<p>No reviews yet</p>';
-                        }
-                        else {
-                            $altImage = "http://www.telikin.com/joomla/components/com_joomblog/images/user.png";
-                            foreach ($reviews as $review) {
-                                echo '<div class="media">
-                                        <a class="media-left" href="#">';
-//                                var_dump($review);
-//                                exit();
-                                echo '<img src="' . (empty($review['user_image'])>0 ? $altImage : "data:image/jpeg;base64,".base64_encode($review['user_image'])) . '" alt="user" height="50" width="50">';
-                                echo '</a>
-                                        <div class="media-body">';
-                                echo '<h4 class="media-heading">' . $review['name'] . '</h4>';
-                                echo '<p>' . $review['review_description'] . '</p>';
-                                echo '</div>
-                                    </div>';
+                        <div class="container-fluid">
+                            <h3>Reviews</h3>
+                            <?php
+                            if(empty($reviews)) {
+                                echo '<p>No reviews yet</p>';
                             }
-                        }
-                        ?>
-<!--                        <div class="media">
-                            <a class="media-left" href="#">
-                                <img src="http://www.telikin.com/joomla/components/com_joomblog/images/user.png" alt="user" height="50" width="50">
-                            </a>
-                            <div class="media-body">
-                                <h4 class="media-heading">Larry</h4>
-                                <p>I like this restaurant!</p>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <a class="media-left" href="#">
-                                <img src="http://www.telikin.com/joomla/components/com_joomblog/images/user.png" alt="user" height="50" width="50">
-                            </a>
-                            <div class="media-body">
-                                <h4 class="media-heading">Potter</h4>
-                                <p>I like this restaurant too!</p>
-                            </div>
-                        </div>-->
-                    </div>
-                    <div class="col-md-6">
-                        <h3>Operating Hours</h3>
-                        <div class="container">
-                            <?php if ($oprHours != null) { ?>
-                                <div class="col-md-2"> <h4>Monday: </h4> </div>
-                                <div class="col-md-10">
-                                    <!--<h4> <?php //echo $oprHours["monday_from"] . " - " . $oprHours["monday_to"]; ?> </h4>-->
-                                    <h4> <?php echo date_format(new DateTime($oprHours["monday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["monday_to"]), "h:i A"); ?> </h4>
-                                </div>
-                                <div class="col-md-2"> <h4>Tuesday: </h4></div>
-                                <div class="col-md-10">
-                                    <h4> <?php echo date_format(new DateTime($oprHours["tuesday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["tuesday_to"]), "h:i A"); ?> </h4>
-                                </div>  
-                                <div class="col-md-2"> <h4>Wednesday: </h4> </div>
-                                <div class="col-md-10"> 
-                                    <h4> <?php echo date_format(new DateTime($oprHours["wednesday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["wednesday_to"]), "h:i A"); ?> </h4>
-                                </div>
-                                <div class="col-md-2"> <h4>Thursday: </h4> </div>
-                                <div class="col-md-10">
-                                    <h4> <?php echo date_format(new DateTime($oprHours["thursday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["thursday_to"]), "h:i A"); ?> </h4>
-                                </div>
-                                <div class="col-md-2"><h4> Friday: </h4> </div>
-                                <div class="col-md-10">
-                                    <h4> <?php echo date_format(new DateTime($oprHours["friday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["friday_to"]), "h:i A"); ?> </h4>
-                                </div>
-                                <div class="col-md-2"><h4> Saturday: </h4> </div>
-                                <div class="col-md-10">
-                                    <h4> <?php echo date_format(new DateTime($oprHours["saturday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["saturday_to"]), "h:i A"); ?> </h4>
-                                </div>
-                                <div class="col-md-2"> <h4> Sunday: </h4> </div>
-                                <div class="col-md-10">
-                                    <h4> <?php echo date_format(new DateTime($oprHours["sunday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["sunday_to"]), "h:i A"); ?> </h4>
-                                </div>
-                                <?php } else { ?>
-                                <h4> Sorry, Operation Hours are not available.</h4>
-                                <?php } ?>
+                            else {
+                                $altImage = "http://www.telikin.com/joomla/components/com_joomblog/images/user.png";
+                                foreach ($reviews as $review) {
+                                    echo '<div class="media">
+                                            <a class="media-left" href="#">';
+    //                                var_dump($review);
+    //                                exit();
+                                    echo '<img src="' . (empty($review['user_image'])>0 ? $altImage : "data:image/jpeg;base64,".base64_encode($review['user_image'])) . '" alt="user" height="50" width="50">';
+                                    echo '</a>
+                                            <div class="media-body">';
+                                    echo '<h4 class="media-heading">' . $review['name'] . '</h4>';
+                                    echo '<p>' . $review['review_description'] . '</p>';
+                                    echo '</div>
+                                        </div>';
+                                }
+                            }
+                            ?>
+                            <br>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="specialEvent col-md-4">
-                <?php echo empty($events) ? '' : '<h4>Special events:</h4>'; ?>
                 <div class="col-md-12">
-                    <?php
-                    foreach ($events as $event) {
-                        echo '<ul class="event-list">';
-                        echo '<li>';
-                        echo '<time datetime="' . $event['date'] . '">';
-                        $dateNum = explode("-", $event['date']);
-                        echo '<span class="day">'. $dateNum[2] . '</span>';
-                        $dt = DateTime::createFromFormat('!m', $dateNum[1]);
-                        echo '<span class="month">' . $dt->format('M') . '</span>';
-                        echo '<span class="year">'. $dateNum[0] . '</span>';
-                        echo '<span class="time">'. $event['time'] . '</span></time>';
-                        echo '<img src="data:image/jpeg;base64,' . base64_encode($event['event_photo']) . '"/>';
-                        echo '<div class="info">
-                                <h2 class="title">' . $event['title'] . '</h2>
-                                <p class="desc">' . $event['description'] . '</p>
-                            </div>
-                        </li>
-                    </ul>';
-                    }
-                    ?>
+                    <div class="container-fluid">
+                        <?php echo empty($events) ? '' : '<h3>Special events:</h3>'; ?>
+                        <?php
+                        foreach ($events as $event) {
+                            echo '<ul class="event-list">';
+                            echo '<li>';
+                            echo '<time datetime="' . $event['date'] . '">';
+                            $dateNum = explode("-", $event['date']);
+                            echo '<span class="day">'. $dateNum[2] . '</span>';
+                            $dt = DateTime::createFromFormat('!m', $dateNum[1]);
+                            echo '<span class="month">' . $dt->format('M') . '</span>';
+                            echo '<span class="year">'. $dateNum[0] . '</span>';
+                            echo '<span class="time">'. $event['time'] . '</span></time>';
+                            echo '<img src="data:image/jpeg;base64,' . base64_encode($event['event_photo']) . '"/>';
+                            echo '<div class="info">
+                                    <h2 class="title">' . $event['title'] . '</h2>
+                                    <p class="desc">' . $event['description'] . '</p>
+                                </div>
+                            </li>
+                        </ul>';
+                        }
+                        ?>
+                    </div>
                 </div>
                 <div class="userreview col-md-12">
-                    <h3>Directions:</h3>
-                    <div class="row">
-                        <iframe
-                            width=100%
-                            height="300"
-                            frameborder="0"
-                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBeVgOJNkJiPXUmp895wxNmaCP2_oP9ERg&q=<?php echo $address ?>" >
-                        </iframe>
-                    </div> 
+                    <div class="container-fluid">
+                        <h3>Directions:</h3>
+                        <div class="row">
+                            <iframe
+                                width=100%
+                                height="300"
+                                frameborder="0"
+                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBeVgOJNkJiPXUmp895wxNmaCP2_oP9ERg&q=<?php echo $address ?>" >
+                            </iframe>
+                        </div> 
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="container-fluid">
+                        <h3>Operating Hours</h3>
+                        <?php if ($oprHours != null) { ?>
+                        <div class="col-md-4"> <h4>Monday: </h4> </div>
+                        <div class="col-md-8">
+                            <!--<h4> <?php //echo $oprHours["monday_from"] . " - " . $oprHours["monday_to"]; ?> </h4>-->
+                            <h4> <?php echo date_format(new DateTime($oprHours["monday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["monday_to"]), "h:i A"); ?> </h4>
+                        </div>
+                        <div class="col-md-4"> <h4>Tuesday: </h4></div>
+                        <div class="col-md-8">
+                            <h4> <?php echo date_format(new DateTime($oprHours["tuesday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["tuesday_to"]), "h:i A"); ?> </h4>
+                        </div>  
+                        <div class="col-md-4"> <h4>Wednesday: </h4> </div>
+                        <div class="col-md-8"> 
+                            <h4> <?php echo date_format(new DateTime($oprHours["wednesday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["wednesday_to"]), "h:i A"); ?> </h4>
+                        </div>
+                        <div class="col-md-4"> <h4>Thursday: </h4> </div>
+                        <div class="col-md-8">
+                            <h4> <?php echo date_format(new DateTime($oprHours["thursday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["thursday_to"]), "h:i A"); ?> </h4>
+                        </div>
+                        <div class="col-md-4"><h4> Friday: </h4> </div>
+                        <div class="col-md-8">
+                            <h4> <?php echo date_format(new DateTime($oprHours["friday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["friday_to"]), "h:i A"); ?> </h4>
+                        </div>
+                        <div class="col-md-4"><h4> Saturday: </h4> </div>
+                        <div class="col-md-8">
+                            <h4> <?php echo date_format(new DateTime($oprHours["saturday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["saturday_to"]), "h:i A"); ?> </h4>
+                        </div>
+                        <div class="col-md-4"> <h4> Sunday: </h4> </div>
+                        <div class="col-md-8">
+                            <h4> <?php echo date_format(new DateTime($oprHours["sunday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["sunday_to"]), "h:i A"); ?> </h4>
+                        </div>
+                        <?php } else { ?>
+                        <h4> Sorry, Operation Hours are not available.</h4>
+                        <?php } ?>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class = "navbar navbar-default navbar-bottom">
+        <!--<div class = "navbar navbar-default navbar-bottom">
             <div class = "container">
                 <p class="navbar-text navbar-left">This website belongs to SFSU Course CSC648/CSC848 Fall 15 Group 11</p>
             </div>
         </div>
-
+        -->
 
     </body>
 </html>

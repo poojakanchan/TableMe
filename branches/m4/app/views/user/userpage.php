@@ -131,7 +131,8 @@
                                         echo '<td>' . $reservation['no_of_people'] . '</td>';
                                         echo '<td>';
                                         if ($reservation['date']>$currentDate || ($reservation['date']==$currentDate && $reservation['time']>$currentTime)) {
-                                            echo '<a name="" class="btn btn-info cancel-reservation" role="button" data-reservationid="' . $reservation['reservation_id'] . '"> Cancel Reservation </a>';
+                                            echo '<a class="btn btn-info cancel-reservation" role="button" data-toggle="modal" data-target="#confirmCancel" '
+                                            .'data-reservation-res-name="'.$reservation['name'].'" data-reservation-date="'.$reservation['date'].'" data-reservation-time="'.$reservation['time'] . '" data-reservation-id="' . $reservation['reservation_id'] . '"> Cancel Reservation </a>';
                                         }
                                         echo '</td>';
                                         echo '</tr>';
@@ -142,6 +143,7 @@
                             </table>
                         </div>
                     </div>
+                    
                     <div id="history" class="tab-pane fade">
                         <div class="table-responsive">
                             <table class="table table hover">
@@ -166,7 +168,7 @@
 //                                            echo '<td>' . $reservation['no_of_people'] . '</td>';
                                             if (empty($review['review_description'])) {
                                                 echo '<td><a href="#review page" class="btn btn-info write-review" data-toggle="modal" '
-                                                . 'data-target="#modal-review" data-restaurantid="' . $review['restaurant_id'] . 
+                                                . 'data-target="#modal-review" data-reservation-id="' . $review['restaurant_id'] . 
                                                         '" data-restaurantname="'. $review['name'] . '" role="button"> Write A Review </a>';
                                             }
                                             else {
@@ -209,7 +211,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary" value="submit-review" name="submit-review" id="submit-review" data-restaurantid="">Submit Review</button>
+                                                <button type="submit" class="btn btn-primary" value="submit-review" name="submit-review" id="submit-review" data-reservation-id="">Submit Review</button>
                                             </div>
                                         </div>
                                     </div>
@@ -256,7 +258,27 @@
                 </div> <!-- End of Tab Contents -->
             </div> <!-- End of col-sm-12 -->
         </div> <!-- End of Row -->
+        
+        <!--Cancel pop up-->
+                            <div class="modal fade" id="confirmCancel" role="dialog">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                      <h4 class="modal-title">Please Confirm</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                      <p id="cancelMsg"></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                      <button type="button" class="btn btn-danger" id="cancelOK" data-dismiss="modal" data-reservation-id="">OK </button>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
 
+        
         <script>
             // js for tabs
             $(document).ready(function () {
@@ -289,14 +311,25 @@
                 });
                 
                 $(".btn.btn-info.cancel-reservation").click(function() {
-                    cancelReservation($(this).data("reservationid"));
+                    var resName = $(this).data("reservation-res-name");
+                    var date = $(this).data("reservation-date");
+                    var time = $(this).data("reservation-time");
+                    var id = $(this).data("reservation-id");
+                    var message = "Cancel reservation for "+resName+" on "+date+" at "+time+"?";
+                    $('p#cancelMsg').text(message);
+                    $("button#cancelOK").data("reservation-id", id);
+                });
+                
+                $("button#cancelOK").click(function() {
+                    var id = $(this).data("reservation-id");
+                    cancelReservation(id);
                 });
                 
                 $(".btn.btn-info.write-review").click(function() {
                     var name = $(this).data("restaurantname");
-                    var id = $(this).data("restaurantid");
+                    var id = $(this).data("reservation-id");
                     $("h3#restaurant-name").text(name);
-                    $("button#submit-review").data("restaurantid", id);
+                    $("button#submit-review").data("reservation-id", id);
                 });
                 
                 var maxChar = 1000;
@@ -310,7 +343,7 @@
                 
                 $("button#submit-review").click(function() {
                     var str = $("textarea#review-text").val().substring(0, 1000);
-                    submitReview($(this).data("restaurantid"), str);
+                    submitReview($(this).data("reservation-id"), str);
                 });
                 
                 
@@ -336,7 +369,7 @@
                 });
                 
                 request.done(function() {
-                    $("a[data-reservationid="+reservationId+"]").parent().parent().remove();
+                    $("a[data-reservation-id="+reservationId+"]").parent().parent().remove();
                 });
             }
             
@@ -350,7 +383,7 @@
                 
                 request.done(function(data){
                     var dateTime = data.dateTime;
-                    var reviewButton = $('a[data-restaurantid="' + restaurantId + '"]');
+                    var reviewButton = $('a[data-reservation-id="' + restaurantId + '"]');
                     var nextTd = $(reviewButton).parent().next('td');
                     reviewButton.replaceWith(reviewText);
                     nextTd.text(dateTime);

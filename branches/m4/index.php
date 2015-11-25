@@ -199,7 +199,7 @@
                                 <tr>
                                     <td>
                                         <div class="col-sm-2 col-sm-2-profile">
-                                            <a href="#restaurant view page"> <img width="150" height="150" style="float: left;" src="<?php print $image_src; ?>" /> </a>    
+                                            <a href="<?php echo 'app/views/home/restaurant.php?resid=' . $restaurant['restaurant_id'] ?>"> <img width="150" height="150" style="float: left;" src="<?php print $image_src; ?>" /> </a>    
                                         </div> <!-- End of Profile Picture -->
                                         <div class="col-sm-8 col-sm-8-detail"> 
                                             <h3>  <a  href="<?php echo 'app/views/home/restaurant.php?resid=' . $restaurant['restaurant_id'] ?>" > <?php echo $restaurant['name'] ?> </a> </h3>

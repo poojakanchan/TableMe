@@ -14,9 +14,9 @@ if($_POST)
 {
       $reservation->add();
 }
-$db = new Restaurant_model();
+$restaurantDb = new Restaurant_model();
 $resId = (array_key_exists('resid', $_GET) ? htmlspecialchars($_GET['resid']) : 0);
-$restaurant = $db->findRestaurantById($resId);
+$restaurant = $restaurantDb->findRestaurantById($resId);
 if (empty($restaurant)) {
     echo '<h1>Restaurant with $resId=' . $resId . ' does not exist </h1>';
     return;
@@ -97,10 +97,28 @@ if (!empty($oprHours)) {
     }
 }
 
-$cnt = $db->getRestaurantImageCount($resId);
+$cnt = $restaurantDb->getRestaurantImageCount($resId);
 $n = intval($cnt[0]) >= 5 ? 5 : intval($cnt[0]); //total number of images for the restaurant in multimedia table
 
-$reviews = $db->getRestaurantReviews($resId);
+$reviews = $restaurantDb->getRestaurantReviews($resId);
+$ratings = array(1=>0, 2=>0, 3=>0, 4=>0, 5=>0);
+foreach ($reviews as $review) {
+    if ($review['rating'] != null) {
+        $ratings[$review['rating']]++;
+    }
+}
+$avgRating = $ratingCount = 0;
+for ($i=1; $i<=5; $i++) {
+    $avgRating += $i * $ratings[$i];
+    $ratingCount += $ratings[$i];
+}
+if ($ratingCount > 0) {
+    $avgRating /= $ratingCount;
+}
+if ($avgRating >= 1) {
+   $restaurantDb->setAverageRating($resId, $avgRating); 
+}
+
 ?>
 <html lang="en">
     <head>
@@ -642,16 +660,22 @@ $reviews = $db->getRestaurantReviews($resId);
                                     <div class="well-sm">
                                         <div class="row">
                                             <div class="col-xs-12 col-md-6 text-center">
-                                                <h1 class="rating-num">
-                                                    4.0</h1>
+                                                <h1 class="rating-num"><?php echo $avgRating>=1 ? round($avgRating, 1) : 'None'; ?></h1>
                                                 <div class="rating">
-                                                    <span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
+                                                    <?php
+                                                    $i;
+                                                    for ($i=1; $i<=$avgRating; $i++) {
+                                                        echo '<span class="glyphicon glyphicon-star"></span>';
+                                                    }
+                                                    for (; $i<=5; $i++) {
+                                                        echo '<span class="glyphicon glyphicon-star-empty"></span>';
+                                                    }
+                                                    ?>
+<!--                                                    <span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
                                                     </span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
-                                                    </span><span class="glyphicon glyphicon-star-empty"></span>
+                                                    </span><span class="glyphicon glyphicon-star-empty"></span>-->
                                                 </div>
-                                                <div>
-                                                    <span class="glyphicon glyphicon-user"></span>1,200,000 total
-                                                </div>
+                                                <div><span class="glyphicon glyphicon-user"></span><?php echo $ratingCount.' total' ?></div>
                                             </div>
                                             <div class="col-xs-12 col-md-6">
                                                 <div class="row rating-desc">
@@ -661,8 +685,13 @@ $reviews = $db->getRestaurantReviews($resId);
                                                     <div class="col-xs-8 col-md-9">
                                                         <div class="progress progress-striped">
                                                             <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
-                                                                aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                                                <span class="sr-only">80%</span>
+                                                                aria-valuemin="0" aria-valuemax="100" style="width: 
+                                                                    <?php 
+                                                                    $formatter = new NumberFormatter('en_US', NumberFormatter::PERCENT); 
+                                                                    $percent=$formatter->format($ratings[5]/$ratingCount); 
+                                                                    echo $percent; ?>
+                                                                    ">
+                                                                <span class="sr-only"><?php echo $percent; ?></span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -673,8 +702,13 @@ $reviews = $db->getRestaurantReviews($resId);
                                                     <div class="col-xs-8 col-md-9">
                                                         <div class="progress">
                                                             <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
-                                                                aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                                                <span class="sr-only">60%</span>
+                                                                aria-valuemin="0" aria-valuemax="100" style="width: 
+                                                                <?php 
+                                                                    $formatter = new NumberFormatter('en_US', NumberFormatter::PERCENT); 
+                                                                    $percent=$formatter->format($ratings[4]/$ratingCount); 
+                                                                    echo $percent; ?>
+                                                                ">
+                                                                <span class="sr-only"><?php echo $percent; ?></span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -685,8 +719,13 @@ $reviews = $db->getRestaurantReviews($resId);
                                                     <div class="col-xs-8 col-md-9">
                                                         <div class="progress">
                                                             <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"
-                                                                aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                                                <span class="sr-only">40%</span>
+                                                                aria-valuemin="0" aria-valuemax="100" style="width:
+                                                                <?php 
+                                                                    $formatter = new NumberFormatter('en_US', NumberFormatter::PERCENT); 
+                                                                    $percent=$formatter->format($ratings[3]/$ratingCount); 
+                                                                    echo $percent; ?>
+                                                                ">
+                                                                <span class="sr-only"><?php echo $percent; ?></span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -697,8 +736,13 @@ $reviews = $db->getRestaurantReviews($resId);
                                                     <div class="col-xs-8 col-md-9">
                                                         <div class="progress">
                                                             <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20"
-                                                                aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                                                <span class="sr-only">20%</span>
+                                                                aria-valuemin="0" aria-valuemax="100" style="width:
+                                                                <?php 
+                                                                    $formatter = new NumberFormatter('en_US', NumberFormatter::PERCENT); 
+                                                                    $percent=$formatter->format($ratings[2]/$ratingCount); 
+                                                                    echo $percent; ?>
+                                                                ">
+                                                                <span class="sr-only"><?php echo $percent; ?></span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -709,8 +753,13 @@ $reviews = $db->getRestaurantReviews($resId);
                                                     <div class="col-xs-8 col-md-9">
                                                         <div class="progress">
                                                             <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80"
-                                                                aria-valuemin="0" aria-valuemax="100" style="width: 15%">
-                                                                <span class="sr-only">15%</span>
+                                                                aria-valuemin="0" aria-valuemax="100" style="width: 
+                                                                <?php 
+                                                                    $formatter = new NumberFormatter('en_US', NumberFormatter::PERCENT); 
+                                                                    $percent=$formatter->format($ratings[1]/$ratingCount); 
+                                                                    echo $percent; ?>
+                                                                ">
+                                                                <span class="sr-only"><?php echo $percent; ?></span>
                                                             </div>
                                                         </div>
                                                     </div>

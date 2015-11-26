@@ -341,6 +341,19 @@ class Restaurant_model  extends Database{
         }
         return true;
     }
+    
+    public function setAverageRating ($restaurantId, $averageRating) {
+        $sql = "UPDATE restaurant set average_rating=:averageRating "
+                . " WHERE restaurant_id=:restaurantId";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':restaurantId', $restaurantId, PDO::PARAM_INT);
+        $stmt->bindParam(':averageRating', $averageRating);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return false;
+        }
+        return true;
+    }
 }
 
 ?>

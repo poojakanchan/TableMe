@@ -18,6 +18,7 @@
     $restaurantImages = $restaurantDb->getRestaurantImages($resId);
     $imageCount = count($restaurantImages) >= 4 ? 4 : count($restaurantImages); //total number of images for the restaurant in multimedia table
     $foodCategory = $restaurantDb->getFoodCategories();
+    $reviewArray = $restaurantDb->getRestaurantReviews($resId);
     
     $oprDb = new OperationHours_model();
     $oprHours = $oprDb->getOperatingHoursByRestaurantId($resId);
@@ -690,9 +691,9 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr id='addr0' data-id="0" class="hidden">
-                                                    <td data-name="account">
-                                                        <input type="text" name='account0'  placeholder='Account Name' class="form-control"/>
+                                                <tr id='addr0' data-id="0" >
+                                                    <td data-name="account" placeholder='Account Name' contenteditable="true">
+                                                        <input contentEditable="true" type="text" name='account0'  placeholder='Account Name' class="form-control"/>
                                                     </td>
                                                     <td data-name="password">
                                                         <input type="text" name='pass0' placeholder='Password' class="form-control"/>
@@ -713,33 +714,42 @@
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <tbody id="item">
-                                        <tr>
-                                            <td>
-                                                
-                                            </td>
-                                        </tr>
+                                        <?php
+                                        foreach ($reviewArray as $review) {
+                                            echo '<tr>';
+                                            echo '<td>'.$review['review_description'].'</td>';
+                                            echo '<td>'.$review['name'].'</td>';
+                                            echo '<td>'.$review['date_posted'].'</td>';
+                                            echo '</tr>';
+                                        }
+                                        ?>
+<!--                                        <tr>
+                                            <td>nice restaurant</td>
+                                            <td>user1</td>
+                                            <td>2015-03-12</td>
+                                        </tr>-->
                                     </tbody>
                                 </table>
                             </div>
                         </div> <!-- Report review End -->
                         <div id="change-profile" class="tab-pane fade">
-                            <form class="form" action="##" method="post" id="editregistrationform">
+                            <!--<form class="form" action="##" method="post" id="editregistrationform">-->
                                 <div class="form-group">
                                     <div class="col-xs-6">
                                         <label for="phone_number"><h4>Phone Number</h4></label>
-                                        <input type="tel" class="form-control" name="phone_number" id="phone_number" value=" "  placeholder="(xxx) xxx-xxxx" required />
+                                        <input type="tel" class="form-control" name="phone_number" id="phone_number" value="<?php echo $ownerInfo['contact_no']; ?>"  placeholder="(xxx) xxx-xxxx" required />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-xs-6">
                                         <label for="email"><h4>Email</h4></label>
-                                        <input type="email" class="form-control" name="email" id="email" value=" " placeholder="you@email.com" />
+                                        <input type="email" class="form-control" name="email" id="email" value="<?php echo $ownerInfo['email']; ?>" placeholder="you@email.com" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-xs-6">
                                         <label for="password"><h4>Password</h4></label>
-                                        <input type="password" class="form-control" name="password" id="password" placeholder="enter new password" />
+                                        <input type="password" class="form-control" name="password1" id="password1" placeholder="enter new password" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -751,11 +761,11 @@
                                 <div class="form-group">
                                     <div class="col-xs-12">
                                         <br>
-                                        <button class="btn btn-default" type="submit" id="submit_button"><i class="glyphicon glyphicon-ok-sign"></i>Submit</button>
+                                        <button class="btn btn-default" id="submit-change-profile" data-username="<?php echo $ownerInfo['username']; ?>"><i class="glyphicon glyphicon-ok-sign"></i>Change Profile</button>
                                         <button class="btn btn-default" type="reset"><i class="glyphicon glyphicon-repeat"></i>Reset</button>
                                     </div>
                                 </div>
-                            </form> <!-- End of the edit the profile form -->
+                            <!--</form>  End of the edit the profile form -->
                         </div><!-- End of the Setting -->
                     </div>
 

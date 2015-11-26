@@ -245,6 +245,102 @@ class Restaurant_model  extends Database{
         }
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    public function updateRestaurant($restaurantId, $description, $address, $phoneNum) {
+        $sql = "UPDATE restaurant SET description=:description, address=:address, phone_no=:phoneNum "
+                . " WHERE restaurant_id=:restaurantId";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':restaurantId', $restaurantId);
+        $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':address', $address);
+        $stmt->bindParam(':phoneNum', $phoneNum);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return false;
+        }
+        return true;
+    }
+    
+    public function updateRestaurantThumbnail($restaurantId, $thumbnail) {
+        $sql = "UPDATE restaurant SET thumbnail=:thumbnail "
+                . " WHERE restaurant_id=:restaurantId";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':restaurantId', $restaurantId, PDO::PARAM_INT);
+        $stmt->bindParam(':thumbnail', $thumbnail, PDO::PARAM_LOB);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return false;
+        }
+        return true;
+    }
+    
+    public function updateRestaurantMenu($resId, $menu) {
+        $sql = "UPDATE restaurant SET menu=:menu "
+                . " WHERE restaurant_id=:restaurantId";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':restaurantId', $restaurantId, PDO::PARAM_INT);
+        $stmt->bindParam(':menu', $menu, PDO::PARAM_LOB);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return false;
+        }
+        return true;
+    }
+    
+    public function updateMultimedia($multimediaId, $img, $restaurantId) {
+        if (intval($multimediaId) > 0) {
+            $sql = "UPDATE multimedia SET media=:media WHERE multimedia_id=:multimediaId";
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->bindParam(':multimediaId', $multimediaId, PDO::PARAM_INT);
+            $stmt->bindParam(':media', $img, PDO::PARAM_LOB);
+        }
+        else {
+            $sql = "INSERT INTO multimedia(restaurant_id, type, media) "
+                    . " VALUES(:restaurantId, 'image', :media)";
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->bindParam(':restaurantId', $restaurantId, PDO::PARAM_INT);
+            $stmt->bindParam(':media', $img, PDO::PARAM_LOB);
+        }
+        
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return false;
+        }
+        return true;
+    }
+    
+    public function updateOperatingHours($opHrs) {
+        $sql = "UPDATE operating_hours SET monday_from=:mondayFrom, monday_to=:mondayTo, "
+                . " tuesday_from=:tuesdayFrom, tuesday_to=:tuesdayTo, wednesday_from=:wednesdayFrom, "
+                . " wednesday_to=:wednesdayTo, thursday_from=:thursdayFrom, thursday_to=:thursdayTo, "
+                . " friday_from=:fridayFrom, friday_to=:fridayTo, saturday_from=:saturdayFrom, "
+                . " saturday_to=:saturdayTo, sunday_from=:sundayFrom, sunday_to=:sundayTo "
+                . " WHERE restaurant_id=:restaurantId";
+        $stmt = $this->dbh->prepare($sql);
+        $result = $stmt->execute(array(
+            ':restaurantId' => $opHrs['restaurantId'],
+            ':mondayFrom' => $opHrs['mondayFrom'],
+            ':mondayTo' => $opHrs['mondayTo'],
+            ':tuesdayFrom' => $opHrs['tuesdayFrom'],
+            ':tuesdayTo' => $opHrs['tuesdayTo'],
+            ':wednesdayFrom' => $opHrs['wednesdayFrom'],
+            ':wednesdayTo' => $opHrs['wednesdayTo'],
+            ':thursdayFrom' => $opHrs['thursdayFrom'],
+            ':thursdayTo' => $opHrs['thursdayTo'],
+            ':fridayFrom' => $opHrs['fridayFrom'],
+            ':fridayTo' => $opHrs['fridayTo'],
+            ':saturdayFrom' => $opHrs['saturdayFrom'],
+            ':saturdayTo' => $opHrs['saturdayTo'],
+            ':sundayFrom' => $opHrs['sundayFrom'],
+            ':sundayTo' => $opHrs['sundayTo']
+        ));
+        
+        if (!$result) {
+            print_r($stmt->errorInfo());
+            return false;
+        }
+        return true;
+    }
 }
 
 ?>

@@ -618,10 +618,10 @@ $reviews = $db->getRestaurantReviews($resId);
                                 $altImage = "http://www.telikin.com/joomla/components/com_joomblog/images/user.png";
                                 foreach ($reviews as $review) {
                                     echo '<div class="media">
-                                            <a class="media-left" href="#">';
+                                            <a class="media-left">';
     //                                var_dump($review);
     //                                exit();
-                                    echo '<img src="' . (empty($review['user_image'])>0 ? $altImage : "data:image/jpeg;base64,".base64_encode($review['user_image'])) . '" alt="user" height="50" width="50">';
+                                    echo '<img src="' . (empty($review['user_image']) ? $altImage : "data:image/jpeg;base64,".base64_encode($review['user_image'])) . '" alt="user" height="50" width="50">';
                                     echo '</a>
                                             <div class="media-body">';
                                     echo '<h4 class="media-heading">' . $review['name'] . '</h4>';
@@ -772,31 +772,59 @@ $reviews = $db->getRestaurantReviews($resId);
                         <div class="col-md-4"> <h4>Monday: </h4> </div>
                         <div class="col-md-8">
                             <!--<h4> <?php //echo $oprHours["monday_from"] . " - " . $oprHours["monday_to"]; ?> </h4>-->
-                            <h4> <?php echo date_format(new DateTime($oprHours["monday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["monday_to"]), "h:i A"); ?> </h4>
+                            <h4> <?php 
+                                    $opHrString = date_format(new DateTime($oprHours["monday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["monday_to"]), "h:i A");
+                                    echo $opHrString=='12:00 AM - 12:00 AM' ? 'CLOSED' : $opHrString;
+                                 ?>
+                            </h4>
                         </div>
                         <div class="col-md-4"> <h4>Tuesday: </h4></div>
                         <div class="col-md-8">
-                            <h4> <?php echo date_format(new DateTime($oprHours["tuesday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["tuesday_to"]), "h:i A"); ?> </h4>
+                            <h4> <?php 
+                                    $opHrString = date_format(new DateTime($oprHours["tuesday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["tuesday_to"]), "h:i A");
+                                    echo $opHrString=='12:00 AM - 12:00 AM' ? 'CLOSED' : $opHrString;
+                                 ?>
+                            </h4>
                         </div>  
                         <div class="col-md-4"> <h4>Wednesday: </h4> </div>
                         <div class="col-md-8"> 
-                            <h4> <?php echo date_format(new DateTime($oprHours["wednesday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["wednesday_to"]), "h:i A"); ?> </h4>
+                            <h4> <?php 
+                                    $opHrString = date_format(new DateTime($oprHours["wednesday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["wednesday_to"]), "h:i A");
+                                    echo $opHrString=='12:00 AM - 12:00 AM' ? 'CLOSED' : $opHrString;
+                                 ?>
+                            </h4>
                         </div>
                         <div class="col-md-4"> <h4>Thursday: </h4> </div>
                         <div class="col-md-8">
-                            <h4> <?php echo date_format(new DateTime($oprHours["thursday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["thursday_to"]), "h:i A"); ?> </h4>
+                            <h4> <?php 
+                                    $opHrString = date_format(new DateTime($oprHours["thursday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["thursday_to"]), "h:i A");
+                                    echo $opHrString=='12:00 AM - 12:00 AM' ? 'CLOSED' : $opHrString;
+                                 ?>
+                            </h4>
                         </div>
                         <div class="col-md-4"><h4> Friday: </h4> </div>
                         <div class="col-md-8">
-                            <h4> <?php echo date_format(new DateTime($oprHours["friday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["friday_to"]), "h:i A"); ?> </h4>
+                            <h4> <?php 
+                                    $opHrString = date_format(new DateTime($oprHours["friday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["friday_to"]), "h:i A");
+                                    echo $opHrString=='12:00 AM - 12:00 AM' ? 'CLOSED' : $opHrString;
+                                 ?>
+                            </h4>
                         </div>
                         <div class="col-md-4"><h4> Saturday: </h4> </div>
                         <div class="col-md-8">
-                            <h4> <?php echo date_format(new DateTime($oprHours["saturday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["saturday_to"]), "h:i A"); ?> </h4>
+                            <h4> <?php 
+                                    $opHrString = date_format(new DateTime($oprHours["saturday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["saturday_to"]), "h:i A");
+                                    echo $opHrString=='12:00 AM - 12:00 AM' ? 'CLOSED' : $opHrString;
+                                 ?>
+                            </h4>
                         </div>
                         <div class="col-md-4"> <h4> Sunday: </h4> </div>
                         <div class="col-md-8">
-                            <h4> <?php echo date_format(new DateTime($oprHours["sunday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["sunday_to"]), "h:i A"); ?> </h4>
+                            <h4> <?php 
+                                    $opHrString = date_format(new DateTime($oprHours["sunday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["sunday_to"]), "h:i A");
+                                    echo $opHrString=='12:00 AM - 12:00 AM' ? 'CLOSED' : $opHrString;
+                                 ?>
+                            </h4>
                         </div>
                         <?php } else { ?>
                         <h4> Sorry, Operation Hours are not available.</h4>

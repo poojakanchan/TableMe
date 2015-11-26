@@ -10,32 +10,55 @@
         header('location: ../home/login.php');
     }
     $username = $_SESSION['username'];
-    $db = new Owner_model();
-    $ownerInfo = $db->getOwnerInfo($username);
+    $ownerDb = new Owner_model();
+    $ownerInfo = $ownerDb->getOwnerInfo($username);
     $resId = intval($ownerInfo['restaurant_id']);
-    $db = new Restaurant_model();
-    $restaurantInfo = $db->findRestaurantById($resId);
-    $restaurantImages = $db->getRestaurantImages($resId);
-    $imageCount = count($restaurantImages) >= 5 ? 5 : count($restaurantImages); //total number of images for the restaurant in multimedia table
-    $foodCategory = $db->getFoodCategories();
+    $restaurantDb = new Restaurant_model();
+    $restaurantInfo = $restaurantDb->findRestaurantById($resId);
+    $restaurantImages = $restaurantDb->getRestaurantImages($resId);
+    $imageCount = count($restaurantImages) >= 4 ? 4 : count($restaurantImages); //total number of images for the restaurant in multimedia table
+    $foodCategory = $restaurantDb->getFoodCategories();
     
-    $db = new OperationHours_model();
-    $oprHours = $db->getOperatingHoursByRestaurantId($resId);
+    $oprDb = new OperationHours_model();
+    $oprHours = $oprDb->getOperatingHoursByRestaurantId($resId);
+    
+    $eventDb = new Event_model();
+    $eventArray = $eventDb->getEventsByRestaurantId($resId);
 
     if (!empty($oprHours)) {
         $oprHours = $oprHours[0];
     }
     
-    if ($_POST) {
-        $restaurantUpdate = array(
-            "food_category_name" => isset($_POST['foodCategory']) ? htmlspecialchars($_POST['foodCategory']) : null,
-            "description" => isset($_POST['restaurantDescription']) ? substr(htmlspecialchars($_POST['restaurantDescription']), 0, 150) : null,
-            "address" => isset($_POST['restaurantAddress']) ? substr(htmlspecialchars($_POST['restaurantAddress']), 0, 100) : null,
-            "phone_no" => isset($_POST['restaurantPhone']) ? substr(htmlspecialchars($_POST['restaurantPhone']), 0, 20) : null
-            );
-        var_dump($restaurantUpdate);
-        exit();
+    if ($_POST && isset($_POST['image_type'])) {
+        switch($_POST['image_type']) {
+            case 'profile':
+                if (is_uploaded_file($_FILES['profile-image']['tmp_name'])) {
+                    $thumbnail = file_get_contents($_FILES["profile-image"]["tmp_name"]);
+                }
+                if ($restaurantDb->updateRestaurantThumbnail($resId, $thumbnail)) {
+                    $restaurantInfo = $restaurantDb->findRestaurantById($resId);
+                }
+                break;
+            case 'multimedia':
+                if (is_uploaded_file($_FILES['multimedia-image']['tmp_name'])) {
+                    $img = file_get_contents($_FILES["multimedia-image"]["tmp_name"]);
+                    if ($restaurantDb->updateMultimedia($_POST['multimedia-id'], $img, $resId)) {
+                        $restaurantImages = $restaurantDb->getRestaurantImages($resId);
+                        $imageCount = count($restaurantImages) >= 4 ? 4 : count($restaurantImages);
+                    }
+                }
+                break;
+            case 'menu':
+                if (is_uploaded_file($_FILES['menu-image']['tmp_name'])) {
+                    $menu = file_get_contents($_FILES["menu-image"]["tmp_name"]);
+                }
+                if ($restaurantDb->updateRestaurantMenu($resId, $menu)) {
+                    $restaurantInfo = $restaurantDb->findRestaurantById($resId);
+                }
+                break;
+        }
     }
+ 
     ?>  
     <head>
         <title>TableMe</title>
@@ -131,7 +154,7 @@
             }
 
         </style>
-
+        
         <script>
             $(document).ready(function () {
                 $("#add_row").on("click", function () {
@@ -277,10 +300,9 @@
                 $("#add_row_account").trigger("click");
             });
         </script>
-
+<script src="ownerPage.js"></script>
     </head>
-    <body>
-
+    <body> 
         <div class="container-fluid">
             <div class="mainInfo col-md-12">
                 <h1>Profile</h1>
@@ -292,7 +314,8 @@
                         <br><br>
                         
                         <?php
-                        for ($i=0; $i<$imageCount; ++$i) {
+                        
+                        for ($i=0; $i<$imageCount; $i++) {
                             echo '<a href="#" data-toggle="modal" data-target="#modal-thumbnail' . $i . '">';
                             echo '<img src="data:image/jpeg;base64,' . base64_encode($restaurantImages[$i]['media']) . '" class="img-rounded" height="80" width="80"/>';
                             echo '</a>   ';
@@ -381,55 +404,45 @@
                     <div id="myTabContent" class="tab-content">
                         <div class="tab-pane fade in active" id="change-detail">
                             <br><br>
-                            <form class = "descriptionform" role = "form">
+                            <!--<form class = "descriptionform" role = "form">-->
                                 <div class = "form-group">
                                     <br><br>
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <label>Type of Food:</label>
-                                            <select class="selectpicker" name="food_category" required data-width="auto">
-                                                <option value="" disabled selected>Food type</option>
-                                                <?php
-                                                foreach ($foodCategory as $category) {
-                                                    echo '<option value="' . $category['name'] . '">' . $category['name'] . '</option>';
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <br>
                                     <label for = "name">Description (150 characters max):</label>
-                                    <textarea class="form-control" rows="3" placeholder="" name="restaurantDescription" id="restaurantDescription"><?php echo $restaurantInfo['description']; ?></textarea>
+                                    <textarea class="form-control" rows="3" placeholder="" id="restaurant-description"><?php echo $restaurantInfo['description']; ?></textarea>
                                     <br><br>
                                     <div class="row">
                                         <div class="col-sm-4">
                                             <label>Address (100 characters max):</label>
-                                            <input type="text" name="restaurantAddress" id="restaurantAddress" value="<?php echo $restaurantInfo['address']; ?>" class="form-control">
+                                            <textarea class="form-control" rows="1" id="restaurant-address"><?php echo $restaurantInfo['address']; ?></textarea>
                                         </div>
                                     </div>
                                     <br><br>
                                     <div class="row">
                                         <div class="col-sm-4">
                                             <label>Phone (20 characters max):</label>
-                                            <input type="text" name="restaurantPhone" id="restaurantPhone" value="<?php echo $restaurantInfo['phone_no']; ?>" class="form-control">
+                                            <textarea class="form-control" rows="1" id="restaurant-phone"><?php echo $restaurantInfo['phone_no']; ?></textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <br>
-                                <button type="submit" id="restaurant_detail_submit" class="btn btn-default">Change</button>
-                            </form>
+                                <button id="restaurant-detail-submit" class="btn btn-default" data-restaurant-id="<?php echo $resId; ?>">Change Restaurant Information</button>
+                            <!--</form>-->
                         </div>
+                    
                         <div class="tab-pane fade" id="change-photo">
                             <div class="restaurantmenuchange col-md-12">
                                 <div class="row">
                                     <h3>Profile Photo:</h3>
                                     <div class = "col-sm-6 col-md-3">
                                         <div class = "thumbnail">
-                                            <img src = "http://goo.gl/vrq2Cw" alt = "Restaurant photo" class="img-rounded" >
+                                            <?php echo '<img src="data:image/jpeg;base64,'.base64_encode($restaurantInfo['thumbnail']).'" class="img-rounded"/>'; ?>
                                         </div>
                                         <p>Upload a new photo:</p>
-                                        <input type="file" name="file" id="file" /><br>
-                                        <button type = "submit" class = "btn btn-default">Upload</button>
+                                        <form id="profile-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" >
+                                        <input type="file" name="profile-image" id="profile-image" /><br>
+                                        <input type="text" name="image_type" value="profile" hidden="true"/>
+                                        <button type = "button" class = "btn btn-default" onClick="submitImage('profile-image', 'profile-form')">Upload</button>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class = "row">
@@ -437,35 +450,79 @@
                                     <h3>Thumbnail Photo:</h3>
                                     <div class = "col-sm-6 col-md-3">
                                         <div class = "thumbnail">
-                                            <img src = "https://goo.gl/GOzAhf" alt = "Restaurant photo" class="img-rounded" >
+                                            <?php $i=0; 
+                                            if ($i<$imageCount) {
+                                                echo '<img src="data:image/jpeg;base64,'.base64_encode($restaurantImages[$i]['media']).'" class="img-rounded"/>';
+                                            }
+                                            else {
+                                                echo '<img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Aiga_restaurant_knife-fork_crossed.png" class="img-rounded">';
+                                            }
+                                            ?>
                                         </div>
                                         <p>Upload a new photo:</p>
-                                        <input type="file" name="file" id="file" /><br>
-                                        <button type = "submit" class = "btn btn-default">Upload</button>
+                                        <form id="multimedia-form1" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" >
+                                        <input type="file" name="multimedia-image" id="multimedia-image1" /><br>
+                                        <input type="text" name="image_type" value="multimedia" hidden="true" />
+                                        <input type="text" name="multimedia-id" value="<?php echo $i<$imageCount ? $restaurantImages[$i]['multimedia_id'] : -1; $i++; ?>" hidden="true" /> 
+                                        <button type = "button" class = "btn btn-default" onClick="submitImage('multimedia-image1', 'multimedia-form1')">Upload</button>
+                                        </form>
                                     </div>
                                     <div class = "col-sm-6 col-md-3">
                                         <div class = "thumbnail">
-                                            <img src = "https://goo.gl/GOzAhf" alt = "Restaurant photo" class="img-rounded" >
+                                            <?php
+                                            if ($i<$imageCount) {
+                                                echo '<img src="data:image/jpeg;base64,'.base64_encode($restaurantImages[$i]['media']).'" class="img-rounded"/>';
+                                            }
+                                            else {
+                                                echo '<img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Aiga_restaurant_knife-fork_crossed.png" class="img-rounded">';
+                                            }
+                                            ?>
                                         </div>
                                         <p>Upload a new photo:</p>
-                                        <input type="file" name="file" id="file" /><br>
-                                        <button type = "submit" class = "btn btn-default">Upload</button>
+                                        <form id="multimedia-form2" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" >
+                                        <input type="file" name="multimedia-image" id="multimedia-image2" /><br>
+                                        <input type="text" name="image_type" value="multimedia" hidden="true" />
+                                        <input type="text" name="multimedia-id" value="<?php echo $i<$imageCount ? $restaurantImages[$i]['multimedia_id'] : -1; $i++; ?>" hidden="true" /> 
+                                        <button type = "button" class = "btn btn-default" onClick="submitImage('multimedia-image2', 'multimedia-form2')">Upload</button>
+                                        </form>
                                     </div>
                                     <div class = "col-sm-6 col-md-3">
                                         <div class = "thumbnail">
-                                            <img src = "https://goo.gl/GOzAhf" alt = "Restaurant photo" class="img-rounded" >
+                                            <?php
+                                            if ($i<$imageCount) {
+                                                echo '<img src="data:image/jpeg;base64,'.base64_encode($restaurantImages[$i]['media']).'" class="img-rounded"/>';
+                                            }
+                                            else {
+                                                echo '<img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Aiga_restaurant_knife-fork_crossed.png" class="img-rounded">';
+                                            }
+                                            ?>
                                         </div>
                                         <p>Upload a new photo:</p>
-                                        <input type="file" name="file" id="file" /><br>
-                                        <button type = "submit" class = "btn btn-default">Upload</button>
+                                        <form id="multimedia-form3" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" >
+                                        <input type="file" name="multimedia-image" id="multimedia-image3" /><br>
+                                        <input type="text" name="image_type" value="multimedia" hidden="true" />
+                                        <input type="text" name="multimedia-id" value="<?php echo $i<$imageCount ? $restaurantImages[$i]['multimedia_id'] : -1; $i++; ?>" hidden="true" /> 
+                                        <button type = "button" class = "btn btn-default" onClick="submitImage('multimedia-image3', 'multimedia-form3')">Upload</button>
+                                        </form>
                                     </div>
                                     <div class = "col-sm-6 col-md-3">
                                         <div class = "thumbnail">
-                                            <img src = "https://goo.gl/GOzAhf" alt = "Restaurant photo" class="img-rounded" >
+                                            <?php
+                                            if ($i<$imageCount) {
+                                                echo '<img src="data:image/jpeg;base64,'.base64_encode($restaurantImages[$i]['media']).'" class="img-rounded"/>';
+                                            }
+                                            else {
+                                                echo '<img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Aiga_restaurant_knife-fork_crossed.png" class="img-rounded">';
+                                            }
+                                            ?>
                                         </div>
                                         <p>Upload a new photo:</p>
-                                        <input type="file" name="file" id="file" /><br>
-                                        <button type = "submit" class = "btn btn-default">Upload</button>
+                                        <form id="multimedia-form4" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" >
+                                        <input type="file" name="multimedia-image" id="multimedia-image4" /><br>
+                                        <input type="text" name="image_type" value="multimedia" hidden="true" />
+                                        <input type="text" name="multimedia-id" value="<?php echo $i<$imageCount ? $restaurantImages[$i]['multimedia_id'] : -1; $i++; ?>" hidden="true" /> 
+                                        <button type = "button" class = "btn btn-default" onClick="submitImage('multimedia-image4', 'multimedia-form4')">Upload</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -479,90 +536,93 @@
                                 <div class="row">
                                     <div class="col-sm-4 form-group">
                                         <label>From</label>
-                                        <input type="time" name="mondayFrom" class="form-control" >
+                                        <input type="time" id="monday-from" class="form-control" value="<?php echo $oprHours["monday_from"]; ?>">
                                     </div>
                                     <div class="col-sm-4 form-group">
                                         <label>To</label>
-                                        <input type="time" name="mondayTo" class="form-control" >
+                                        <input type="time" id="monday-to" class="form-control" value="<?php echo $oprHours["monday_to"]; ?>">
                                     </div>
                                 </div>
                                 <label>Tuesday</label>
                                 <div class="row">
                                     <div class="col-sm-4 form-group">
                                         <label>From</label>
-                                        <input type="time" name="tuesdayFrom" class="form-control" > 
+                                        <input type="time" id="tuesday-from" class="form-control" value="<?php echo $oprHours["tuesday_from"]; ?>"> 
                                     </div>
                                     <div class="col-sm-4 form-group">
                                         <label>To</label>
-                                        <input type="time" name="tuesdayTo" class="form-control" >
+                                        <input type="time" id="tuesday-to" class="form-control" value="<?php echo $oprHours["tuesday_to"]; ?>">
                                     </div>
                                 </div>  
                                 <label>Wednesday</label>
                                 <div class="row">
                                     <div class="col-sm-4 form-group">
                                         <label>From</label>
-                                        <input type="time" name="wednesdayFrom" class="form-control" > 
+                                        <input type="time" id="wednesday-from" class="form-control" value="<?php echo $oprHours["wednesday_from"]; ?>"> 
                                     </div>
                                     <div class="col-sm-4 form-group">
                                         <label>To</label>
-                                        <input type="time" name="wednesdayTo" class="form-control" >
+                                        <input type="time" id="wednesday-to" class="form-control" value="<?php echo $oprHours["wednesday_to"]; ?>">
                                     </div>
                                 </div> 
                                 <label>Thursday</label>
                                 <div class="row">
                                     <div class="col-sm-4 form-group">
                                         <label>From</label>
-                                        <input type="time" name="thursdayFrom" class="form-control" > 
+                                        <input type="time" id="thursday-from" class="form-control" value="<?php echo $oprHours["thursday_from"]; ?>"> 
                                     </div>
                                     <div class="col-sm-4 form-group">
                                         <label>To</label>
-                                        <input type="time" name="thursdayTo" class="form-control" >
+                                        <input type="time" id="thursday-to" class="form-control" value="<?php echo $oprHours["thursday_to"]; ?>">
                                     </div>
                                 </div> 
                                 <label>Friday</label>
                                 <div class="row">
                                     <div class="col-sm-4 form-group">
                                         <label>From</label>
-                                        <input type="time" name="fridayFrom" class="form-control" > 
+                                        <input type="time" id="friday-from" class="form-control" value="<?php echo $oprHours["friday_from"]; ?>"> 
                                     </div>
                                     <div class="col-sm-4 form-group">
                                         <label>To</label>
-                                        <input type="time" name="fridayTo" class="form-control" >
+                                        <input type="time" id="friday-to" class="form-control" value="<?php echo $oprHours["friday_to"]; ?>">
                                     </div>
                                 </div>
                                 <label>Saturday</label>
                                 <div class="row">
                                     <div class="col-sm-4 form-group">
                                         <label>From</label>
-                                        <input type="time" name="saturdayFrom" class="form-control" > 
+                                        <input type="time" id="saturday-from" class="form-control" value="<?php echo $oprHours["saturday_from"]; ?>"> 
                                     </div>
                                     <div class="col-sm-4 form-group">
                                         <label>To</label>
-                                        <input type="time" name="saturdayTo" class="form-control" >
+                                        <input type="time" id="saturday-to" class="form-control" value="<?php echo $oprHours["saturday_to"]; ?>">
                                     </div>
                                 </div> 
                                 <label>Sunday</label>
                                 <div class="row">
                                     <div class="col-sm-4 form-group">
                                         <label>From</label>
-                                        <input type="time" name="sundayFrom" class="form-control" > 
+                                        <input type="time" id="sunday-from" class="form-control" value="<?php echo $oprHours["sunday_from"]; ?>"> 
                                     </div>
                                     <div class="col-sm-4 form-group">
                                         <label>To</label>
-                                        <input type="time" name="sundayTo" class="form-control" >
+                                        <input type="time" id="sunday-to" class="form-control" value="<?php echo $oprHours["sunday_to"]; ?>">
                                     </div>
                                 </div>
                             </div>
-                            <button type = "submit" class = "btn btn-default">Change</button>
+                            <button id="operating-hours-submit" type = "submit" class = "btn btn-default" data-restaurant-id="<?php echo $resId; ?>">Change Operating Hours</button>
                         </div>
                         <div class="tab-pane fade" id="change-menu">
                             <div class="col-md-12">
                                 <h3>Upload a new menu:</h3>
-                                <input type="file" name="file" id="file" /><br>
-                                <button type = "submit" class = "btn btn-default">Upload</button>
+                                    <form id="menu-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" >
+                                        <input type="file" name="menu-image" id="menu-image" /><br>
+                                        <input type="text" name="image_type" value="menu" hidden="true"/>
+                                        <button type = "button" class = "btn btn-default" onClick="submitImage('menu-image', 'menu-form')">Upload Menu</button>
+                                    </form>
                                 <br><br>
                                 <h3>Current Menu:</h3>
-                                <img src = "https://goo.gl/a3MbBt" alt = "Restaurant photo" class="img-rounded" >
+                                <img src="<?php echo empty($restaurantInfo['menu']) ? 'https://goo.gl/a3MbBt' : 'data:image/jpeg;base64,'.base64_encode($restaurantInfo['menu']); ?>" class="img-rounded" >
                             </div>
                         </div>
                         <div class="tab-pane fade" id="change-specialevent">
@@ -580,8 +640,23 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr id='addr0' data-id="0" class="hidden">
-                                                    <td data-name="name">
+                                                <!--<tr id='addr0' data-id="0" class="hidden">-->
+                                                    <?php
+                                                    foreach($eventArray as $event) {
+                                                        echo '<tr id="add" data-id="0">';
+                                                        echo '<td data-name="name">';
+                                                        echo '<input type="text" name="event-name" class="form-control" value="'. $event['title'] . '" /></td>';
+                                                        echo '<td data-name="Date">';
+                                                        echo '<input type="text" name="event-date" placeholder="Event Date" class="form-control" value="'. $event['date'] . '" /></td>';
+                                                        echo '<td data-name="desc">';
+                                                        echo '<input type="text" name="event-description" placeholder="Event Description" class="form-control" value="'. $event['description'] . '" /></td>';
+                                                        echo '<td data-name="del">
+                                                                <button name="del" class="btn btn-danger glyphicon glyphicon-remove row-remove"></button>
+                                                              </td>';
+                                                        echo '</tr>';
+                                                    }
+                                                    ?>
+<!--                                                    <td data-name="name">
                                                         <input type="text" name='name0'  placeholder='Event Name' class="form-control"/>
                                                     </td>
                                                     <td data-name="Date">
@@ -591,9 +666,9 @@
                                                         <textarea class = "form-control" name='desc0' placeholder='Event Description' rows = "3"></textarea>
                                                     </td>
                                                     <td data-name="del">
-                                                        <button nam"del0" class='btn btn-danger glyphicon glyphicon-remove row-remove'></button>
+                                                        <button name="del0" class='btn btn-danger glyphicon glyphicon-remove row-remove'></button>
                                                     </td>
-                                                </tr>
+                                                </tr>-->
                                             </tbody>
                                         </table>
                                     </div>
@@ -686,59 +761,13 @@
 
                 </div>
             </div>
-
         </div>
+
 
         <div class = "navbar navbar-default navbar-bottom">
             <div class = "container">
                 <p class="navbar-text navbar-left">This website belongs to SFSU Course CSC648/CSC848 Fall 15 Group 11</p>
             </div>
-        </div>
-        <script>
-                $(document).ready(function () {
-                $("#restaurant_detail_submit").click(function () {
-                    var validated = true;
-                    
-                    if (!validatePhoneNumber($('#restaurantPhone').val())) {
-                        $('#restaurantPhone').css("border", "#FF0000 1px solid");
-                        validated = false;
-                    }
-                    else {
-                        $('#restaurantPhone').css("border", "");
-                    }
-                    
-                    if (!validateAddress($('#restaurantAddress').val())) {
-                        $('#restaurantAddress').css("border", "#FF0000 1px solid");
-                        validated = false;
-                    }
-                    else {
-                        $('#restaurantAddress').css("border", "");
-                    }
-                    
-                    if (!validateDescription($('#restaurantDescription').val())) {
-                        $('#restaurantDescription').css("border", "#FF0000 1px solid");
-                        validated = false;
-                    }
-                    else {
-                        $('#restaurantDescription').css("border", "");
-                    }
-                    
-                    return validated;
-                });
-            });
-            
-            function validateAddress(address) {
-                return address.length <= 100;
-            }
-            
-            function validateDescription(description) {
-                return address.length <= 150;
-            }
-
-            function validatePhoneNumber(phoneNumber) {
-                var re = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-                return re.test(phoneNumber);
-            }
-        </script>
+        </div>  
     </body>
 </html>

@@ -67,7 +67,7 @@ class Event_model extends Database{
                 . " ORDER BY e.date ASC";
         $stmt = $this->dbh->prepare($sql);
         if ($stmt->execute()) {
-            return $stmt->fetchAll();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         return null;
     }

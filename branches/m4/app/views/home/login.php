@@ -28,7 +28,9 @@
             if (!$loginRole) {
                 $incorrectLogin = true;
             } else {
-                session_start();
+                if (!isset($_SESSION)) {
+                    session_start();
+                }
                 $_SESSION['username'] = $username;
                 switch ($loginRole['role']) {
                     case "user":

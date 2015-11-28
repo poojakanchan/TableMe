@@ -69,6 +69,8 @@ class Restaurant_controller extends Controller {
             //Add Restaurant
             if (is_uploaded_file($_FILES['profilePic']['tmp_name'])) {
                 $thumbnail = file_get_contents($_FILES["profilePic"]["tmp_name"]);
+            } else {
+                $thumbnail = null;
             }
             if(is_uploaded_file($_FILES['menuFile']['tmp_name'])) {
             $menuFile = file_get_contents($_FILES["menuFile"]["tmp_name"]);
@@ -81,6 +83,7 @@ class Restaurant_controller extends Controller {
                     htmlspecialchars($_POST["restaurantState"]). " " .
                     htmlspecialchars($_POST["restaurantZip"]);
             
+            $capacity = $_POST["tablesForTwo"] * 2 + $_POST["tablesForFour"] * 4 + $_POST["tablesForSix"] * 6;
             $resArray = array(
                 "name" => htmlspecialchars($_POST["restaurantName"]),
                "food_category_name" => htmlspecialchars($_POST["food_category"]),            
@@ -88,7 +91,7 @@ class Restaurant_controller extends Controller {
                 "address" => $rest_address,
                 "description" => htmlspecialchars($_POST["description"]),
                 "flag_new" => 1,
-                "capacity" => htmlspecialchars($_POST["restaurantCapacity"]),
+                "capacity" => $capacity,
                 "twos" => htmlspecialchars($_POST["tablesForTwo"]),
                "fours" => htmlspecialchars($_POST["tablesForFour"]),
                "sixes" => htmlspecialchars($_POST["tablesForSix"]),
@@ -189,6 +192,36 @@ class Restaurant_controller extends Controller {
         $op_model = $this->model('OperationHours_model');
         return $op_model-> getOperatingHoursByRestaurantId($resId);
     }
+    
+    function resizeImage($file_name,$resize_name,$new_height) {
+    global $error_message;
+     list($width, $height) = getimagesize($file_name);
+    
+        $new_width = $new_height*$width/$height;
+        // Resample
+        $image_p = imagecreatetruecolor($new_width, $new_height);
+        if($image_p == FALSE) {
+              $error_message =" Error in resizing the image";
+              return FALSE;
+        }
+        $image = imagecreatefromjpeg($file_name);
+        if($image == FALSE) {
+              $error_message =" Error in resizing the image";
+              return false;
+        }
+        
+        if(imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height) == FALSE) {
+              $error_message =" Error in resizing the image";
+              return FALSE;
+        }
+        if(imagejpeg($image_p,$resize_name , 100) == FALSE) {
+              $error_message =" Error in creating new Image";
+              return false;
+        }
+        return TRUE;
+        
+}
+
 }
 
     

@@ -157,7 +157,7 @@ $username_array = $restaurant->getAllUserNames();
                           onsubmit="return validateForm()" method="post" enctype="multipart/form-data"> 
                         <div class="col-sm-12">
 
-
+                            <p>* indicates required field.</p>
                             <fieldset>
                                 <div class="col-lg-12 well">
                                     <legend>Login Information:</legend>
@@ -250,9 +250,9 @@ $username_array = $restaurant->getAllUserNames();
 
                                     <div class="row">
                                         <div class="col-sm-4 form-group">
-                                            <label>Address</label>
+                                            <label>Address*</label>
                                             <input type="text" name="restaurantStreet" placeholder="Please enter the restaurant's address..."
-                                                   rows="3" class="form-control">
+                                                   rows="3" class="form-control" required>
                                         </div>
                                     </div>
 
@@ -320,14 +320,7 @@ foreach ($food_category_array as $category) {
                                         </div>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-sm-4 form-group">
-                                            <label>Total Restaurant Capacity *</label>
-                                            <input type="number" name="restaurantCapacity" 
-                                                   placeholder="Please enter total capacity of the restaurant..." class="form-control" required/>
-                                        </div>
-                                    </div>
-
+                                   
                                     <div class="form-group">
                                         <label>Hours Of Operation *</label>
                                         <br>

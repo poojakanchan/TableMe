@@ -30,9 +30,13 @@
             height: 250px;
             background: url('banner.jpg') center center;
             background-size: cover;
-            padding-right: 250px;
-            padding-left: 250px;
-            margin-bottom: 0px;       
+            margin-bottom: 0px;
+            padding-top: 0px;
+        }
+        
+        .input-group {
+            width: 50%;
+            margin: auto;
         }
 
         .jumbotron-Ranking {
@@ -165,9 +169,11 @@
     ?>
 
     <div class="jumbotron jumbotron-banner">
-        <br><br><br>
-        <center><h4> This Web site is for SFSU CSC648/848 Software Engineering Project </h4></center>
-
+        <br><br>
+        <center><h4> This Website is only for CSC648/848 Software Engineering Project </h4></center>
+        <center><h4> Created by Team 11, if you want to learn more about us <a href="aboutus.php">(Click Here)</a></h4></center>
+        <br>
+        
         <form class="input-group" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get"> <!-- Class for Search box -->
 
             <input name="foodCategory" id="foodCategory" value="" hidden />
@@ -176,6 +182,8 @@
                 <input class="btn btn-default" type="submit" value="Search" />
             </span>
         </form> <!-- End of the Search box -->
+        <br>
+        <center><h4><a href="app/views/home/restaurant_registration.php">Join Us to Spread Your Restaurant!!</a></h4></center>
     </div><!-- /.col-lg-6 -->
 
     <!-- 2nd Section of the Page (contains Ranking page & Events Page -->

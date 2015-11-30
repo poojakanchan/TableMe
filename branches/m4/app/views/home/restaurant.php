@@ -162,7 +162,7 @@ if ($avgRating >= 1) {
             .event-list > li > time > .day {
                 display: block;
                 font-size: 45pt;
-                font-weight: 100;
+                font-weight: 900;
                 line-height: 1;
             }
             .event-list > li time > .month {
@@ -221,7 +221,7 @@ if ($avgRating >= 1) {
                     position: relative;
                     display: block;
                     width: 100%;
-                    height: 90px;
+                    height: 150px;
                     padding: 0px;
                 }
                 .event-list > li > time,
@@ -239,14 +239,14 @@ if ($avgRating >= 1) {
                 }
                 .event-list > li > time,
                 .event-list > li > img {
-                    width: 90px;
-                    height: 90px;
+                    width: 100px;
+                    height: 150px;
                     padding: 0px;
                     margin: 0px;
                 }
                 .event-list > li > .info {
                     position: relative;
-                    height: 90px;
+                    height: 150px;
                     text-align: left;
                 }	
                 .event-list > li > .info > .title, 
@@ -312,16 +312,16 @@ if ($avgRating >= 1) {
                             </a>
                             <br><br>
                             <a href="#" data-toggle="modal" data-target="#modal-thumbnail1">
-                                <img src="<?php $i=0; echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
+                                <img src="<?php $i=0; echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="70" width="70"/>
                             </a>
                             <a href="#" data-toggle="modal" data-target="#modal-thumbnail2">
-                                <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
+                                <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="70" width="70"/>
                             </a>
                             <a href="#" data-toggle="modal" data-target="#modal-thumbnail3">
-                                <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
+                                <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="70" width="70"/>
                             </a>
                             <a href="#" data-toggle="modal" data-target="#modal-thumbnail4">
-                                <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="80" width="80"/>
+                                <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="70" width="70"/>
                             </a>
                             <br><br>
                             <div class="col-md-7">
@@ -657,9 +657,9 @@ if ($avgRating >= 1) {
                             <h3>Ratings:</h3>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="well-sm">
+                                    <div class="well-md">
                                         <div class="row">
-                                            <div class="col-xs-12 col-md-6 text-center">
+                                            <div class="col-xs-12 col-md-5 text-center">
                                                 <h1 class="rating-num"><?php echo $avgRating>=1 ? round($avgRating, 1) : 'None'; ?></h1>
                                                 <div class="rating">
                                                     <?php
@@ -677,14 +677,14 @@ if ($avgRating >= 1) {
                                                 </div>
                                                 <div><span class="glyphicon glyphicon-user"></span><?php echo $ratingCount.' total' ?></div>
                                             </div>
-                                            <div class="col-xs-12 col-md-6">
+                                            <div class="col-xs-12 col-md-7">
                                                 <div class="row rating-desc">
                                                     <div class="col-xs-3 col-md-3 text-right">
                                                         <span class="glyphicon glyphicon-star"></span>5
                                                     </div>
                                                     <div class="col-xs-8 col-md-9">
                                                         <div class="progress progress-striped">
-                                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+                                                            <div class="progress-bar progress-bar-success" role="progressbar"
                                                                 aria-valuemin="0" aria-valuemax="100" style="width: 
                                                                     <?php 
                                                                     $formatter = new NumberFormatter('en_US', NumberFormatter::PERCENT); 
@@ -701,7 +701,7 @@ if ($avgRating >= 1) {
                                                     </div>
                                                     <div class="col-xs-8 col-md-9">
                                                         <div class="progress">
-                                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+                                                            <div class="progress-bar progress-bar-success" role="progressbar"
                                                                 aria-valuemin="0" aria-valuemax="100" style="width: 
                                                                 <?php 
                                                                     $formatter = new NumberFormatter('en_US', NumberFormatter::PERCENT); 
@@ -718,7 +718,7 @@ if ($avgRating >= 1) {
                                                     </div>
                                                     <div class="col-xs-8 col-md-9">
                                                         <div class="progress">
-                                                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"
+                                                            <div class="progress-bar progress-bar-info" role="progressbar"
                                                                 aria-valuemin="0" aria-valuemax="100" style="width:
                                                                 <?php 
                                                                     $formatter = new NumberFormatter('en_US', NumberFormatter::PERCENT); 
@@ -735,7 +735,7 @@ if ($avgRating >= 1) {
                                                     </div>
                                                     <div class="col-xs-8 col-md-9">
                                                         <div class="progress">
-                                                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20"
+                                                            <div class="progress-bar progress-bar-warning" role="progressbar"
                                                                 aria-valuemin="0" aria-valuemax="100" style="width:
                                                                 <?php 
                                                                     $formatter = new NumberFormatter('en_US', NumberFormatter::PERCENT); 
@@ -752,7 +752,7 @@ if ($avgRating >= 1) {
                                                     </div>
                                                     <div class="col-xs-8 col-md-9">
                                                         <div class="progress">
-                                                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80"
+                                                            <div class="progress-bar progress-bar-danger" role="progressbar"
                                                                 aria-valuemin="0" aria-valuemax="100" style="width: 
                                                                 <?php 
                                                                     $formatter = new NumberFormatter('en_US', NumberFormatter::PERCENT); 
@@ -794,14 +794,14 @@ if ($avgRating >= 1) {
                             echo '<div class="info">
                                     <h2 class="title">' . $event['title'] . '</h2>
                                     <p class="desc">' . $event['description'] . '</p>
-                                </div>
+                                  </div>
                             </li>
                         </ul>';
                         }
                         ?>
                     </div>
                 </div>
-                <div class="userreview col-md-12">
+                <div class="restaurantmap col-md-12">
                     <div class="container-fluid">
                         <h3>Directions:</h3>
                         <div class="row">
@@ -818,8 +818,8 @@ if ($avgRating >= 1) {
                     <div class="container-fluid">
                         <h3>Operating Hours</h3>
                         <?php if ($oprHours != null) { ?>
-                        <div class="col-md-4"> <h4>Monday: </h4> </div>
-                        <div class="col-md-8">
+                        <div class="col-md-3"> <h4>Mon: </h4> </div>
+                        <div class="col-md-9">
                             <!--<h4> <?php //echo $oprHours["monday_from"] . " - " . $oprHours["monday_to"]; ?> </h4>-->
                             <h4> <?php 
                                     $opHrString = date_format(new DateTime($oprHours["monday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["monday_to"]), "h:i A");
@@ -827,48 +827,48 @@ if ($avgRating >= 1) {
                                  ?>
                             </h4>
                         </div>
-                        <div class="col-md-4"> <h4>Tuesday: </h4></div>
-                        <div class="col-md-8">
+                        <div class="col-md-3"> <h4>Tue: </h4></div>
+                        <div class="col-md-9">
                             <h4> <?php 
                                     $opHrString = date_format(new DateTime($oprHours["tuesday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["tuesday_to"]), "h:i A");
                                     echo $opHrString=='12:00 AM - 12:00 AM' ? 'CLOSED' : $opHrString;
                                  ?>
                             </h4>
                         </div>  
-                        <div class="col-md-4"> <h4>Wednesday: </h4> </div>
-                        <div class="col-md-8"> 
+                        <div class="col-md-3"> <h4>Wed: </h4> </div>
+                        <div class="col-md-9"> 
                             <h4> <?php 
                                     $opHrString = date_format(new DateTime($oprHours["wednesday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["wednesday_to"]), "h:i A");
                                     echo $opHrString=='12:00 AM - 12:00 AM' ? 'CLOSED' : $opHrString;
                                  ?>
                             </h4>
                         </div>
-                        <div class="col-md-4"> <h4>Thursday: </h4> </div>
-                        <div class="col-md-8">
+                        <div class="col-md-3"> <h4>Thur: </h4> </div>
+                        <div class="col-md-9">
                             <h4> <?php 
                                     $opHrString = date_format(new DateTime($oprHours["thursday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["thursday_to"]), "h:i A");
                                     echo $opHrString=='12:00 AM - 12:00 AM' ? 'CLOSED' : $opHrString;
                                  ?>
                             </h4>
                         </div>
-                        <div class="col-md-4"><h4> Friday: </h4> </div>
-                        <div class="col-md-8">
+                        <div class="col-md-3"><h4> Fri: </h4> </div>
+                        <div class="col-md-9">
                             <h4> <?php 
                                     $opHrString = date_format(new DateTime($oprHours["friday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["friday_to"]), "h:i A");
                                     echo $opHrString=='12:00 AM - 12:00 AM' ? 'CLOSED' : $opHrString;
                                  ?>
                             </h4>
                         </div>
-                        <div class="col-md-4"><h4> Saturday: </h4> </div>
-                        <div class="col-md-8">
+                        <div class="col-md-3"><h4> Sat: </h4> </div>
+                        <div class="col-md-9">
                             <h4> <?php 
                                     $opHrString = date_format(new DateTime($oprHours["saturday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["saturday_to"]), "h:i A");
                                     echo $opHrString=='12:00 AM - 12:00 AM' ? 'CLOSED' : $opHrString;
                                  ?>
                             </h4>
                         </div>
-                        <div class="col-md-4"> <h4> Sunday: </h4> </div>
-                        <div class="col-md-8">
+                        <div class="col-md-3"> <h4> Sun: </h4> </div>
+                        <div class="col-md-9">
                             <h4> <?php 
                                     $opHrString = date_format(new DateTime($oprHours["sunday_from"]), "h:i A") . " - " . date_format(new DateTime($oprHours["sunday_to"]), "h:i A");
                                     echo $opHrString=='12:00 AM - 12:00 AM' ? 'CLOSED' : $opHrString;

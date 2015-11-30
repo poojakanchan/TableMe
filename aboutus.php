@@ -32,11 +32,64 @@
     <?php
     include 'header.php';
     ?>
-    <h1>SFSU CSC 648 Software Engineering Group Project, Fall 2015</h1>
-    <h2>Team 11 Members</h2>
+    <h1>SFSU CSC 648 Software Engineering Fall 2015 Group Project - Team 11</h1>
 
     <div class="member">
-        <div class="col-md-6 backend">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <h3>Back-end developers:</h3>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-4">
+                    <div class="container-fluid">
+                        <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
+                        <h4>Pooja Kanchan [Team Lead]</h4>
+                        <a href="mailto:pooj.kanchan@gmail.com">pooj.kanchan@gmail.com</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="container-fluid">
+                        <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
+                        <h4>Adrian Lee [Tech Lead]</h4>
+                        <a href="mailto:aznanimekid@gmail.com">aznanimekid@gmail.com</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="container-fluid">
+                        <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
+                        <h4>HaiChuan Duan [Back-end Lead]</h4>
+                        <a href="mailto:haichuand@gmail.com">haichuand@gmail.com</a>
+                    </div>                    
+                </div>
+            </div>
+            <div class="col-md-12">
+                <h3>Front-end developers:</h3>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-4">
+                    <div class="container-fluid">
+                        <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
+                        <h4>Sabreen Michael [Documentation Lead]</h4>
+                        <a href="mailto:sabreenmichael@gmail.com">sabreenmichael@gmail.com</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="container-fluid">
+                        <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
+                        <h4>Michael Lee [QA Lead]</h4>
+                        <a href="mailto:openmichael65@gmail.com">openmichael65@gmail.com</a>
+                    </div>                    
+                </div>
+                <div class="col-md-4">
+                    <div class="container-fluid">
+                        <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
+                        <h4>SeungKeun Kim [Front-end Lead]</h4>
+                        <a href="mailto:tjdrms1314@gmail.com">tjdrms1314@gmail.com</a>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+<!--        <div class="col-md-6 backend">
             <h3>Back-end developers:</h3> <br>
             <h4>Pooja Kanchan [Team Lead]</h4>
             <p>pooj.kanchan@gmail.com</p>
@@ -53,7 +106,7 @@
             <p>openmichael65@gmail.com</p>
             <h4>SeungKeun Kim [Front-end Lead]</h4>
             <p> tjdrms1314@gmail.com </p>
-        </div>
+        </div>-->
     </div>
 
 </body>

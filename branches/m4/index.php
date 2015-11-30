@@ -11,7 +11,17 @@
     <link rel="stylesheet" type="text/css" media="all" href="css/bootstrap-responsive.min.css"> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-
+    
+    <!-- this scripts and links are for datepicking -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script>
+        $(function () {
+            $("#datepicker").datepicker();
+        });
+    </script> <!-- datepicking end -->
 
     <!--
     Leave the CSS file in the .php file for now.
@@ -33,7 +43,7 @@
             margin-bottom: 0px;
             padding-top: 0px;
         }
-        
+
         .input-group {
             width: 50%;
             margin: auto;
@@ -67,21 +77,21 @@
             padding-left: 5px;
         }
 
-        .col-sm-2-profile {
+        .profile {
             width: 150px;
             height: 150px;
             padding-right: 0px;
             padding-left: 0px;    
         }
 
-        .col-sm-8-detail {
+        .detail {
             width: 570px;
             height: 150px;
             padding-left: 15px;
 
         }
 
-        .col-sm-2-reservation {
+        .reservation {
             width: 100px;
             height: 30px;
             padding-left:0px;
@@ -117,12 +127,10 @@
     if (empty($foodCategoryArray)) {
         $foodCategoryArray = $db->getFoodCategories();
     }
-        if(!isset($reservation))
-    {
+    if (!isset($reservation)) {
         $reservation = new Reservation_controller();
     }
-    if($_POST)
-    {
+    if ($_POST) {
         $reservation->add();
     }
 
@@ -173,7 +181,7 @@
         <center><h4> This Website is only for CSC648/848 Software Engineering Project </h4></center>
         <center><h4> Created by Team 11, if you want to learn more about us <a href="aboutus.php">(Click Here)</a></h4></center>
         <br>
-        
+
         <form class="input-group" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get"> <!-- Class for Search box -->
 
             <input name="foodCategory" id="foodCategory" value="" hidden />
@@ -195,26 +203,26 @@
                     <div class="panel-heading">
                         <center> <h2> <?php echo $restaurantListTitle ?> </h2> </center>
                     </div>
-                    <?php
-                    foreach ($restaurant_array as $restaurant) {
-                        $image = base64_encode($restaurant['thumbnail']);
-                        $image_src = "data:image/jpeg;base64," . $image;
-                        $resId = $restaurant['restaurant_id'];
-                        ?>
+<?php
+foreach ($restaurant_array as $restaurant) {
+    $image = base64_encode($restaurant['thumbnail']);
+    $image_src = "data:image/jpeg;base64," . $image;
+    $resId = $restaurant['restaurant_id'];
+    ?>
 
                         <div class="panel-body"> <!-- Will work on the details later -->
                             <table class="table">
                                 <tr>
                                     <td>
-                                        <div class="col-sm-2 col-sm-2-profile">
+                                        <div class="col-lg-2 profile">
                                             <a href="<?php echo 'app/views/home/restaurant.php?resid=' . $restaurant['restaurant_id'] ?>"> <img width="150" height="150" style="float: left;" src="<?php print $image_src; ?>" /> </a>    
                                         </div> <!-- End of Profile Picture -->
-                                        <div class="col-sm-8 col-sm-8-detail"> 
+                                        <div class="col-lg-8 detail"> 
                                             <h3>  <a  href="<?php echo 'app/views/home/restaurant.php?resid=' . $restaurant['restaurant_id'] ?>" > <?php echo $restaurant['name'] ?> </a> </h3>
                                             <p> <?php echo $restaurant['address'] ?> </p>
                                             <p>  <?php echo $restaurant['description'] ?> </p>
                                         </div> <!-- End of Restaurant Detail -->
-                                        <div class="col-sm-2 col-sm-2-reservation">
+                                        <div class="col-lg-2 reservation">
                                             <button class="btn btn-info" data-toggle="modal" data-id="<?php echo $restaurant['restaurant_id'] ?>" data-target="#reservation-<?php echo $restaurant['restaurant_id'] ?>" >
                                                 Reservation
                                             </button>
@@ -236,7 +244,7 @@
                                                         <div class="row">
                                                             <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
                                                             <!-- for debug purposes, displays restaurant ID -->
-                                                            <?php echo $resId ?>
+    <?php echo $resId ?>
                                                             <div class="col-sm-12">          
 
                                                                 <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
@@ -251,6 +259,9 @@
 
                                                                 <br>
                                                                 <br>
+                                                                
+                                                                <!-- This is for the datapicking method -->
+                                                                <p>Date: <input type="text" id="datepicker"></p>
 
                                                                 <select class="selectpicker" data-width="auto" id="month" name="month" required>
                                                                     <option value="" disabled selected>Month</option>
@@ -410,38 +421,38 @@
                                 </div>
                             </table>
                         </div>
-                        <?php
-                    }
-                    ?>
+    <?php
+}
+?>
 
                 </div>
-                <?php
-                if ($numberOfPages > 1) {
-                    echo '<ul class="pagination pagination-lg">';
+<?php
+if ($numberOfPages > 1) {
+    echo '<ul class="pagination pagination-lg">';
 
-                    if ($currentPage == 1) {
-                        echo '<li class="disabled"><a href="#">&laquo;</a></li>';
-                    } else {
-                        echo '<li><a href="index.php?searchText=' . $nameAddCat . '&pgnum=' . ($currentPage - 1) . '">&laquo;</a></li>';
-                    }
+    if ($currentPage == 1) {
+        echo '<li class="disabled"><a href="#">&laquo;</a></li>';
+    } else {
+        echo '<li><a href="index.php?searchText=' . $nameAddCat . '&pgnum=' . ($currentPage - 1) . '">&laquo;</a></li>';
+    }
 
-                    for ($i = 0; $i < 9 && $i < $numberOfPages; $i++) {
-                        if ($pageArray[$i] == $currentPage) {
-                            echo '<li class="active"><a href="index.php?searchText=' . $nameAddCat . '&pgnum=' . $pageArray[$i] . '">' . $pageArray[$i] . '</a></li>';
-                        } else {
-                            echo '<li><a href="index.php?searchText=' . $nameAddCat . '&pgnum=' . $pageArray[$i] . '">' . $pageArray[$i] . '</a></li>';
-                        }
-                    }
+    for ($i = 0; $i < 9 && $i < $numberOfPages; $i++) {
+        if ($pageArray[$i] == $currentPage) {
+            echo '<li class="active"><a href="index.php?searchText=' . $nameAddCat . '&pgnum=' . $pageArray[$i] . '">' . $pageArray[$i] . '</a></li>';
+        } else {
+            echo '<li><a href="index.php?searchText=' . $nameAddCat . '&pgnum=' . $pageArray[$i] . '">' . $pageArray[$i] . '</a></li>';
+        }
+    }
 
-                    if ($currentPage == $numberOfPages) {
-                        echo '<li class="disabled"><a href="#">&raquo;</a></li>';
-                    } else {
-                        echo '<li><a href="index.php?searchText=' . $nameAddCat . '&pgnum=' . ($currentPage + 1) . '">&raquo;</a></li>';
-                    }
+    if ($currentPage == $numberOfPages) {
+        echo '<li class="disabled"><a href="#">&raquo;</a></li>';
+    } else {
+        echo '<li><a href="index.php?searchText=' . $nameAddCat . '&pgnum=' . ($currentPage + 1) . '">&raquo;</a></li>';
+    }
 
-                    echo '</ul>';
-                }
-                ?>
+    echo '</ul>';
+}
+?>
             </div> <!-- End of Jumbotron -->
 
         </div>
@@ -453,22 +464,22 @@
                     </div>
                     <div class="panel-body">
                         <table class="table">
-                                    <?php
-                                    foreach ($eventArray as $event) {
-                                        $image = base64_encode($event['event_photo']);
-                                        echo '<tr>';
-                                        echo '<td>';
-                                        //echo '<div class="panel panel-body">';
-                                        echo '<a href="app/views/home/restaurant.php?resid=' . $event['restaurant_id'] . '"> <img width="200" height="auto" src="data:image/jpeg;base64,' . $image . '"/></a>';
-                                        echo '<a href="app/views/home/restaurant.php?resid=' . $event['restaurant_id'] . '"> <h3>' . $event['name'] . '</h3></a>';
-                                        echo '<p>' . $event['date'] . '</p>';
-                                        echo '<p>' . $event['description'] . '</p>';
-                                        echo '<a href="#reservation page" class="btn btn-info" role="button"> Reservation </a>';
-                                        //echo '</div>';
-                                        echo '</td>';
-                                        echo '</tr>';
-                                    }
-                                    ?>
+<?php
+foreach ($eventArray as $event) {
+    $image = base64_encode($event['event_photo']);
+    echo '<tr>';
+    echo '<td>';
+    //echo '<div class="panel panel-body">';
+    echo '<a href="app/views/home/restaurant.php?resid=' . $event['restaurant_id'] . '"> <img width="200" height="auto" src="data:image/jpeg;base64,' . $image . '"/></a>';
+    echo '<a href="app/views/home/restaurant.php?resid=' . $event['restaurant_id'] . '"> <h3>' . $event['name'] . '</h3></a>';
+    echo '<p>' . $event['date'] . '</p>';
+    echo '<p>' . $event['description'] . '</p>';
+    echo '<a href="#reservation page" class="btn btn-info" role="button"> Reservation </a>';
+    //echo '</div>';
+    echo '</td>';
+    echo '</tr>';
+}
+?>
                         </table>
                     </div>
                 </div>

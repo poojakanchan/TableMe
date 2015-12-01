@@ -17,10 +17,16 @@
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <link rel="stylesheet" href="/resources/demos/style.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker.css">
+   
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/js/bootstrap-datepicker.min.js"></script>
+  
     <script>
-        $(function () {
-            $("#datepicker").datepicker();
+        $(document).ready(function() {
+        $('[id=datetimepicker1]').each(function(){
+            $(this).datepicker();
         });
+    });
     </script> <!-- datepicking end -->
 
     <!--
@@ -261,8 +267,11 @@ foreach ($restaurant_array as $restaurant) {
                                                                 <br>
                                                                 
                                                                 <!-- This is for the datapicking method -->
-                                                                <p>Date: <input type="text" id="datepicker"></p>
-
+                                                                <div class="input-append date" id="datetimepicker1">
+                                                                 <input  data-format="dd/MM/yyyy hh:mm:ss" type="text"></input>
+                                                                  <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span> 
+                                                                  <!-- <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span> -->
+                                                                    </div>
                                                                 <select class="selectpicker" data-width="auto" id="month" name="month" required>
                                                                     <option value="" disabled selected>Month</option>
                                                                     <option value ="January">January</option>

@@ -268,31 +268,18 @@ if ($avgRating >= 1) {
             .progress-bar { text-align: left; }
             .rating-desc .col-md-3 {padding-right: 0px;}
             .sr-only { margin-left: 5px;overflow: visible;clip: auto; }
-            
-            body{
-                background: url(background.jpg) no-repeat center center fixed; 
-                -webkit-background-size: cover;
-                -moz-background-size: cover;
-                -o-background-size: cover;
-                background-size: cover;
-                /*background-color:#2E52E0;*/
-                /*background-image: url("background.jpg");*/
-                color:#FFFFFF;
-            }
+
             .containerMain{
                 /*background-color:#2E52E0!important;*/
                 background-color:rgba(0,0,0,0)!important;
+                border: none!important;
             }
             .container-fluid{
                 margin: 10px 10px 10px 10px;
                 border-radius: 25px;
-                /*border: 6px solid #2E52E0;*/
-                /*background-color:#FFFFFF;*/
+                border: 1px solid #e3e3e3;
+                background-color:#f5f5f5;
                 /*background-color:rgba(0,0,0,0.5)*/
-            }
-            
-            .modal{
-                color:#000000;
             }
         </style>
         <script>
@@ -311,6 +298,7 @@ if ($avgRating >= 1) {
                 <div class="restaurantprofile col-md-12">
                     <div class="restaurantpic col-md-6">
                         <div class="container-fluid">
+                            <br>
                             <a href="#" data-toggle="modal" data-target="#modal-logo">
                                 <img src="<?php echo 'data:image/jpeg;base64,' . base64_encode($restaurant['thumbnail']) ?>" class="img-rounded" height="300" width="300" />
                             </a>
@@ -347,7 +335,7 @@ if ($avgRating >= 1) {
                                     </div>
                                 </div>
                             </div>
-                            <br><br><br>
+                            <br>
                             <div class="modal fade" id="modal-logo" role="dialog">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
@@ -456,7 +444,7 @@ if ($avgRating >= 1) {
                             }?>
                             </h4>
 
-                            <button class="btn btn-info" data-toggle="modal" data-id="<?php echo $resId   ?>" data-target="#reservation-<?php echo $resId   ?>" >
+                            <button class="btn btn-primary" data-toggle="modal" data-id="<?php echo $resId   ?>" data-target="#reservation-<?php echo $resId   ?>" >
                                 Make a Reservation
                             </button>
                             <br><br>
@@ -653,7 +641,6 @@ if ($avgRating >= 1) {
                                 }
                             }
                             ?>
-                            <br>
                         </div>
                     </div>
                     <div class="restaurantRating col-md-6">
@@ -886,12 +873,5 @@ if ($avgRating >= 1) {
                 </div>
             </div>
         </div>
-        <!--<div class = "navbar navbar-default navbar-bottom">
-            <div class = "container">
-                <p class="navbar-text navbar-left">This website belongs to SFSU Course CSC648/CSC848 Fall 15 Group 11</p>
-            </div>
-        </div>
-        -->
-
     </body>
 </html>

@@ -12,7 +12,7 @@
 
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
-    <body>
+    <body background="background.jpg">
         <?php
         include 'header.php';
         require_once '../../models/Login_model.php';

@@ -55,13 +55,13 @@ class Host_controller extends Controller{
         $hostess_model = $this->model('Hostess_model');
         $hostess = $hostess_model->getHostessByUserName($username);
         $restaurant_model = $this->model('Restaurant_model');
-        
+       // echo 'hostess ' . $hostess . "  " . $hostess['restaurant_id'];
         $restaurant = $restaurant_model->findRestaurantById($hostess['restaurant_id']);
-        //$restaurant = $restaurant[0];
+       //print_r($restaurant); 
         
         $resInfo = array("res_id" => $hostess['restaurant_id'],
-                         "res_name" => $restaurant[0]['name'],
-                          "thumbnail" =>  base64_encode($restaurant[0]['thumbnail'])
+                         "res_name" => $restaurant['name'],
+                          "thumbnail" =>  base64_encode($restaurant['thumbnail'])
                         );
         return $resInfo;
     }

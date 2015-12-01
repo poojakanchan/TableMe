@@ -324,7 +324,7 @@ if ($avgRating >= 1) {
                                 <img src="<?php echo $i < $n ? "./getResImages.php?resId=" . $resId . "&offset=" . $i : "http://goo.gl/vrq2Cw"; $i++; ?>" class="img-rounded" height="70" width="70"/>
                             </a>
                             <br><br>
-                            <div class="col-md-7">
+                            <div class="menubar">
                                 <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#modal-menu">Menu</button>
                                 <div class="modal fade" id="modal-menu" role="dialog">
                                     <div class="modal-dialog modal-lg">

@@ -290,6 +290,10 @@ if ($avgRating >= 1) {
                 /*background-color:#FFFFFF;*/
                 /*background-color:rgba(0,0,0,0.5)*/
             }
+            
+            .modal{
+                color:#000000;
+            }
         </style>
         <script>
             $('.selectpicker').selectpicker();

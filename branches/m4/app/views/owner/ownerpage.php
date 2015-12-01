@@ -94,7 +94,7 @@
                 /*background-color:#FFFFFF;*/
                 /*background-color:rgba(0,0,0,0.5)*/
             }
-            .list-group-item .table{
+            .list-group-item, .table{
                 background-color:rgba(0,0,0,0)!important;
             }
             a{

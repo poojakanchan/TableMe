@@ -72,7 +72,37 @@
 
         <!-- Will merge the style and script code into CSS and JS file after all is done. -->
         
-    <script src="ownerPage.js"></script>
+        <style>
+            body{
+                background: url(background.jpg) no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+                /*background-color:#2E52E0;*/
+                /*background-image: url("background.jpg");*/
+                color:#FFFFFF;
+            }
+            .containerMain{
+                /*background-color:#2E52E0!important;*/
+                background-color:rgba(0,0,0,0)!important;
+            }
+            .container-fluid{
+                margin: 10px 10px 10px 10px;
+                border-radius: 25px;
+                /*border: 6px solid #2E52E0;*/
+                /*background-color:#FFFFFF;*/
+                /*background-color:rgba(0,0,0,0.5)*/
+            }
+            .list-group-item .table{
+                background-color:rgba(0,0,0,0)!important;
+            }
+            a{
+                color:#FFFFFF;
+            }
+        </style>
+        
+        <script src="ownerPage.js"></script>
     </head>
     <body> 
         <div class="container-fluid">
@@ -402,7 +432,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <br><br>
-                                        <table class="table table-striped">
+                                        <table class="table">
                                             <thead>
                                                 <tr>
                                                     <th>Event Name</th>
@@ -457,7 +487,7 @@
                                 <div class="row">
                                     <div class="col-md-12 table-responsive">
                                         <br><br>
-                                        <table class="table table-striped">
+                                        <table class="table">
                                             <thead>
                                                 <tr>
                                                     <th>Host Account</th>
@@ -550,8 +580,8 @@
                                 <div class="form-group">
                                     <div class="col-xs-12">
                                         <br>
-                                        <button class="btn btn-default" id="submit-change-profile" data-username="<?php echo $ownerInfo['username']; ?>"><i class="glyphicon glyphicon-ok-sign"></i>Change Profile</button>
-                                        <button class="btn btn-default" type="reset"><i class="glyphicon glyphicon-repeat"></i>Reset</button>
+                                        <button class="btn btn-success" id="submit-change-profile" data-username="<?php echo $ownerInfo['username']; ?>"><i class="glyphicon glyphicon-ok-sign"></i>Change Profile</button>
+                                        <button class="btn btn-danger" type="reset"><i class="glyphicon glyphicon-repeat"></i>Reset</button>
                                     </div>
                                 </div>
                             <!--</form>  End of the edit the profile form -->

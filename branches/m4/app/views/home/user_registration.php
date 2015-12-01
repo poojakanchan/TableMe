@@ -70,7 +70,7 @@
             }
         </script>
     </head>
-    <body>
+    <body background="background.jpg">
        <?php
        
         include 'header.php';

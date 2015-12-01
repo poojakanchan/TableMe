@@ -43,15 +43,15 @@ $username_array = $restaurant->getAllUserNames();
             });
 
 
-            
-            
+
+
             // username no less than 4 no more than 10 letters numbers no space
             // description 150 characters 
             // max size of 500 mb for profile picture and menu 
             // validate phone number
 
             function validateForm() {
-                
+
                 var ownerUsername = document.forms["form"]["ownerUsername"].value;
                 var ownerPassword = document.forms["form"]["ownerPassword"].value;
                 var ownerConfirmPassword = document.forms["form"]["ownerConfirmPassword"].value;
@@ -67,8 +67,8 @@ $username_array = $restaurant->getAllUserNames();
                     alert("Username must be filled out.");
                     return false;
                 }
-                
-                if(!/[a-zA-Z0-9]+/.test(ownerUsername)) {
+
+                if (!/[a-zA-Z0-9]+/.test(ownerUsername)) {
                     alert("Username can only be letters and numbers.");
                     return false;
                 }
@@ -92,8 +92,8 @@ $username_array = $restaurant->getAllUserNames();
                     alert("First name must be filled out.");
                     return false;
                 }
-                
-                if(!/[a-zA-Z]+/.test(ownerFirstName)) {
+
+                if (!/[a-zA-Z]+/.test(ownerFirstName)) {
                     alert("First name can only be letters.");
                     return false;
                 }
@@ -102,8 +102,8 @@ $username_array = $restaurant->getAllUserNames();
                     alert("Last name must be filled out.");
                     return false;
                 }
-                
-                if(!/[a-zA-Z]+/.test(ownerLastName)) {
+
+                if (!/[a-zA-Z]+/.test(ownerLastName)) {
                     alert("Last name can only be letters.");
                     return false;
                 }
@@ -112,8 +112,8 @@ $username_array = $restaurant->getAllUserNames();
                     alert("Phone must be filled out.");
                     return false;
                 }
-                
-                if(!/[0-9]+/.test(ownerPhone)) {
+
+                if (!/[0-9]+/.test(ownerPhone)) {
                     alert("Phone can only be numbers.");
                     return false;
                 }
@@ -137,8 +137,8 @@ $username_array = $restaurant->getAllUserNames();
                     alert("Restaurant phone must be filled out.");
                     return false;
                 }
-                
-                if(!/[0-9]+/.test(restaurantPhone)) {
+
+                if (!/[0-9]+/.test(restaurantPhone)) {
                     alert("Phone can only be numbers.");
                     return false;
                 }
@@ -147,8 +147,9 @@ $username_array = $restaurant->getAllUserNames();
             }
 
         </script>
+
     </head>
-    <body>
+    <body background="background.jpg">
         <div class="container">
             <h1 class="well">Restaurant Registration Form</h1>
             <div class="col-lg-12 well">
@@ -292,10 +293,10 @@ $username_array = $restaurant->getAllUserNames();
                                     <div class="form-group">
                                         <label>Type of Food</label>
                                         <select class="selectpicker" name ="food_category"><?php
-foreach ($food_category_array as $category) {
-    echo "<option value=" . $category['name'] . ">" . $category['name'] . "</option>";
-}
-?><option value ="any" selected="selected">Select Food Type</option>
+                                            foreach ($food_category_array as $category) {
+                                                echo "<option value=" . $category['name'] . ">" . $category['name'] . "</option>";
+                                            }
+                                            ?><option value ="any" selected="selected">Select Food Type</option>
                                         </select>
                                     </div>
 
@@ -320,7 +321,7 @@ foreach ($food_category_array as $category) {
                                         </div>
                                     </div>
 
-                                   
+
                                     <div class="form-group">
                                         <label>Hours Of Operation *</label>
                                         <br>
@@ -426,64 +427,64 @@ foreach ($food_category_array as $category) {
                                 I agree to the 
                                 <a href="JavaScript:newPopup
                                    ('privacy_policy.html');" data-toggle="modal" data-target="#privacy_policy">
-                                      Privacy Policy</a>.</h4>
+                                    Privacy Policy</a>.</h4>
                             <br>
-                              <div  class="modal fade"  id = "privacy_policy" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div  class="modal fade"  id = "privacy_policy" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                    <label class="modal-title" name ="myModalLabel" id="myModalLabel">Privacy Policy </label>
-                                                </div>
-                                                <div class="modal-body">
-                                                   
-                                                      <p>
-                                                          <b>
-                                                              What Information we collect?
-                                                          </b>
-                                                      <p>
-                                                          While registering on our site, you may be asked to enter:your name, email , contact number.
-                                                          However you may visit our website anonymously.
-                                                          </p>
-                                                          <b>
-                                                              What do we use Information for?
-                                                          </b>
-                                                          <p>
-                                                              Any Information we collect form you may be used in one of the following ways:</p>
-                                                              <p>
-                                                              - To improve customer service (to display history of reservations, to display
-                                                                    already visited restaurants etc.)
-                                                             </p>
-                                                              <p>
-                                                              - To send confirmation emails
-                                                              </p>
-                                                          
-                                                          <b>
-                                                              How do we protect Information
-                                                          </b>
-                                                          <p>
-                                                              We do not sell, transfer or trade your information to outside parties.
-                                                              However some of the information may be displayed on our website.
-                                                              </p>
-                                                              
-                                                          <b>
-                                                              By using our site, you consent to our privacy policy
-                                                          </b>    
-                                                                           
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                    
-                                                </div>
-                                            </div>
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <label class="modal-title" name ="myModalLabel" id="myModalLabel">Privacy Policy </label>
                                         </div>
-                                    
+                                        <div class="modal-body">
+
+                                            <p>
+                                                <b>
+                                                    What Information we collect?
+                                                </b>
+                                            <p>
+                                                While registering on our site, you may be asked to enter:your name, email , contact number.
+                                                However you may visit our website anonymously.
+                                            </p>
+                                            <b>
+                                                What do we use Information for?
+                                            </b>
+                                            <p>
+                                                Any Information we collect form you may be used in one of the following ways:</p>
+                                            <p>
+                                                - To improve customer service (to display history of reservations, to display
+                                                already visited restaurants etc.)
+                                            </p>
+                                            <p>
+                                                - To send confirmation emails
+                                            </p>
+
+                                            <b>
+                                                How do we protect Information
+                                            </b>
+                                            <p>
+                                                We do not sell, transfer or trade your information to outside parties.
+                                                However some of the information may be displayed on our website.
+                                            </p>
+
+                                            <b>
+                                                By using our site, you consent to our privacy policy
+                                            </b>    
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                                        </div>
+                                    </div>
                                 </div>
-                                    
-                            
+
+                            </div>
+
+
                             <h4>If you do not agree please cancel.
-                            <input type="button" class="btn btn-primary" value="Cancel Registration" onclick="index.php">
+                                <input type="button" class="btn btn-primary" value="Cancel Registration" onclick="index.php">
                             </h4>
                             <br>
                             <br>

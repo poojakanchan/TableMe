@@ -25,6 +25,30 @@
         h5{
             font-weight: bold;
         }
+        body{
+            background: url(background.jpg) no-repeat center center fixed; 
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            /*background-color:#2E52E0;*/
+            /*background-image: url("background.jpg");*/
+            color:#FFFFFF;
+        }
+        .containerMain{
+            /*background-color:#2E52E0!important;*/
+            background-color:rgba(0,0,0,0)!important;
+        }
+        .container-fluid{
+            margin: 10px 10px 10px 10px;
+            border-radius: 25px;
+            /*border: 6px solid #2E52E0;*/
+            /*background-color:#FFFFFF;*/
+            /*background-color:rgba(0,0,0,0.5)*/
+        }
+        a{
+            color:#FFFFFF;
+        }
     </style>
 </head>
 

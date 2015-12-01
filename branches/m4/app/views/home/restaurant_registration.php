@@ -149,7 +149,7 @@ $username_array = $restaurant->getAllUserNames();
         </script>
 
     </head>
-    <body background="background.jpg">
+    <body>
         <div class="container">
             <h1 class="well">Restaurant Registration Form</h1>
             <div class="col-lg-12 well">

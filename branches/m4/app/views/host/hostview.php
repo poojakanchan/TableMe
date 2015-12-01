@@ -57,6 +57,8 @@
                 -moz-user-select: none;
                 -ms-user-select: none;
                 user-select: none;
+                
+                color:#FFFFFF;
             }
             .date-container {
                 padding: 0px 40px;   
@@ -115,6 +117,32 @@
                 .date-picker span.fa {
                     font-size: 3em;
                 } 
+            }
+            
+            body{
+                background: url(background.jpg) no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+                /*background-color:#2E52E0;*/
+                /*background-image: url("background.jpg");*/
+                color:#FFFFFF;
+            }
+            .containerMain{
+                /*background-color:#2E52E0!important;*/
+                background-color:rgba(0,0,0,0)!important;
+            }
+            .container-fluid{
+                margin: 10px 10px 10px 10px;
+                border-radius: 25px;
+                /*border: 6px solid #2E52E0;*/
+                /*background-color:#FFFFFF;*/
+                /*background-color:rgba(0,0,0,0.5)*/
+            }
+            
+            .modal{
+                color:#000000;
             }
         </style>
         <script>

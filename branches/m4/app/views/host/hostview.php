@@ -652,12 +652,5 @@
             
         </div>
     </div>
-    
-    <!--Footer-->
-    <div class = "navbar navbar-default navbar-bottom">
-        <div class = "container">
-            <p class="navbar-text navbar-left">This website belongs to SFSU Course CSC648/CSC848 Fall 15 Group 11</p>
-        </div>
-    </div>
 </body>
 </html>

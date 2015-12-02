@@ -1,68 +1,106 @@
-<html lang="en">
+<!DOCTYPE html>
     <?php
+
+//    if (!isset($_SESSION['username'])) {
+//        header('location: ../home/login.php');
+//    }
     require_once 'header.php';
-    require_once '../../models/Owner_model.php';
-    require_once '../../models/Restaurant_model.php';
-    require_once '../../models/OperationHours_model.php';
-    require_once '../../models/Event_model.php';
-
+//    require_once '../../models/Owner_model.php';
+//    require_once '../../models/Restaurant_model.php';
+//    require_once '../../models/OperationHours_model.php';
+//    require_once '../../models/Event_model.php';
+//    require_once '../../models/Hostess_model.php';
+//    require_once '../../models/Login_model.php';
     if (!isset($_SESSION['username'])) {
-        header('location: ../home/login.php');
+        header('location: ../../views/home/login.php');
     }
-    $username = $_SESSION['username'];
-    $ownerDb = new Owner_model();
-    $ownerInfo = $ownerDb->getOwnerInfo($username);
-    $resId = intval($ownerInfo['restaurant_id']);
-    $restaurantDb = new Restaurant_model();
-    $restaurantInfo = $restaurantDb->findRestaurantById($resId);
-    $restaurantImages = $restaurantDb->getRestaurantImages($resId);
-    $imageCount = count($restaurantImages) >= 4 ? 4 : count($restaurantImages); //total number of images for the restaurant in multimedia table
-    $foodCategory = $restaurantDb->getFoodCategories();
-    $reviewArray = $restaurantDb->getRestaurantReviews($resId);
     
-    $oprDb = new OperationHours_model();
-    $oprHours = $oprDb->getOperatingHoursByRestaurantId($resId);
-    
-    $eventDb = new Event_model();
-    $eventArray = $eventDb->getEventsByRestaurantId($resId);
+    require_once '../../controllers/Owner_controller.php';
 
-    if (!empty($oprHours)) {
-        $oprHours = $oprHours[0];
-    }
-    
-    if ($_POST && isset($_POST['image_type'])) {
-        switch($_POST['image_type']) {
-            case 'profile':
-                if (is_uploaded_file($_FILES['profile-image']['tmp_name'])) {
-                    $thumbnail = file_get_contents($_FILES["profile-image"]["tmp_name"]);
-                }
-                if ($restaurantDb->updateRestaurantThumbnail($resId, $thumbnail)) {
-                    $restaurantInfo = $restaurantDb->findRestaurantById($resId);
-                }
-                break;
-            case 'multimedia':
-                if (is_uploaded_file($_FILES['multimedia-image']['tmp_name'])) {
-                    $img = file_get_contents($_FILES["multimedia-image"]["tmp_name"]);
-                    if ($restaurantDb->updateMultimedia($_POST['multimedia-id'], $img, $resId)) {
-                        $restaurantImages = $restaurantDb->getRestaurantImages($resId);
-                        $imageCount = count($restaurantImages) >= 4 ? 4 : count($restaurantImages);
-                    }
-                }
-                break;
-            case 'menu':
-                if (is_uploaded_file($_FILES['menu-image']['tmp_name'])) {
-                    $menu = file_get_contents($_FILES["menu-image"]["tmp_name"]);
-                }
-                if ($restaurantDb->updateRestaurantMenu($resId, $menu)) {
-                    $restaurantInfo = $restaurantDb->findRestaurantById($resId);
-                }
-                break;
-        }
-    }
+
+
+
+//    
+//    $username = $_SESSION['username'];
+//    $ownerDb = new Owner_model();
+//    $ownerInfo = $ownerDb->getOwnerInfo($username);
+//    $resId = intval($ownerInfo['restaurant_id']);
+//    $restaurantDb = new Restaurant_model();
+//    $restaurantInfo = $restaurantDb->findRestaurantById($resId);
+//    $restaurantImages = $restaurantDb->getRestaurantImages($resId);
+//    $imageCount = count($restaurantImages) >= 4 ? 4 : count($restaurantImages); //total number of images for the restaurant in multimedia table
+//    $foodCategory = $restaurantDb->getFoodCategories();
+//    $reviewArray = $restaurantDb->getRestaurantReviews($resId);
+//    
+//    $oprDb = new OperationHours_model();
+//    $oprHours = $oprDb->getOperatingHoursByRestaurantId($resId);
+//    
+//    $eventDb = new Event_model();
+//    $eventArray = $eventDb->getEventsByRestaurantId($resId);
+//    
+//    $hostessDb = new Hostess_model();
+//    $hostessArray = $hostessDb->getHostessByRestaurantId($resId);
+//    
+//    $loginDb = new Login_model();
+//    $existingUsernames = $loginDb->getAllUsernames();
+//
+//    if (!empty($oprHours)) {
+//        $oprHours = $oprHours[0];
+//    }
+//    
+//    if ($_POST) {
+//        if (isset($_POST['image_type'])) {
+//            switch($_POST['image_type']) {
+//                case 'profile':
+//                    if (is_uploaded_file($_FILES['profile-image']['tmp_name'])) {
+//                        $thumbnail = file_get_contents($_FILES["profile-image"]["tmp_name"]);
+//                    }
+//                    if ($restaurantDb->updateRestaurantThumbnail($resId, $thumbnail)) {
+//                        $restaurantInfo = $restaurantDb->findRestaurantById($resId);
+//                    }
+//                    break;
+//                case 'multimedia':
+//                    if (is_uploaded_file($_FILES['multimedia-image']['tmp_name'])) {
+//                        $img = file_get_contents($_FILES["multimedia-image"]["tmp_name"]);
+//                        if ($restaurantDb->updateMultimedia($_POST['multimedia-id'], $img, $resId)) {
+//                            $restaurantImages = $restaurantDb->getRestaurantImages($resId);
+//                            $imageCount = count($restaurantImages) >= 4 ? 4 : count($restaurantImages);
+//                        }
+//                    }
+//                    break;
+//                case 'menu':
+//                    if (is_uploaded_file($_FILES['menu-image']['tmp_name'])) {
+//                        $menu = file_get_contents($_FILES["menu-image"]["tmp_name"]);
+//                    }
+//                    if ($restaurantDb->updateRestaurantMenu($resId, $menu)) {
+//                        $restaurantInfo = $restaurantDb->findRestaurantById($resId);
+//                    }
+//                    break;
+//            }
+//            
+//        }
+//        
+//        if (isset($_POST['add-event'])) {
+////            var_dump($_POST);
+////            exit();
+//            if (is_uploaded_file($_FILES['add-event-image']['tmp_name'])) {
+//                $eventImage = file_get_contents($_FILES["add-event-image"]["tmp_name"]);
+//            }
+//            $newEvent = array('resId' => $resId,
+//                              'title' =>$_POST["add-event-name"],
+//                              'desc' => $_POST['add-event-description'],
+//                              'date' => $_POST['add-event-date'],
+//                              'photo' => $eventImage);
+//            $eventDb->addEvent($newEvent);
+//            $eventArray = $eventDb->getEventsByRestaurantId($resId);
+//        }
+//    }
  
-    ?>  
+    ?> 
+<html>
     <head>
         <title>TableMe</title>
+        <meta charset="UTF-8">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
@@ -101,11 +139,15 @@
                 color:#FFFFFF;
             }
         </style>
-        
-        <script src="ownerPage.js"></script>
     </head>
-    <body> 
-        <div class="container-fluid">
+    <body>
+        <script>
+            var restaurantId = <?php echo $resId; ?>;
+            var existingUsernames = <?php echo json_encode($existingUsernames); ?>;
+        </script>
+        <script src="ownerPage.js"></script>
+        
+        <div class="container-fluid" id="restaurant-container" data-restaurant-id="<?php echo $resId; ?>">
             <div class="mainInfo col-md-12">
                 <h1>Profile</h1>
                 <div class="row">
@@ -243,7 +285,7 @@
                                         <form id="profile-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" >
                                         <input type="file" name="profile-image" id="profile-image" /><br>
                                         <input type="text" name="image_type" value="profile" hidden="true"/>
-                                        <button type = "button" class = "btn btn-default" onClick="submitImage('profile-image', 'profile-form')">Upload</button>
+                                        <button type = "button" class = "btn btn-default" onclick="submitImage('profile-image', 'profile-form')">Upload</button>
                                         </form>
                                     </div>
                                 </div>
@@ -266,7 +308,7 @@
                                         <input type="file" name="multimedia-image" id="multimedia-image1" /><br>
                                         <input type="text" name="image_type" value="multimedia" hidden="true" />
                                         <input type="text" name="multimedia-id" value="<?php echo $i<$imageCount ? $restaurantImages[$i]['multimedia_id'] : -1; $i++; ?>" hidden="true" /> 
-                                        <button type = "button" class = "btn btn-default" onClick="submitImage('multimedia-image1', 'multimedia-form1')">Upload</button>
+                                        <button type = "button" class = "btn btn-default" onclick="submitImage('multimedia-image1', 'multimedia-form1')">Upload</button>
                                         </form>
                                     </div>
                                     <div class = "col-sm-6 col-md-3">
@@ -285,7 +327,7 @@
                                         <input type="file" name="multimedia-image" id="multimedia-image2" /><br>
                                         <input type="text" name="image_type" value="multimedia" hidden="true" />
                                         <input type="text" name="multimedia-id" value="<?php echo $i<$imageCount ? $restaurantImages[$i]['multimedia_id'] : -1; $i++; ?>" hidden="true" /> 
-                                        <button type = "button" class = "btn btn-default" onClick="submitImage('multimedia-image2', 'multimedia-form2')">Upload</button>
+                                        <button type = "button" class = "btn btn-default" onclick="submitImage('multimedia-image2', 'multimedia-form2')">Upload</button>
                                         </form>
                                     </div>
                                     <div class = "col-sm-6 col-md-3">
@@ -304,7 +346,7 @@
                                         <input type="file" name="multimedia-image" id="multimedia-image3" /><br>
                                         <input type="text" name="image_type" value="multimedia" hidden="true" />
                                         <input type="text" name="multimedia-id" value="<?php echo $i<$imageCount ? $restaurantImages[$i]['multimedia_id'] : -1; $i++; ?>" hidden="true" /> 
-                                        <button type = "button" class = "btn btn-default" onClick="submitImage('multimedia-image3', 'multimedia-form3')">Upload</button>
+                                        <button type = "button" class = "btn btn-default" onclick="submitImage('multimedia-image3', 'multimedia-form3')">Upload</button>
                                         </form>
                                     </div>
                                     <div class = "col-sm-6 col-md-3">
@@ -323,7 +365,7 @@
                                         <input type="file" name="multimedia-image" id="multimedia-image4" /><br>
                                         <input type="text" name="image_type" value="multimedia" hidden="true" />
                                         <input type="text" name="multimedia-id" value="<?php echo $i<$imageCount ? $restaurantImages[$i]['multimedia_id'] : -1; $i++; ?>" hidden="true" /> 
-                                        <button type = "button" class = "btn btn-default" onClick="submitImage('multimedia-image4', 'multimedia-form4')">Upload</button>
+                                        <button type = "button" class = "btn btn-default" onclick="submitImage('multimedia-image4', 'multimedia-form4')">Upload</button>
                                         </form>
                                     </div>
                                 </div>
@@ -420,7 +462,7 @@
                                     <form id="menu-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" >
                                         <input type="file" name="menu-image" id="menu-image" /><br>
                                         <input type="text" name="image_type" value="menu" hidden="true"/>
-                                        <button type = "button" class = "btn btn-default" onClick="submitImage('menu-image', 'menu-form')">Upload Menu</button>
+                                        <button type = "button" class = "btn btn-default" onclick="submitImage('menu-image', 'menu-form')">Upload Menu</button>
                                     </form>
                                 <br><br>
                                 <h3>Current Menu:</h3>
@@ -438,45 +480,64 @@
                                                     <th>Event Name</th>
                                                     <th>Event Date</th>
                                                     <th>Event Description</th>
-                                                    <th>Delete</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
+<!--                                                <tr>
                                                     <td>1</td>
                                                     <td>2</td>
                                                     <td>3</td>
                                                     <td><input type="button" value="Remove" class="btn btn-danger"/></td>
-                                                </tr>
+                                                </tr>-->
+                                                
+                                                    <?php
+                                                    foreach($eventArray as $event) {
+                                                        echo '<tr id="event-id'. $event['event_id'] .'">';
+                                                        echo '<td>' . $event['title'] . '</td>';
+                                                        echo '<td>' . $event['date'] . '</td>';
+                                                        echo '<td>' . $event['description'] . '</td>';
+                                                        echo '<td><button type="button" class="btn btn-danger remove-event" data-toggle="modal" data-target="#confirm-cancel" data-event-id="' . $event['event_id'] . '">Remove</button></td>';
+                                                        echo '</tr>';
+                                                    }
+                                                    ?>
+                                                
                                             </tbody>
                                         </table>
                                         <hr>
-					<h3>Add a Event</h3>
-                                        <form class="form-horizontal" role="form">
+                                        <form id="add-event-form" class="form-horizontal" role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" >
+                                            <h3 style="padding-left:600px">Add an Event</h3>
                                                 <div class="form-group">
-                                                        <label class="col-md-2 control-label">Event Name</label>
-                                                        <div class="col-md-4">
-                                                                <input type="text" class="form-control" name="name"/>
+                                                        <label class="col-md-4 control-label">Event Name (50 characters max)</label>
+                                                        <div class="col-md-6">
+                                                                <input type="text" class="form-control" id="add-event-name" name="add-event-name"/>
                                                         </div>
                                                 </div>
                                                 <div class="form-group">
-                                                        <label class="col-md-2 control-label">Date</label>
-                                                        <div class="col-md-4">
-                                                                <input type="text" class="form-control" name="date"/>
+                                                        <label class="col-md-4 control-label">Date</label>
+                                                        <div class="col-md-6">
+                                                                <input type="text" class="form-control" id="add-event-date" name="add-event-date"/>
                                                         </div>
                                                 </div>
                                                 <div class="form-group">
-                                                        <label class="col-md-2 control-label">Description</label>
-                                                        <div class="col-md-4">
-                                                                <!--<input type="text" class="form-control" name="description"/>-->
-                                                                <textarea class="form-control" rows="5" id="description"></textarea>
+                                                        <label class="col-md-4 control-label">Description (200 characters max)</label>
+                                                        <div class="col-md-6">
+                                                                <textarea class="form-control" rows="5" id="add-event-description" name="add-event-description"></textarea>
+                                                        </div>
+                                                </div>
+                                                <div class="form-group">
+                                                        <label class="col-md-4 control-label">Event image</label>
+                                                        <div class="col-md-6">
+                                                            <input type="file" name="add-event-image" id="add-event-image" /><br>
+                                                            <input type="text" name="add-event" hidden="true" />
                                                         </div>
                                                 </div>
                                                 <div class="form-group">								
-                                                        <div style="padding-left:110px">
-                                                            <input type="submit" value="Add Event" class="btn btn-primary"/>
+                                                        <div style="padding-left:850px">
+                                                            <button type="button" class="btn btn-primary" id="add-event-button">Add Event</button>
                                                         </div>
                                                 </div>
+                                            <!--</form>-->
                                         </form>
                                     </div>
                                 </div>
@@ -496,31 +557,46 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
+                                                <?php
+                                                foreach ($hostessArray as $hostess) {
+                                                    echo '<tr id="hostess-username-' . $hostess["username"] .'">';
+                                                    echo '<td>' . $hostess["username"] . '</td>';
+                                                    echo '<td>' . $hostess["password"] . '</td>';
+                                                    echo '<td><button type="button" class="btn btn-danger remove-hostess" data-toggle="modal" data-target="#confirm-cancel" data-hostess-username="'. $hostess['username'] . '">Remove</button></td>';
+                                                    echo '</tr>';
+                                                }
+                                                ?>
+<!--                                                <tr>
                                                     <td>1</td>
                                                     <td>2</td>
                                                     <td><input type="button" value="Remove" class="btn btn-danger"/></td>
-                                                </tr>
+                                                </tr>-->
                                             </tbody>
                                         </table>
                                         <hr>
-					<h3>Add a Account</h3>
+					<h3>Add Host Account</h3>
                                         <form class="form-horizontal" role="form">
                                                 <div class="form-group">
-                                                        <label class="col-md-2 control-label">Account Name</label>
+                                                        <label class="col-md-2 control-label">Host Username (20 characters max)</label>
                                                         <div class="col-md-4">
-                                                                <input type="text" class="form-control" name="name"/>
+                                                                <input id="host-username" type="text" class="form-control" name="host-username"/>
                                                         </div>
                                                 </div>
                                                 <div class="form-group">
-                                                        <label class="col-md-2 control-label">Password</label>
+                                                        <label class="col-md-2 control-label">Password (20 characters max)</label>
                                                         <div class="col-md-4">
-                                                                <input type="text" class="form-control" name="date"/>
+                                                                <input id="host-password1" type="text" class="form-control" name="host-password1"/>
+                                                        </div>
+                                                </div>
+                                                <div class="form-group">
+                                                        <label class="col-md-2 control-label">Confirm Password</label>
+                                                        <div class="col-md-4">
+                                                                <input id="host-password2" type="text" class="form-control" name="host-password2"/>
                                                         </div>
                                                 </div>
                                                 <div class="form-group">								
                                                         <div style="padding-left:110px">
-                                                            <input type="submit" value="Add Account" class="btn btn-primary"/>
+                                                            <button id="add-host" type="button" class="btn btn-primary">Add Host</button>
                                                         </div>
                                                 </div>
                                         </form>
@@ -552,7 +628,7 @@
                             </div>
                         </div> <!-- Report review End -->
                         <div id="change-profile" class="tab-pane fade">
-                            <!--<form class="form" action="##" method="post" id="editregistrationform">-->
+<!--                            <form class="form" action="##" method="post" id="editregistrationform">-->
                                 <div class="form-group">
                                     <div class="col-xs-6">
                                         <label for="phone_number"><h4>Phone Number</h4></label>
@@ -587,6 +663,25 @@
                             <!--</form>  End of the edit the profile form -->
                         </div><!-- End of the Setting -->
                     </div>
+                    
+                    <!--Cancel pop up-->
+                            <div class="modal fade" id="confirm-cancel" role="dialog">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                      <h4 class="modal-title" style="color:black">Remove the entry?</h4>
+                                    </div>
+<!--                                    <div class="modal-body">
+                                      <p id="cancelMsg"></p>
+                                    </div>-->
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                      <button type="button" class="btn btn-danger" id="cancel-ok" data-dismiss="modal" data-event-id="" data-hostess-username="">OK </button>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
 
                 </div>
             </div>

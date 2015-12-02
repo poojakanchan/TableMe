@@ -115,7 +115,7 @@ class Reservation_model  extends Database{
     {
         $sql = "DELETE FROM reservation WHERE reservation_id=:resId";
         $stmt = $this->dbh->prepare($sql);
-        $stmt->bindParam(':resId', $resId);
+        $stmt->bindParam(':resId', $resId, PDO::PARAM_INT);
         if ($stmt->execute()) {
             return $stmt->fetchAll();
         }

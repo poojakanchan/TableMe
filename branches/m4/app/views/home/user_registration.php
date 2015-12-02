@@ -228,7 +228,7 @@
         <script>
             $(document).ready(function () {
                 $("#username").focusout(function () {
-                    var existingUsernames = <?php echo json_encode($existingUsernames) ?>;
+                    var existingUsernames = <?php echo json_encode($existingUsernames); ?>;
                     var inputUsername = $("#username").val();
                     if (!inputUsername) {
                         $("#username").css("border", "#FF0000 1px solid");

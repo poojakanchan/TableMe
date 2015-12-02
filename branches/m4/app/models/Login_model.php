@@ -45,8 +45,11 @@ public function validateLogin($username, $password) {
         $stmt->bindParam(':name', $username);
         $stmt->bindParam(':pswd', $password);
         $stmt->bindParam(':role', $role);
-        return $stmt;
-     //   return $this->insertDB($stmt);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return false;
+        }
+        return true;
     }
     
     /*
@@ -63,6 +66,16 @@ public function validateLogin($username, $password) {
             print_r($stmt->errorInfo());
             return null;
         }
+    }
+    
+    public function removeLogin($username) {
+        $sql = "DELETE FROM login WHERE username=:username";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':username', $username);
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
     }
      
     

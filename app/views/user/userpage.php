@@ -56,7 +56,6 @@
     <?php
     require_once 'header.php';
     require_once '../../models/User_model.php';
-//    session_start();
 
     if (!isset($_SESSION['username'])) {
         header('location: ../home/login.php');
@@ -363,7 +362,7 @@
             
             function cancelReservation(reservationId) {
                  var request = $.ajax({
-                    url: "userPageAjax.php",
+                    url: "../../controllers/User_Controller.php",
                     data: {functionName: 'cancelReservation', reservationId: reservationId},
                     dataType: "json"
                 });
@@ -375,7 +374,7 @@
             
             function submitReview(restaurantId, reviewText) {
                 var request = $.ajax({
-                   url: "userPageAjax.php",
+                   url: "../../controllers/User_Controller.php",
                    data: {functionName: 'submitReview', restaurantId: restaurantId, 
                        userId: <?php echo $userInfo['user_id']; ?>, reviewText: reviewText},
                    dataType: "json"

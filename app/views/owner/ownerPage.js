@@ -1,10 +1,10 @@
+
 $(document).ready(function () {
 
     $("button#restaurant-detail-submit").click(function () {
         var description = $("textarea#restaurant-description").val();
         var address = $("textarea#restaurant-address").val();
         var phone = $("textarea#restaurant-phone").val();
-        var restaurantId = $(this).data("restaurant-id");
         var validated = true;
         if (!validatePhoneNumber(phone)) {
             $('textarea#restaurant-phone').css("border", "#FF0000 1px solid");
@@ -13,7 +13,7 @@ $(document).ready(function () {
         else {
             $('textarea#restaurant-phone').css("border", "");
         }
-        
+
         if (!validateAddress(address)) {
             $('textarea#restaurant-address').css("border", "#FF0000 1px solid");
             validated = false;
@@ -56,6 +56,35 @@ $(document).ready(function () {
         }
     });
     
+    $("#add-event-button").click(function() {
+       submitEvent(); 
+    });
+    
+    $("button.remove-event").click(function() {
+        var eventId = $(this).data("event-id");
+        $("button#cancel-ok").data("event-id", eventId)
+    });
+    
+    $("button.remove-hostess").click(function() {
+        var hostessUsername = $(this).data("hostess-username");
+        $("button#cancel-ok").data("hostess-username", hostessUsername);
+    });
+    
+    $("button#cancel-ok").click(function() {
+       if($(this).data("event-id") !== "") {
+           removeEvent ($(this).data("event-id"));
+           $(this).data("event-id", "");
+       }
+       else if ($(this).data("hostess-username") !== "") {
+           removeHostess($(this).data("hostess-username"));
+           $(this).data("hostess-username", "");
+       }
+    });
+    
+    $("button#add-host").click(function() {
+        addHostess();
+    });
+
 });
 
 function validateEmail(email) {
@@ -79,7 +108,7 @@ function validateDescription(description) {
 function submitRestaurantDetail(restaurantId, description, address, phone) {
     var request = $.ajax({
         method: "POST",
-        url: 'ownerPageAjax.php',
+        url: '../../controllers/Owner_controller.php',
         data: {functionName: 'updateRestaurant', restaurantId: restaurantId, description: description, address: address, phoneNum: phone}
     });
 
@@ -97,8 +126,31 @@ function submitRestaurantDetail(restaurantId, description, address, phone) {
     });
 }
 
-function submitImage(inputName, formId) {
-    var fuData = document.getElementById(inputName);
+function submitEvent() {
+    var title = $("#add-event-name");
+    var description = $("#add-event-description");
+    var date = $("add-event-date");
+    if (title.val().length > 50) {
+        title.css("border", "#FF0000 1px solid");
+        return false;
+    }
+    else {
+        title.css("border", "");
+    }
+
+    if (description.val().length > 200) {
+        description.css("border", "#FF0000 1px solid");
+        return false;
+    }
+    else {
+        description.css("border", "");
+    }
+
+    submitImage("add-event-image", "add-event-form");
+}
+
+function submitImage(inputId, formId) {
+    var fuData = document.getElementById(inputId);
     var fileUploadPath = fuData.value;
 
     if (typeof fileUploadPath == 'undefined' || fileUploadPath == '') {
@@ -107,8 +159,6 @@ function submitImage(inputName, formId) {
     }
 
     var extension = fileUploadPath.substring(fileUploadPath.lastIndexOf('.') + 1).toLowerCase();
-
-
 
     if (extension != "jpg" && extension != "jpeg") {
         alert("Photo only allows file types of JPG and JPEG.");
@@ -134,7 +184,7 @@ function submitImage(inputName, formId) {
 function updateOperatingHours(restaurantId) {
     var request = $.ajax({
         method: "POST",
-        url: 'ownerPageAjax.php',
+        url: '../../controllers/Owner_controller.php',
         data: {functionName: 'updateOperatingHours',
             restaurantId: restaurantId,
             mondayFrom: $("input#monday-from").val(),
@@ -169,19 +219,19 @@ function updateOperatingHours(restaurantId) {
 }
 
 function submitOwnerProfile() {
-    
+
     var request = $.ajax({
-       url: 'ownerPageAjax.php',
-       method: 'POST',
-       data: { functionName: 'changeOwnerProfile',
-               username: $("button#submit-change-profile").data("username"),
-               phoneNum: $("input#phone_number").val(),
-               email: $("input#email").val(),
-               password: $("input#password1").val()
-       }
+        url: '../../controllers/Owner_controller.php',
+        method: 'POST',
+        data: {functionName: 'changeOwnerProfile',
+            username: $("button#submit-change-profile").data("username"),
+            phoneNum: $("input#phone_number").val(),
+            email: $("input#email").val(),
+            password: $("input#password1").val()
+        }
     });
-    
-    request.done(function(data) {
+
+    request.done(function (data) {
         if (data.success === '1') {
             alert("Successfully changed profile");
         }
@@ -189,7 +239,117 @@ function submitOwnerProfile() {
             console.log(data);
         }
     });
+
+    request.fail(function (jqXHR, textStatus) {
+        console.log(jqXHR);
+    });
+}
+
+function removeEvent(eventId) {
     
+    var request = $.ajax({
+        url: '../../controllers/Owner_controller.php',
+        method: 'POST',
+        data: {functionName: 'removeEvent',
+            eventId: eventId
+        }
+    });
+
+    request.done(function (data) {
+        if (data.success === '1') {
+            $("tr#event-id"+eventId).remove();
+            alert("Successfully removed special event");
+        }
+        else {
+            console.log(data);
+        }
+    });
+
+    request.fail(function (jqXHR, textStatus) {
+        console.log(jqXHR);
+    });
+}
+
+function removeHostess(hostessUsername) {
+    
+    var request = $.ajax({
+        url: '../../controllers/Owner_controller.php',
+        method: 'POST',
+        data: {functionName: 'removeHostess',
+            hostessUsername: hostessUsername
+        }
+    });
+
+    request.done(function (data) {
+        if (data.success === '1') {
+            $("tr#hostess-username-"+hostessUsername).remove();
+            alert("Successfully removed hostess");
+        }
+        else {
+            console.log(data);
+        }
+    });
+
+    request.fail(function (jqXHR, textStatus) {
+        console.log(jqXHR);
+    });
+}
+
+function addHostess() {
+    var username = $("#host-username").val();
+    var password1 = $("#host-password1").val();
+    var password2 = $("#host-password2").val();
+    if (username.length > 20 || username.length===0) {
+        $("#host-username").css("border", "#FF0000 1px solid");
+        return false;
+    }
+    else {
+        $("#host-username").css("border", "");
+    }
+
+    if (password1.length>20 || password1.length===0) {
+        $("#host-password1").css("border", "#FF0000 1px solid");
+        return false;
+    }
+    else {
+        $("#host-password1").css("border", "");
+    }
+    
+    if (password1 !== password2) {
+        alert ("Passwords do not match");
+        return false;
+    }
+
+    if (jQuery.inArray(username, existingUsernames) !== -1) {
+        alert("Username already taken");
+        return false;
+    }
+
+    var request = $.ajax({
+        url: '../../controllers/Owner_controller.php',
+        method: 'POST',
+        data: {functionName: 'addHostess',
+            username: username,
+            password: password1,
+            restaurantId: restaurantId
+        }
+    });
+
+    request.done(function (data) {
+        if (data.success === '1') {
+            alert("Successfully added host account");
+            var newRow = '<tr id="hostess-username-' + username + '"><td>' + username + '</td><td>' + password1 + '</td><td><button type="button" class="btn btn-danger remove-hostess" data-toggle="modal" data-target="#confirm-cancel" data-hostess-username="' + username + '">Remove</button></td></tr>';
+            $("tr[id*='hostess-username-']").last().after(newRow);
+            $("button.remove-hostess").click(function () {
+                var hostessUsername = $(this).data("hostess-username");
+                $("button#cancel-ok").data("hostess-username", hostessUsername);
+            });
+        }
+        else {
+            console.log(data);
+        }
+    });
+
     request.fail(function (jqXHR, textStatus) {
         console.log(jqXHR);
     });

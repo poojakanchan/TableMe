@@ -23,8 +23,6 @@
             $username = $_POST['username'];
             $password = $_POST['password'];
             $loginRole = $db->validateLogin($username, $password);
-//          var_dump($loginRole);
-//          exit();
             if (!$loginRole) {
                 $incorrectLogin = true;
             } else {

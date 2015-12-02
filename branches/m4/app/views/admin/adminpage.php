@@ -86,7 +86,7 @@
         <ul class="nav nav-tabs" id="myTab" > <!-- Tab for the UserSection -->
             <li class="active"><a data-toggle="tab" href="#restaurants">Newly Registered Restaurants</a></li>
             <li> <a data-toggle="tab" href="#rest_list">Restaurant List</a></li>
-            <li> <a data-toggle="tab" href="#reviews">Reviews</a></li> 
+            <!-- <li> <a data-toggle="tab" href="#reviews">Reviews</a></li> -->
             <li> <a data-toggle="tab" href="#users">User List</a></li> 
         </ul> <!-- Done with the tab --> 
         <div class="tab-content">
@@ -104,6 +104,8 @@
                         <tbody id="items">
                             <?php
                                     foreach($restaurantNewArray as $res) {
+                                        $owner = $admin->getOwnerByResId($res['restaurant_id']);
+                                        
                             ?>
                             
                             <tr>
@@ -115,9 +117,10 @@
                                 <td>
                                     <form class="input-group" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                                         <input name="resId" id="resId" value="<?php echo $res['restaurant_id'] ?>" type="hidden" />
-                                        <button type="submit" class="btn btn-info" id="FormSubmit" value="submit-approve" name="submit-approve"> Approve </button>
+                                        <input name="userName" id="userName" value="<?php echo $owner['username'] ?>" type="hidden" />
+                                        <button type="submit" class="btn btn-info" id="FormSubmit" value="submit-approve" name="submit-approve" onclick="return confirm('Are you sure you would like to approve?');"> Approve </button>
                                         &nbsp;
-                                        <button type="submit" class="btn btn-info" id="FormSubmit" value="submit-disapprove" name="submit-disapprove"> Disapprove </button>
+                                        <button type="submit" class="btn btn-info" id="FormSubmit" value="submit-disapprove" name="submit-disapprove" onclick="return confirm('Are you sure you would like to delete?');"> Disapprove </button>
                                     </form>
                                 </td>
                             </tr>
@@ -152,7 +155,8 @@
                                 <td>
                                     <form class="input-group" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                                         <input name="resId" id="resId" value="<?php echo $res['restaurant_id'] ?>" type="hidden" />
-                                        <button type="submit" class="btn btn-info" role="button" value="submit-delete" name="submit-delete"> DELETE </button>
+                                        <input name="userName" id="userName" value="<?php echo $owner['username'] ?>" type="hidden" />
+                                        <button type="submit" class="btn btn-info" role="button" value="submit-delete" name="submit-delete" onclick="return confirm('Are you sure you would like to delete?');"> DELETE </button>
                                     </form>
                                 </td>
                             </tr>
@@ -161,6 +165,8 @@
                     </table>
                 </div>
             </div> <!-- End of Reports Tab -->
+            <!-- Reviews tab depreciated, uncomment to restore -->
+            <?php /*
             <div id="reviews" class="tab-pane fade">
                 <div class="table-responsive">
                     <table class="table table-hover">
@@ -169,11 +175,11 @@
                                 <th>DATE</th>
                                 <th>RestaurantName</th>
                                <!-- <th>Title</th> -->
-                                <th>Review</th>
+                               <!-- <th>Review</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody id="items">
+                        <tbody id="items"> -->
                             <?php
                             
                                     foreach($reviewArray as $review) {
@@ -204,7 +210,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div> <!-- End of Review Tab -->
+            </div> <!-- End of Review Tab --> */ ?>
             <div id="users" class="tab-pane fade">
                 <div class="table-responsive">
                     <table class="table table-hover">
@@ -232,7 +238,7 @@
                                     <form class="input-group" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                                         <input name="userName" id="userName" value="<?php echo $usr['username'] ?>" type="hidden" />
                                         <input name="role" id="role" value="<?php echo $usr['role'] ?>" type="hidden" />
-                                        <button type="submit" class="btn btn-info" role="button" value="submit-user-delete" name="submit-user-delete"> Delete </button>
+                                        <button type="submit" class="btn btn-info" role="button" value="submit-user-delete" name="submit-user-delete" onclick="return confirm('Are you sure you would like to delete?');"> Delete </button>
                                     </form>
                                 </td>  
                             </tr>

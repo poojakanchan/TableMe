@@ -34,7 +34,7 @@ class Admin_model  extends Database{
         return null;
     }
     public function getAllUsers() {
-        $sql = "SELECT * FROM login ORDER BY role DESC";
+        $sql = "SELECT * FROM login WHERE role = 'user'";
         $stmt = $this->dbh->prepare($sql);
         if ($stmt->execute()) {
             return $stmt->fetchAll();
@@ -83,7 +83,7 @@ class Admin_model  extends Database{
     }
     
     public function getOwnerByResId($resId) {
-        $sql = "SELECT name FROM owner WHERE restaurant_id = :resId";
+        $sql = "SELECT name, username FROM owner WHERE restaurant_id = :resId";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':resId', $resId);
         if($stmt->execute()){
@@ -171,6 +171,15 @@ class Admin_model  extends Database{
         return null;
     }
     
+    public function removeOwnerByResId($resId) {
+        $sgl = "DELETE FROM owner WHERE restaurant_id = :resId";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':resId', $resId);
+        if($stmt->execute()){
+            return $stmt->fetchAll();
+        }
+        return null;
+    }
     
 }
 

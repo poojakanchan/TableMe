@@ -8,10 +8,18 @@ if (isset($_GET['logout'])) {
     unset($_GET['logout']);
 }
 ?>
+
+<style>
+    img {
+        width: 175px;
+        height: 120px;
+    }
+</style>
+    
 <nav class ="navbar navbar-default">
     <div class ="container-fluid">
         <div class ="navbar-header">
-            <a class="navbar-brand" href="index.php">TableMe</a>
+            <a href="index.php"><img src="blueLogo.png"  /></a>
         </div>
         <div>
             <ul class="nav navbar-nav navbar-right">
@@ -20,7 +28,7 @@ if (isset($_GET['logout'])) {
                         <li><a href="app/views/home/user_registration.php">User</a></li>
                         <li><a href="app/views/home/restaurant_registration.php">Restaurant</a></li>
                     </ul>
-                </li>
+                </li>             
                 <?php
                 if (isset($_SESSION['username'])) {
                     $link = "#";

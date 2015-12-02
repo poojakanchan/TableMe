@@ -1,7 +1,4 @@
 <?php
-if(isset($_POST["recordToDelete"]) && strlen($_POST["recordToDelete"])>0 && is_numeric($_POST["recordToDelete"])) {
-    echo "WERE HERE";
-}
 
 // session_start();
 require_once 'Controller.php';
@@ -17,6 +14,9 @@ class Admin_controller extends Controller {
     public function submit() {
         if (isset($_POST['submit-approve'])) {
             $this->approveRestaurant();
+        }
+        elseif(isset($_POST['submit-disapprove'])){
+            $this->deleteRestaurant();
         }
         elseif (isset($_POST['submit-delete'])) {
             $this->deleteRestaurant();
@@ -48,11 +48,13 @@ class Admin_controller extends Controller {
         echo "<meta http-equiv='refresh' content='0'>";
     }
     
-    //if restaurant is deleted, should we modify owner account into user account?
+    
     public function deleteRestaurant() {
         $admin = $this->model('Admin_model');
         $resId = $_POST['resId'];
+        $userName = $_POST['userName'];
         $admin->removeRestaurant($resId);
+        $admin->removeUser($userName);
         echo "<meta http-equiv='refresh' content='0'>";
     }
     

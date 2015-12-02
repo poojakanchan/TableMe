@@ -1,4 +1,77 @@
+<?php
+    include 'header.php';
+    require_once 'app/models/Restaurant_model.php';
+    require_once 'app/models/Event_model.php';
+    require_once 'app/controllers/Reservation_controller.php';
+    
+
+    define("N_PER_PAGE", 5); //number of restaurants to display per page
+    $db;
+    $restaurant_array;
+    $foodCategoryArray;
+    $restaurantListTitle;
+    $nameAddCat = '%';
+    $totalCount = 0; //total count of restaurants to display
+    $currentPage = $numberOfPages = $startPage = 1; //page number for navigating search results
+    $reservation;
+    if (!isset($db)) {
+        $db = new Restaurant_model();
+    }
+
+    if (empty($foodCategoryArray)) {
+        $foodCategoryArray = $db->getFoodCategories();
+    }
+    if (!isset($reservation)) {
+        $reservation = new Reservation_controller();
+    }
+    if ($_POST) {
+        $reservation->add();
+    }
+
+    if ($_GET) {
+        $nameAddCat = (empty($_GET['searchText']) ? '%' : htmlspecialchars($_GET['searchText']));
+        $currentPage = (isset($_GET['pgnum']) ? htmlspecialchars($_GET['pgnum']) : 1);
+        $totalCount = $db->findRestaurantsCount($nameAddCat);
+        $restaurant_array = $db->findRestaurantsLimitOffset($nameAddCat, N_PER_PAGE, ($currentPage - 1) * N_PER_PAGE);
+
+//        var_dump($totalCount);
+//        echo '<br>';
+//        var_dump($restaurant_array);
+//        exit();
+
+        if ($nameAddCat == '%') {
+            $restaurantListTitle = "All Restaurants (" . $totalCount . " total)";
+        } else {
+            $restaurantListTitle = "Your search found " . $totalCount . ($totalCount > 1 ? " restaurants" : " restaurant");
+        }
+    } else {
+        $totalCount = $db->getAllRestaurantsCount();
+        $restaurantListTitle = "All Restaurants (" . $totalCount . " total)";
+        if ($totalCount > N_PER_PAGE) {
+            $restaurant_array = $db->getAllRestaurantsLimitOffset(N_PER_PAGE, 0);
+        }
+    }
+
+    $numberOfPages = (int) ceil($totalCount / N_PER_PAGE);
+
+    if ($currentPage <= 5) {
+        $startPage = 1;
+    } else if ($currentPage > $numberOfPages - 4) {
+        $startPage = ($numberOfPages - 8 < 1 ? 1 : $numberOfPages - 8);
+    }
+
+    $pageArray = array();
+    for ($i = 0; $i < 9 && $i < $numberOfPages; $i++) {
+        $pageArray[$i] = $startPage++;
+    }
+
+    //populates event array
+    $db = new Event_model();
+    $eventArray = $db->getAllEvents();
+    ?>
 <!DOCTYPE html>
+    
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -106,76 +179,7 @@
 </head>
 
 <body>
-    <?php
-    require_once 'app/models/Restaurant_model.php';
-    require_once 'app/models/Event_model.php';
-    require_once 'app/controllers/Reservation_controller.php';
-    include 'header.php';
 
-    define("N_PER_PAGE", 5); //number of restaurants to display per page
-    $db;
-    $restaurant_array;
-    $foodCategoryArray;
-    $restaurantListTitle;
-    $nameAddCat = '%';
-    $totalCount = 0; //total count of restaurants to display
-    $currentPage = $numberOfPages = $startPage = 1; //page number for navigating search results
-    $reservation;
-    if (!isset($db)) {
-        $db = new Restaurant_model();
-    }
-
-    if (empty($foodCategoryArray)) {
-        $foodCategoryArray = $db->getFoodCategories();
-    }
-    if (!isset($reservation)) {
-        $reservation = new Reservation_controller();
-    }
-    if ($_POST) {
-        $reservation->add();
-    }
-
-    if ($_GET) {
-        $nameAddCat = (empty($_GET['searchText']) ? '%' : htmlspecialchars($_GET['searchText']));
-        $currentPage = (isset($_GET['pgnum']) ? htmlspecialchars($_GET['pgnum']) : 1);
-        $totalCount = $db->findRestaurantsCount($nameAddCat);
-        $restaurant_array = $db->findRestaurantsLimitOffset($nameAddCat, N_PER_PAGE, ($currentPage - 1) * N_PER_PAGE);
-
-//        var_dump($totalCount);
-//        echo '<br>';
-//        var_dump($restaurant_array);
-//        exit();
-
-        if ($nameAddCat == '%') {
-            $restaurantListTitle = "All Restaurants (" . $totalCount . " total)";
-        } else {
-            $restaurantListTitle = "Your search found " . $totalCount . ($totalCount > 1 ? " restaurants" : " restaurant");
-        }
-    } else {
-        $totalCount = $db->getAllRestaurantsCount();
-        $restaurantListTitle = "All Restaurants (" . $totalCount . " total)";
-        if ($totalCount > N_PER_PAGE) {
-            $restaurant_array = $db->getAllRestaurantsLimitOffset(N_PER_PAGE, 0);
-        }
-    }
-
-    $numberOfPages = (int) ceil($totalCount / N_PER_PAGE);
-
-    if ($currentPage <= 5) {
-        $startPage = 1;
-    } else if ($currentPage > $numberOfPages - 4) {
-        $startPage = ($numberOfPages - 8 < 1 ? 1 : $numberOfPages - 8);
-    }
-
-    $pageArray = array();
-    for ($i = 0; $i < 9 && $i < $numberOfPages; $i++) {
-        $pageArray[$i] = $startPage++;
-    }
-
-    //populates event array
-    $db = new Event_model();
-    $eventArray = $db->getAllEvents();
-    ?>
 
     <div class="jumbotron frontpage-banner">
         <br><br>
@@ -483,7 +487,5 @@
             </div> <!-- End of panel-info -->
         </div> <!-- End of "frontpage-event" -->
     </div> <!-- End of 2nd Section Row-->
-
-
-
 </body>
+</html>

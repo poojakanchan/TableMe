@@ -240,23 +240,22 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                <label class="modal-title" name ="myModalLabel" id="myModalLabel">Make reservation at restaurant </label>
+                                                <label class="modal-title" name ="myModalLabel" id="myModalLabel">Make reservation at <?php echo $restaurant['name'] ?></label>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="col-md-12 well">
                                                     <div class="row">
                                                         <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
                                                         <!-- for debug purposes, displays restaurant ID -->
-                                                        <?php echo $resId ?>
+                                                        <?php //echo $resId ?>
                                                         <div class="col-md-12">          
-
+                                                            <label>Number of Guests</label>
                                                             <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
-                                                                <option value="" disabled selected>Number of Guests</option>
-
+                                                                <option value="1">1</option>
                                                                 <option value="2">2</option>
-
+                                                                <option value="3">3</option>
                                                                 <option value="4">4</option>
-
+                                                                <option value="4">4</option>
                                                                 <option value="6">6</option>
                                                             </select>
 
@@ -265,118 +264,40 @@
 
                                                             <!-- This is for the datapicking method -->
                                                             <div class="input-append date" id="datetimepicker1">
-                                                                <input  data-format="dd/MM/yyyy hh:mm:ss" type="text"></input>
+                                                                <label>Enter Date</label>
+                                                                <input  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date"></input>
                                                                 <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span> 
                                                                 <!-- <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span> -->
                                                             </div>
-                                                            <select class="selectpicker" data-width="auto" id="month" name="month" required>
-                                                                <option value="" disabled selected>Month</option>
-                                                                <option value ="January">January</option>
-                                                                <option value="February">February</option>
-                                                                <option value="March">March</option>
-                                                                <option value="April">April</option>
-                                                                <option value="May">May</option>
-                                                                <option value="June">June</option>
-                                                                <option value ="July">July</option>
-                                                                <option value="August">August</option>
-                                                                <option value="September">September</option>
-                                                                <option value="October">October</option>
-                                                                <option value="November">November</option>
-                                                                <option value="December">December</option>
-                                                            </select>
+                                                            
 
-                                                            <select class="selectpicker" data-width="auto" id="day" name="day" required>
-                                                                <option value="" disabled selected>Day</option>
-                                                                <option value ="1">1</option>
+                                                            <label>Enter Time</label>
+                                                            <select class="selectpicker" data-width="auto" id="hours" name="hours" required>
+                                                                <!-- <option value="" disabled selected>Hours</option> -->
+                                                                <option value="1">1</option>
                                                                 <option value="2">2</option>
                                                                 <option value="3">3</option>
                                                                 <option value="4">4</option>
                                                                 <option value="5">5</option>
                                                                 <option value="6">6</option>
-                                                                <option value ="7">7</option>
+                                                                <option value="7">7</option>
                                                                 <option value="8">8</option>
                                                                 <option value="9">9</option>
                                                                 <option value="10">10</option>
                                                                 <option value="11">11</option>
                                                                 <option value="12">12</option>
-                                                                <option value="13">13</option>
-                                                                <option value="14">14</option>
-                                                                <option value="15">15</option>
-                                                                <option value="16">16</option>
-                                                                <option value ="17">17</option>
-                                                                <option value="18">18</option>
-                                                                <option value="19">19</option>
-                                                                <option value="20">20</option>
-                                                                <option value="21">21</option>
-                                                                <option value="22">22</option>
-                                                                <option value="23">23</option>
-                                                                <option value="24">24</option>
-                                                                <option value="25">25</option>
-                                                                <option value="26">26</option>
-                                                                <option value ="27">27</option>
-                                                                <option value="28">28</option>
-                                                                <option value="29">29</option>
-                                                                <option value="30">30</option>
-                                                                <option value="31">31</option>
                                                             </select>
-
-                                                            <select class="selectpicker" data-width="auto" id="year" name="year" required>
-                                                                <option value="" disabled selected>Year</option>
-                                                                <option value ="2015">2015</option>
-                                                                <option value="2016">2016</option>
-                                                                <option value="2017">2017</option>
-                                                            </select>
-
-                                                            <select class="selectpicker" data-width="auto" id="time" name="time" required>
-                                                                <option value="" disabled selected>Time</option>
-                                                                <option value ="8am">8:00 AM</option>
-                                                                <option value="8:30am">8:30 AM</option>
-                                                                <option value="9am">9:00 AM</option>
-                                                                <option value="9:30am">9:30 AM</option>
-                                                                <option value="10am">10:00 AM</option>
-                                                                <option value="10:30am">10:30 AM</option>
-                                                                <option value ="11am">11:00 AM</option>
-                                                                <option value="11:30am">11:30 AM</option>
-                                                                <option value="12pm">12:00 PM</option>
-                                                                <option value="12:30pm">12:30 PM</option>
-                                                                <option value="1pm">1:00 PM</option>
-                                                                <option value="1:30pm">1:30 PM</option>
-                                                                <option value="2pm">2:00 PM</option>
-                                                                <option value="2:30pm">2:30 PM</option>
-                                                                <option value="3pm">3:00 PM</option>
-                                                                <option value="3:30pm">3:30 PM</option>
-                                                                <option value="4pm">4:00 PM</option>
-                                                                <option value="4:30pm">4:30 PM</option>
-                                                                <option value="5pm">5:00 PM</option>
-                                                                <option value="5:30pm">5:30 PM</option>
-                                                                <option value="6pm">6:00 PM</option>
-                                                                <option value="6:30pm">6:30 PM</option>
-                                                                <option value="7pm">7:00 PM</option>
-                                                                <option value="7:30pm">7:30 PM</option>
-                                                                <option value="8pm">8:00 PM</option>
-                                                                <option value="8:30pm">8:30 PM</option>
-                                                                <option value="9pm">9:00 PM</option>
-                                                                <option value="9:30pm">9:30 PM</option>
-                                                                <option value="10pm">10:00 PM</option>
-                                                                <option value="10:30pm">10:30 PM</option>
-                                                                <option value="11pm">11:00 PM</option>
-                                                                <option value="11:30pm">11:30 PM</option>
-                                                                <option value="12am">12:00 AM</option>
-                                                                <option value="12:30am">12:30 AM</option>
-                                                                <option value="1am">1:00 AM</option>
-                                                                <option value="1:30am">1:30 AM</option>
-                                                                <option value="2am">2:00 AM</option>
-                                                                <option value="2:30am">2:30 AM</option>
-                                                                <option value="3am">3:00 AM</option>
-                                                                <option value="3:30am">3:30 AM</option>
-                                                                <option value="4am">4:00 AM</option>
-                                                                <option value="4:30am">4:30 AM</option>
-                                                                <option value="5am">5:00 AM</option>
-                                                                <option value="5:30am">5:30 AM</option>
-                                                                <option value="6am">6:00 AM</option>
-                                                                <option value="6:30am">6:30 AM</option>
-                                                                <option value="7am">7:00 AM</option>
-                                                                <option value="7:30am">7:30 AM</option>
+                                                            
+                                                            <select class="selectpicker" data-width="auto" id="minutes" name="minutes" required>
+                                                                    <!--<option value="" disabled selected>Minutes</option> -->
+                                                                    <option value=":00">:00</option>
+                                                                    <option value=":30">:30</option>
+                                                             </select>
+                                                            
+                                                            <select class="selectpicker" data-width="auto" id="ampm" name="ampm" required>
+                                                                    <option value="" disabled selected>AM/PM</option>
+                                                                    <option value="am">am</option>
+                                                                    <option value="pm">pm</option>
                                                             </select>
 
                                                             <br>
@@ -469,18 +390,24 @@
                 <div class="panel-body">
                     <table class="table eventtable">
                         <?php
-                        foreach ($eventArray as $event) {
-                            $image = base64_encode($event['event_photo']);
-                            echo '<tr>';
-                            echo '<td>';
-                            echo '<a href="app/views/home/restaurant.php?resid=' . $event['restaurant_id'] . '"> <img width="200" height="auto" src="data:image/jpeg;base64,' . $image . '"/></a>';
-                            echo '<a href="app/views/home/restaurant.php?resid=' . $event['restaurant_id'] . '"> <h3>' . $event['name'] . '</h3></a>';
-                            echo '<p>' . $event['date'] . '</p>';
-                            echo '<p>' . $event['description'] . '</p>';
-                            echo '<a href="#reservation page" class="btn btn-info" role="button"> Reservation </a>';
+                            foreach ($eventArray as $event) {
+                                $image = base64_encode($event['event_photo']);
+                                echo '<tr>';
+                                echo '<td>';
+                                //echo '<div class="panel panel-body">';
+                                echo '<a href="app/views/home/restaurant.php?resid=' . $event['restaurant_id'] . '"> <img width="200" height="auto" src="data:image/jpeg;base64,' . $image . '"/></a>';
+                                echo '<a href="app/views/home/restaurant.php?resid=' . $event['restaurant_id'] . '"> <h3>' . $event['name'] . '</h3></a>';
+                                echo '<p>' . $event['date'] . '</p>';
+                                echo '<p>' . $event['description'] . '</p>';
+                        ?>
+                        <button class="btn btn-info" data-toggle="modal" data-id="<?php echo $event['restaurant_id'] ?>" data-target="#reservation-<?php echo $event['restaurant_id'] ?>" >
+                            Reservation
+                        </button>
+                        <?php
+                            //echo '</div>';
                             echo '</td>';
                             echo '</tr>';
-                        }
+                            }
                         ?>
                     </table>
                 </div> <!-- End of "panel-body" -->

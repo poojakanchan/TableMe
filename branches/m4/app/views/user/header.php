@@ -11,7 +11,7 @@ if (isset($_GET['logout'])) {
 <nav class ="navbar navbar-default">
     <div class ="container-fluid">
         <div class ="navbar-header">
-            <a class="navbar-brand" href="../../../index.php">TableMe</a>
+            <a href="../../../index.php"><img src="../../../blueLogo.png"  width="175" height="120"/></a>
         </div>
         <div>
             <ul class="nav navbar-nav navbar-right">

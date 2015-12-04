@@ -25,7 +25,6 @@
                 var userPassword = document.forms["myForm"]["userPassword"].value;
                 var userConfirmPassword = document.forms["myForm"]["userConfirmPassword"].value;
                 var userEmail = document.forms["myForm"]["userEmail"].value;
-                var checkbox = document.forms["myForm"]["checkbox"].value;
 
                 if (userFirstName === null || userFirstName === "") {
                     alert("First name must be filled out.");
@@ -61,12 +60,6 @@
                     alert("Email must be filled out.");
                     return false;
                 }
-
-                if (checkbox === null || checkbox === "") {
-                    alert("You must agree to the privacy policy.");
-                    return false;
-                }
-
             }
         </script>
     </head>
@@ -97,6 +90,7 @@
                           onsubmit="return validateForm()" method="post">
                         <div class="col-sm-12">
                             
+                            <p>* indicates required field.</p>
                             <div class="row">
                                 <div class="col-sm-6 form-group">
                                     <label id="firstNameLabel">First Name*</label>
@@ -118,12 +112,12 @@
 
                             <div class="row">
                                 <div class="col-sm-6 form-group">
-                                    <label>Password*</label>
-                                    <input type="password" name="userPassword" placeholder="Please pick a password..." class="form-control" required>
+                                    <label id="passwordLabel">Password*</label>
+                                    <input type="password" name="userPassword" id="password" placeholder="Please pick a password..." class="form-control" required>
                                 </div>	
                                 <div class="col-sm-6 form-group">
-                                    <label>Confirm Password*</label>
-                                    <input type="password" name="userConfirmPassword" placeholder="Please confirm your password..." class="form-control" required>
+                                    <label id="confirmPasswordLabel">Confirm Password*</label>
+                                    <input type="password" name="userConfirmPassword" id="confirmPassword" placeholder="Please confirm your password..." class="form-control" required>
                                 </div>		
                             </div>
 
@@ -264,6 +258,28 @@
                     }
                     $("#lastname").css("border", "");
                     $("#lastNameLabel").replaceWith('<label id="lastNameLabel">Last Name*</label>');
+                });
+                
+                $("#password").focusout(function () {
+                    var inputPassword = $("#password").val();
+                    if (!inputPassword) {
+                        $("#password").css("border", "#FF0000 1px solid");
+                        $("#passwordLabel").replaceWith ("<label id='passwordLabel'>Password*<i style='color:red'>Password cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#password").css("border", "");
+                    $("#passwordLabel").replaceWith('<label id="passwordLabel">Password*</label>');
+                });
+                
+                $("#confirmPassword").focusout(function () {
+                    var inputPassword = $("#confirmPassword").val();
+                    if (!inputPassword) {
+                        $("#confirmPassword").css("border", "#FF0000 1px solid");
+                        $("#confirmPasswordLabel").replaceWith ("<label id='confirmPasswordLabel'>Confirm Password*<i style='color:red'>Confirm password cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#confirmPassword").css("border", "");
+                    $("#confirmPasswordLabel").replaceWith('<label id="confirmPasswordLabel">Confirm Password*</label>');
                 });
                 
             });

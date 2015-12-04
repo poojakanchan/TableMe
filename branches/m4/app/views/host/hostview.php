@@ -37,6 +37,23 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         
+        <!-- this scripts and links are for datepicking -->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker.css">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/js/bootstrap-datepicker.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $('[id=datetimepicker1]').each(function () {
+                    $(this).datepicker();
+                });
+            });
+        </script> <!-- datepicking end -->
+        
         <!-- Will merge the style and script code into CSS and JS file after all is done. -->
         <style>
             @import url(http://fonts.googleapis.com/css?family=Roboto:400,300);
@@ -415,174 +432,125 @@
             </div>
             
             <!--Make reservation button-->
-            <button class="reservationButton btn btn-info col-md-offset-8" data-toggle="modal" data-id="<?php //echo $restaurant['restaurant_id'] ?>" data-target="#reservation-<?php //echo $restaurant['restaurant_id'] ?>" >
+            <button class="reservationButton btn btn-info col-md-offset-8" data-toggle="modal" data-id="<?php echo $resId ?>" data-target="#reservation-<?php echo $resId ?>" >
                 Make a Reservation
             </button>
              
             <!--Make reservation pop up-->
-            <div  class="modal fade" id="reservation-<?php //echo $restaurant['restaurant_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <form name="myForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>"  method="post">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <label class="modal-title" name ="myModalLabel" id="myModalLabel">Make reservation at restaurant </label>
-                            </div>
-                            <div class="reservationPopup modal-body">
-                                <div class="col-lg-12 well">
-                                    <div class="row">
-                                        <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
-                                        <div class="col-sm-12">
-                                            <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
-                                                <option value="" disabled selected>Number of Guests</option>
-                                                <option value="2">2</option>
-                                                <option value="4">4</option>
-                                                <option value="6">6</option>
-                                            </select>
-                                            <br><br>
-                                            <select class="selectpicker" data-width="auto" id="month" name="month" required>
-                                                <option value="" disabled selected>Month</option>
-                                                <option value ="January">January</option>
-                                                <option value="February">February</option>
-                                                <option value="March">March</option>
-                                                <option value="April">April</option>
-                                                <option value="May">May</option>
-                                                <option value="June">June</option>
-                                                <option value ="July">July</option>
-                                                <option value="August">August</option>
-                                                <option value="September">September</option>
-                                                <option value="October">October</option>
-                                                <option value="November">November</option>
-                                                <option value="December">December</option>
-                                            </select>
-                                            <select class="selectpicker" data-width="auto" id="day" name="day" required>
-                                                <option value="" disabled selected>Day</option>
-                                                <option value ="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value ="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                                <option value="10">10</option>
-                                                <option value="11">11</option>
-                                                <option value="12">12</option>
-                                                <option value="13">13</option>
-                                                <option value="14">14</option>
-                                                <option value="15">15</option>
-                                                <option value="16">16</option>
-                                                <option value ="17">17</option>
-                                                <option value="18">18</option>
-                                                <option value="19">19</option>
-                                                <option value="20">20</option>
-                                                <option value="21">21</option>
-                                                <option value="22">22</option>
-                                                <option value="23">23</option>
-                                                <option value="24">24</option>
-                                                <option value="25">25</option>
-                                                <option value="26">26</option>
-                                                <option value ="27">27</option>
-                                                <option value="28">28</option>
-                                                <option value="29">29</option>
-                                                <option value="30">30</option>
-                                                option value="31">31</option>
-                                            </select>
-                                            <select class="selectpicker" data-width="auto" id="year" name="year" required>
-                                                <option value="" disabled selected>Year</option>
-                                                <option value ="2015">2015</option>
-                                                <option value="2016">2016</option>
-                                                <option value="2017">2017</option>
-                                            </select>
-                                            <select class="selectpicker" data-width="auto" id="time" name="time" required>
-                                                <option value="" disabled selected>Time</option>
-                                                <option value ="8am">8:00 AM</option>
-                                                <option value="8:30am">8:30 AM</option>
-                                                <option value="9am">9:00 AM</option>
-                                                <option value="930am">9:30 AM</option>
-                                                <option value="10am">10:00 AM</option>
-                                                <option value="1030am">10:30 AM</option>
-                                                <option value ="11am">11:00 AM</option>
-                                                <option value="1130am">11:30 AM</option>
-                                                <option value="12pm">12:00 PM</option>
-                                                <option value="1230pm">12:30 PM</option>
-                                                <option value="1pm">1:00 PM</option>
-                                                <option value="130pm">1:30 PM</option>
-                                                <option value="2pm">2:00 PM</option>
-                                                <option value="230pm">2:30 PM</option>
-                                                <option value="3pm">3:00 PM</option>
-                                                <option value="330pm">3:30 PM</option>
-                                                <option value="4pm">4:00 PM</option>
-                                                <option value="430pm">4:30 PM</option>
-                                                <option value="5pm">5:00 PM</option>
-                                                <option value="530pm">5:30 PM</option>
-                                                <option value="6pm">6:00 PM</option>
-                                                <option value="630pm">6:30 PM</option>
-                                                <option value="7pm">7:00 PM</option>
-                                                <option value="730pm">7:30 PM</option>
-                                                <option value="8pm">8:00 PM</option>
-                                                <option value="830pm">8:30 PM</option>
-                                                <option value="9pm">9:00 PM</option>
-                                                <option value="930pm">9:30 PM</option>
-                                                <option value="10pm">10:00 PM</option>
-                                                <option value="1030pm">10:30 PM</option>
-                                                <option value="11pm">11:00 PM</option>
-                                                <option value="1130pm">11:30 PM</option>
-                                                <option value="12am">12:00 AM</option>
-                                                <option value="1230am">12:30 AM</option>
-                                                <option value="1am">1:00 AM</option>
-                                                <option value="130am">1:30 AM</option>
-                                                <option value="2am">2:00 AM</option>
-                                                <option value="230am">2:30 AM</option>
-                                                <option value="3am">3:00 AM</option>
-                                                <option value="330am">3:30 AM</option>
-                                                <option value="4am">4:00 AM</option>
-                                                <option value="430am">4:30 AM</option>
-                                                <option value="5am">5:00 AM</option>
-                                                <option value="530am">5:30 AM</option>
-                                                <option value="6am">6:00 AM</option>
-                                                <option value="630am">6:30 AM</option>
-                                                <option value="7am">7:00 AM</option>
-                                                <option value="730am">7:30 AM</option>
-                                            </select>
-                                            <br><br>
-                                            <div class="row">
-                                                <div class="col-sm-6 form-group">
-                                                    <label>First Name</label>
-                                                    <input type="text" name="reservationFirstName" placeholder="Please enter your first name..." class="form-control" required>
-                                                </div>
-                                                <div class="col-sm-6 form-group">
-                                                    <label>Last Name</label>
-                                                    <input type="text" name="reservationLastName" placeholder="Please enter your last name..." class="form-control" required>
-                                                </div>
+            <div  class="modal fade" id="reservation-<?php echo $resId ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                                <form name="myForm" action="#.php"
+                                      onsubmit="return validateForm()" method="post">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <label class="modal-title" name ="myModalLabel" id="myModalLabel">Make reservation at <?php echo $res_name ?></label>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-sm-6 form-group">
-                                                    <label>Email</label>
-                                                    <input type="email" name="reservationEmail" placeholder="Please enter your email address..." class="form-control" required>
+                                            <div class="modal-body">
+                                                <div class="col-md-12 well">
+                                                    <div class="row">
+                                                        <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
+                                                        <!-- for debug purposes, displays restaurant ID -->
+                                                        <?php //echo $resId ?>
+                                                        <div class="col-md-12">          
+                                                            <label>Number of Guests</label>
+                                                            <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="4">4</option>
+                                                                <option value="6">6</option>
+                                                            </select>
+
+                                                            <br>
+                                                            <br>
+
+                                                            <!-- This is for the datapicking method -->
+                                                            <div class="input-append date" id="datetimepicker1">
+                                                                <label>Enter Date</label>
+                                                                <input  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date"></input>
+                                                                <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span> 
+                                                                <!-- <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span> -->
+                                                            </div>
+                                                            
+
+                                                            <label>Enter Time</label>
+                                                            <select class="selectpicker" data-width="auto" id="hours" name="hours" required>
+                                                                <!-- <option value="" disabled selected>Hours</option> -->
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                                <option value="6">6</option>
+                                                                <option value="7">7</option>
+                                                                <option value="8">8</option>
+                                                                <option value="9">9</option>
+                                                                <option value="10">10</option>
+                                                                <option value="11">11</option>
+                                                                <option value="12">12</option>
+                                                            </select>
+                                                            
+                                                            <select class="selectpicker" data-width="auto" id="minutes" name="minutes" required>
+                                                                    <!--<option value="" disabled selected>Minutes</option> -->
+                                                                    <option value=":00">:00</option>
+                                                                    <option value=":30">:30</option>
+                                                             </select>
+                                                            
+                                                            <select class="selectpicker" data-width="auto" id="ampm" name="ampm" required>
+                                                                    <option value="" disabled selected>AM/PM</option>
+                                                                    <option value="am">am</option>
+                                                                    <option value="pm">pm</option>
+                                                            </select>
+
+                                                            <br>
+                                                            <br>
+
+                                                            <div class="row">
+
+
+                                                                <div class="col-md-6 form-group">
+                                                                    <label>First Name</label>
+                                                                    <input type="text" name="reservationFirstName" placeholder="Please enter your first name..." class="form-control" required>
+                                                                </div>
+                                                                <div class="col-md-6 form-group">
+                                                                    <label>Last Name</label>
+                                                                    <input type="text" name="reservationLastName" placeholder="Please enter your last name..." class="form-control" required>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-md-6 form-group">
+                                                                    <label>Email</label>
+                                                                    <input type="email" name="reservationEmail" placeholder="Please enter your email address..." class="form-control" required>
+                                                                </div>
+                                                                <div class="col-md-6 form-group">
+                                                                    <label>Phone Number</label>
+                                                                    <input type="text" name="reservationPhone" placeholder="Please enter your phone number..." class="form-control">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Accommodations</label>
+                                                                <input type="text" name="accommodations" placeholder="Please enter any special requests you may have..." class="form-control">
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
                                                 </div>
-                                                <div class="col-sm-6 form-group">
-                                                    <label>Phone Number</label>
-                                                    <input type="text" name="reservationPhone" placeholder="Please enter your phone number..." class="form-control">
-                                                </div>
+
                                             </div>
-                                            <div class="form-group">
-                                                <label>Accommodations</label>
-                                                <input type="text" name="accommodations" placeholder="Please enter any special requests you may have..." class="form-control">
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary" value="submit-reservation" name="submit-reservation" >Make reservation</button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary" value="submit-reservation" name="submit-reservation" >Make reservation</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
             
             <!--List of reservations-->
             

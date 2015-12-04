@@ -291,21 +291,21 @@ $username_array = $restaurant->getAllUserNames();
 
                                     <div class="row">
                                         <div class="col-sm-4 form-group">
-                                            <label id="tableTwo">Number of Tables for Two *</label>
-                                            <input type="number" name="tablesForTwo" 
+                                            <label id="tableTwoLabel">Number of Tables for Two *</label>
+                                            <input id="tableTwo" type="number" name="tablesForTwo" 
                                                    placeholder="Please pick the total number of tables for two..." class="form-control" required/>
                                         </div>
 
 
                                         <div class="col-sm-4 form-group">
-                                            <label id="tableFour">Number of Tables for Four *</label>
-                                            <input type="number" name="tablesForFour" 
+                                            <label id="tableFourLabel">Number of Tables for Four *</label>
+                                            <input id="tableFour" type="number" name="tablesForFour" 
                                                    placeholder="Please pick the total number of tables for four..." class="form-control" required />
                                         </div>
 
                                         <div class="col-sm-4 form-group">
-                                            <label id="tableSix">Number of Tables for Six *</label>
-                                            <input type="number" name="tablesForSix" 
+                                            <label id="tableSixLabel">Number of Tables for Six *</label>
+                                            <input id="tableSix" type="number" name="tablesForSix" 
                                                    placeholder="Please pick the total number of tables for six..." class="form-control" required />
                                         </div>
                                     </div>
@@ -637,6 +637,39 @@ $username_array = $restaurant->getAllUserNames();
                 }
                 $("#resPhone").css("border", "");
                 $("#resPhoneLabel").replaceWith('<label id="resPhoneLabel">Phone Number *</label>');
+            });
+            
+            $("#tableTwo").focusout(function () {
+                var inputPassword = $("#tableTwo").val();
+                if (!inputPassword) {
+                    $("#tableTwo").css("border", "#FF0000 1px solid");
+                    $("#tableTwoLabel").replaceWith("<label id='tableTwoLabel'>Number of Tables for Two *<i style='color:red'>Cannot be empty</i></label>");
+                    return;
+                }
+                $("#tableTwo").css("border", "");
+                $("#tableTwoLabel").replaceWith('<label id="tableTwoLabel">Number of Tables for Two *</label>');
+            });
+            
+            $("#tableFour").focusout(function () {
+                var inputPassword = $("#tableFour").val();
+                if (!inputPassword) {
+                    $("#tableFour").css("border", "#FF0000 1px solid");
+                    $("#tableFourLabel").replaceWith("<label id='tableFourLabel'>Number of Tables for Four *<i style='color:red'>Cannot be empty</i></label>");
+                    return;
+                }
+                $("#tableFour").css("border", "");
+                $("#tableFourLabel").replaceWith('<label id="tableFourLabel">Number of Tables for Four *</label>');
+            });
+            
+            $("#tableSix").focusout(function () {
+                var inputPassword = $("#tableSix").val();
+                if (!inputPassword) {
+                    $("#tableSix").css("border", "#FF0000 1px solid");
+                    $("#tableSixLabel").replaceWith("<label id='tableSixLabel'>Number of Tables for Six *<i style='color:red'>Cannot be empty</i></label>");
+                    return;
+                }
+                $("#tableSix").css("border", "");
+                $("#tableSixLabel").replaceWith('<label id="tableSixLabel">Number of Tables for Six *</label>');
             });
 
         });

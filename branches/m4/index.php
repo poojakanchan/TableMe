@@ -107,9 +107,26 @@
     -->
 
     <style type ="text/css">
-
+        
+        
         .navbar-default {
             margin-bottom: 0px;
+            width: 100%;
+            height: 80px;
+            font-size: 120%;
+        }
+        
+        .logo{
+            padding-top: 5px;
+            padding-right: 15px;
+        }
+        
+        .navbar-left {
+            padding-top: 15px;
+        }
+        
+        .navbar-right {
+            padding-top: 15px
         }
 
         .frontpage-banner {

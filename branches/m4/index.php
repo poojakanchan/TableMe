@@ -108,17 +108,6 @@
 
     <style type ="text/css">
 
-        body{
-            background: url(background_1.jpg) no-repeat center center fixed; 
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-            /*background-color:#2E52E0;*/
-            /*background-image: url("background.jpg");*/
-            /*color:#FFFFFF; */
-        }
-
         .navbar-default {
             margin-bottom: 0px;
         }

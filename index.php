@@ -108,12 +108,17 @@
 
     <style type ="text/css">
         
-        
-        .navbar-default {
+        .navbar-custom {
             margin-bottom: 0px;
             width: 100%;
             height: 80px;
             font-size: 120%;
+            font-weight: bold;
+            background-color: #F0FFFF;
+        }
+        
+        li a {           
+            color: #000000;
         }
         
         .logo{
@@ -128,7 +133,7 @@
         .navbar-right {
             padding-top: 15px
         }
-
+        
         .frontpage-banner {
             position: relative;
             width: 100%;
@@ -183,7 +188,7 @@
             padding-top:60px;
 
         }
-
+       
     </style>
 
 </head>

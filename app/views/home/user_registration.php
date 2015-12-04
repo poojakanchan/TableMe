@@ -99,12 +99,12 @@
                             
                             <div class="row">
                                 <div class="col-sm-6 form-group">
-                                    <label>First Name*</label>
-                                    <input type="text" name="userFirstName" placeholder="Please enter you first name..." class="form-control" required>
+                                    <label id="firstNameLabel">First Name*</label>
+                                    <input type="text" name="userFirstName" id="firstname" placeholder="Please enter you first name..." class="form-control" required>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <label>Last Name*</label>
-                                    <input type="text" name="userLastName" placeholder="Please enter you last name..." class="form-control" required>
+                                    <label id="lastNameLabel">Last Name*</label>
+                                    <input type="text" name="userLastName" id="lastname" placeholder="Please enter you last name..." class="form-control" required>
                                 </div>
                             </div>										 
 
@@ -243,6 +243,29 @@
                     $("#username").css("border", "");
                     $("#usernameLabel").replaceWith('<label id="usernameLabel">Username*</label>');
                 });
+                
+                 $("#firstname").focusout(function () {
+                    var inputFirstName = $("#firstname").val();
+                    if (!inputFirstName) {
+                        $("#firstname").css("border", "#FF0000 1px solid");
+                        $("#firstNameLabel").replaceWith ("<label id='firstNameLabel'>First Name*<i style='color:red'>First name cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#firstname").css("border", "");
+                    $("#firstNameLabel").replaceWith('<label id="firstNameLabel">First Name*</label>');
+                });
+                
+                $("#lastname").focusout(function () {
+                    var inputLastName = $("#lastname").val();
+                    if (!inputLastName) {
+                        $("#lastname").css("border", "#FF0000 1px solid");
+                        $("#lastNameLabel").replaceWith ("<label id='lastNameLabel'>Last Name*<i style='color:red'>Last name cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#lastname").css("border", "");
+                    $("#lastNameLabel").replaceWith('<label id="lastNameLabel">Last Name*</label>');
+                });
+                
             });
             function validateUserName() {
                 

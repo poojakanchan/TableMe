@@ -123,14 +123,14 @@
 
                             <div class="row">
                                 <div class="col-sm-6 form-group">
+                                    <label id="emailLabel">Email Address*</label>
+                                    <input type="email" name="userEmail" id="email" placeholder="Please enter your email address..." class="form-control" required>
+                                </div>
+                                
+                                <div class="col-sm-6 form-group">
                                     <label>Phone Number</label>
                                     <input type="text" name="userPhone" placeholder="Please enter your phone number..." class="form-control">
-                                </div>
-                          	
-                                <div class="col-sm-6 form-group">
-                                    <label>Email Address*</label>
-                                    <input type="email" name="userEmail" placeholder="Please enter your email address..." class="form-control" required>
-                                </div>
+                                </div>                                
                             </div>
                             
                             <script type="text/javascript">
@@ -280,6 +280,17 @@
                     }
                     $("#confirmPassword").css("border", "");
                     $("#confirmPasswordLabel").replaceWith('<label id="confirmPasswordLabel">Confirm Password*</label>');
+                });
+                
+                $("#email").focusout(function () {
+                    var inputPassword = $("#email").val();
+                    if (!inputPassword) {
+                        $("#email").css("border", "#FF0000 1px solid");
+                        $("#emailLabel").replaceWith ("<label id='emailLabel'>Email Address*<i style='color:red'>Email cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#email").css("border", "");
+                    $("#emailLabel").replaceWith('<label id="emailLabel">Email Address*</label>');
                 });
                 
             });

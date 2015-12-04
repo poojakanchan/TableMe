@@ -42,16 +42,7 @@ $username_array = $restaurant->getAllUserNames();
                 size: 4
             });
 
-
-
-
-            // username no less than 4 no more than 10 letters numbers no space
-            // description 150 characters 
-            // max size of 500 mb for profile picture and menu 
-            // validate phone number
-
             function validateForm() {
-
                 var ownerUsername = document.forms["form"]["ownerUsername"].value;
                 var ownerPassword = document.forms["form"]["ownerPassword"].value;
                 var ownerConfirmPassword = document.forms["form"]["ownerConfirmPassword"].value;
@@ -142,8 +133,6 @@ $username_array = $restaurant->getAllUserNames();
                     alert("Phone can only be numbers.");
                     return false;
                 }
-
-
             }
 
         </script>
@@ -172,12 +161,12 @@ $username_array = $restaurant->getAllUserNames();
 
                                     <div class="row">
                                         <div class="col-sm-4 form-group">
-                                            <label>Password *</label>
-                                            <input type="password" name="ownerPassword" placeholder="Please pick a password..." class="form-control" required>
+                                            <label id="passwordLabel">Password *</label>
+                                            <input id="password" type="password" name="ownerPassword" placeholder="Please pick a password..." class="form-control" required>
                                         </div>	
                                         <div class="col-sm-4 form-group">
-                                            <label>Confirm Password *</label>
-                                            <input type="password" name="ownerConfirmPassword" placeholder="Please confirm your password..." class="form-control" required>
+                                            <label id="confirmPasswordLabel">Confirm Password *</label>
+                                            <input id="confirmPassword" type="password" name="ownerConfirmPassword" placeholder="Please confirm your password..." class="form-control" required>
                                         </div>		
                                     </div>
                                 </div>
@@ -191,12 +180,12 @@ $username_array = $restaurant->getAllUserNames();
 
                                     <div class="row">
                                         <div class="col-sm-4 form-group">
-                                            <label>First Name *</label>
-                                            <input type="text" name="ownerFirstName" placeholder="Please enter you first name..." class="form-control" required>
+                                            <label id="firstNameLabel">First Name *</label>
+                                            <input type="text" name="ownerFirstName" id="firstname" placeholder="Please enter you first name..." class="form-control" required>
                                         </div>
                                         <div class="col-sm-4 form-group">
-                                            <label>Last Name *</label>
-                                            <input type="text" name="ownerLastName" placeholder="Please enter you last name..." class="form-control" required>
+                                            <label id="lastNameLabel">Last Name *</label>
+                                            <input id="lastname" type="text" name="ownerLastName" placeholder="Please enter you last name..." class="form-control" required>
                                         </div>
                                     </div>
 
@@ -497,7 +486,6 @@ $username_array = $restaurant->getAllUserNames();
             </div>
         </div>
 
-
     </body>
 
     <script type="text/javascript">
@@ -507,17 +495,62 @@ $username_array = $restaurant->getAllUserNames();
                 var inputUsername = $("#username").val();
                 if (!inputUsername) {
                     $("#username").css("border", "#FF0000 1px solid");
-                    $("#usernameLabel").replaceWith("<label id='usernameLabel'>Username*<i style='color:red'>Username cannot be empty</i></label>");
+                    $("#usernameLabel").replaceWith("<label id='usernameLabel'>Username *<i style='color:red'>Username cannot be empty</i></label>");
                     return;
                 }
                 if (jQuery.inArray(inputUsername, existingUsernames) !== -1) {
                     $("#username").css("border", "#FF0000 1px solid");
-                    $("#usernameLabel").replaceWith("<label id='usernameLabel'>Username*<i style='color:red'>Username already taken</i></label>");
+                    $("#usernameLabel").replaceWith("<label id='usernameLabel'>Username *<i style='color:red'>Username already taken</i></label>");
                     return;
                 }
                 $("#username").css("border", "");
-                $("#usernameLabel").replaceWith('<label id="usernameLabel">Username*</label>');
+                $("#usernameLabel").replaceWith('<label id="usernameLabel">Username *</label>');
             });
+
+            $("#password").focusout(function () {
+                var inputPassword = $("#password").val();
+                if (!inputPassword) {
+                    $("#password").css("border", "#FF0000 1px solid");
+                    $("#passwordLabel").replaceWith("<label id='passwordLabel'>Password *<i style='color:red'>Password cannot be empty</i></label>");
+                    return;
+                }
+                $("#password").css("border", "");
+                $("#passwordLabel").replaceWith('<label id="passwordLabel">Password *</label>');
+            });
+
+            $("#confirmPassword").focusout(function () {
+                var inputPassword = $("#confirmPassword").val();
+                if (!inputPassword) {
+                    $("#confirmPassword").css("border", "#FF0000 1px solid");
+                    $("#confirmPasswordLabel").replaceWith("<label id='confirmPasswordLabel'>Confirm Password *<i style='color:red'>Confirm password cannot be empty</i></label>");
+                    return;
+                }
+                $("#confirmPassword").css("border", "");
+                $("#confirmPasswordLabel").replaceWith('<label id="confirmPasswordLabel">Confirm Password *</label>');
+            });
+
+            $("#firstname").focusout(function () {
+                var inputFirstName = $("#firstname").val();
+                if (!inputFirstName) {
+                    $("#firstname").css("border", "#FF0000 1px solid");
+                    $("#firstNameLabel").replaceWith("<label id='firstNameLabel'>First Name *<i style='color:red'>First name cannot be empty</i></label>");
+                    return;
+                }
+                $("#firstname").css("border", "");
+                $("#firstNameLabel").replaceWith('<label id="firstNameLabel">First Name *</label>');
+            });
+
+            $("#lastname").focusout(function () {
+                var inputLastName = $("#lastname").val();
+                if (!inputLastName) {
+                    $("#lastname").css("border", "#FF0000 1px solid");
+                    $("#lastNameLabel").replaceWith("<label id='lastNameLabel'>Last Name *<i style='color:red'>Last name cannot be empty</i></label>");
+                    return;
+                }
+                $("#lastname").css("border", "");
+                $("#lastNameLabel").replaceWith('<label id="lastNameLabel">Last Name *</label>');
+            });
+
         });
 
     </script>

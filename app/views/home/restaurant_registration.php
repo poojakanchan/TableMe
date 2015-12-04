@@ -214,12 +214,12 @@ $username_array = $restaurant->getAllUserNames();
 
                                     <div class="row">
                                         <div class="col-sm-4 form-group">
-                                            <label>Phone Number *</label>
-                                            <input type="text" name="ownerPhone" placeholder="Please enter your phone number..." class="form-control" required>
+                                            <label id="ownerPhoneLabel">Phone Number *</label>
+                                            <input id="ownerPhone" type="text" name="ownerPhone" placeholder="Please enter your phone number..." class="form-control" required>
                                         </div>
                                         <div class="col-sm-4 form-group">
-                                            <label>Email *</label>
-                                            <input type="text" name="ownerEmail" placeholder="Please enter you email address..." class="form-control" required>
+                                            <label id="emailLabel">Email *</label>
+                                            <input id="email" type="text" name="ownerEmail" placeholder="Please enter you email address..." class="form-control" required>
                                         </div>
                                     </div>  
                                 </div>
@@ -550,6 +550,28 @@ $username_array = $restaurant->getAllUserNames();
                 $("#lastname").css("border", "");
                 $("#lastNameLabel").replaceWith('<label id="lastNameLabel">Last Name *</label>');
             });
+            
+            $("#ownerPhone").focusout(function () {
+                    var inputPassword = $("#ownerPhone").val();
+                    if (!inputPassword) {
+                        $("#ownerPhone").css("border", "#FF0000 1px solid");
+                        $("#ownerPhoneLabel").replaceWith ("<label id='ownerPhoneLabel'>Phone Number *<i style='color:red'>Phone number cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#ownerPhone").css("border", "");
+                    $("#ownerPhoneLabel").replaceWith('<label id="ownerPhoneLabel">Phone Number *</label>');
+                });
+            
+            $("#email").focusout(function () {
+                    var inputPassword = $("#email").val();
+                    if (!inputPassword) {
+                        $("#email").css("border", "#FF0000 1px solid");
+                        $("#emailLabel").replaceWith ("<label id='emailLabel'>Email *<i style='color:red'>Email cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#email").css("border", "");
+                    $("#emailLabel").replaceWith('<label id="emailLabel">Email *</label>');
+                });
 
         });
 

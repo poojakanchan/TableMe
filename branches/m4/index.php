@@ -134,10 +134,14 @@
 
         .frontpage-list {
             padding-right: 5px;
+            padding-left: 10px;
+            padding-top: 10px;
         }
 
         .frontpage-event {
             padding-left: 5px;
+            padding-top: 10px;
+            padding-right: 10px;
         }
 
         .profile {
@@ -206,15 +210,15 @@
                         <table class="table restaurantlisttable">
                             <tr>
                                 <td>
-                                    <div class="col-md-2 profile">
+                                    <div class="col-md-2 profile" style="width:20%">
                                         <a href="<?php echo 'app/views/home/restaurant.php?resid=' . $restaurant['restaurant_id'] ?>"> <img width="150" height="150" style="float: left;" src="<?php print $image_src; ?>" /> </a>    
                                     </div> <!-- End of Profile Picture -->
-                                    <div class="col-md-8 detail"> 
+                                    <div class="col-md-8 detail" style="width:70%"> 
                                         <h3>  <a  href="<?php echo 'app/views/home/restaurant.php?resid=' . $restaurant['restaurant_id'] ?>" > <?php echo $restaurant['name'] ?> </a> </h3>
                                         <p> <?php echo $restaurant['address'] ?> </p>
                                         <p>  <?php echo $restaurant['description'] ?> </p>
                                     </div> <!-- End of Restaurant Detail -->
-                                    <div class="col-md-2 reservation">
+                                    <div class="col-md-2 reservation" style="width:10%">
                                         <button class="btn btn-info" data-toggle="modal" data-id="<?php echo $restaurant['restaurant_id'] ?>" data-target="#reservation-<?php echo $restaurant['restaurant_id'] ?>" >
                                             Reservation
                                         </button>

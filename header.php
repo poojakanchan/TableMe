@@ -9,17 +9,11 @@ if (isset($_GET['logout'])) {
 }
 ?>
 
-<!--<style>
-    img {
-        width: 175px;
-        height: 120px;
-    }
-</style>-->
-    
+
 <nav class ="navbar navbar-default">
     <div class ="container-fluid">
-        <div class ="navbar-header">
-            <a href="index.php"><img src="blueLogo.png"  width="175" height="120"/></a>
+        <div class ="navbar-header logo">
+            <a href="index.php"><img src="blueLogo.png"  width="90" height="70"/></a>
         </div>
         <div>
             <ul class="nav navbar-nav navbar-right">

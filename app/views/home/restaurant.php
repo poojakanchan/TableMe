@@ -142,7 +142,9 @@ if ($avgRating >= 1) {
         <script>
             $(document).ready(function () {
                 $('[id=datetimepicker1]').each(function () {
-                    $(this).datepicker();
+                    $(this).datepicker();      
+                $(this).on('changeDate', function(){
+                $(this).datepicker('hide');
                 });
             });
         </script> <!-- datepicking end -->
@@ -482,8 +484,11 @@ if ($avgRating >= 1) {
                                                         <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
                                                         <!-- for debug purposes, displays restaurant ID -->
                                                         <?php //echo $resId ?>
-                                                        <div class="col-md-12">          
+                                                        <div class="col-md-12">     
+                                                             <div class="row">
+                                                            <div class="col-md-6">
                                                             <label>Number of Guests</label>
+                                                                
                                                             <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
                                                                 <option value="1">1</option>
                                                                 <option value="2">2</option>
@@ -492,19 +497,25 @@ if ($avgRating >= 1) {
                                                                 <option value="4">4</option>
                                                                 <option value="6">6</option>
                                                             </select>
-
+                                                             </div>
+                                                             </div>
                                                             <br>
-                                                            <br>
-
+                                                          
+                                                           
+                                                             <div class="row">
+                                                            <div class="col-md-6">
                                                             <!-- This is for the datapicking method -->
                                                             <div class="input-append date" id="datetimepicker1">
                                                                 <label>Enter Date</label>
-                                                                <input  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date"></input>
-                                                                <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span> 
-                                                                <!-- <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span> -->
+                                                                <input   data-width="auto"  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date" placeholder="Please select date" class="form-control"></input>
+                                                              <!--  <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>  -->
+                                                                <span class="input-group-addon" data-width="auto" > <i class="glyphicon glyphicon-calendar" ></i></span> 
                                                             </div>
-                                                            
-
+                                                            </div>
+                                                             </div>
+                                                             <br>
+                                                              
+                                                           
                                                             <label>Enter Time</label>
                                                             <select class="selectpicker" data-width="auto" id="hours" name="hours" required>
                                                                 <!-- <option value="" disabled selected>Hours</option> -->
@@ -536,7 +547,125 @@ if ($avgRating >= 1) {
 
                                                             <br>
                                                             <br>
+                                                           
+                                                            
+                                                            <div class="row">
 
+
+                                                                <div class="col-md-6 form-group">
+                                                                    <label>First Name</label>
+                                                                    <input type="text" name="reservationFirstName" placeholder="Please enter your first name..." class="form-control" required>
+                                                                </div>
+                                                                <div class="col-md-6 form-group">
+                                                                    <label>Last Name</label>
+                                                                    <input type="text" name="reservationLastName" placeholder="Please enter your last name..." class="form-control" required>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-md-6 form-group">
+                                                                    <label>Email</label>
+                                                                    <input type="email" name="reservationEmail" placeholder="Please enter your email address..." class="form-control" required>
+                                                                </div>
+                                                                <div class="col-md-6 form-group">
+                                                                    <label>Phone Number</label>
+                                                                    <input type="text" name="reservationPhone" placeholder="Please enter your phone number..." class="form-control">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Accommodations</label>
+                                                                <input type="text" name="accommodations" placeholder="Please enter any special requests you may have..." class="form-control">
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary" value="submit-reservation" name="submit-reservation" >Make reservation</button>
+                                            </div>
+                                        </div>
+                                    </div> <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <label class="modal-title" name ="myModalLabel" id="myModalLabel">Make reservation at <?php echo $restaurant['name'] ?></label>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="col-md-12 well">
+                                                    <div class="row">
+                                                        <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
+                                                        <!-- for debug purposes, displays restaurant ID -->
+                                                        <?php //echo $resId ?>
+                                                        <div class="col-md-12">     
+                                                             <div class="row">
+                                                            <div class="col-md-6">
+                                                            <label>Number of Guests</label>
+                                                                
+                                                            <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="4">4</option>
+                                                                <option value="6">6</option>
+                                                            </select>
+                                                             </div>
+                                                             </div>
+                                                            <br>
+                                                          
+                                                           
+                                                             <div class="row">
+                                                            <div class="col-md-6">
+                                                            <!-- This is for the datapicking method -->
+                                                            <div class="input-append date" id="datetimepicker1">
+                                                                <label>Enter Date</label>
+                                                                <input   data-width="auto"  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date" placeholder="Please select date" class="form-control"></input>
+                                                              <!--  <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>  -->
+                                                                <span class="input-group-addon" data-width="auto" > <i class="glyphicon glyphicon-calendar" ></i></span> 
+                                                            </div>
+                                                            </div>
+                                                             </div>
+                                                             <br>
+                                                              
+                                                           
+                                                            <label>Enter Time</label>
+                                                            <select class="selectpicker" data-width="auto" id="hours" name="hours" required>
+                                                                <!-- <option value="" disabled selected>Hours</option> -->
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                                <option value="6">6</option>
+                                                                <option value="7">7</option>
+                                                                <option value="8">8</option>
+                                                                <option value="9">9</option>
+                                                                <option value="10">10</option>
+                                                                <option value="11">11</option>
+                                                                <option value="12">12</option>
+                                                            </select>
+                                                            
+                                                            <select class="selectpicker" data-width="auto" id="minutes" name="minutes" required>
+                                                                    <!--<option value="" disabled selected>Minutes</option> -->
+                                                                    <option value=":00">:00</option>
+                                                                    <option value=":30">:30</option>
+                                                             </select>
+                                                            
+                                                            <select class="selectpicker" data-width="auto" id="ampm" name="ampm" required>
+                                                                    <option value="" disabled selected>AM/PM</option>
+                                                                    <option value="am">am</option>
+                                                                    <option value="pm">pm</option>
+                                                            </select>
+
+                                                            <br>
+                                                            <br>
+                                                           
+                                                            
                                                             <div class="row">
 
 

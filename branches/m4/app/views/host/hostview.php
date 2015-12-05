@@ -38,6 +38,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         
         <!-- this scripts and links are for datepicking -->
+        
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -63,7 +64,7 @@
                 margin-left: 0.1em;   
             }
 
-            .date-picker,
+            .date-picker2,
             .date-container {
                 position: relative;
                 display: inline-block;
@@ -80,7 +81,7 @@
             .date-container {
                 padding: 0px 40px;   
             }
-            .date-picker h2, .date-picker h4 {
+            .date-picker2 h2, .date-picker2 h4 {
                 margin: 0px;
                 padding: 0px;
                 font-family: 'Roboto', sans-serif;
@@ -89,7 +90,7 @@
             .date-container .date {
                 text-align: center;
             }
-            .date-picker span.fa {
+            .date-picker2 span.fa {
                 position: absolute;
                 font-size: 4em;
                 font-weight: 100;
@@ -97,13 +98,13 @@
                 cursor: pointer;
                 top: 0px;
             }
-            .date-picker span.fa[data-type="subtract"] {
+            .date-picker2 span.fa[data-type="subtract"] {
                 left: 0px;
             }
-            .date-picker span.fa[data-type="add"] {
+            .date-picker2 span.fa[data-type="add"] {
                 right: 0px;
             }
-            .date-picker span[data-toggle="calendar"] {
+            .date-picker2 span[data-toggle="calendar"] {
                 display: block;
                 position: absolute;
                 top: -7px;
@@ -112,26 +113,26 @@
                 cursor: pointer;
             }
 
-            .date-picker .input-datepicker {
+            .date-picker2 .input-datepicker2 {
                 display: none;
                 position: absolute;
                 top: 50%;
                 margin-top: -17px;
                 width:100%;
             }
-            .date-picker .input-datepicker.show-input {
+            .date-picker2 .input-datepicker2.show-input {
                 display: table;
             }
 
             @media (min-width: 768px) and (max-width: 1010px) {
-                .date-picker h2{
+                .date-picker2 h2{
                     font-size: 1.5em; 
                     font-weight: 400;  
                 }    
-                .date-picker h4 {
+                .date-picker2 h4 {
                     font-size: 1.1em;
                 }  
-                .date-picker span.fa {
+                .date-picker2 span.fa {
                     font-size: 3em;
                 } 
             }
@@ -173,7 +174,7 @@
                     $('.show-focus-status > .alert-danger').removeClass('hidden');
                 });    
 
-                $('.date-picker').each(function () {
+                $('.date-picker2').each(function () {
                     var $datepicker = $(this), cur_date = ($datepicker.data('date') ? moment($datepicker.data('date'), "YYYY/MM/DD") : moment()),
                         format = {
                             "weekday" : ($datepicker.find('.weekday').data('format') ? $datepicker.find('.weekday').data('format') : "dddd"),                
@@ -186,7 +187,7 @@
                         $datepicker.find('.date-container > .date').text(cur_date.format(format.date));
                         $datepicker.find('.date-container > .year').text(cur_date.format(format.year));
                         $datepicker.data('date', cur_date.format('YYYY/MM/DD'));
-                        $datepicker.find('.input-datepicker').removeClass('show-input');
+                        $datepicker.find('.input-datepicker2').removeClass('show-input');
                      
                         $.ajax({
                             url: "../../controllers/Host_controller.php",
@@ -264,12 +265,12 @@
                     
                     $datepicker.on('click', '[data-toggle="calendar"]', function(event) {
                         event.preventDefault();
-                        $datepicker.find('.input-datepicker').toggleClass('show-input');
+                        $datepicker.find('.input-datepicker2').toggleClass('show-input');
                     });
 
-                    $datepicker.on('click', '.input-datepicker > .input-group-btn > button', function(event) {
+                    $datepicker.on('click', '.input-datepicker2 > .input-group-btn > button', function(event) {
                         event.preventDefault();
-                        var $input = $(this).closest('.input-datepicker').find('input'),
+                        var $input = $(this).closest('.input-datepicker2').find('input'),
                             date_format = ($input.data('format') ? $input.data('format') : "YYYY/MM/DD");
                         if (moment($input.val(), date_format).isValid()) {
                            updateDisplay(moment($input.val(), date_format));
@@ -278,10 +279,10 @@
                         }
                     });
 
-                    $datepicker.on('click', '[data-toggle="datepicker"]', function(event) {
+                    $datepicker.on('click', '[data-toggle="datepicker2"]', function(event) {
                         event.preventDefault();
 
-                        var cur_date = moment($(this).closest('.date-picker').data('date'), "YYYY/MM/DD"),
+                        var cur_date = moment($(this).closest('.date-picker2').data('date'), "YYYY/MM/DD"),
                             date_type = ($datepicker.data('type') ? $datepicker.data('type') : "days"),
                             type = ($(this).data('type') ? $(this).data('type') : "add"),
                             amt = ($(this).data('amt') ? $(this).data('amt') : 1);
@@ -411,16 +412,16 @@
             
             <!--Date picker-->
             <div class="row">
-                <div class="datePicker col-md-4 col-md-offset-4">
-                    <div class="date-picker pagination-centered"  data-date="<?php echo $date; ?>" data-keyboard="true">
+                <div class="datePicker2 col-md-4 col-md-offset-4">
+                    <div class="date-picker2 pagination-centered"  data-date="<?php echo $date; ?>" data-keyboard="true">
                         <div class="date-container pull-left">
                             <h4 class="weekday">Monday</h4>
                             <h2 class="date">November 9th</h2>
                             <h4 class="year pull-right">2015</h4>
                         </div>
-                        <span data-toggle="datepicker" data-type="subtract" class="fa fa-angle-left"></span>
-                        <span data-toggle="datepicker" data-type="add" class="fa fa-angle-right"></span>
-                        <div class="input-group input-datepicker">
+                        <span data-toggle="datepicker2" data-type="subtract" class="fa fa-angle-left"></span>
+                        <span data-toggle="datepicker2" data-type="add" class="fa fa-angle-right"></span>
+                        <div class="input-group input-datepicker2" id="datepicker2">
                             <input type="text" class="form-control" data-format="YYYY/MM/DD" placeholder="YYYY/MM/DD">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button">Go!</button>

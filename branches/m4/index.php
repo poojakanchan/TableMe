@@ -80,23 +80,31 @@
     <title>TableMe</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
     <link rel="stylesheet" type="text/css" media="all" href="css/bootstrap-responsive.min.css"> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css">
+        
+    
     <!-- this scripts and links are for datepicking -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <link rel="stylesheet" href="/resources/demos/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker.css">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/js/bootstrap-datepicker.min.js"></script>
 
+    
+      
+    
     <script>
         $(document).ready(function () {
             $('[id=datetimepicker1]').each(function () {
                 $(this).datepicker();
+                $(this).on('changeDate', function(){
+                $(this).datepicker('hide');
+                });
             });
         });
     </script> <!-- datepicking end -->
@@ -199,6 +207,14 @@
        
     </style>
 
+    <script>
+            $('.selectpicker').selectpicker();
+
+            $('.selectpicker').selectpicker({
+                style: 'btn-info',
+                size: 4
+            });
+        </script>
 </head>
 
 <body>
@@ -259,7 +275,7 @@
 
                                 <form name="myForm" action="#.php"
                                       onsubmit="return validateForm()" method="post">
-                                    <div class="modal-dialog">
+                                   <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -271,8 +287,11 @@
                                                         <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
                                                         <!-- for debug purposes, displays restaurant ID -->
                                                         <?php //echo $resId ?>
-                                                        <div class="col-md-12">          
+                                                        <div class="col-md-12">     
+                                                             <div class="row">
+                                                            <div class="col-md-6">
                                                             <label>Number of Guests</label>
+                                                                
                                                             <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
                                                                 <option value="1">1</option>
                                                                 <option value="2">2</option>
@@ -281,19 +300,25 @@
                                                                 <option value="4">4</option>
                                                                 <option value="6">6</option>
                                                             </select>
-
+                                                             </div>
+                                                             </div>
                                                             <br>
-                                                            <br>
-
+                                                          
+                                                           
+                                                             <div class="row">
+                                                            <div class="col-md-6">
                                                             <!-- This is for the datapicking method -->
                                                             <div class="input-append date" id="datetimepicker1">
                                                                 <label>Enter Date</label>
-                                                                <input  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date"></input>
-                                                                <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span> 
-                                                                <!-- <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span> -->
+                                                                <input   data-width="auto"  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date" placeholder="Please select date" class="form-control"></input>
+                                                              <!--  <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>  -->
+                                                                <span class="input-group-addon" data-width="auto" > <i class="glyphicon glyphicon-calendar" ></i></span> 
                                                             </div>
-                                                            
-
+                                                            </div>
+                                                             </div>
+                                                             <br>
+                                                              
+                                                           
                                                             <label>Enter Time</label>
                                                             <select class="selectpicker" data-width="auto" id="hours" name="hours" required>
                                                                 <!-- <option value="" disabled selected>Hours</option> -->
@@ -325,7 +350,8 @@
 
                                                             <br>
                                                             <br>
-
+                                                           
+                                                            
                                                             <div class="row">
 
 

@@ -56,11 +56,7 @@ class Restaurant_model  extends Database{
          }        
         
         $stmt = $this->dbh->prepare($sql);
-//        echo '<br><br>'.var_dump($searchStr).'<br>'.var_dump($nameAdd).'<br>'.var_dump($limit).'<br>'.var_dump($offset);
-//        exit();
         if ($stmt->execute()){
-//            echo var_dump($stmt->fetch());
-//            exit();
             $count = $stmt->fetch(PDO::FETCH_NUM);
             return intval($count[0]);
         } 
@@ -88,17 +84,11 @@ class Restaurant_model  extends Database{
          }
          $sql = $sql . " LIMIT :lim OFFSET :off";
         
-//         echo "<br><br>".$sql;
-//         exit();
-        
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':lim', $limit, PDO::PARAM_INT);
         $stmt->bindParam(':off', $offset, PDO::PARAM_INT);
-//        echo '<br><br>'.var_dump($searchStr).'<br>'.var_dump($nameAdd).'<br>'.var_dump($limit).'<br>'.var_dump($offset);
-//        exit();
+
         if (!$stmt->execute()){
-//            echo var_dump($stmt->fetch());
-//            exit();
             print_r ($stmt->errorInfo());
             exit();
             return null;
@@ -135,20 +125,6 @@ class Restaurant_model  extends Database{
         return null;
     }
    
-    /* find restaurant by name only. Returns results in an array ($arr), with each index
-     * ($arr[0], $arr[1]...) being and assoiative array corresponding to a row from the table.
-     */
-//    public function getAllRestaurants() {
-//        
-//        $sql = "SELECT * FROM restaurant LIMIT 100";
-//        $stmt = $this->dbh->prepare($sql);
-//      
-//        if ($stmt->execute()){
-//            return $stmt->fetchAll();
-//        }
-//        return null;
-//    }
-    
     /*
      * function to retrive restuarant's multimedia (all the pictures) from database.
      */

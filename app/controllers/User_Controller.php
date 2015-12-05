@@ -27,8 +27,8 @@ class User_controller extends Controller {
             $email = htmlspecialchars($_POST["userEmail"]);
 
             // call to database function.
-            $user_model = $this->model('User_model');
-            if ($user_model->addUser($name, $phone, $email, $username, $password) > 0) {
+            $userModel = $this->model('User_model');
+            if ($userModel->addUser($name, $phone, $email, $username, $password) > 0) {
                 $success = 'success';
                 header("Location:login.php/?message=" . $success);
             } else {

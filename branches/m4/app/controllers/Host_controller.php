@@ -24,8 +24,8 @@ class Host_controller extends Controller{
     
     public function markArrived($resId, $reservationId){
      
-        $reservation_array = $this->reservation->getReservationById($reservationId);
-        $reservation = $reservation_array[0];
+        $reservationAarray = $this->reservation->getReservationById($reservationId);
+        $reservation = $reservationAarray[0];
         $this->reservation->markArrived($reservationId);
        /* $user_visited = $this->model('User_visited_model');
         
@@ -43,8 +43,8 @@ class Host_controller extends Controller{
     
     public function makeReservation() {
         require_once 'Reservation_controller.php';
-        $reservation_controller = new Reservation_controller();
-        $reservation_controller->add();
+        $reservationController = new Reservation_controller();
+        $reservationController->add();
     }
     
     public function cancelReservation($resId,$reservationId) {
@@ -52,11 +52,11 @@ class Host_controller extends Controller{
     }
     
     public function getRestaurant($username){
-        $hostess_model = $this->model('Hostess_model');
-        $hostess = $hostess_model->getHostessByUserName($username);
-        $restaurant_model = $this->model('Restaurant_model');
+        $hostessModel = $this->model('Hostess_model');
+        $hostess = $hostessModel->getHostessByUserName($username);
+        $restaurantModel = $this->model('Restaurant_model');
        // echo 'hostess ' . $hostess . "  " . $hostess['restaurant_id'];
-        $restaurant = $restaurant_model->findRestaurantById($hostess['restaurant_id']);
+        $restaurant = $restaurantModel->findRestaurantById($hostess['restaurant_id']);
        //print_r($restaurant); 
         
         $resInfo = array("res_id" => $hostess['restaurant_id'],
@@ -73,13 +73,13 @@ class Host_controller extends Controller{
 }
 
 if (isset($_POST['date']) && isset($_POST['resId'])) {
-        $host_controller = new Host_controller();    
-        $reservations =  $host_controller->getReservationsByRestaurantIdAndDate($_POST['date'],$_POST['resId']);
+        $hostController = new Host_controller();    
+        $reservations =  $hostController->getReservationsByRestaurantIdAndDate($_POST['date'],$_POST['resId']);
         print_r(json_encode($reservations));
     }
     if (isset($_POST['resId']) && isset($_POST['reservationId'])) {
-        $host_controller = new Host_controller();    
-        $host_controller->markArrived($_POST['resId'],$_POST['reservationId']);
+        $hostController = new Host_controller();    
+        $hostController->markArrived($_POST['resId'],$_POST['reservationId']);
         
     }
     

@@ -8,8 +8,8 @@ $restaurant = new Restaurant_controller();
 if ($_POST) {
     $restaurant->add();
 }
-$food_category_array = $restaurant->getFoodCategory();
-$username_array = $restaurant->getAllUserNames();
+$foodCategoryArray = $restaurant->getFoodCategory();
+$usernameArray = $restaurant->getAllUserNames();
 // echo $username_array;
 // } else {
 //             if($restaurant->checkUserName());
@@ -282,7 +282,7 @@ $username_array = $restaurant->getAllUserNames();
                                     <div class="form-group">
                                         <label>Type of Food</label>
                                         <select class="selectpicker" name ="food_category"><?php
-                                            foreach ($food_category_array as $category) {
+                                            foreach ($foodCategoryArray as $category) {
                                                 echo "<option value=" . $category['name'] . ">" . $category['name'] . "</option>";
                                             }
                                             ?><option value ="any" selected="selected">Select Food Type</option>
@@ -491,7 +491,7 @@ $username_array = $restaurant->getAllUserNames();
     <script type="text/javascript">
         $(document).ready(function () {
             $("#username").focusout(function () {
-                var existingUsernames = <?php echo json_encode($username_array) ?>;
+                var existingUsernames = <?php echo json_encode($usernameArray) ?>;
                 var inputUsername = $("#username").val();
                 if (!inputUsername) {
                     $("#username").css("border", "#FF0000 1px solid");

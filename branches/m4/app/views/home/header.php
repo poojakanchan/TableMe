@@ -18,7 +18,7 @@ if (isset($_GET['logout'])) {
                 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Register <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="user_registration.php"> User</a></li>
-                        <li><a href="restaurant_registration.php">Restaurant</a></li>
+                           <li><a href="../home/restaurant_registration.php">Restaurant</a></li>
                     </ul>
                 </li>
                 <?php

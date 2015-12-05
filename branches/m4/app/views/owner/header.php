@@ -18,6 +18,7 @@ if (isset($_GET['logout'])) {
                     <ul class="dropdown-menu">
                         <li><a href="../home/user_registration.php"> User</a></li>
                         <li><a href="../home/restaurant_registration.php">Restaurant</a></li>
+                   
                     </ul>
                 </li>
                 <?php

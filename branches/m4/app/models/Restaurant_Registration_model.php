@@ -38,7 +38,7 @@ class Restaurant_registration_model extends Database {
     /*
      * build  databse query to add operating hours to database.
      */
-     public function add_operating_hours($operArray) {
+     public function addOperatingHours($operArray) {
         $sql = "INSERT INTO operating_hours(restaurant_id,monday_from,tuesday_from,wednesday_from,thursday_from,friday_from,"
                 . "saturday_from,sunday_from,monday_to,tuesday_to,wednesday_to,thursday_to,friday_to,"
                 . "saturday_to,sunday_to) "
@@ -150,7 +150,7 @@ class Restaurant_registration_model extends Database {
                        // $stmt->debugDumpParams();
 
                        
-                        $stmt = $this->add_operating_hours($operatinghours);
+                        $stmt = $this->addOperatingHours($operatinghours);
                         $stmt->bindParam(':resId',$resId, PDO::PARAM_INT);
                          if (!$stmt->execute()) {
                             exit("Error adding operation hours of rstaurant to database");

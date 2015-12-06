@@ -15,8 +15,8 @@ if (isset($_GET['logout'])) {
             <a href="../../../index.php"><img src="../../../blueLogo.png"  width="90" height="70"/></a>
         </div>
         <div class="nav navbar-nav navbar-left">
-            <li><a href="index.php">HOME</a></li>
-            <li><a href="aboutus.php">ABOUT</a></li>
+            <li><a href="../../../index.php">HOME</a></li>
+            <li><a href="../../../aboutus.php">ABOUT</a></li>
         </div>
         <div>
             <ul class="nav navbar-nav navbar-right">

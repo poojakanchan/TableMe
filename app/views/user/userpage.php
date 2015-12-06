@@ -134,6 +134,10 @@
         $newEmail = htmlspecialchars($_POST['email']);
         $newPassword = htmlspecialchars($_POST['password']);
         $newImage = null;
+        
+        if (is_uploaded_file($_FILES['user-profile-image']['tmp_name'])) {
+            $newImage = file_get_contents($_FILES["user-profile-image"]["tmp_name"]);
+        }
         $db->updateUser($username, $newPhoneNum, $newEmail, $newPassword, $newImage);
         $userInfo = $db->getUser($username);
     }
@@ -225,8 +229,6 @@
                                             echo '<tr>';
 //                                            echo '<td>' . $reservation['date'] . '</td>';
                                             echo '<td>' . $review['name'] . '</td>';
-//                                            echo '<td>' . $reservation['time'] . '</td>';
-//                                            echo '<td>' . $reservation['no_of_people'] . '</td>';
                                             if (empty($review['review_description'])) {
                                                 echo '<td><a href="#review page" class="btn btn-info write-review" data-toggle="modal" '
                                                 . 'data-target="#modal-review" data-reservation-id="' . $review['restaurant_id'] .
@@ -293,7 +295,7 @@
                         </div>
                     </div> <!-- End of history -->  
                     <div id="edit" class="tab-pane fade">
-                        <form class="form" action="##" method="post" id="editregistrationform">
+                        <form class="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="editregistrationform" enctype="multipart/form-data">
                             <div class="form-group">
                                 <div class="col-xs-6">
                                     <label for="phone_number"><h4>Phone Number</h4></label>
@@ -320,12 +322,10 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-xs-12">
-                                    <form action="upload.php" method="post" enctype="multipart/form-data">
                                         <h4> Edit Profile Picture: </h4>
-                                        <input type="file" name="fileToUpload" id="fileToUpload">
+                                        <input type="file" name="user-profile-image" id="user-profile-image"/>
                                         <br>
-                                        <input type="submit" value="Submit Image" name="submit">
-                                    </form>
+                                        <input type="submit" value="Submit Image" name="submit"/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -476,6 +476,7 @@
                     $('div#modal-review').modal('hide');
                 });
             }
+          
         </script>   
 
 </body>

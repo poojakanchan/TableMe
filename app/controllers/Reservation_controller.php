@@ -30,13 +30,27 @@ class Reservation_controller extends Controller {
             //parsing information from form submission
             $reserveName = htmlspecialchars($_POST["reservationFirstName"]) . " " . htmlspecialchars($_POST["reservationLastName"]);
             $reservePhone = preg_replace("/[^0-9]/", "", htmlspecialchars($_POST["reservationPhone"]));
-            $reserveMonth = date_parse(htmlspecialchars($_POST["month"]));
-            $reserveYear = htmlspecialchars($_POST["year"]);
-            $reserveDay = htmlspecialchars($_POST["day"]);
+            //$reserveMonth = date_parse(htmlspecialchars($_POST["month"]));
+            //$reserveYear = htmlspecialchars($_POST["year"]);
+            //$reserveDay = htmlspecialchars($_POST["day"]);
             
-            $reserveDate = $reserveYear . "-" . $reserveMonth['month'] . "-" . $reserveDay;
+            //parse string and separate date input and format properly for SQL insertion
+            $reserveDateElements = explode("/", $_POST['date']);
+            $reserveDate = $reserveDateElements[2]."-".$reserveDateElements[0]."-".$reserveDateElements[1];
+            //echo $reserveDate;
+            
+            //$reserveDate = $reserveYear . "-" . $reserveMonth['month'] . "-" . $reserveDay;
             $groupSize = htmlspecialchars($_POST["guests"]);
-            $reserveTime = date("H:i", strtotime(htmlspecialchars($_POST["time"])));
+            $reserveHours = htmlspecialchars($_POST["hours"]);
+            //echo "Hours: ".$reserveHours;
+            $reserveMinutes = htmlspecialchars($_POST["minutes"]);
+            //echo "Minutes: ".$reserveMinutes;
+            $reserveAmPm = htmlspecialchars($_POST["ampm"]);
+            //echo "am/pm: ".$reserveAmPm;
+            $reserveTime = $reserveHours.$reserveMinutes.$reserveAmPm;
+            //echo $reserveTime;
+            $reserveTime = date("H:i", strtotime($reserveTime));
+            //echo $reserveTime;
             $reserve_user_id=1;
             $restaurantID = htmlspecialchars($_POST["restaurant"]);
             
@@ -55,15 +69,15 @@ class Reservation_controller extends Controller {
                 );
             
             //formatting string for $capacity in table count method
-            if($groupSize == 2)
+            if($groupSize == 2 || $groupSize == 1)
             {
                 $capacity = "num_two_tables";
             }
-            else if ($groupSize == 4)
+            else if ($groupSize == 4 || $groupSize == 3)
             {
                 $capacity = "num_four_tables";
             }
-            else if ($groupSize == 6)
+            else if ($groupSize == 6 || $groupSize == 5)
             {
                 $capacity = "num_six_tables";
             }
@@ -77,17 +91,18 @@ class Reservation_controller extends Controller {
             
             $operatingHoursArray=$this->reservation->getOperatingHoursByDay($opening, $closing, $restaurantID);
             
-           // echo var_dump($operatingHoursArray);
+           //echo var_dump($operatingHoursArray);
            // OUTPUTS THE OPENING AND CLOSING TIMES AS READ FROM DATABASE
             //echo $operatingHoursArray[0][0];
             //echo $operatingHoursArray[0][1];
             
             /*convert the retrieved operating hours and the reservation time to unix
              * timestamps for comparison and hour checking.
+             * 
              */
             $openingTime=strtotime($operatingHoursArray[0][0]);
             $closingTime=strtotime($operatingHoursArray[0][1]);
-            $reservationTime=strtotime($_POST['time']);
+            $reservationTime=strtotime($reserveTime);
             
             /*if the closing time is past midnight, add 24 hours to the timestamp
              * otherwise time interval comparison will be off

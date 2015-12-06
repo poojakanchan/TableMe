@@ -109,7 +109,7 @@ class Reservation_model  extends Database{
     /*
      * Deletes a reservation given a reservation id. Used for the hostess or
      * when sent to the user through confirmation email/user's account management.
-     * Returns 1 if successful, otherwise null.
+     * Returns true if successful, otherwise false.
      */
     public function deleteReservation($resId)
     {
@@ -117,9 +117,9 @@ class Reservation_model  extends Database{
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':resId', $resId, PDO::PARAM_INT);
         if ($stmt->execute()) {
-            return $stmt->fetchAll();
+            return true;
         }
-        return null;
+        return false;
     }
     
     /* Counts the reservations in the table for a given date, time, and restaurant.

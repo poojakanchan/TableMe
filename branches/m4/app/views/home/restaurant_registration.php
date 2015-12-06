@@ -192,7 +192,7 @@ $usernameArray = $restaurant->getAllUserNames();
                                     <div class="row">
                                         <div class="col-sm-4 form-group">
                                             <label>Address</label>
-                                            <input type="text" name="ownerStreet" placeholder="Please enter your address..."
+                                            <input type="text" name="ownerStreet" placeholder="Please enter your street address..."
                                                    rows="3" class="form-control">
                                         </div>
                                     </div>
@@ -200,15 +200,15 @@ $usernameArray = $restaurant->getAllUserNames();
                                     <div class="row">
                                         <div class="col-sm-4 form-group">
                                             <label>City</label>
-                                            <input type="text" name="ownerCity" placeholder="Enter City Name Here.." class="form-control">
+                                            <input type="text" name="ownerCity" placeholder="Enter city name here.." class="form-control">
                                         </div>	
                                         <div class="col-sm-4 form-group">
                                             <label>State</label>
-                                            <input type="text" name="ownerState" placeholder="Enter State Name Here.." class="form-control">
+                                            <input type="text" name="ownerState" placeholder="Enter state name here.." class="form-control">
                                         </div>	
                                         <div class="col-sm-4 form-group">
                                             <label>Zip</label>
-                                            <input type="number" name="ownerZip" placeholder="Enter Zip Code Here.." class="form-control">
+                                            <input type="number" name="ownerZip" placeholder="Enter zip code here.." class="form-control">
                                         </div>		
                                     </div>
 
@@ -249,15 +249,15 @@ $usernameArray = $restaurant->getAllUserNames();
                                     <div class="row">
                                         <div class="col-sm-4 form-group">
                                             <label id="resCityLabel">City *</label>
-                                            <input id="resCity" type="text" name="restaurantCity" placeholder="Enter City Name Here.." class="form-control" required>
+                                            <input id="resCity" type="text" name="restaurantCity" placeholder="Enter city name here.." class="form-control" required>
                                         </div>	
                                         <div class="col-sm-4 form-group">
                                             <label id="resStateLabel">State *</label>
-                                            <input id="resState" type="text" name="restaurantState" placeholder="Enter State Name Here.." class="form-control" required>
+                                            <input id="resState" type="text" name="restaurantState" placeholder="Enter state name here.." class="form-control" required>
                                         </div>	
                                         <div class="col-sm-4 form-group">
                                             <label id="resZipLabel">Zip Code *</label>
-                                            <input id="resZip" type="number" name="restaurantZip" placeholder="Enter Zip Code Here.." class="form-control" required>
+                                            <input id="resZip" type="number" name="restaurantZip" placeholder="Enter zip code here.." class="form-control" required>
                                         </div>		
                                     </div>
 
@@ -495,7 +495,7 @@ $usernameArray = $restaurant->getAllUserNames();
                 var inputUsername = $("#username").val();
                 if (!inputUsername) {
                     $("#username").css("border", "#FF0000 1px solid");
-                    $("#usernameLabel").replaceWith("<label id='usernameLabel'>Username *<i style='color:red'>Username cannot be empty</i></label>");
+                    $("#usernameLabel").replaceWith("<label id='usernameLabel'>Username *<i style='color:red'> You must create a username</i></label>");
                     return;
                 }
                 if (jQuery.inArray(inputUsername, existingUsernames) !== -1) {
@@ -511,7 +511,7 @@ $usernameArray = $restaurant->getAllUserNames();
                 var inputPassword = $("#password").val();
                 if (!inputPassword) {
                     $("#password").css("border", "#FF0000 1px solid");
-                    $("#passwordLabel").replaceWith("<label id='passwordLabel'>Password *<i style='color:red'>Password cannot be empty</i></label>");
+                    $("#passwordLabel").replaceWith("<label id='passwordLabel'>Password *<i style='color:red'> You must create a password</i></label>");
                     return;
                 }
                 $("#password").css("border", "");
@@ -519,10 +519,10 @@ $usernameArray = $restaurant->getAllUserNames();
             });
 
             $("#confirmPassword").focusout(function () {
-                var inputPassword = $("#confirmPassword").val();
-                if (!inputPassword) {
+                var inputConfirmPassword = $("#confirmPassword").val();
+                if (!inputConfirmPassword) {
                     $("#confirmPassword").css("border", "#FF0000 1px solid");
-                    $("#confirmPasswordLabel").replaceWith("<label id='confirmPasswordLabel'>Confirm Password *<i style='color:red'>Confirm password cannot be empty</i></label>");
+                    $("#confirmPasswordLabel").replaceWith("<label id='confirmPasswordLabel'>Confirm Password *<i style='color:red'> You must confirm</i></label>");
                     return;
                 }
                 $("#confirmPassword").css("border", "");
@@ -533,7 +533,7 @@ $usernameArray = $restaurant->getAllUserNames();
                 var inputFirstName = $("#firstname").val();
                 if (!inputFirstName) {
                     $("#firstname").css("border", "#FF0000 1px solid");
-                    $("#firstNameLabel").replaceWith("<label id='firstNameLabel'>First Name *<i style='color:red'>First name cannot be empty</i></label>");
+                    $("#firstNameLabel").replaceWith("<label id='firstNameLabel'>First Name *<i style='color:red'> You must enter your first name</i></label>");
                     return;
                 }
                 $("#firstname").css("border", "");
@@ -544,7 +544,7 @@ $usernameArray = $restaurant->getAllUserNames();
                 var inputLastName = $("#lastname").val();
                 if (!inputLastName) {
                     $("#lastname").css("border", "#FF0000 1px solid");
-                    $("#lastNameLabel").replaceWith("<label id='lastNameLabel'>Last Name *<i style='color:red'>Last name cannot be empty</i></label>");
+                    $("#lastNameLabel").replaceWith("<label id='lastNameLabel'>Last Name *<i style='color:red'> You must enter your last name</i></label>");
                     return;
                 }
                 $("#lastname").css("border", "");
@@ -552,10 +552,10 @@ $usernameArray = $restaurant->getAllUserNames();
             });
 
             $("#ownerPhone").focusout(function () {
-                var inputPassword = $("#ownerPhone").val();
-                if (!inputPassword) {
+                var inputOwnerPhone = $("#ownerPhone").val();
+                if (!inputOwnerPhone) {
                     $("#ownerPhone").css("border", "#FF0000 1px solid");
-                    $("#ownerPhoneLabel").replaceWith("<label id='ownerPhoneLabel'>Phone Number *<i style='color:red'>Phone number cannot be empty</i></label>");
+                    $("#ownerPhoneLabel").replaceWith("<label id='ownerPhoneLabel'>Phone Number *<i style='color:red'> You must enter your phone number</i></label>");
                     return;
                 }
                 $("#ownerPhone").css("border", "");
@@ -563,10 +563,10 @@ $usernameArray = $restaurant->getAllUserNames();
             });
 
             $("#email").focusout(function () {
-                var inputPassword = $("#email").val();
-                if (!inputPassword) {
+                var inputEmail = $("#email").val();
+                if (!inputEmail) {
                     $("#email").css("border", "#FF0000 1px solid");
-                    $("#emailLabel").replaceWith("<label id='emailLabel'>Email *<i style='color:red'>Email cannot be empty</i></label>");
+                    $("#emailLabel").replaceWith("<label id='emailLabel'>Email *<i style='color:red'> You must enter your email</i></label>");
                     return;
                 }
                 $("#email").css("border", "");
@@ -574,10 +574,10 @@ $usernameArray = $restaurant->getAllUserNames();
             });
 
             $("#restaurant").focusout(function () {
-                var inputPassword = $("#restaurant").val();
-                if (!inputPassword) {
+                var inputRestaurant = $("#restaurant").val();
+                if (!inputRestaurant) {
                     $("#restaurant").css("border", "#FF0000 1px solid");
-                    $("#resNameLabel").replaceWith("<label id='resNameLabel'>Restaurant Name *<i style='color:red'>Restaurant name cannot be empty</i></label>");
+                    $("#resNameLabel").replaceWith("<label id='resNameLabel'>Restaurant Name *<i style='color:red'> You must enter the restaurant's name</i></label>");
                     return;
                 }
                 $("#restaurant").css("border", "");
@@ -585,10 +585,10 @@ $usernameArray = $restaurant->getAllUserNames();
             });
             
             $("#resStreet").focusout(function () {
-                var inputPassword = $("#resStreet").val();
-                if (!inputPassword) {
+                var inputResStreet = $("#resStreet").val();
+                if (!inputResStreet) {
                     $("#resStreet").css("border", "#FF0000 1px solid");
-                    $("#resStreetLabel").replaceWith("<label id='resStreetLabel'>Address *<i style='color:red'>Restaurant street address cannot be empty</i></label>");
+                    $("#resStreetLabel").replaceWith("<label id='resStreetLabel'>Address *<i style='color:red'> You must enter the restaurant's street address</i></label>");
                     return;
                 }
                 $("#resStreet").css("border", "");
@@ -596,10 +596,10 @@ $usernameArray = $restaurant->getAllUserNames();
             });
             
             $("#resCity").focusout(function () {
-                var inputPassword = $("#resCity").val();
-                if (!inputPassword) {
+                var inputResCity = $("#resCity").val();
+                if (!inputResCity) {
                     $("#resCity").css("border", "#FF0000 1px solid");
-                    $("#resCityLabel").replaceWith("<label id='resCityLabel'>City *<i style='color:red'>Restaurant's city cannot be empty</i></label>");
+                    $("#resCityLabel").replaceWith("<label id='resCityLabel'>City *<i style='color:red'> You must enter the city of the restaurant</i></label>");
                     return;
                 }
                 $("#resCity").css("border", "");
@@ -607,10 +607,10 @@ $usernameArray = $restaurant->getAllUserNames();
             });
             
             $("#resState").focusout(function () {
-                var inputPassword = $("#resState").val();
-                if (!inputPassword) {
+                var inputResState = $("#resState").val();
+                if (!inputResState) {
                     $("#resState").css("border", "#FF0000 1px solid");
-                    $("#resStateLabel").replaceWith("<label id='resStateLabel'>State *<i style='color:red'>Restaurant's state cannot be empty</i></label>");
+                    $("#resStateLabel").replaceWith("<label id='resStateLabel'>State *<i style='color:red'> You must enter the state of the restaurant</i></label>");
                     return;
                 }
                 $("#resState").css("border", "");
@@ -618,10 +618,10 @@ $usernameArray = $restaurant->getAllUserNames();
             });
             
             $("#resZip").focusout(function () {
-                var inputPassword = $("#resZip").val();
-                if (!inputPassword) {
+                var inputResZip = $("#resZip").val();
+                if (!inputResZip) {
                     $("#resZip").css("border", "#FF0000 1px solid");
-                    $("#resZipLabel").replaceWith("<label id='resZipLabel'>Zip Code *<i style='color:red'>Restaurant's zip code cannot be empty</i></label>");
+                    $("#resZipLabel").replaceWith("<label id='resZipLabel'>Zip Code *<i style='color:red'> You must enter the zip code</i></label>");
                     return;
                 }
                 $("#resZip").css("border", "");
@@ -629,10 +629,10 @@ $usernameArray = $restaurant->getAllUserNames();
             });
             
             $("#resPhone").focusout(function () {
-                var inputPassword = $("#resPhone").val();
-                if (!inputPassword) {
+                var inputResPhone = $("#resPhone").val();
+                if (!inputResPhone) {
                     $("#resPhone").css("border", "#FF0000 1px solid");
-                    $("#resPhoneLabel").replaceWith("<label id='resPhoneLabel'>Phone Number *<i style='color:red'>Restaurant's phone number cannot be empty</i></label>");
+                    $("#resPhoneLabel").replaceWith("<label id='resPhoneLabel'>Phone Number *<i style='color:red'> You must enter the restaurant's phone number</i></label>");
                     return;
                 }
                 $("#resPhone").css("border", "");
@@ -640,10 +640,10 @@ $usernameArray = $restaurant->getAllUserNames();
             });
             
             $("#tableTwo").focusout(function () {
-                var inputPassword = $("#tableTwo").val();
-                if (!inputPassword) {
+                var inputTableTwo = $("#tableTwo").val();
+                if (!inputTableTwo) {
                     $("#tableTwo").css("border", "#FF0000 1px solid");
-                    $("#tableTwoLabel").replaceWith("<label id='tableTwoLabel'>Number of Tables for Two *<i style='color:red'>Cannot be empty</i></label>");
+                    $("#tableTwoLabel").replaceWith("<label id='tableTwoLabel'>Number of Tables for Two *<i style='color:red'> Cannot be empty</i></label>");
                     return;
                 }
                 $("#tableTwo").css("border", "");
@@ -651,10 +651,10 @@ $usernameArray = $restaurant->getAllUserNames();
             });
             
             $("#tableFour").focusout(function () {
-                var inputPassword = $("#tableFour").val();
-                if (!inputPassword) {
+                var inputTableFour = $("#tableFour").val();
+                if (!inputTableFour) {
                     $("#tableFour").css("border", "#FF0000 1px solid");
-                    $("#tableFourLabel").replaceWith("<label id='tableFourLabel'>Number of Tables for Four *<i style='color:red'>Cannot be empty</i></label>");
+                    $("#tableFourLabel").replaceWith("<label id='tableFourLabel'>Number of Tables for Four *<i style='color:red'> Cannot be empty</i></label>");
                     return;
                 }
                 $("#tableFour").css("border", "");
@@ -662,10 +662,10 @@ $usernameArray = $restaurant->getAllUserNames();
             });
             
             $("#tableSix").focusout(function () {
-                var inputPassword = $("#tableSix").val();
-                if (!inputPassword) {
+                var inputTableSix = $("#tableSix").val();
+                if (!inputTableSix) {
                     $("#tableSix").css("border", "#FF0000 1px solid");
-                    $("#tableSixLabel").replaceWith("<label id='tableSixLabel'>Number of Tables for Six *<i style='color:red'>Cannot be empty</i></label>");
+                    $("#tableSixLabel").replaceWith("<label id='tableSixLabel'>Number of Tables for Six *<i style='color:red'> Cannot be empty</i></label>");
                     return;
                 }
                 $("#tableSix").css("border", "");

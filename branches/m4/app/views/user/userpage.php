@@ -182,7 +182,7 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $currentDate = date("Y-mm-dd");
+                                    $currentDate = date("Y-m-d");
                                     $currentTime = date("H:i:s");
                                     foreach ($userReservations as $reservation) {
                                         echo '<tr>';
@@ -449,9 +449,12 @@
                     data: {functionName: 'cancelReservation', reservationId: reservationId},
                     dataType: "json"
                 });
-
-                request.done(function () {
-                    $("a[data-reservation-id=" + reservationId + "]").parent().parent().remove();
+                
+                request.done(function(data) {
+                    if(data.success === '1') {
+                        $("a[data-reservation-id="+reservationId+"]").parent().parent().remove();
+                        alert ("Successfully cancelled reservation");
+                    }
                 });
             }
 

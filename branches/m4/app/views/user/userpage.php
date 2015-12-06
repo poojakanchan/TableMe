@@ -257,8 +257,9 @@
                                                 </div>
                                                 <div class="row row-rating">
                                                     <div class="col-md-12">
+                                                        <h5 class="reviewrating"> Rating: 
                                                         <span class="starRating">
-                                                            <input id="rating5" type="radio" name="rating" value="5" checked>
+                                                            <input id="rating5" type="radio" name="rating" value="5">
                                                             <label for="rating5">5</label>
                                                             <input id="rating4" type="radio" name="rating" value="4">
                                                             <label for="rating4">4</label>
@@ -268,7 +269,7 @@
                                                             <label for="rating2">2</label>
                                                             <input id="rating1" type="radio" name="rating" value="1">
                                                             <label for="rating1">1</label>
-                                                        </span>
+                                                        </span> </h5>
                                                     </div>
                                                 </div>
                                                 <br>

@@ -112,7 +112,7 @@ class User_model extends Database{
      * function to retrive reviews of the provided user.
      */
     public function getUserReviews($userId) {
-        $sql = "SELECT r.name, r.restaurant_id, r.name, w.review_description, w.date_posted "
+        $sql = "SELECT r.name, r.restaurant_id, r.name, w.review_description, w.rating, w.date_posted "
                 . " FROM review w, restaurant r "
                 . " WHERE w.user_id=:userId AND w.restaurant_id=r.restaurant_id";
 
@@ -127,13 +127,19 @@ class User_model extends Database{
     /*
      * function to add a review
      */
-    public function submitReview($restaurantId, $userId, $reviewText) {
-        $sql = "UPDATE review SET review_description=:reviewText, date_posted=:dateTime "
+    public function submitReview($restaurantId, $userId, $reviewText, $rating) {
+        $sql = "UPDATE review SET review_description=:reviewText, date_posted=:dateTime, rating=:rating "
                 . " WHERE restaurant_id=:restaurantId AND user_id=:userId";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':restaurantId', $restaurantId, PDO::PARAM_INT);
         $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
         $stmt->bindParam(':reviewText', $reviewText, PDO::PARAM_STR);
+        if ($rating >=1 && $rating <=5) {
+            $stmt->bindParam(':rating', $rating, PDO::PARAM_INT);
+        }
+        else {
+            $stmt->bindParam(':rating', NULL);
+        }
         date_default_timezone_set("America/Los_Angeles");
         $dateTime = date("Y-m-d H:i:s");
         $stmt->bindParam(':dateTime', $dateTime, PDO::PARAM_STR);

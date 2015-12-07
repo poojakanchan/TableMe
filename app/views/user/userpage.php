@@ -219,6 +219,7 @@
                                         <!--<th>Time</th>-->
                                         <!--<th>Number of People</th>-->
                                         <th>Review</th>
+                                        <th>Rating</th>
                                         <th>Date posted</th>
                                     </tr>
                                 </thead>
@@ -236,6 +237,12 @@
                                             } else {
                                                 echo '<td>' . $review['review_description'] . '</td>';
                                             }
+                                            if ($review['rating'] == NULL) {
+                                                echo '<td>No Rating</td>';
+                                            }
+                                            else {
+                                                echo '<td>'.$review['rating'].'</td>';
+                                            }
 
                                             echo empty($review['date_posted']) ? '<td></td>' : '<td>' . $review['date_posted'] . '</td>';
                                             echo '</tr>';
@@ -246,7 +253,7 @@
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <button id="close1" type="button" class="close" data-dismiss="modal">&times;</button>
                                                 <h3 class="modal-title" id="restaurant-name"></h3>
                                             </div>
                                             <div class="modal-body">
@@ -260,7 +267,7 @@
                                                 <div class="row row-rating">
                                                     <div class="col-md-12">
                                                         <h5 class="reviewrating"> Rating: 
-                                                        <span class="starRating">
+                                                        <span class="starRating" id="user-rating" data-rating-value="">
                                                             <input id="rating5" type="radio" name="rating" value="5">
                                                             <label for="rating5">5</label>
                                                             <input id="rating4" type="radio" name="rating" value="4">
@@ -284,7 +291,7 @@
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button id="close2" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                 <button type="submit" class="btn btn-primary" value="submit-review" name="submit-review" id="submit-review" data-reservation-id="">Submit Review</button>
                                             </div>
                                         </div>
@@ -363,6 +370,7 @@
 
         <script>
             // js for tabs
+            var userRating = 0;
             $(document).ready(function () {
                 $(".nav-tabs a").click(function () {
                     $(this).tab('show');
@@ -424,8 +432,21 @@
                 });
 
                 $("button#submit-review").click(function () {
+                    if (userRating === 0) {
+                        alert ('Please rate the restaurant');
+                        return;
+                    }
                     var str = $("textarea#review-text").val().substring(0, 1000);
-                    submitReview($(this).data("reservation-id"), str);
+                    submitReview($(this).data("reservation-id"), str, userRating);
+                    userRating = 0;
+                });
+                
+                $("button[id*='close']").click(function() {
+                   $("textarea#review-text").val(""); 
+                });
+                
+                $("input[id*='rating']").click(function() {
+                    userRating = $(this).val();
                 });
 
 
@@ -458,11 +479,14 @@
                 });
             }
 
-            function submitReview(restaurantId, reviewText) {
+            function submitReview(restaurantId, reviewText, userRating) {
                 var request = $.ajax({
                     url: "../../controllers/User_Controller.php",
-                    data: {functionName: 'submitReview', restaurantId: restaurantId,
-                        userId: <?php echo $userInfo['user_id']; ?>, reviewText: reviewText},
+                    data: {functionName: 'submitReview', 
+                            restaurantId: restaurantId,
+                            userId: <?php echo $userInfo['user_id']; ?>, 
+                            reviewText: reviewText,
+                            rating: userRating },
                     dataType: "json"
                 });
 
@@ -470,8 +494,10 @@
                     var dateTime = data.dateTime;
                     var reviewButton = $('a[data-reservation-id="' + restaurantId + '"]');
                     var nextTd = $(reviewButton).parent().next('td');
+                    var nextNextTd = nextTd.next('td');
                     reviewButton.replaceWith(reviewText);
-                    nextTd.text(dateTime);
+                    nextTd.text(userRating);
+                    nextNextTd.text(dateTime);
 
                     $('div#modal-review').modal('hide');
                 });

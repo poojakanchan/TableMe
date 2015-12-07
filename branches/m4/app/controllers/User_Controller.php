@@ -65,7 +65,7 @@ if (isset($_GET['functionName'])) {
                 $result['error'] = 'Missing restaurant id, user id or review text!';
                 break;
             }
-            $review = $userDb->submitReview($_GET['restaurantId'], $_GET['userId'], $_GET['reviewText']);
+            $review = $userDb->submitReview($_GET['restaurantId'], $_GET['userId'], $_GET['reviewText'], $_GET['rating']);
             if ($review) {
                 $result['success'] = '1';
                 $result['dateTime'] = $review;

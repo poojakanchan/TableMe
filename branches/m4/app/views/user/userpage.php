@@ -1,3 +1,30 @@
+<?php
+    require_once 'header.php';
+    require_once '../../models/User_model.php';
+    
+    if (!isset($_SESSION['username'])) {
+        header('location: ../home/login.php');
+    }
+
+    $db = new User_model();
+    $username = $_SESSION['username'];
+    $userInfo = $db->getUser($username);
+    $userReviews = $db->getUserReviews($userInfo['user_id']);
+    $userReservations = $db->getUserReservations($userInfo['user_id']);
+
+    if ($_POST) {
+        $newPhoneNum = htmlspecialchars($_POST['phone_number']);
+        $newEmail = htmlspecialchars($_POST['email']);
+        $newPassword = htmlspecialchars($_POST['password']);
+        $newImage = null;
+        
+        if (is_uploaded_file($_FILES['user-profile-image']['tmp_name'])) {
+            $newImage = file_get_contents($_FILES["user-profile-image"]["tmp_name"]);
+        }
+        $db->updateUser($username, $newPhoneNum, $newEmail, $newPassword, $newImage);
+        $userInfo = $db->getUser($username);
+    }
+    ?>
 <!DOCTYPE HTML> 
 <head>
     <meta charset="utf-8">
@@ -115,33 +142,6 @@
 
 <body>
     <!-- Navigation Bar -->
-    <?php
-    require_once 'header.php';
-    require_once '../../models/User_model.php';
-
-    if (!isset($_SESSION['username'])) {
-        header('location: ../home/login.php');
-    }
-
-    $db = new User_model();
-    $username = $_SESSION['username'];
-    $userInfo = $db->getUser($username);
-    $userReviews = $db->getUserReviews($userInfo['user_id']);
-    $userReservations = $db->getUserReservations($userInfo['user_id']);
-
-    if ($_POST) {
-        $newPhoneNum = htmlspecialchars($_POST['phone_number']);
-        $newEmail = htmlspecialchars($_POST['email']);
-        $newPassword = htmlspecialchars($_POST['password']);
-        $newImage = null;
-        
-        if (is_uploaded_file($_FILES['user-profile-image']['tmp_name'])) {
-            $newImage = file_get_contents($_FILES["user-profile-image"]["tmp_name"]);
-        }
-        $db->updateUser($username, $newPhoneNum, $newEmail, $newPassword, $newImage);
-        $userInfo = $db->getUser($username);
-    }
-    ?>
     <br><br>
     <div class="container">
         <div class="row">

@@ -211,7 +211,7 @@ class Restaurant_model  extends Database{
     
     public function getRestaurantReviews($resId) {
         $sql = "SELECT * FROM review INNER JOIN user "
-                . " ON review.user_id=user.user_id AND review.restaurant_id=:resId AND review.review_description!=NULL "
+                . " ON review.user_id=user.user_id AND review.restaurant_id=:resId AND review.review_description IS NOT NULL "
                 . " ORDER BY date_posted DESC";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':resId', $resId, PDO::PARAM_INT);

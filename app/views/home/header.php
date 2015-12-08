@@ -4,8 +4,10 @@ if (session_id() == '') {
 }
 if (isset($_GET['logout'])) {
     unset($_SESSION['username']);
+    if (isset($_SESSION['user_id'])) {
+        unset($_SESSION['user_id']);
+    }
     unset($_GET['logout']);
-    header('location: login.php');
 }
 ?>
 <nav class ="navbar navbar-default">

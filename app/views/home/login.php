@@ -33,6 +33,8 @@
                 switch ($loginRole['role']) {
                     case "user":
                         $_SESSION['role'] = "user";
+                        $userInfo = $db->getUser($username);
+                        $_SESSION['user_id'] = intval($userInfo['user_id']);
                         header('location: ../../../index.php');
                         break;
                     case "owner":

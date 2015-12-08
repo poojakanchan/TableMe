@@ -64,7 +64,8 @@ class Restaurant_model  extends Database{
     }
     
     /*
-     * get restaurants for passed search string.
+     * get restaurants for passed search string with name, address and category combined
+     * with limit number of outputs starting at offset in database
      */
     public function findRestaurantsLimitOffset($nameAddCat, $limit, $offset) {
         $sql = "SELECT * FROM restaurant WHERE name_address_category LIKE "; 
@@ -200,6 +201,9 @@ class Restaurant_model  extends Database{
         return null;
     }
     
+    /*
+     * Retrieve the food categories allowed in the table 
+     */
     public function getFoodCategories() {
         $sql = "SELECT name FROM food_category";
         $stmt = $this->dbh->prepare($sql);
@@ -209,6 +213,9 @@ class Restaurant_model  extends Database{
         return null;
     }
     
+    /*
+     * Get reviews of a restaurant based on restaurant id.
+     */
     public function getRestaurantReviews($resId) {
         $sql = "SELECT * FROM review INNER JOIN user "
                 . " ON review.user_id=user.user_id AND review.restaurant_id=:resId AND review.review_description IS NOT NULL "
@@ -222,6 +229,9 @@ class Restaurant_model  extends Database{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
+    /*
+     * Update an existing restaurant (description, address and phone number) in the restaurant table based on restaurant id.
+     */
     public function updateRestaurant($restaurantId, $description, $address, $phoneNum) {
         $sql = "UPDATE restaurant SET description=:description, address=:address, phone_no=:phoneNum "
                 . " WHERE restaurant_id=:restaurantId";

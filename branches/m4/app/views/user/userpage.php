@@ -9,8 +9,8 @@
     $db = new User_model();
     $username = $_SESSION['username'];
     $userInfo = $db->getUser($username);
-    $userReviews = $db->getUserReviews($userInfo['user_id']);
-    $userReservations = $db->getUserReservations($userInfo['user_id']);
+    $userReviews = $db->getUserReviews($_SESSION['user_id']);
+    $userReservations = $db->getUserReservations($_SESSION['user_id']);
 
     if ($_POST) {
         $newPhoneNum = htmlspecialchars($_POST['phone_number']);

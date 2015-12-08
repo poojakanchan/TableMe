@@ -77,6 +77,20 @@ public function validateLogin($username, $password) {
         }
         return false;
     }
+    
+    /*
+      * function to get user details from database for the provided user name.
+      */
+     
+     public function getUser($username) {
+        $sql = "SELECT * FROM user WHERE username=:username";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':username', $username);
+        if ($stmt->execute()) {
+            return $stmt->fetch();
+        }
+        return null;
+    }
      
     
 }

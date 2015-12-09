@@ -442,7 +442,8 @@
                 });
                 
                 $("button[id*='close']").click(function() {
-                   $("textarea#review-text").val(""); 
+                   $("textarea#review-text").val("");
+                   userRating = 0;
                 });
                 
                 $("input[id*='rating']").click(function() {

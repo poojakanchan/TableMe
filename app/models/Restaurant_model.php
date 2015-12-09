@@ -3,7 +3,6 @@
 /*
  * class to handle database functions related to restaurant table.
  */
-//session_start();
 require_once 'Database.php';
  
 class Restaurant_model  extends Database{
@@ -247,6 +246,9 @@ class Restaurant_model  extends Database{
         return true;
     }
     
+    /*
+     * Update restaurant's thumbnail image based on restaurant id.
+     */
     public function updateRestaurantThumbnail($restaurantId, $thumbnail) {
         $sql = "UPDATE restaurant SET thumbnail=:thumbnail "
                 . " WHERE restaurant_id=:restaurantId";
@@ -260,7 +262,10 @@ class Restaurant_model  extends Database{
         return true;
     }
     
-    public function updateRestaurantMenu($resId, $menu) {
+    /*
+     * Upadate restaurant's menu based on restaurant id.
+     */
+    public function updateRestaurantMenu($restaurantId, $menu) {
         $sql = "UPDATE restaurant SET menu=:menu "
                 . " WHERE restaurant_id=:restaurantId";
         $stmt = $this->dbh->prepare($sql);
@@ -273,6 +278,10 @@ class Restaurant_model  extends Database{
         return true;
     }
     
+    /*
+     * If provided multimediaId > 0, update restaurant's image in multimedia table based on restaurant id and multimedia id.
+     * If multimediaId < 0, insert new image into multimedia table
+     */
     public function updateMultimedia($multimediaId, $img, $restaurantId) {
         if (intval($multimediaId) > 0) {
             $sql = "UPDATE multimedia SET media=:media WHERE multimedia_id=:multimediaId";
@@ -295,6 +304,9 @@ class Restaurant_model  extends Database{
         return true;
     }
     
+    /*
+     * Update operating hours of a restaurant. The restaurantId is contained in the associative array $opHrs
+     */
     public function updateOperatingHours($opHrs) {
         $sql = "UPDATE operating_hours SET monday_from=:mondayFrom, monday_to=:mondayTo, "
                 . " tuesday_from=:tuesdayFrom, tuesday_to=:tuesdayTo, wednesday_from=:wednesdayFrom, "
@@ -328,6 +340,9 @@ class Restaurant_model  extends Database{
         return true;
     }
     
+    /*
+     * Set the average rating of a restaurant in the restaurant table
+     */
     public function setAverageRating ($restaurantId, $averageRating) {
         $sql = "UPDATE restaurant set average_rating=:averageRating "
                 . " WHERE restaurant_id=:restaurantId";

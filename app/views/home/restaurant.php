@@ -10,10 +10,13 @@ if(!isset($reservation))
 {
       $reservation = new Reservation_controller();
 }
-if($_POST)
-{
-      $reservation->add();
+//sanitize $_POST array
+$_POST = filter_input_array(INPUT_POST);
+
+if($_POST) {
+    $reservation->add();
 }
+
 $restaurantDb = new Restaurant_model();
 $resId = (array_key_exists('resid', $_GET) ? htmlspecialchars($_GET['resid']) : 0);
 $restaurant = $restaurantDb->findRestaurantById($resId);
@@ -27,22 +30,17 @@ $foodCategory = $restaurant['food_category_name'];
 $description = $restaurant['description'];
 $menu = base64_encode($restaurant['menu']);
 
-//        var_dump($restaurant);
-//        echo '<br><br>';
-//        var_dump($menu);
-//        exit();
-
 $address = $restaurant['address'];
 $phone = $restaurant['phone_no'];
 //        $imgArray = $db->getRestaurantImages($resId);
 
-$event_model = new Event_model();
-$events = $event_model->getEventsByRestaurantId($resId);;
+$eventModel = new Event_model();
+$events = $eventModel->getEventsByRestaurantId($resId);;
 
-$operating_hours_model = new OperationHours_model();
-$oprHours = $operating_hours_model->getOperatingHoursByRestaurantId($resId);
+$operatingHoursModel = new OperationHours_model();
+$oprHours = $operatingHoursModel->getOperatingHoursByRestaurantId($resId);
 
-$time_message = null;
+$timeMessage = null;
 $from = NULL;
 $to = null;
 if (!empty($oprHours)) {
@@ -88,12 +86,12 @@ if (!empty($oprHours)) {
     if (time() >= $fromtime && time() < $totime) {
         $diff = abs(($totime - time()) / 60);
         if ($diff <= 60) {
-            $time_message = "Closing soon.";
+            $timeMessage = "Closing soon.";
         } else {
-            $time_message = "Open Now.";
+            $timeMessage = "Open Now.";
         }
     } else {
-        $time_message = "Closed Now.";
+        $timeMessage = "Closed Now.";
     }
 }
 
@@ -458,8 +456,8 @@ if ($avgRating >= 1) {
 
                             <h4>                  
                             <?php
-                            if ($time_message != null) {
-                                echo $time_message;
+                            if ($timeMessage != null) {
+                                echo $timeMessage;
                             }?>
                             </h4>
 

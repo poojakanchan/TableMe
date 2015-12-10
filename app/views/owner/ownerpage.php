@@ -111,32 +111,21 @@
         <!-- Will merge the style and script code into CSS and JS file after all is done. -->
         
         <style>
-            body{
-                background: url(background.jpg) no-repeat center center fixed; 
-                -webkit-background-size: cover;
-                -moz-background-size: cover;
-                -o-background-size: cover;
-                background-size: cover;
-                /*background-color:#2E52E0;*/
-                /*background-image: url("background.jpg");*/
-                color:#FFFFFF;
-            }
             .containerMain{
                 /*background-color:#2E52E0!important;*/
                 background-color:rgba(0,0,0,0)!important;
             }
+            .containerMain{
+                /*background-color:#2E52E0!important;*/
+                background-color:rgba(0,0,0,0)!important;
+                border: none!important;
+            }
             .container-fluid{
                 margin: 10px 10px 10px 10px;
                 border-radius: 25px;
-                /*border: 6px solid #2E52E0;*/
-                /*background-color:#FFFFFF;*/
+                border: 1px solid #e3e3e3;
+                background-color:#f5f5f5;
                 /*background-color:rgba(0,0,0,0.5)*/
-            }
-            .list-group-item, .table{
-                background-color:rgba(0,0,0,0)!important;
-            }
-            a{
-                color:#FFFFFF;
             }
         </style>
     </head>
@@ -269,7 +258,7 @@
                                     </div>
                                 </div>
                                 <br>
-                                <button id="restaurant-detail-submit" class="btn btn-default" data-restaurant-id="<?php echo $resId; ?>">Change Restaurant Information</button>
+                                <button id="restaurant-detail-submit" class="btn btn-primary" data-restaurant-id="<?php echo $resId; ?>">Change Restaurant Information</button>
                             <!--</form>-->
                         </div>
                     
@@ -285,7 +274,7 @@
                                         <form id="profile-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" >
                                         <input type="file" name="profile-image" id="profile-image" /><br>
                                         <input type="text" name="image_type" value="profile" hidden="true"/>
-                                        <button type = "button" class = "btn btn-default" onclick="submitImage('profile-image', 'profile-form')">Upload</button>
+                                        <button type = "button" class = "btn btn-primary" onclick="submitImage('profile-image', 'profile-form')">Upload</button>
                                         </form>
                                     </div>
                                 </div>
@@ -308,7 +297,7 @@
                                         <input type="file" name="multimedia-image" id="multimedia-image1" /><br>
                                         <input type="text" name="image_type" value="multimedia" hidden="true" />
                                         <input type="text" name="multimedia-id" value="<?php echo $i<$imageCount ? $restaurantImages[$i]['multimedia_id'] : -1; $i++; ?>" hidden="true" /> 
-                                        <button type = "button" class = "btn btn-default" onclick="submitImage('multimedia-image1', 'multimedia-form1')">Upload</button>
+                                        <button type = "button" class = "btn btn-primary" onclick="submitImage('multimedia-image1', 'multimedia-form1')">Upload</button>
                                         </form>
                                     </div>
                                     <div class = "col-sm-6 col-md-3">
@@ -327,7 +316,7 @@
                                         <input type="file" name="multimedia-image" id="multimedia-image2" /><br>
                                         <input type="text" name="image_type" value="multimedia" hidden="true" />
                                         <input type="text" name="multimedia-id" value="<?php echo $i<$imageCount ? $restaurantImages[$i]['multimedia_id'] : -1; $i++; ?>" hidden="true" /> 
-                                        <button type = "button" class = "btn btn-default" onclick="submitImage('multimedia-image2', 'multimedia-form2')">Upload</button>
+                                        <button type = "button" class = "btn btn-primary" onclick="submitImage('multimedia-image2', 'multimedia-form2')">Upload</button>
                                         </form>
                                     </div>
                                     <div class = "col-sm-6 col-md-3">
@@ -346,7 +335,7 @@
                                         <input type="file" name="multimedia-image" id="multimedia-image3" /><br>
                                         <input type="text" name="image_type" value="multimedia" hidden="true" />
                                         <input type="text" name="multimedia-id" value="<?php echo $i<$imageCount ? $restaurantImages[$i]['multimedia_id'] : -1; $i++; ?>" hidden="true" /> 
-                                        <button type = "button" class = "btn btn-default" onclick="submitImage('multimedia-image3', 'multimedia-form3')">Upload</button>
+                                        <button type = "button" class = "btn btn-primary" onclick="submitImage('multimedia-image3', 'multimedia-form3')">Upload</button>
                                         </form>
                                     </div>
                                     <div class = "col-sm-6 col-md-3">
@@ -365,7 +354,7 @@
                                         <input type="file" name="multimedia-image" id="multimedia-image4" /><br>
                                         <input type="text" name="image_type" value="multimedia" hidden="true" />
                                         <input type="text" name="multimedia-id" value="<?php echo $i<$imageCount ? $restaurantImages[$i]['multimedia_id'] : -1; $i++; ?>" hidden="true" /> 
-                                        <button type = "button" class = "btn btn-default" onclick="submitImage('multimedia-image4', 'multimedia-form4')">Upload</button>
+                                        <button type = "button" class = "btn btn-primary" onclick="submitImage('multimedia-image4', 'multimedia-form4')">Upload</button>
                                         </form>
                                     </div>
                                 </div>
@@ -454,7 +443,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button id="operating-hours-submit" type = "submit" class = "btn btn-default" data-restaurant-id="<?php echo $resId; ?>">Change Operating Hours</button>
+                            <button id="operating-hours-submit" type = "submit" class = "btn btn-primary" data-restaurant-id="<?php echo $resId; ?>">Change Operating Hours</button>
                         </div>
                         <div class="tab-pane fade" id="change-menu">
                             <div class="col-md-12">
@@ -462,7 +451,7 @@
                                     <form id="menu-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" >
                                         <input type="file" name="menu-image" id="menu-image" /><br>
                                         <input type="text" name="image_type" value="menu" hidden="true"/>
-                                        <button type = "button" class = "btn btn-default" onclick="submitImage('menu-image', 'menu-form')">Upload Menu</button>
+                                        <button type = "button" class = "btn btn-primary" onclick="submitImage('menu-image', 'menu-form')">Upload Menu</button>
                                     </form>
                                 <br><br>
                                 <h3>Current Menu:</h3>
@@ -656,7 +645,7 @@
                                 <div class="form-group">
                                     <div class="col-xs-12">
                                         <br>
-                                        <button class="btn btn-success" id="submit-change-profile" data-username="<?php echo $ownerInfo['username']; ?>"><i class="glyphicon glyphicon-ok-sign"></i>Change Profile</button>
+                                        <button class="btn btn-primary" id="submit-change-profile" data-username="<?php echo $ownerInfo['username']; ?>"><i class="glyphicon glyphicon-ok-sign"></i>Change Profile</button>
                                         <button class="btn btn-danger" type="reset"><i class="glyphicon glyphicon-repeat"></i>Reset</button>
                                     </div>
                                 </div>
@@ -676,7 +665,7 @@
                                       <p id="cancelMsg"></p>
                                     </div>-->
                                     <div class="modal-footer">
-                                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                      <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                                       <button type="button" class="btn btn-danger" id="cancel-ok" data-dismiss="modal" data-event-id="" data-hostess-username="">OK </button>
                                     </div>
                                   </div>

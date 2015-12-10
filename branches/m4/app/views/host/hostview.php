@@ -76,7 +76,8 @@
                 -ms-user-select: none;
                 user-select: none;
                 
-                color:#FFFFFF;
+                /*color:#FFFFFF;*/
+                color:#000000;
             }
             .date-container {
                 padding: 0px 40px;   
@@ -137,30 +138,12 @@
                 } 
             }
             
-            body{
-                background: url(background.jpg) no-repeat center center fixed; 
-                -webkit-background-size: cover;
-                -moz-background-size: cover;
-                -o-background-size: cover;
-                background-size: cover;
-                /*background-color:#2E52E0;*/
-                /*background-image: url("background.jpg");*/
-                color:#FFFFFF;
-            }
-            .containerMain{
-                /*background-color:#2E52E0!important;*/
-                background-color:rgba(0,0,0,0)!important;
-            }
             .container-fluid{
                 margin: 10px 10px 10px 10px;
                 border-radius: 25px;
-                /*border: 6px solid #2E52E0;*/
-                /*background-color:#FFFFFF;*/
+                border: 1px solid #e3e3e3;
+                background-color:#f5f5f5;
                 /*background-color:rgba(0,0,0,0.5)*/
-            }
-            
-            .modal{
-                color:#000000;
             }
         </style>
         <script>
@@ -439,122 +422,120 @@
              
             <!--Make reservation pop up-->
             <div  class="modal fade" id="reservation-<?php echo $resId ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-
-                                <form name="myForm" action="#.php"
-                                      onsubmit="return validateForm()" method="post">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                <label class="modal-title" name ="myModalLabel" id="myModalLabel">Make reservation at <?php echo $res_name ?></label>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="col-md-12 well">
-                                                    <div class="row">
-                                                        <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
-                                                        <!-- for debug purposes, displays restaurant ID -->
-                                                        <?php //echo $resId ?>
-                                                        <div class="col-md-12">          
-                                                            <label>Number of Guests</label>
-                                                            <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
-                                                                <option value="1">1</option>
-                                                                <option value="2">2</option>
-                                                                <option value="3">3</option>
-                                                                <option value="4">4</option>
-                                                                <option value="4">4</option>
-                                                                <option value="6">6</option>
-                                                            </select>
-
-                                                            <br>
-                                                            <br>
-
-                                                            <!-- This is for the datapicking method -->
-                                                            <div class="input-append date" id="datetimepicker1">
-                                                                <label>Enter Date</label>
-                                                                <input  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date"></input>
-                                                                <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span> 
-                                                                <!-- <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span> -->
-                                                            </div>
-                                                            
-
-                                                            <label>Enter Time</label>
-                                                            <select class="selectpicker" data-width="auto" id="hours" name="hours" required>
-                                                                <!-- <option value="" disabled selected>Hours</option> -->
-                                                                <option value="1">1</option>
-                                                                <option value="2">2</option>
-                                                                <option value="3">3</option>
-                                                                <option value="4">4</option>
-                                                                <option value="5">5</option>
-                                                                <option value="6">6</option>
-                                                                <option value="7">7</option>
-                                                                <option value="8">8</option>
-                                                                <option value="9">9</option>
-                                                                <option value="10">10</option>
-                                                                <option value="11">11</option>
-                                                                <option value="12">12</option>
-                                                            </select>
-                                                            
-                                                            <select class="selectpicker" data-width="auto" id="minutes" name="minutes" required>
-                                                                    <!--<option value="" disabled selected>Minutes</option> -->
-                                                                    <option value=":00">:00</option>
-                                                                    <option value=":30">:30</option>
-                                                             </select>
-                                                            
-                                                            <select class="selectpicker" data-width="auto" id="ampm" name="ampm" required>
-                                                                    <option value="" disabled selected>AM/PM</option>
-                                                                    <option value="am">am</option>
-                                                                    <option value="pm">pm</option>
-                                                            </select>
-
-                                                            <br>
-                                                            <br>
-
-                                                            <div class="row">
-
-
-                                                                <div class="col-md-6 form-group">
-                                                                    <label>First Name</label>
-                                                                    <input type="text" name="reservationFirstName" placeholder="Please enter your first name..." class="form-control" required>
-                                                                </div>
-                                                                <div class="col-md-6 form-group">
-                                                                    <label>Last Name</label>
-                                                                    <input type="text" name="reservationLastName" placeholder="Please enter your last name..." class="form-control" required>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="row">
-                                                                <div class="col-md-6 form-group">
-                                                                    <label>Email</label>
-                                                                    <input type="email" name="reservationEmail" placeholder="Please enter your email address..." class="form-control" required>
-                                                                </div>
-                                                                <div class="col-md-6 form-group">
-                                                                    <label>Phone Number</label>
-                                                                    <input type="text" name="reservationPhone" placeholder="Please enter your phone number..." class="form-control">
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label>Accommodations</label>
-                                                                <input type="text" name="accommodations" placeholder="Please enter any special requests you may have..." class="form-control">
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary" value="submit-reservation" name="submit-reservation" >Make reservation</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+                <form name="myForm" action="#.php"
+                      onsubmit="return validateForm()" method="post">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <label class="modal-title" name ="myModalLabel" id="myModalLabel">Make reservation at <?php echo $res_name ?></label>
                             </div>
+                            <div class="modal-body">
+                                <div class="col-md-12 well">
+                                    <div class="row">
+                                        <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
+                                        <!-- for debug purposes, displays restaurant ID -->
+                                        <?php //echo $resId ?>
+                                        <div class="col-md-12">          
+                                            <label>Number of Guests</label>
+                                            <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="4">4</option>
+                                                <option value="6">6</option>
+                                            </select>
+
+                                            <br>
+                                            <br>
+
+                                            <!-- This is for the datapicking method -->
+                                            <div class="input-append date" id="datetimepicker1">
+                                                <label>Enter Date</label>
+                                                <input  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date"></input>
+                                                <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span> 
+                                                <!-- <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span> -->
+                                            </div>
+
+
+                                            <label>Enter Time</label>
+                                            <select class="selectpicker" data-width="auto" id="hours" name="hours" required>
+                                                <!-- <option value="" disabled selected>Hours</option> -->
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                            </select>
+
+                                            <select class="selectpicker" data-width="auto" id="minutes" name="minutes" required>
+                                                    <!--<option value="" disabled selected>Minutes</option> -->
+                                                    <option value=":00">:00</option>
+                                                    <option value=":30">:30</option>
+                                             </select>
+
+                                            <select class="selectpicker" data-width="auto" id="ampm" name="ampm" required>
+                                                    <option value="" disabled selected>AM/PM</option>
+                                                    <option value="am">am</option>
+                                                    <option value="pm">pm</option>
+                                            </select>
+
+                                            <br>
+                                            <br>
+
+                                            <div class="row">
+
+
+                                                <div class="col-md-6 form-group">
+                                                    <label>First Name</label>
+                                                    <input type="text" name="reservationFirstName" placeholder="Please enter your first name..." class="form-control" required>
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label>Last Name</label>
+                                                    <input type="text" name="reservationLastName" placeholder="Please enter your last name..." class="form-control" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <label>Email</label>
+                                                    <input type="email" name="reservationEmail" placeholder="Please enter your email address..." class="form-control" required>
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label>Phone Number</label>
+                                                    <input type="text" name="reservationPhone" placeholder="Please enter your phone number..." class="form-control">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Accommodations</label>
+                                                <input type="text" name="accommodations" placeholder="Please enter any special requests you may have..." class="form-control">
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" value="submit-reservation" name="submit-reservation" >Make reservation</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
             
             <!--List of reservations-->
-            
             
             <div class="row" id ="reservation_info" hidden>
               <form method = "post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">

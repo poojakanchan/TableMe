@@ -25,29 +25,13 @@
         h5{
             font-weight: bold;
         }
-        body{
-            background: url(background.jpg) no-repeat center center fixed; 
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-            /*background-color:#2E52E0;*/
-            /*background-image: url("background.jpg");*/
-            color:#FFFFFF;
-        }
-        .containerMain{
-            /*background-color:#2E52E0!important;*/
-            background-color:rgba(0,0,0,0)!important;
-        }
+        
         .container-fluid{
             margin: 10px 10px 10px 10px;
             border-radius: 25px;
-            /*border: 6px solid #2E52E0;*/
-            /*background-color:#FFFFFF;*/
+            border: 1px solid #e3e3e3;
+            background-color:#f5f5f5;
             /*background-color:rgba(0,0,0,0.5)*/
-        }
-        a{
-            color:#FFFFFF;
         }
     </style>
 </head>
@@ -66,6 +50,7 @@
             <div class="col-md-12">
                 <div class="col-md-4">
                     <div class="container-fluid">
+                        <br>
                         <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
                         <h4>Pooja Kanchan [Team Lead]</h4>
                         <a href="mailto:pooj.kanchan@gmail.com">pooj.kanchan@gmail.com</a>
@@ -73,6 +58,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="container-fluid">
+                        <br>
                         <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
                         <h4>Adrian Lee [Tech Lead]</h4>
                         <a href="mailto:aznanimekid@gmail.com">aznanimekid@gmail.com</a>
@@ -80,6 +66,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="container-fluid">
+                        <br>
                         <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
                         <h4>HaiChuan Duan [Back-end Lead]</h4>
                         <a href="mailto:haichuand@gmail.com">haichuand@gmail.com</a>
@@ -92,6 +79,7 @@
             <div class="col-md-12">
                 <div class="col-md-4">
                     <div class="container-fluid">
+                        <br>
                         <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
                         <h4>Sabreen Michael [Documentation Lead]</h4>
                         <a href="mailto:sabreenmichael@gmail.com">sabreenmichael@gmail.com</a>
@@ -99,6 +87,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="container-fluid">
+                        <br>
                         <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
                         <h4>Michael Lee [QA Lead]</h4>
                         <a href="mailto:openmichael65@gmail.com">openmichael65@gmail.com</a>
@@ -106,6 +95,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="container-fluid">
+                        <br>
                         <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
                         <h4>SeungKeun Kim [Front-end Lead]</h4>
                         <a href="mailto:tjdrms1314@gmail.com">tjdrms1314@gmail.com</a>
@@ -113,24 +103,5 @@
                 </div>
             </div>
         </div>
-<!--        <div class="col-md-6 backend">
-            <h3>Back-end developers:</h3> <br>
-            <h4>Pooja Kanchan [Team Lead]</h4>
-            <p>pooj.kanchan@gmail.com</p>
-            <h4>Adrian Lee [Tech Lead]</h4>
-            <p>aznanimekid@gmail.com</p>
-            <h4>HaiChuan Duan [Back-end Lead]</h4>
-            <p>haichuand@gmail.com</p>
-        </div>
-        <div class="col-md-6 frontend">
-            <h3>Front-end developers:</h3> <br>
-            <h4>Sabreen Michael [Documentation Lead]</h4>
-            <p>sabreenmichael@gmail.com</p>
-            <h4>Michael Lee [QA Lead]</h4>
-            <p>openmichael65@gmail.com</p>
-            <h4>SeungKeun Kim [Front-end Lead]</h4>
-            <p> tjdrms1314@gmail.com </p>
-        </div>-->
     </div>
-
 </body>

@@ -151,6 +151,25 @@ class User_model extends Database{
     }
     
     /*
+     * function to add a review
+     */
+    public function addReview($restaurantId, $userId) {
+        echo 'addreview rest ' . $restaurantId . '' . $userId;
+        $sql = "INSERT INTO review(restaurant_id,user_id) values(:restaurantId,:userId)";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':restaurantId', $restaurantId, PDO::PARAM_INT);
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+       
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            
+            return false;
+        }
+        return true;
+    }
+    
+    
+    /*
      * function to retrive reservations of the provided user.
      */
     public function getUserReservations($userId) {

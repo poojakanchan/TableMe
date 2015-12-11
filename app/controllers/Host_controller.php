@@ -23,10 +23,17 @@ class Host_controller extends Controller{
     }
     
     public function markArrived($resId, $reservationId){
-     
-        $reservationAarray = $this->reservation->getReservationById($reservationId);
-        $reservation = $reservationAarray[0];
-        $this->reservation->markArrived($reservationId);
+        $reservationAarray = $this->reservation->getReservationById($reservationId);   
+        $userReservation = $reservationAarray[0];
+        if($userReservation['mark_arrived'] == 0){
+            $this->reservation->markArrived($reservationId);
+            $user_id= $userReservation['user_id'];
+          
+            if($user_id != null){
+               $userModel = $this->model('User_model');
+                $userModel->addReview($resId,$user_id);
+            }
+        }
        /* $user_visited = $this->model('User_visited_model');
         
         $restaurant_Id = $reservation['restaurant_id'];

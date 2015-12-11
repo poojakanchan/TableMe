@@ -309,6 +309,10 @@ if (isset($_SESSION['user_id'])) {
                 background-color:#f5f5f5;
                 /*background-color:rgba(0,0,0,0.5)*/
             }
+            .pager{
+                margin-bottom: -5;
+                margin-top: -5;
+            }
         </style>
         <script>
             $('.selectpicker').selectpicker();
@@ -321,6 +325,10 @@ if (isset($_SESSION['user_id'])) {
 
     </head>
     <body>
+        <ul class = "pager">
+            <li class = "previous"><a href="#" class="pager" onClick="javascript:history.back()">&larr; Back to search result</a></li>
+        </ul>
+        <!--<a href="#" onClick="javascript:history.back(1)">Back to search result</a>-->
         <div class="container-fluid containerMain">
             <div class="mainInfo col-md-8">
                 <div class="restaurantprofile col-md-12">

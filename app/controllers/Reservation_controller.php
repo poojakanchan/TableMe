@@ -30,9 +30,13 @@ class Reservation_controller extends Controller {
             //parsing information from form submission
             $reserveName = htmlspecialchars($_POST["reservationFirstName"]) . " " . htmlspecialchars($_POST["reservationLastName"]);
             $reservePhone = preg_replace("/[^0-9]/", "", htmlspecialchars($_POST["reservationPhone"]));
-            //$reserveMonth = date_parse(htmlspecialchars($_POST["month"]));
-            //$reserveYear = htmlspecialchars($_POST["year"]);
-            //$reserveDay = htmlspecialchars($_POST["day"]);
+            
+            /*OLD FORM FORMAT 
+            $reserveMonth = date_parse(htmlspecialchars($_POST["month"]));
+            $reserveYear = htmlspecialchars($_POST["year"]);
+            $reserveDay = htmlspecialchars($_POST["day"]);
+             * 
+             */
             
             //parse string and separate date input and format properly for SQL insertion
             $reserveDateElements = explode("/", $_POST['date']);
@@ -51,7 +55,8 @@ class Reservation_controller extends Controller {
             //echo $reserveTime;
             $reserveTime = date("H:i", strtotime($reserveTime));
             //echo $reserveTime;
-            $reserve_user_id=1;
+            $reserve_user_id = htmlspecialchars($_POST['userid']);
+            echo $reserve_user_id;
             $restaurantID = htmlspecialchars($_POST["restaurant"]);
             
             
@@ -71,14 +76,17 @@ class Reservation_controller extends Controller {
             //formatting string for $capacity in table count method
             if($groupSize == 2 || $groupSize == 1)
             {
+                $groupSize = 2;
                 $capacity = "num_two_tables";
             }
             else if ($groupSize == 4 || $groupSize == 3)
             {
+                $groupSize = 4;
                 $capacity = "num_four_tables";
             }
             else if ($groupSize == 6 || $groupSize == 5)
             {
+                $groupSize = 6;
                 $capacity = "num_six_tables";
             }
             
@@ -117,7 +125,7 @@ class Reservation_controller extends Controller {
             //echo $closingTime;
             //echo "reservation time: ".$reservationTime;
             
-            $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime, $restaurantID);
+            $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime, $restaurantID, $groupSize);
             $restaurantCapacity=$this->reservation->getTableCount($restaurantID, $capacity );
             
             //FOR DEBUGGING, OUTPUTS THE CURRENT COUNT OF RESERVATIONS FOR TIMESLOT

@@ -14,6 +14,15 @@
     $totalCount = 0; //total count of restaurants to display
     $currentPage = $numberOfPages = $startPage = 1; //page number for navigating search results
     $reservation;
+  
+    $userId = NULL;
+    if (isset($_SESSION['user_id'])) {
+        if($_SESSION['role'] == 'user') {
+            $userId = $_SESSION['user_id'];
+        }
+        
+    }
+ 
     if (!isset($db)) {
         $db = new Restaurant_model();
     }
@@ -285,6 +294,7 @@
                                                 <div class="col-md-12 well">
                                                     <div class="row">
                                                         <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
+                                                        <input type="hidden" name="userid" value="<?php echo $userId ?>">
                                                         <!-- for debug purposes, displays restaurant ID -->
                                                         <?php //echo $resId ?>
                                                         <div class="col-md-12">     
@@ -297,7 +307,7 @@
                                                                 <option value="2">2</option>
                                                                 <option value="3">3</option>
                                                                 <option value="4">4</option>
-                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
                                                                 <option value="6">6</option>
                                                             </select>
                                                              </div>

@@ -469,15 +469,24 @@ if (isset($_SESSION['user_id'])) {
                             <br>
                             <h4>                  
                             <?php if ($from != null && $to != null) {
-                                echo "Today's Operating Hours: <br>" . date_format(new DateTime($from), "h:i A") . " - " . date_format(new DateTime($to), "h:i A");
+                                echo "Today's Operating Hours: <br>"?>
+                                <p style="color: #009900"><?php echo date_format(new DateTime($from), "h:i A") . " - " . date_format(new DateTime($to), "h:i A"); ?></p><?php
+//                                echo "Today's Operating Hours: <br>" . date_format(new DateTime($from), "h:i A") . " - " . date_format(new DateTime($to), "h:i A");
                             }?>
                             </h4>
 
                             <h4>                  
                             <?php
-                            if ($timeMessage != null) {
-                                echo $timeMessage;
-                            }?>
+                            if ($timeMessage == "Closing soon.") {?>
+                                <p style="color: #FFFF00"><?php echo $timeMessage;?></p><?php
+                            }
+                            if ($timeMessage == "Open Now.") {?>
+                                <p style="color: #009900"><?php echo $timeMessage;?></p><?php
+                            }
+                            if ($timeMessage == "Closed Now.") {?>
+                                <p style="color: #ff0000"><?php echo $timeMessage;?></p><?php
+                            }
+                            ?>
                             </h4>
 
                             <button class="btn btn-primary" data-toggle="modal" data-id="<?php echo $resId   ?>" data-target="#reservation-<?php echo $resId   ?>" >

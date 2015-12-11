@@ -23,6 +23,7 @@
              $host_controller->makeReservation();
          }
     }
+
    
 ?>
 <html lang="en">
@@ -51,6 +52,9 @@
             $(document).ready(function () {
                 $('[id=datetimepicker1]').each(function () {
                     $(this).datepicker();
+                    $(this).on('changeDate', function(){
+                    $(this).datepicker('hide');
+                    });
                 });
             });
         </script> <!-- datepicking end -->
@@ -422,30 +426,35 @@
              
             <!--Make reservation pop up-->
             <div  class="modal fade" id="reservation-<?php echo $resId ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <form name="myForm" action="#.php"
-                      onsubmit="return validateForm()" method="post">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <label class="modal-title" name ="myModalLabel" id="myModalLabel">Make reservation at <?php echo $res_name ?></label>
-                            </div>
-                            <div class="modal-body">
-                                <div class="col-md-12 well">
-                                    <div class="row">
-                                        <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
-                                        <!-- for debug purposes, displays restaurant ID -->
-                                        <?php //echo $resId ?>
-                                        <div class="col-md-12">          
-                                            <label>Number of Guests</label>
-                                            <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="4">4</option>
-                                                <option value="6">6</option>
-                                            </select>
+
+                                <form name="myForm" action="#.php"
+                                      onsubmit="return validateForm()" method="post">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <label class="modal-title" name ="myModalLabel" id="myModalLabel">Make reservation at <?php echo $res_name ?></label>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="col-md-12 well">
+                                                    <div class="row">
+                                                        <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
+                                                        <input type="hidden" name="userid" value="<?php echo NULL ?>">
+                                                        <!-- for debug purposes, displays restaurant ID -->
+                                                        <?php //echo $resId ?>
+                                                        <div class="col-md-12">          
+                                                            <label>Number of Guests</label>
+                                                            <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                                <option value="6">6</option>
+                                                            </select>
+
+                                                            <br>
+                                                            <br>
 
                                             <br>
                                             <br>

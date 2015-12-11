@@ -4,10 +4,10 @@
         header('location: ../home/login.php');
     }
     require_once "../../controllers/Host_controller.php";
-   $host_controller = new Host_controller();
-    $restuarant = $host_controller -> getRestaurant($_SESSION['username']);
+   $hostController = new Host_controller();
+    $restuarant = $hostController -> getRestaurant($_SESSION['username']);
     $resId = $restuarant['res_id'];
-    $res_name = $restuarant['res_name'];
+    $resName = $restuarant['res_name'];
     $thumbnail = $restuarant['thumbnail'];
     date_default_timezone_set("America/Los_Angeles");
     $date = date('Y/m/d');
@@ -17,10 +17,10 @@
          if(isset($_POST['reservation_id'])){
          $reservation_id = $_POST['reservation_id'];
         // echo 'reservation id' . $reservation_id;
-         $date = $host_controller ->getReservationDate($reservation_id);
-        $host_controller->cancelReservation($resId,$reservation_id);
+         $date = $hostController ->getReservationDate($reservation_id);
+        $hostController->cancelReservation($resId,$reservation_id);
          }else if(isset($_POST['reservationFirstName'])) {
-             $host_controller->makeReservation();
+             $hostController->makeReservation();
          }
     }
 
@@ -389,7 +389,7 @@
                     <img alt="Logo" src="<?php echo 'data:image/jpeg;base64,' . $thumbnail ?>" class="img-rounded" height="100" width="100"/>
                 </div>
                 <div class="col-md-11">
-                    <h1><?php echo $res_name ?></h1>
+                    <h1><?php echo $resName ?></h1>
                 </div>
             </div>
             
@@ -433,7 +433,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                <label class="modal-title" name ="myModalLabel" id="myModalLabel">Make reservation at <?php echo $res_name ?></label>
+                                                <label class="modal-title" name ="myModalLabel" id="myModalLabel">Make reservation at <?php echo $resName ?></label>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="col-md-12 well">

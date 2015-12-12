@@ -185,7 +185,7 @@ if (isset($reservationArray["reservationOutcome"])) {
                                             <p>  <?php echo $restaurant['description'] ?> </p>
                                         </div> <!-- End of Restaurant Detail -->
                                         <div class="col-md-2 reservation" style="width:12%">
-                                            <button class="btn btn-info" data-toggle="modal" data-id="<?php echo $restaurant['restaurant_id'] ?>" data-target="#reservation-<?php echo $restaurant['restaurant_id'] ?>" >
+                                            <button class="btn btn-primary" data-toggle="modal" data-id="<?php echo $restaurant['restaurant_id'] ?>" data-target="#reservation-<?php echo $restaurant['restaurant_id'] ?>" >
                                                 Reservation
                                             </button>
                                         </div> <!-- End of reservation button -->
@@ -371,7 +371,7 @@ if (isset($reservationArray["reservationOutcome"])) {
                                 echo '<center><p>' . $event['date'] . '</p></center>';
                                 echo '<center><p>' . $event['description'] . '</p></center>';
                                 ?>
-                                <center><button class="btn btn-info" data-toggle="modal" data-id="<?php echo $event['restaurant_id'] ?>" data-target="#reservation-<?php echo $event['restaurant_id'] ?>" >
+                                <center><button class="btn btn-primary" data-toggle="modal" data-id="<?php echo $event['restaurant_id'] ?>" data-target="#reservation-<?php echo $event['restaurant_id'] ?>" >
                                     Reservation
                                 </button></center>
                                 <?php

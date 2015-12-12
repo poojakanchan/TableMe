@@ -58,10 +58,12 @@ class Reservation_controller extends Controller {
             $reserve_user_id = htmlspecialchars($_POST['userid']);
             //echo $reserve_user_id;
             $restaurantID = htmlspecialchars($_POST["restaurant"]);
+            $restaurantName = htmlspecialchars($_POST["restaurant-name"]);
             
             
             $reserveArray = array(
                "restaurant_id" => $restaurantID,
+                "restaurant_name" => $restaurantName,
                "user_name" => $reserveName,
                "date" => $reserveDate,
                 
@@ -160,20 +162,30 @@ class Reservation_controller extends Controller {
                     if(!$reservation->addReservation($reserveArray)){
                         exit("Error adding reservation.");
                     }
-                    else
-                        echo " Reservation added successfully.";
+                    else {
+                        $reserveArray["reservationOutcome"] = "success";
+                        return $reserveArray;
+//                        echo " Reservation added successfully.";
+                    }
                 }
-                else
-                        echo "Reservations are full for given timeslot.";
+                else {
+                    $reserveArray["reservationOutcome"] = "full";
+                    return $reserveArray;
+//                        echo "Reservations are full for given timeslot.";
+                }
             }
-            else
-                echo "The restaurant is not open at the selected time or date. Please select another.";
+            else {
+                $reserveArray["reservationOutcome"] = "closed";
+                return $reserveArray;
+//                echo "The restaurant is not open at the selected time or date. Please select another.";
+            }
         }
     }
     //minor test function to see if header requirements work.
     public function test(){
         echo "TEST COMPLETE.";
     }
+
 }
 
 ?>

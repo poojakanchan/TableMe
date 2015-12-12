@@ -48,16 +48,7 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/js/bootstrap-datepicker.min.js"></script>
 
-        <script>
-            $(document).ready(function () {
-                $('[id=datetimepicker1]').each(function () {
-                    $(this).datepicker();
-                    $(this).on('changeDate', function(){
-                    $(this).datepicker('hide');
-                    });
-                });
-            });
-        </script> <!-- datepicking end -->
+ <!-- datepicking end -->
         
         <!-- Will merge the style and script code into CSS and JS file after all is done. -->
         <style>
@@ -152,15 +143,22 @@
         </style>
         <script>
             //Date picker function
-            $(document).ready(function() {
+            $(document).ready(function() {                
+                $('[id=datetimepicker1]').each(function () {
+                    $(this).datepicker();
+                    $(this).on('changeDate', function(){
+                    $(this).datepicker('hide');
+                    });
+                });
+                
                 $(window).on('focus', function(event) {
                     $('.show-focus-status > .alert-danger').addClass('hidden');
                     $('.show-focus-status > .alert-success').removeClass('hidden');
                 }).on('blur', function(event) {
                     $('.show-focus-status > .alert-success').addClass('hidden');
                     $('.show-focus-status > .alert-danger').removeClass('hidden');
-                });    
-
+                });
+                
                 $('.date-picker2').each(function () {
                     var $datepicker = $(this), cur_date = ($datepicker.data('date') ? moment($datepicker.data('date'), "YYYY/MM/DD") : moment()),
                         format = {
@@ -220,6 +218,12 @@
                                         }
                                         clone.find("#reservation_id").attr('value',reservations[i]['reservation_id']);
                                         clone.find("#user_id").attr('value',reservations[i]['user_id']);
+                                        clone.find("#cancel-reservation").attr("name", reservations[i]['reservation_id']);
+                                        clone.find("#cancel_reservation").data("reservation-id", reservations[i]['reservation_id']);
+                                        clone.find("#cancel_reservation").click(function() {
+                                            var cancelReservationId = $(this).data("reservation-id");
+                                            $("button#confirmCancelReservation").data("reservation-id", cancelReservationId);
+                                        });
                                     //   alert('marked ' + reservations[i]['mark_arrived']);
                                         if(reservations[i]['mark_arrived'] == 1){
                                              //alert('if');
@@ -247,6 +251,13 @@
                         });
                         
                      }
+                     
+                    $("button#confirmCancelReservation").click(function() {
+                        var reservationId = $(this).data("reservation-id");
+                        console.log(reservationId);
+                        var form = $("form[name='" + reservationId + "']");
+                                form.submit();
+                    });
 
                     updateDisplay(cur_date);
                     
@@ -293,6 +304,8 @@
                         });
                     }
                 });
+                
+                
         });    
                 //Check box function
            // $(function () {
@@ -544,7 +557,7 @@
             <!--List of reservations-->
             
             <div class="row" id ="reservation_info" hidden>
-              <form method = "post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+              <form id="cancel-reservation" method = "post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                               
                 <div class="reservationInfo col-md-6 col-md-offset-3">
                 <div class="list-group">
@@ -575,29 +588,12 @@
                             </div>
                              <!--Cancellation-->
                             
-                            <button id="cancel_reservation" class="cancelButton btn btn-danger pull-right" data-toggle="modal" data-target="#confirmDelete">
+                             <button type="button" id="cancel_reservation" class="cancelButton btn btn-danger pull-right" data-toggle="modal" data-target="#confirmDelete">
                                 Cancel Reservation
                             </button>
                             
                              
-                            <!--Cancel pop up-->
-                            <div class="cancelPopup modal fade" id="confirmDelete" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                      <h4 class="modal-title">Cancel Reservation </h4>
-                                    </div>
-                                    <div class="modal-body">
-                                      <p>Are you sure about this?</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                      <button type="button" class="btn btn-danger" id="confirm">OK </button>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
+                            
                               
                         </div>
                     </div>
@@ -606,6 +602,25 @@
            
             </div>
             
+        </div>
+    </div>
+    
+    <!--Cancel pop up-->
+    <div class="modal fade" id="confirmDelete" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Cancel Reservation </h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure about this?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmCancelReservation">OK </button>
+                </div>
+            </div>
         </div>
     </div>
 </body>

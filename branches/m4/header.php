@@ -15,7 +15,7 @@ if (isset($_GET['logout'])) {
 <nav class ="navbar navbar-custom">
     <div class ="container-fluid navgationbar">
         <div class ="navbar-header logo">
-            <a href="index.php"><img src="blueLogo.png" width="90" height="70"/></a>
+            <a href="index.php"><img src="css/img/blueLogo.png" width="90" height="70"/></a>
         </div>
         <div class="nav navbar-nav navbar-left">
             <li><a href="index.php">HOME</a></li>

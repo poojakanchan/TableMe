@@ -905,13 +905,14 @@ if (isset($reservationArray["reservationOutcome"])) {
                 </div> -->
                 <div class="modal-body">
                     <?php
+                    $reservationArray['time'] = date("g:i a", strtotime($reservationArray['time']));
                     switch ($showResDialog) {
                         case 'success':
                             echo '<center><h1>Reservation Successful!</h1></center>
                                     <hr><br>';
                             echo '<p>Mr/Mrs. '. $reservationArray['user_name'] .'</p><br>';
                             echo '<p>This email is to confirm your reservation for '. $reservationArray['restaurant_name'] . ' Restaurant. The following are the details of your reservation.</p><br>';
-                            echo '<p><b>Restaurant:</b><a href="app/views/home/restaurant.php?resid='. $reservationArray['restaurant_id'] . '">'. $reservationArray['restaurant_name'] . '</a></p>';
+                            echo '<p><b>Restaurant: </b><a href="app/views/home/restaurant.php?resid='. $reservationArray['restaurant_id'] . '">'. $reservationArray['restaurant_name'] . '</a></p>';
                             echo '<p><b>Date: </b>' . $reservationArray['date']. '</p>';
                             echo '<p><b>Time: </b>' . $reservationArray['time'] . '</p>';
                             echo '<p><b>Number of guest: </b>' . $reservationArray['no_of_people'] . '</p>';

@@ -48,7 +48,7 @@
                     <div class="container-fluid member">
                         <br>
                         <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
-                        <h4>HaiChuan Duan [Back-end Lead]</h4>
+                        <h4>Haichuan Duan [Back-end Lead]</h4>
                         <a href="mailto:haichuand@gmail.com">haichuand@gmail.com</a>
                     </div>                    
                 </div>

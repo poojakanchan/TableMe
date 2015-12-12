@@ -164,6 +164,17 @@ if (isset($reservationArray["reservationOutcome"])) {
                     $("#email").css("border", "");
                     $("#emailLabel").replaceWith('<label id="emailLabel">Email *</label>');
                 });
+                
+                $("#phone").focusout(function () {
+                    var inputPassword = $("#phone").val();
+                    if (!inputPassword) {
+                        $("#phone").css("border", "#FF0000 1px solid");
+                        $("#phoneLabel").replaceWith ("<label id='phoneLabel'>Phone Number *<i style='color:red'>Phone cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#phone").css("border", "");
+                    $("#phoneLabel").replaceWith('<label id="phoneLabel">Phone Number *</label>');
+                });
             });
         </script> <!-- datepicking end -->
     </head>
@@ -327,8 +338,8 @@ if (isset($reservationArray["reservationOutcome"])) {
                                                                     <input type="email" name="reservationEmail" id="email" placeholder="Please enter your email address..." class="form-control" required>
                                                                 </div>
                                                                 <div class="col-md-6 form-group">
-                                                                    <label>Phone Number</label>
-                                                                    <input type="text" name="reservationPhone" placeholder="Please enter your phone number..." class="form-control">
+                                                                    <label id="phoneLabel">Phone Number *</label>
+                                                                    <input type="text" name="reservationPhone" id="phone" placeholder="Please enter your phone number..." class="form-control" required>
                                                                 </div>
                                                             </div>
 

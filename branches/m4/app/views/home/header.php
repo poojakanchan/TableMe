@@ -73,7 +73,7 @@ if (isset($_GET['logout'])) {
         </div>
         <div class="nav navbar-nav navbar-left">
             <li><a href="index.php">HOME</a></li>
-            <li><a href="aboutus.php">ABOUT</a></li>
+            <li><a href="../../../aboutus.php">ABOUT</a></li>
         </div>
         <div>
             <ul class="nav navbar-nav navbar-right">

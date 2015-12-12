@@ -56,7 +56,7 @@ class Reservation_controller extends Controller {
             $reserveTime = date("H:i", strtotime($reserveTime));
             //echo $reserveTime;
             $reserve_user_id = htmlspecialchars($_POST['userid']);
-            echo $reserve_user_id;
+            //echo $reserve_user_id;
             $restaurantID = htmlspecialchars($_POST["restaurant"]);
             
             
@@ -113,12 +113,18 @@ class Reservation_controller extends Controller {
             $reservationTime=strtotime($reserveTime);
             
             /*if the closing time is past midnight, add 24 hours to the timestamp
-             * otherwise time interval comparison will be off
+             * otherwise time interval comparison will be off, otherwise subtract 1 hour
+             * in order to account for real closing time.
              */
+           // echo $closingTime."CLOSING TIME\n";
             if($closingTime < $openingTime)
             {
                 $closingTime=strtotime("+1 day", $closingTime);
             }
+            else {
+                $closingtime=strtotime("-1 hour", $closingTime);
+            }
+           // echo $closingTime;
             
             //FOR DEBUGGING, OUTPUTS UNIX TIMESTAMPS FOR THE OPENING/CLOSING/RESERVATION TIMES
             //echo $openingTime."-";
@@ -128,11 +134,23 @@ class Reservation_controller extends Controller {
             $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime, $restaurantID, $groupSize);
             $restaurantCapacity=$this->reservation->getTableCount($restaurantID, $capacity );
             
+            /*
+             *     if(strtotime('2015-12-11') == strtotime('today')){
+                        echo "SAME TIME";
+                    }
+                    else {
+                        echo strtotime('2015-12-10');
+                        echo "\n";
+                        echo strtotime('today');
+                    }
+             */
+            
             //FOR DEBUGGING, OUTPUTS THE CURRENT COUNT OF RESERVATIONS FOR TIMESLOT
             //echo "COUNT: ".$reservationCount."\n";
             //echo "CAPACITY: ".$restaurantCapacity."\n";
-            
+            //test if reservation time is at least 2 hours before 
             //test if reservation time is within operating hours interval for restaurant
+            
             if($reservationTime >= $openingTime && $reservationTime <= $closingTime)
             {
                 //check to see if the number of reservations for type of tables does not exceed capacity.

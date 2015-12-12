@@ -15,7 +15,7 @@ $totalCount = 0; //total count of restaurants to display
 $currentPage = $numberOfPages = $startPage = 1; //page number for navigating search results
 $reservation;
 
-$userId = NULL;
+$userId = "NULL";
 if (isset($_SESSION['user_id'])) {
     if ($_SESSION['role'] == 'user') {
         $userId = $_SESSION['user_id'];
@@ -357,9 +357,9 @@ $eventArray = $db->getAllEvents();
                                                                 </select>
 
                                                                 <select class="selectpicker" data-width="auto" id="ampm" name="ampm" required>
-                                                                    <option value="" disabled selected>AM/PM</option>
-                                                                    <option value="am">am</option>
-                                                                    <option value="pm">pm</option>
+                                                                    <option value="" disabled selected>Select AM/PM</option>
+                                                                    <option value="am">AM</option>
+                                                                    <option value="pm">PM</option>
                                                                 </select>
 
                                                                 <br>

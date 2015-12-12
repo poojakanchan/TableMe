@@ -102,7 +102,9 @@ $eventArray = $db->getAllEvents();
         <link rel="stylesheet" href="/resources/demos/style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/js/bootstrap-datepicker.min.js"></script>
-
+        
+        <!-- For CSS File --> 
+        <link rel="stylesheet" type="text/css" href="css/css_index.css">
 
 
 
@@ -116,111 +118,7 @@ $eventArray = $db->getAllEvents();
                 });
             });
         </script> <!-- datepicking end -->
-
-        <!--
-        Leave the CSS file in the .php file for now.
-        After everything is done, we will merge every singe css into one big file. 
-        -->
-
-        <style type ="text/css">
-
-            .navbar-custom {
-                margin-bottom: 0px;
-                width: 100%;
-                height: 80px;
-                font-size: 120%;
-                font-weight: bold;
-                background-color: #F0FFFF;
-            }
-
-            li a {           
-                color: #000000;
-            }
-
-            .logo{
-                padding-top: 5px;
-                padding-right: 15px;
-            }
-
-            .navbar-left {
-                padding-top: 15px;
-            }
-
-            .navbar-right {
-                padding-top: 15px
-            }
-
-            .frontpage-banner {
-                position: relative;
-                width: 100%;
-                height: 250px;
-                background: url('banner2.jpg') center center;
-                background-size: cover;
-                margin-bottom: 0px;
-                padding-top: 0px;
-            }
-
-            .panel-heading {
-                height: 50px;
-            }
-
-            h2 {
-                margin-top: 0px;
-            }
-
-            .searchbox {
-                width: 50%;
-                margin: auto;
-            }
-
-            .row {
-                margin-left: 0px;
-                margin-right: 0px;
-            }
-
-            .frontpage-list {
-                padding-right: 5px;
-                padding-left: 10px;
-                padding-top: 10px;
-            }
-
-            .frontpage-event {
-                padding-left: 5px;
-                padding-top: 10px;
-                padding-right: 10px;
-            }
-
-            .profile {
-                width: 150px;
-                height: 150px;
-                padding-right: 10px;
-                padding-left: 0px;    
-            }
-
-            .detail {
-                width: 570px;
-                height: 150px;
-                padding-left: 15px;
-
-            }
-
-            .reservation {
-                width: 100px;
-                height: 30px;
-                padding-left:0px;
-                padding-right:0px;
-                padding-top:60px;
-
-            }
-
-            h4 a {
-                color: #000000;
-                text-decoration: underline;
-                font-weight: bold;
-            }
-
-        </style>
-
+        
         <script>
             $('.selectpicker').selectpicker();
 

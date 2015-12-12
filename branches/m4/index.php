@@ -155,8 +155,8 @@ if (isset($reservationArray["reservationOutcome"])) {
                 });
                 
                 $("#email").focusout(function () {
-                    var inputPassword = $("#email").val();
-                    if (!inputPassword) {
+                    var inputEmail = $("#email").val();
+                    if (!inputEmail) {
                         $("#email").css("border", "#FF0000 1px solid");
                         $("#emailLabel").replaceWith ("<label id='emailLabel'>Email *<i style='color:red'>Email cannot be empty</i></label>");
                         return;
@@ -166,8 +166,8 @@ if (isset($reservationArray["reservationOutcome"])) {
                 });
                 
                 $("#phone").focusout(function () {
-                    var inputPassword = $("#phone").val();
-                    if (!inputPassword) {
+                    var inputPhone = $("#phone").val();
+                    if (!inputPhone) {
                         $("#phone").css("border", "#FF0000 1px solid");
                         $("#phoneLabel").replaceWith ("<label id='phoneLabel'>Phone Number *<i style='color:red'>Phone cannot be empty</i></label>");
                         return;

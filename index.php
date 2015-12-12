@@ -387,8 +387,9 @@ if (isset($reservationArray["reservationOutcome"])) {
         </div> <!-- End of 2nd Section Row-->
         
         
-        <div class="modal col-md-6" id="reservation-success" role="dialog">
-            <div class="modal-content">
+        <div class="modal col-md-12" id="reservation-success" role="dialog">
+            <div class="col-md-3"></div>
+            <div class="modal-content col-md-6">
 <!--                <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <label class="modal-title" name ="myModalLabel" id="myModalLabel">Reservation Successful!</label>
@@ -448,6 +449,7 @@ if (isset($reservationArray["reservationOutcome"])) {
                     <!--<button type="submit" class="btn btn-primary" value="submit-reservation" name="submit-reservation" >OK</button>-->
                 </div>
             </div>
+            <div class="col-md-3"></div>
         </div>
     </body>
     

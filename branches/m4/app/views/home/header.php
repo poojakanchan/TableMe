@@ -2,6 +2,7 @@
 if (session_id() == '') {
     session_start();
 }
+
 if (isset($_GET['logout'])) {
     unset($_SESSION['username']);
     if (isset($_SESSION['user_id'])) {
@@ -12,92 +13,102 @@ if (isset($_GET['logout'])) {
 ?>
 
 <style>
-    .containerMain{
-        /*background-color:#2E52E0!important;*/
-        background-color:rgba(0,0,0,0)!important;
-        border: none!important;
+    h1 {
+        text-align: center;
     }
-    
-    .container-fluid-header{
-        /*margin: 10px 10px 10px 10px;*/
-        /*border-radius: 25px;*/
-        /*border: 1px solid #e3e3e3;*/
+    h2 {
+        text-align: center;
+    }
+    .member {
+        text-align: center;
+    }
+    h5{
+        font-weight: bold;
+    }
+
+    .member{
+        margin: 10px 10px 10px 10px;
+        border-radius: 25px;
+        border: 1px solid #e3e3e3;
         background-color:#f5f5f5;
         /*background-color:rgba(0,0,0,0.5)*/
-        position: relative;
+    }
+    .navbar-custom {
+        margin-bottom: 0px;
         width: 100%;
-        height: 200px;
-        background: url('banner2.jpg') center center;
-        background-size: cover;
+        height: 80px;
+        font-size: 120%;
+        font-weight: bold;
+        background-color: #F0FFFF;
+    }
+
+    li a {           
+        color: #000000;
+    }
+
+    .logo{
+        padding-top: 5px;
+        padding-right: 15px;
+    }
+
+    .navbar-left {
+        padding-top: 15px;
+    }
+
+    .navbar-right {
+        padding-top: 15px
     }
     
-    .searchbar, .btn-search{
-        margin-top: 100px;
-    }
-    
-    .searchbox {
-        width: 40%;
-        margin: auto;
-    }
-    .login-position{
-        margin-right: 20px;
+    .navgationbar{
+        background-color:rgba(0,0,0,0)!important;
+        border: none!important;
+        margin: 0 0 0 0!important;
     }
 </style>
 
-<nav class ="navbar navbar-default">
-    <div class ="container-fluid-header">
-        <div class ="navbar-header">
-            <!--<a href="../../../index.php"><img src="../../../blueLogo.png"  width="175" height="120"/></a>-->
-            <a href="../../../index.php"><img src="../../../blueLogo.png"  width="125" height="100"/></a>
+<nav class ="navbar navbar-custom">
+    <div class ="container-fluid navgationbar">
+        <div class ="navbar-header logo">
+            <a href="index.php"><img src="blueLogo.png" width="90" height="70"/></a>
+        </div>
+        <div class="nav navbar-nav navbar-left">
+            <li><a href="index.php">HOME</a></li>
+            <li><a href="aboutus.php">ABOUT</a></li>
         </div>
         <div>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="../../../aboutus.php">About us</a></li>
-                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Register <span class="caret"></span></a>
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> JOIN US <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="user_registration.php">User</a></li>
-                           <li><a href="../home/restaurant_registration.php">Restaurant</a></li>
+                        <li><a href="app/views/home/user_registration.php">User</a></li>
+                        <li><a href="app/views/home/restaurant_registration.php">Restaurant</a></li>
                     </ul>
-                </li>                
+                </li>             
                 <?php
                 if (isset($_SESSION['username'])) {
                     $link = "#";
                     if (isset($_SESSION['role'])) {
                         switch ($_SESSION['role']) {
                             case 'owner':
-                                $link = '../owner/ownerpage.php';
+                                $link = 'app/views/owner/ownerpage.php';
                                 break;
                             case 'user':
-                                $link = '../user/userpage.php';
+                                $link = 'app/views/user/userpage.php';
                                 break;
                             case 'host':
-                                $link = '../host/hostview.php';
+                                $link = 'app/views/host/hostview.php';
                                 break;
                             case 'admin':
-                                $link = '../admin/adminpage.php';
+                                $link = 'app/views/admin/adminpage.php';
                                 break;
                         }
                     }
                     echo '<li><a href=' . $link . '>My Profile</a></li>';
                     echo '<li><a href="?logout=1">Logout</a></li>';
                 } else {
-                    echo '<li> <a href ="../home/login.php" class="login-position">Login</a></li>';
+                    echo '<li> <a href ="app/views/home/login.php">LOGIN</a></li>';
                 }
                 ?>
-
             </ul>
         </div>
-        
-        <!--Serch box-->
-        <form class="input-group searchbox" action=" " method="get"> <!-- Class for Search box -->
-
-            <!--<input name="foodCategory" id="foodCategory" value="" hidden />-->
-            <input type="text" class="form-control searchbar" size="10" name = "searchText" id="searchText" required placeholder="Search by Address, Name, Food Category of the Restaurants." value=""/>
-            <span class="input-group-btn">
-                <input class="btn btn-default btn-search" type="submit" value="Search" />
-            </span>
-        </form> <!-- End of the Search box -->
-<!--        <center><h4> This Website is only for CSC648/848 Software Engineering Project </h4></center>
-        <center><h4> Created by Team 11, if you want to learn more about us <a href="aboutus.php">(Click Here)</a></h4></center>-->
     </div>
 </nav>

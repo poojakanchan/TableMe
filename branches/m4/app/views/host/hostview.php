@@ -452,12 +452,9 @@
                                                                 <option value="5">5</option>
                                                                 <option value="6">6</option>
                                                             </select>
-
+                                                            <br> 
                                                             <br>
-                                                            <br>
-
-                                            <br>
-                                            <br>
+                                           
 
                                             <!-- This is for the datapicking method -->
                                             <div class="input-append date" id="datetimepicker1">

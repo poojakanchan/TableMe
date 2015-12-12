@@ -373,5 +373,36 @@ $eventArray = $db->getAllEvents();
                 </div> <!-- End of panel-info -->
             </div> <!-- End of "frontpage-event" -->
         </div> <!-- End of 2nd Section Row-->
+        
+        <div class="modal-dialog conformation-email">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <label class="modal-title" name ="myModalLabel" id="myModalLabel">Make reservation at <?php echo $restaurant['name'] ?></label>
+                </div> 
+                <div class="modal-body">
+                    <center><h1>Reservation</h1></center>
+                    <hr><br>
+                    <p>Mr/Mrs. Smith</p><br>
+                    <p>This email is to confirm your reservation for Little Tokyo’s Restaurant. The following are the details of your reservation.</p><br>
+                    <p><b>Restaurant:</b> Little Tokyo</p>
+                    <a href="http://sfsuswe.com/~f15g11/app/views/home/restaurant.php?resid=12">http://sfsuswe.com/~f15g11/app/views/home/restaurant.php?resid=12</a>
+                    <p><b>Date:</b> 2015/12/12</p>
+                    <p><b>Time:</b> 08:00PM</p>
+                    <p><b>Number of guest:</b> 2</p>
+                    <p><b>Guest Name:</b> Josh Smith</p><br>
+                    <p>To view or modify your reservation:</p><br>
+                    <a href="http://sfsuswe.com/~f15g11/app/views/user/userpage.php">http://sfsuswe.com/~f15g11/app/views/user/userpage.php</a><br>
+                    <p>We look forward to see you!</p><br><br><hr>
+                    <center><h4>TableMe Team</h4></center>
+                    <center><h4>http://sfsuswe.com/~f15g11/index.php</h4></center>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" value="submit-reservation" name="submit-reservation" >OK</button>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

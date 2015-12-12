@@ -11,29 +11,9 @@
     <link rel="stylesheet" type="text/css" media="all" href="css/bootstrap-responsive.min.css"> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <!-- For CSS Styling -->
+    <link rel="stylesheet" type="text/css" href="css/css_aboutus.css">
 
-    <style>
-        h1 {
-            text-align: center;
-        }
-        h2 {
-            text-align: center;
-        }
-        .member {
-            text-align: center;
-        }
-        h5{
-            font-weight: bold;
-        }
-        
-        .container-fluid{
-            margin: 10px 10px 10px 10px;
-            border-radius: 25px;
-            border: 1px solid #e3e3e3;
-            background-color:#f5f5f5;
-            /*background-color:rgba(0,0,0,0.5)*/
-        }
-    </style>
 </head>
 
 <body>
@@ -49,7 +29,7 @@
             </div>
             <div class="col-md-12">
                 <div class="col-md-4">
-                    <div class="container-fluid">
+                    <div class="container-fluid member">
                         <br>
                         <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
                         <h4>Pooja Kanchan [Team Lead]</h4>
@@ -57,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="container-fluid">
+                    <div class="container-fluid member">
                         <br>
                         <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
                         <h4>Adrian Lee [Tech Lead]</h4>
@@ -65,7 +45,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="container-fluid">
+                    <div class="container-fluid member">
                         <br>
                         <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
                         <h4>HaiChuan Duan [Back-end Lead]</h4>
@@ -78,7 +58,7 @@
             </div>
             <div class="col-md-12">
                 <div class="col-md-4">
-                    <div class="container-fluid">
+                    <div class="container-fluid member">
                         <br>
                         <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
                         <h4>Sabreen Michael [Documentation Lead]</h4>
@@ -86,7 +66,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="container-fluid">
+                    <div class="container-fluid member">
                         <br>
                         <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
                         <h4>Michael Lee [QA Lead]</h4>
@@ -94,7 +74,7 @@
                     </div>                    
                 </div>
                 <div class="col-md-4">
-                    <div class="container-fluid">
+                    <div class="container-fluid member">
                         <br>
                         <img src="http://www.crowdfunder.co.uk/uploads/default-profile.png" class="img-rounded" height="300" width="300" />
                         <h4>SeungKeun Kim [Front-end Lead]</h4>

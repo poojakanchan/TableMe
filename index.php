@@ -14,6 +14,7 @@ $nameAddCat = '%';
 $totalCount = 0; //total count of restaurants to display
 $currentPage = $numberOfPages = $startPage = 1; //page number for navigating search results
 $reservation;
+$reservationArray;
 
 $userId = "NULL";
 if (isset($_SESSION['user_id'])) {
@@ -33,7 +34,7 @@ if (!isset($reservation)) {
     $reservation = new Reservation_controller();
 }
 if ($_POST) {
-    $reservation->add();
+    $reservationArray = $reservation->add();
 }
 
 if ($_GET) {
@@ -76,6 +77,11 @@ for ($i = 0; $i < 9 && $i < $numberOfPages; $i++) {
 //populates event array
 $db = new Event_model();
 $eventArray = $db->getAllEvents();
+
+$showResDialog = 'none';
+if (isset($reservationArray["reservationOutcome"])) {
+    $showResDialog = $reservationArray["reservationOutcome"];
+}
 ?>
 <!DOCTYPE html>
 
@@ -97,8 +103,8 @@ $eventArray = $db->getAllEvents();
 
         <!-- this scripts and links are for datepicking -->
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <!--<script src="//code.jquery.com/jquery-1.10.2.js"></script>-->
+        <!--<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
         <link rel="stylesheet" href="/resources/demos/style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/js/bootstrap-datepicker.min.js"></script>
@@ -114,20 +120,24 @@ $eventArray = $db->getAllEvents();
                         $(this).datepicker('hide');
                     });
                 });
+                var displayResDialog = '<?php echo $showResDialog; ?>';
+                switch (displayResDialog) {                    
+                    case 'none':
+                        $("div#reservation-success").modal({show: false});
+                        break;
+                    case 'success':
+                    case 'full':
+                    case 'closed':
+                        $("div#reservation-success").modal({show: true});
+                        break;
+                }
             });
         </script> <!-- datepicking end -->
-        
-        <script>
-            $('.selectpicker').selectpicker();
-
-            $('.selectpicker').selectpicker({
-                style: 'btn-info',
-                size: 4
-            });
-        </script>
     </head>
 
     <body>
+ 
+        
 
 
         <div class="jumbotron frontpage-banner">
@@ -194,8 +204,9 @@ $eventArray = $db->getAllEvents();
                                             <div class="modal-body">
                                                 <div class="col-md-12 well">
                                                     <div class="row">
-                                                        <input type="hidden" name="restaurant" value="<?php echo $resId ?>">
-                                                        <input type="hidden" name="userid" value="<?php echo $userId ?>">
+                                                        <input type="hidden" name="restaurant" value="<?php echo $resId; ?>">
+                                                        <input type="hidden" name="restaurant-name" value="<?php echo $restaurant['name']; ?>">
+                                                        <input type="hidden" name="userid" value="<?php echo $userId; ?>">
                                                         <!-- for debug purposes, displays restaurant ID -->
                                                         <?php //echo $resId ?>
                                                         <div class="col-md-12">     
@@ -375,14 +386,45 @@ $eventArray = $db->getAllEvents();
             </div> <!-- End of "frontpage-event" -->
         </div> <!-- End of 2nd Section Row-->
         
-        <div class="modal-dialog conformation-email">
+        
+        <div class="modal col-md-6" id="reservation-success" role="dialog">
             <div class="modal-content">
-                <div class="modal-header">
+<!--                <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <label class="modal-title" name ="myModalLabel" id="myModalLabel">Make reservation at <?php echo $restaurant['name'] ?></label>
-                </div> 
+                    <label class="modal-title" name ="myModalLabel" id="myModalLabel">Reservation Successful!</label>
+                </div> -->
                 <div class="modal-body">
-                    <center><h1>Reservation</h1></center>
+                    <?php
+                    switch ($showResDialog) {
+                        case 'success':
+                            echo '<center><h1>Reservation Successful!</h1></center>
+                                    <hr><br>';
+                            echo '<p>Mr/Mrs. '. $reservationArray['user_name'] .'</p><br>';
+                            echo '<p>This email is to confirm your reservation for '. $reservationArray['restaurant_name'] . ' Restaurant. The following are the details of your reservation.</p><br>';
+                            echo '<p><b>Restaurant:</b><a href="app/views/home/restaurant.php?resid='. $reservationArray['restaurant_id'] . '">'. $reservationArray['restaurant_name'] . '</a></p>';
+                            echo '<p><b>Date: </b>' . $reservationArray['date']. '</p>';
+                            echo '<p><b>Time: </b>' . $reservationArray['time'] . '</p>';
+                            echo '<p><b>Number of guest: </b>' . $reservationArray['no_of_people'] . '</p>';
+                            echo '<p><b>Guest Name: </b>'. $reservationArray['user_name'] . '</p><br>';
+                            echo '<p><b>Special Instructions: </b>'. $reservationArray['special_instruct'] . '</p><br>';
+                            echo '<p>If you are a registered user, you can go to "My Profile" page to view or cancel your reservation</p><br>';
+                            echo '<p>We look forward to see you!</p><br><br><hr>';
+                            break;
+                        case 'full':
+                            echo '<center><h1>Reservation Unsuccessful</h1></center>
+                                    <hr><br>';
+                            echo '<p>The restaurant is full for the selected date and time: ' . $reservationArray['date']. '   ' . $reservationArray['time'] . '</p><br><br><hr>';
+                            break;
+                        case 'closed':
+                            echo '<center><h1>Reservation Unsuccessful</h1></center>
+                                    <hr><br>';
+                            echo '<p>The restaurant is closed for the selected date and time: ' . $reservationArray['date']. '   ' . $reservationArray['time'] . '</p><br><br><hr>';
+                            break;
+                        
+                    }
+        
+                    ?>
+<!--                    <center><h1>Reservation Successful!</h1></center>
                     <hr><br>
                     <p>Mr/Mrs. Smith</p><br>
                     <p>This email is to confirm your reservation for Little Tokyo’s Restaurant. The following are the details of your reservation.</p><br>
@@ -396,14 +438,18 @@ $eventArray = $db->getAllEvents();
                     <a href="http://sfsuswe.com/~f15g11/app/views/user/userpage.php">http://sfsuswe.com/~f15g11/app/views/user/userpage.php</a><br>
                     <p>We look forward to see you!</p><br><br><hr>
                     <center><h4>TableMe Team</h4></center>
+                    <center><h4>http://sfsuswe.com/~f15g11/index.php</h4></center>-->
+                    <center><h4>TableMe Team</h4></center>
                     <center><h4>http://sfsuswe.com/~f15g11/index.php</h4></center>
                     
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" value="submit-reservation" name="submit-reservation" >OK</button>
+                    <!--<button type="submit" class="btn btn-primary" value="submit-reservation" name="submit-reservation" >OK</button>-->
                 </div>
             </div>
         </div>
     </body>
+    
+    
 </html>

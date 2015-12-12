@@ -272,8 +272,8 @@
                 });
                 
                 $("#confirmPassword").focusout(function () {
-                    var inputPassword = $("#confirmPassword").val();
-                    if (!inputPassword) {
+                    var inputCPassword = $("#confirmPassword").val();
+                    if (!inputCPassword) {
                         $("#confirmPassword").css("border", "#FF0000 1px solid");
                         $("#confirmPasswordLabel").replaceWith ("<label id='confirmPasswordLabel'>Confirm Password *<i style='color:red'>Confirm password cannot be empty</i></label>");
                         return;
@@ -283,8 +283,8 @@
                 });
                 
                 $("#email").focusout(function () {
-                    var inputPassword = $("#email").val();
-                    if (!inputPassword) {
+                    var inputEmail = $("#email").val();
+                    if (!inputEmail) {
                         $("#email").css("border", "#FF0000 1px solid");
                         $("#emailLabel").replaceWith ("<label id='emailLabel'>Email Address *<i style='color:red'>Email cannot be empty</i></label>");
                         return;

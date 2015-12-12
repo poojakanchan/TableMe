@@ -105,9 +105,7 @@ $eventArray = $db->getAllEvents();
         
         <!-- For CSS File --> 
         <link rel="stylesheet" type="text/css" href="css/css_index.css">
-
-
-
+        
         <script>
             $(document).ready(function () {
                 $('[id=datetimepicker1]').each(function () {
@@ -314,7 +312,7 @@ $eventArray = $db->getAllEvents();
                     ?>
                 </div>
 
-                <?php
+                <center><?php
                 if ($numberOfPages > 1) {
                     echo '<ul class="pagination pagination-lg">';
 
@@ -340,7 +338,7 @@ $eventArray = $db->getAllEvents();
 
                     echo '</ul>';
                 }
-                ?>
+                ?> </center>
             </div> <!-- end of "frontpage-list" -->
 
             <div class ="col-md-3 frontpage-event">
@@ -356,14 +354,14 @@ $eventArray = $db->getAllEvents();
                                 echo '<tr>';
                                 echo '<td>';
                                 //echo '<div class="panel panel-body">';
-                                echo '<a href="app/views/home/restaurant.php?resid=' . $event['restaurant_id'] . '"> <img width="200" height="auto" src="data:image/jpeg;base64,' . $image . '"/></a>';
-                                echo '<a href="app/views/home/restaurant.php?resid=' . $event['restaurant_id'] . '"> <h3>' . $event['name'] . '</h3></a>';
-                                echo '<p>' . $event['date'] . '</p>';
-                                echo '<p>' . $event['description'] . '</p>';
+                                echo '<center><a href="app/views/home/restaurant.php?resid=' . $event['restaurant_id'] . '"> <img width="200" height="auto" src="data:image/jpeg;base64,' . $image . '"/></a></center>';
+                                echo '<center><a href="app/views/home/restaurant.php?resid=' . $event['restaurant_id'] . '"> <h3>' . $event['name'] . '</h3></a></center>';
+                                echo '<center><p>' . $event['date'] . '</p></center>';
+                                echo '<center><p>' . $event['description'] . '</p></center>';
                                 ?>
-                                <button class="btn btn-info" data-toggle="modal" data-id="<?php echo $event['restaurant_id'] ?>" data-target="#reservation-<?php echo $event['restaurant_id'] ?>" >
+                                <center><button class="btn btn-info" data-toggle="modal" data-id="<?php echo $event['restaurant_id'] ?>" data-target="#reservation-<?php echo $event['restaurant_id'] ?>" >
                                     Reservation
-                                </button>
+                                </button></center>
                                 <?php
                                 //echo '</div>';
                                 echo '</td>';

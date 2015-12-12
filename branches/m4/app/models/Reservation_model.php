@@ -30,16 +30,18 @@ class Reservation_model  extends Database{
     
     public function addReservation($reserveArray) {
        
-        if($reserveArray['user_id'] == NULL){
+        if($reserveArray['user_id'] == "NULL"){
             $sql = "INSERT INTO reservation(restaurant_id, user_name, date, time, no_of_people, contact_no, special_instruct) VALUES(:restaurant_id, :user_name, :date, :time, :no_of_people, :contact_no, :special_instruct)";
             $stmt = $this->dbh->prepare($sql);
-            echo "ITS NULL";
+            //echo "ITS NULL";
+            //echo $sql;
         }
         else {
             $sql = "INSERT INTO reservation(restaurant_id, user_name, date, time, user_id, no_of_people, contact_no, special_instruct) VALUES(:restaurant_id, :user_name, :date, :time, :user_id, :no_of_people, :contact_no, :special_instruct)";
             $stmt = $this->dbh->prepare($sql);
             $stmt->bindParam(':user_id', $reserveArray['user_id']);
-            echo "ITS NOT NULL";
+            //echo "ITS NOT NULL";
+            //echo $sql;
         }
                     
 

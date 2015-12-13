@@ -1,14 +1,43 @@
+<?php
+    require_once 'header.php';
+    require_once '../../models/User_model.php';
+    
+    if (!isset($_SESSION['username'])) {
+        header('location: ../home/login.php');
+    }
+
+    $db = new User_model();
+    $username = $_SESSION['username'];
+    $userInfo = $db->getUser($username);
+    $userReviews = $db->getUserReviews($_SESSION['user_id']);
+    $userReservations = $db->getUserReservations($_SESSION['user_id']);
+
+    if ($_POST) {
+        $newPhoneNum = htmlspecialchars($_POST['phone_number']);
+        $newEmail = htmlspecialchars($_POST['email']);
+        $newPassword = htmlspecialchars($_POST['password']);
+        $newImage = null;
+        
+        if (is_uploaded_file($_FILES['user-profile-image']['tmp_name'])) {
+            $newImage = file_get_contents($_FILES["user-profile-image"]["tmp_name"]);
+        }
+        $db->updateUser($username, $newPhoneNum, $newEmail, $newPassword, $newImage);
+        $userInfo = $db->getUser($username);
+    }
+    ?>
 <!DOCTYPE HTML> 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>EZ Restaurant</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <title>TableMe</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
 
     <!--
     Leave the CSS file in the .php file for now.
@@ -23,6 +52,68 @@
     </script>   
 
     <style type ="text/css">
+        
+        .starRating:not(old) {
+            display: inline-block;
+            width: 7.5em;
+            height: 1.5em;
+            overflow: hidden;
+            vertical-align: bottom;
+        }
+        
+        .starRating:not(old) > input {
+            margin-right: -100%;
+            opacity: 0;
+        }
+        
+        .starRating:not(old) > label {
+            display: block;
+            float: right;
+            position: relative;
+            background: url('star-off.svg');
+            background-size: contain;
+        }
+        
+        .starRating:not(old) > label:before {
+            content: '';
+            display: block;
+            width: 1.5em;
+            height: 1.5em;
+            background: url('star-on.svg');
+            background-size: contain;
+            opacity: 0;
+            transition: opacity 0.2s linear;
+        }
+        
+        .starRating:not(old) > label:hover:before, .starRating:not(old) > label:hover ~ label:before, .starRating:not(:hover) > :checked ~ label:before{
+            opacity: 1;
+        }
+        
+        .navbar-custom {
+            margin-bottom: 0px;
+            width: 100%;
+            height: 80px;
+            font-size: 120%;
+            font-weight: bold;
+            background-color: #F0FFFF;
+        }
+        
+        li a {           
+            color: #000000;
+        }
+        
+        .logo{
+            padding-top: 5px;
+            padding-right: 15px;
+        }
+        
+        .navbar-left {
+            padding-top: 15px;
+        }
+        
+        .navbar-right {
+            padding-top: 15px
+        }
 
         .thumbnail {
             position: relative;
@@ -51,31 +142,7 @@
 
 <body>
     <!-- Navigation Bar -->
-    <?php
-    require_once 'header.php';
-    require_once '../../models/User_model.php';
-//    session_start();
-
-    if (!isset($_SESSION['username'])) {
-        header('location: ../home/login.php');
-    }
-
-    $db = new User_model();
-    $username = $_SESSION['username'];
-    $userInfo = $db->getUser($username);
-    $userReservations = $db->getReservationHistory($userInfo['user_id']);
-
-
-    if ($_POST) {
-        $newPhoneNum = htmlspecialchars($_POST['phone_number']);
-        $newEmail = htmlspecialchars($_POST['email']);
-        $newPassword = htmlspecialchars($_POST['password']);
-        $newImage = null;
-        $db->updateUser($username, $newPhoneNum, $newEmail, $newPassword, $newImage);
-        $userInfo = $db->getUser($username);
-    }
-    ?>
-    <br><br><br>
+    <br><br>
     <div class="container">
         <div class="row">
             <div class="col-md-3">
@@ -100,7 +167,7 @@
             <div class="col-sm-12">
                 <ul class="nav nav-tabs"> <!-- Tab for the UserSection -->
                     <li class="active"><a href="#reservation">Reservation</a></li>
-                    <li><a href="#history">History</a></li>
+                    <li><a href="#history">My Reviews</a></li>
                     <li> <a href="#edit">Edit Profile</a></li>         
                 </ul> <!-- Done with the tab -->
 
@@ -118,55 +185,124 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>date</td>
-                                        <td>time</td>
-                                        <td>Name of the Restaurant</td>
-                                        <td>4</td>
-                                        <td>
-                                            <a href="#cancel" class="btn btn-info" role="button"> Cancel Reservation </a>
-                                        </td>
-                                    </tr>
+                                    <?php
+                                    $currentDate = date("Y-m-d");
+                                    $currentTime = date("H:i:s");
+                                    foreach ($userReservations as $reservation) {
+                                        echo '<tr>';
+                                        echo '<td>' . $reservation['date'] . '</td>';
+                                        echo '<td>' . $reservation['time'] . '</td>';
+                                        echo '<td>' . $reservation['name'] . '</td>';
+                                        echo '<td>' . $reservation['no_of_people'] . '</td>';
+                                        echo '<td>';
+                                        if ($reservation['date'] > $currentDate || ($reservation['date'] == $currentDate && $reservation['time'] > $currentTime)) {
+                                            echo '<a class="btn btn-info cancel-reservation" role="button" data-toggle="modal" data-target="#confirmCancel" '
+                                            . 'data-reservation-res-name="' . $reservation['name'] . '" data-reservation-date="' . $reservation['date'] . '" data-reservation-time="' . $reservation['time'] . '" data-reservation-id="' . $reservation['reservation_id'] . '"> Cancel Reservation </a>';
+                                        }
+                                        echo '</td>';
+                                        echo '</tr>';
+                                    }
+                                    ?>
+
                                 </tbody>
                             </table>
                         </div>
                     </div>
+
                     <div id="history" class="tab-pane fade">
                         <div class="table-responsive">
                             <table class="table table hover">
                                 <thead>
                                     <tr>
-                                        <th>DATE</th>
+                                        <!--<th>DATE</th>-->
                                         <th>Restaurant Name</th>
-                                        <th>Time</th>
-                                        <th>Number of People</th>
+                                        <!--<th>Time</th>-->
+                                        <!--<th>Number of People</th>-->
                                         <th>Review</th>
+                                        <th>Rating</th>
+                                        <th>Date posted</th>
                                     </tr>
                                 </thead>
                                 <tbody id="items">
                                     <?php
-                                    if (!empty($userReservations)) {
-                                        foreach ($userReservations as $reservation) {
+                                    if (!empty($userReviews)) {
+                                        foreach ($userReviews as $review) {
                                             echo '<tr>';
-                                            echo '<td>' . $reservation['date'] . '</td>';
-                                            echo '<td>' . $reservation['name'] . '</td>';
-                                            echo '<td>' . $reservation['time'] . '</td>';
-                                            echo '<td>' . $reservation['no_of_people'] . '</td>';
-                                            if (empty($reservation['review_description']))
-                                                echo '<td><a href="#review page" class="btn btn-info" role="button"> Write A Review </a>';
-                                            else
-                                                echo '<td>' . $reservation['review_description'] . '</td>';
+//                                            echo '<td>' . $reservation['date'] . '</td>';
+                                            echo '<td>' . $review['name'] . '</td>';
+                                            if (empty($review['review_description'])) {
+                                                echo '<td><a href="#review page" class="btn btn-info write-review" data-toggle="modal" '
+                                                . 'data-target="#modal-review" data-reservation-id="' . $review['restaurant_id'] .
+                                                '" data-restaurantname="' . $review['name'] . '" role="button"> Write A Review </a>';
+                                            } else {
+                                                echo '<td>' . $review['review_description'] . '</td>';
+                                            }
+                                            if ($review['rating'] == NULL) {
+                                                echo '<td>No Rating</td>';
+                                            }
+                                            else {
+                                                echo '<td>'.$review['rating'].'</td>';
+                                            }
+
+                                            echo empty($review['date_posted']) ? '<td></td>' : '<td>' . $review['date_posted'] . '</td>';
                                             echo '</tr>';
                                         }
                                     }
                                     ?>
-                                    </tr>
+                                <div class="modal fade" id="modal-review" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button id="close1" type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h3 class="modal-title" id="restaurant-name"></h3>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <div class="row row-name">
+                                                    <div class="col-md-12">
+                                                        <h4 id="write-review">Write your review here (1000 characters left)</h4>  
+                                                    </div>
+
+                                                </div>
+                                                <div class="row row-rating">
+                                                    <div class="col-md-12">
+                                                        <h5 class="reviewrating"> Rating: 
+                                                        <span class="starRating" id="user-rating" data-rating-value="">
+                                                            <input id="rating5" type="radio" name="rating" value="5">
+                                                            <label for="rating5">5</label>
+                                                            <input id="rating4" type="radio" name="rating" value="4">
+                                                            <label for="rating4">4</label>
+                                                            <input id="rating3" type="radio" name="rating" value="3">
+                                                            <label for="rating3">3</label>
+                                                            <input id="rating2" type="radio" name="rating" value="2">
+                                                            <label for="rating2">2</label>
+                                                            <input id="rating1" type="radio" name="rating" value="1">
+                                                            <label for="rating1">1</label>
+                                                        </span> </h5>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row row-content">
+                                                    <div class="col-md-12">
+                                                        <textarea class = "form-control" rows = "5" id="review-text"></textarea>
+                                                    </div>
+
+                                                </div>  
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button id="close2" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary" value="submit-review" name="submit-review" id="submit-review" data-reservation-id="">Submit Review</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 </tbody>
                             </table>
                         </div>
                     </div> <!-- End of history -->  
                     <div id="edit" class="tab-pane fade">
-                        <form class="form" action="##" method="post" id="editregistrationform">
+                        <form class="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="editregistrationform" enctype="multipart/form-data">
                             <div class="form-group">
                                 <div class="col-xs-6">
                                     <label for="phone_number"><h4>Phone Number</h4></label>
@@ -187,8 +323,16 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-xs-6">
-                                    <label for="password2"><h4>Reenter password</h4></label>
+                                    <label for="password2"><h4>Re-enter password</h4></label>
                                     <input type="password" class="form-control" name="password2" id="password2" placeholder="re-enter new password" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                        <h4> Edit Profile Picture: </h4>
+                                        <input type="file" name="user-profile-image" id="user-profile-image"/>
+                                        <br>
+                                        <input type="submit" value="Submit Image" name="submit"/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -204,12 +348,34 @@
             </div> <!-- End of col-sm-12 -->
         </div> <!-- End of Row -->
 
+        <!--Cancel pop up-->
+        <div class="modal fade" id="confirmCancel" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Please Confirm</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="cancelMsg"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="cancelOK" data-dismiss="modal" data-reservation-id="">OK </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <script>
             // js for tabs
+            var userRating = 0;
             $(document).ready(function () {
                 $(".nav-tabs a").click(function () {
                     $(this).tab('show');
                 });
+
                 $("#submit_button").click(function () {
                     var validated = true;
                     if ($("#password").val() != $("#password2").val()) {
@@ -233,6 +399,58 @@
                     }
                     return validated;
                 });
+
+                $(".btn.btn-info.cancel-reservation").click(function () {
+                    var resName = $(this).data("reservation-res-name");
+                    var date = $(this).data("reservation-date");
+                    var time = $(this).data("reservation-time");
+                    var id = $(this).data("reservation-id");
+                    var message = "Cancel reservation for " + resName + " on " + date + " at " + time + "?";
+                    $('p#cancelMsg').text(message);
+                    $("button#cancelOK").data("reservation-id", id);
+                });
+
+                $("button#cancelOK").click(function () {
+                    var id = $(this).data("reservation-id");
+                    cancelReservation(id);
+                });
+
+                $(".btn.btn-info.write-review").click(function () {
+                    var name = $(this).data("restaurantname");
+                    var id = $(this).data("reservation-id");
+                    $("h3#restaurant-name").text(name);
+                    $("button#submit-review").data("reservation-id", id);
+                });
+
+                var maxChar = 1000;
+                $("textarea#review-text").keyup(function () {
+                    var charRemaining = maxChar - $(this).val().length;
+                    if (charRemaining <= 1) {
+                        $(this).val($(this).val().substring(0, maxChar));
+                    }
+                    $("h4#write-review").text("Write your review here (" + charRemaining + " characters left)");
+                });
+
+                $("button#submit-review").click(function () {
+                    if (userRating === 0) {
+                        alert ('Please rate the restaurant');
+                        return;
+                    }
+                    var str = $("textarea#review-text").val().substring(0, 1000);
+                    submitReview($(this).data("reservation-id"), str, userRating);
+                    userRating = 0;
+                });
+                
+                $("button[id*='close']").click(function() {
+                   $("textarea#review-text").val("");
+                   userRating = 0;
+                });
+                
+                $("input[id*='rating']").click(function() {
+                    userRating = $(this).val();
+                });
+
+
             });
 
             function validateEmail(email) {
@@ -246,7 +464,46 @@
             }
 
             $("[rel='tooltip']").tooltip();
-            
+
+            function cancelReservation(reservationId) {
+                var request = $.ajax({
+                    url: "../../controllers/User_Controller.php",
+                    data: {functionName: 'cancelReservation', reservationId: reservationId},
+                    dataType: "json"
+                });
+                
+                request.done(function(data) {
+                    if(data.success === '1') {
+                        $("a[data-reservation-id="+reservationId+"]").parent().parent().remove();
+                        alert ("Successfully cancelled reservation");
+                    }
+                });
+            }
+
+            function submitReview(restaurantId, reviewText, userRating) {
+                var request = $.ajax({
+                    url: "../../controllers/User_Controller.php",
+                    data: {functionName: 'submitReview', 
+                            restaurantId: restaurantId,
+                            userId: <?php echo $userInfo['user_id']; ?>, 
+                            reviewText: reviewText,
+                            rating: userRating },
+                    dataType: "json"
+                });
+
+                request.done(function (data) {
+                    var dateTime = data.dateTime;
+                    var reviewButton = $('a[data-reservation-id="' + restaurantId + '"]');
+                    var nextTd = $(reviewButton).parent().next('td');
+                    var nextNextTd = nextTd.next('td');
+                    reviewButton.replaceWith(reviewText);
+                    nextTd.text(userRating);
+                    nextNextTd.text(dateTime);
+
+                    $('div#modal-review').modal('hide');
+                });
+            }
+          
         </script>   
 
 </body>

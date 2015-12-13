@@ -25,7 +25,6 @@
                 var userPassword = document.forms["myForm"]["userPassword"].value;
                 var userConfirmPassword = document.forms["myForm"]["userConfirmPassword"].value;
                 var userEmail = document.forms["myForm"]["userEmail"].value;
-                var checkbox = document.forms["myForm"]["checkbox"].value;
 
                 if (userFirstName === null || userFirstName === "") {
                     alert("First name must be filled out.");
@@ -61,12 +60,6 @@
                     alert("Email must be filled out.");
                     return false;
                 }
-
-                if (checkbox === null || checkbox === "") {
-                    alert("You must agree to the privacy policy.");
-                    return false;
-                }
-
             }
         </script>
     </head>
@@ -97,20 +90,21 @@
                           onsubmit="return validateForm()" method="post">
                         <div class="col-sm-12">
                             
+                            <p>* indicates required field.</p>
                             <div class="row">
                                 <div class="col-sm-6 form-group">
-                                    <label>First Name*</label>
-                                    <input type="text" name="userFirstName" placeholder="Please enter you first name..." class="form-control" required>
+                                    <label id="firstNameLabel">First Name *</label>
+                                    <input type="text" name="userFirstName" id="firstname" placeholder="Please enter you first name..." class="form-control" required>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <label>Last Name*</label>
-                                    <input type="text" name="userLastName" placeholder="Please enter you last name..." class="form-control" required>
+                                    <label id="lastNameLabel">Last Name *</label>
+                                    <input type="text" name="userLastName" id="lastname" placeholder="Please enter you last name..." class="form-control" required>
                                 </div>
                             </div>										 
 
                             <div class="row">
                                 <div class="col-sm-6 form-group">
-                                <label id="usernameLabel">Username*</label>
+                                <label id="usernameLabel">Username *</label>
                                 <input type="text" name="userUsername" id="username" placeholder="Please pick a username..." class="form-control" required>
                                 </div>
                                 
@@ -118,25 +112,25 @@
 
                             <div class="row">
                                 <div class="col-sm-6 form-group">
-                                    <label>Password*</label>
-                                    <input type="password" name="userPassword" placeholder="Please pick a password..." class="form-control" required>
+                                    <label id="passwordLabel">Password *</label>
+                                    <input type="password" name="userPassword" id="password" placeholder="Please pick a password..." class="form-control" required>
                                 </div>	
                                 <div class="col-sm-6 form-group">
-                                    <label>Confirm Password*</label>
-                                    <input type="password" name="userConfirmPassword" placeholder="Please confirm your password..." class="form-control" required>
+                                    <label id="confirmPasswordLabel">Confirm Password *</label>
+                                    <input type="password" name="userConfirmPassword" id="confirmPassword" placeholder="Please confirm your password..." class="form-control" required>
                                 </div>		
                             </div>
 
                             <div class="row">
                                 <div class="col-sm-6 form-group">
+                                    <label id="emailLabel">Email Address *</label>
+                                    <input type="email" name="userEmail" id="email" placeholder="Please enter your email address..." class="form-control" required>
+                                </div>
+                                
+                                <div class="col-sm-6 form-group">
                                     <label>Phone Number</label>
                                     <input type="text" name="userPhone" placeholder="Please enter your phone number..." class="form-control">
-                                </div>
-                          	
-                                <div class="col-sm-6 form-group">
-                                    <label>Email Address*</label>
-                                    <input type="email" name="userEmail" placeholder="Please enter your email address..." class="form-control" required>
-                                </div>
+                                </div>                                
                             </div>
                             
                             <script type="text/javascript">
@@ -228,21 +222,77 @@
         <script>
             $(document).ready(function () {
                 $("#username").focusout(function () {
-                    var existingUsernames = <?php echo json_encode($existingUsernames) ?>;
+                    var existingUsernames = <?php echo json_encode($existingUsernames); ?>;
                     var inputUsername = $("#username").val();
                     if (!inputUsername) {
                         $("#username").css("border", "#FF0000 1px solid");
-                        $("#usernameLabel").replaceWith ("<label id='usernameLabel'>Username*<i style='color:red'>Username cannot be empty</i></label>");
+                        $("#usernameLabel").replaceWith ("<label id='usernameLabel'>Username *<i style='color:red'>Username cannot be empty</i></label>");
                         return;
                     }
                     if (jQuery.inArray(inputUsername, existingUsernames) !== -1) {
                         $("#username").css("border", "#FF0000 1px solid");
-                        $("#usernameLabel").replaceWith ("<label id='usernameLabel'>Username*<i style='color:red'>Username already taken</i></label>");
+                        $("#usernameLabel").replaceWith ("<label id='usernameLabel'>Username *<i style='color:red'>Username already taken</i></label>");
                         return;
                     }
                     $("#username").css("border", "");
-                    $("#usernameLabel").replaceWith('<label id="usernameLabel">Username*</label>');
+                    $("#usernameLabel").replaceWith('<label id="usernameLabel">Username *</label>');
                 });
+                
+                 $("#firstname").focusout(function () {
+                    var inputFirstName = $("#firstname").val();
+                    if (!inputFirstName) {
+                        $("#firstname").css("border", "#FF0000 1px solid");
+                        $("#firstNameLabel").replaceWith ("<label id='firstNameLabel'>First Name *<i style='color:red'>First name cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#firstname").css("border", "");
+                    $("#firstNameLabel").replaceWith('<label id="firstNameLabel">First Name *</label>');
+                });
+                
+                $("#lastname").focusout(function () {
+                    var inputLastName = $("#lastname").val();
+                    if (!inputLastName) {
+                        $("#lastname").css("border", "#FF0000 1px solid");
+                        $("#lastNameLabel").replaceWith ("<label id='lastNameLabel'>Last Name *<i style='color:red'>Last name cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#lastname").css("border", "");
+                    $("#lastNameLabel").replaceWith('<label id="lastNameLabel">Last Name *</label>');
+                });
+                
+                $("#password").focusout(function () {
+                    var inputPassword = $("#password").val();
+                    if (!inputPassword) {
+                        $("#password").css("border", "#FF0000 1px solid");
+                        $("#passwordLabel").replaceWith ("<label id='passwordLabel'>Password *<i style='color:red'>Password cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#password").css("border", "");
+                    $("#passwordLabel").replaceWith('<label id="passwordLabel">Password *</label>');
+                });
+                
+                $("#confirmPassword").focusout(function () {
+                    var inputCPassword = $("#confirmPassword").val();
+                    if (!inputCPassword) {
+                        $("#confirmPassword").css("border", "#FF0000 1px solid");
+                        $("#confirmPasswordLabel").replaceWith ("<label id='confirmPasswordLabel'>Confirm Password *<i style='color:red'>Confirm password cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#confirmPassword").css("border", "");
+                    $("#confirmPasswordLabel").replaceWith('<label id="confirmPasswordLabel">Confirm Password *</label>');
+                });
+                
+                $("#email").focusout(function () {
+                    var inputEmail = $("#email").val();
+                    if (!inputEmail) {
+                        $("#email").css("border", "#FF0000 1px solid");
+                        $("#emailLabel").replaceWith ("<label id='emailLabel'>Email Address *<i style='color:red'>Email cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#email").css("border", "");
+                    $("#emailLabel").replaceWith('<label id="emailLabel">Email Address *</label>');
+                });
+                
             });
             function validateUserName() {
                 

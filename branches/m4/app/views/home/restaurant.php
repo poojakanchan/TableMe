@@ -218,6 +218,17 @@ if (isset($reservationArray["reservationOutcome"])) {
                     $("#phone").css("border", "");
                     $("#phoneLabel").replaceWith('<label id="phoneLabel">Phone Number *</label>');
                 });
+                
+                $("#date").focusout(function () {
+                    var inputDate = $("#date").val();
+                    if (!inputDate) {
+                        $("#date").css("border", "#FF0000 1px solid");
+                        $("#dateLabel").replaceWith ("<label id='dateLabel'>Enter Date*<i style='color:red'>Date cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#date").css("border", "");
+                    $("#dateLabel").replaceWith('<label id="dateLabel">Enter Date*</label>');
+                });
         });
     </script> <!-- datepicking end -->
 
@@ -597,9 +608,9 @@ if (isset($reservationArray["reservationOutcome"])) {
                                                              <div class="row">
                                                             <div class="col-md-6">
                                                             <!-- This is for the datapicking method -->
-                                                            <label>Enter Date*</label>
+                                                            <label id="dateLabel">Enter Date*</label>
                                                             <div class="input-group date" id="datetimepicker1">
-                                                                <input   data-width="auto"  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date" placeholder="Please select date" class="form-control"></input>
+                                                                <input   data-width="auto"  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date" placeholder="Please select date" class="form-control" required></input>
                                                               <!--  <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>  -->
                                                                 <span class="input-group-addon" > <i class="glyphicon glyphicon-calendar" ></i></span> 
                                                             </div>

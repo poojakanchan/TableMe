@@ -138,7 +138,7 @@
                 border-radius: 25px;
                 border: 1px solid #e3e3e3;
                 background-color:#f5f5f5;
-                /*background-color:rgba(0,0,0,0.5)*/
+               /*background-color:rgba(0,0,0,0.5)*/
             }
         </style>
         <script>
@@ -186,7 +186,7 @@
                              //   alert('hide');
                             });
                                // console.log(response);
-                              //  alert(response);
+                            //    alert(response);
                                var reservations = $.parseJSON(response);
                                 
                                 for (var i = 0; i < reservations.length; i++) {
@@ -216,6 +216,15 @@
                                         clone.find("#accomodations").text('Special Instructions: ' + reservations[i]['special_instruct']);
                                         
                                         }
+                                        if(reservations[i]['contact_no'] != "" || reservations[i]['contact_no'].trim().length > 0){
+                                            clone.find('#phone').text('Contact: ' + reservations[i]['contact_no']);
+                                        }
+                                        if(reservations[i]['email'] === null ||  reservations[i]['email'].trim().length === 0){
+                                             clone.find("#email").text("");
+                                        } else{
+                                             clone.find("#email").text("Email: " + reservations[i]['email']);
+                                        }
+                                            
                                         clone.find("#reservation_id").attr('value',reservations[i]['reservation_id']);
                                         clone.find("#user_id").attr('value',reservations[i]['user_id']);
                                         clone.find("#cancel-reservation").attr("name", reservations[i]['reservation_id']);
@@ -437,9 +446,10 @@
         </script>
         
         <style>
-            .media{
-                border: 1px solid #C0C0C0;
-                background-color:#C0C0C0;
+           .media{
+                border: 1px solid #d6d6c2;
+                background-color:#d6d6c2;
+                padding:15px;
             }
         </style>
 </head>
@@ -506,7 +516,7 @@
                                                         <?php //echo $resId ?>
                                                         <div class="col-md-12">
                                                             <p>* indicates required field.</p>
-                                                            <label>Number of Guests</label>
+                                                            <label>Number of Guests*</label>
                                                             <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
                                                                 <option value="1">1</option>
                                                                 <option value="2">2</option>
@@ -521,7 +531,7 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <!-- This is for the datapicking method -->
-                                                            <label>Enter Date</label>
+                                                            <label>Enter Date*</label>
                                                             <div class="input-group date" id="datetimepicker1">
                                                                 <input   data-width="auto"  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date" placeholder="Please select date" class="form-control"></input>
                                                               <!--  <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>  -->
@@ -532,7 +542,7 @@
                                                     <br>
 
 
-                                            <label>Enter Time</label>
+                                            <label>Enter Time*</label>
                                             <select class="selectpicker" data-width="auto" id="hours" name="hours" required>
                                                 <!-- <option value="" disabled selected>Hours</option> -->
                                                 <option value="1">1</option>
@@ -635,6 +645,8 @@
                                 <h2 class="media-heading" id ="guest_name">John Smith</h2>
                                 <h3 id ="no_of_people"> 2 people</h3>
                                 <h4 id="accomodations">Accommodations</h4>
+                                <h4 id="email">Email</h4>
+                                <h4 id="phone">Phone number:</h4>
                               <!--  <h2 hidden id="reservation_id">1</h2>
                                 <h2 hidden id="user_id">1</h2> -->
                                 <input type="hidden" id="reservation_id" name="reservation_id" value="">

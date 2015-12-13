@@ -3,6 +3,28 @@
     if(!isset($_SESSION['username'])) {
         header('location: ../home/login.php');
     }
+    require_once "../../controllers/Host_controller.php";
+   $hostController = new Host_controller();
+    $restuarant = $hostController -> getRestaurant($_SESSION['username']);
+    $resId = $restuarant['res_id'];
+    $resName = $restuarant['res_name'];
+    $thumbnail = $restuarant['thumbnail'];
+    date_default_timezone_set("America/Los_Angeles");
+    $date = date('Y/m/d');
+    
+     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+         if(isset($_POST['reservation_id'])){
+         $reservation_id = $_POST['reservation_id'];
+        // echo 'reservation id' . $reservation_id;
+         $date = $hostController ->getReservationDate($reservation_id);
+        $hostController->cancelReservation($resId,$reservation_id);
+         }else if(isset($_POST['reservationFirstName'])) {
+             $hostController->makeReservation();
+         }
+    }
+
+   
 ?>
 <html lang="en">
 <head>
@@ -12,9 +34,21 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css">
         <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        
+        <!-- this scripts and links are for datepicking -->
+        
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker.css">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/js/bootstrap-datepicker.min.js"></script>
+
+ <!-- datepicking end -->
         
         <!-- Will merge the style and script code into CSS and JS file after all is done. -->
         <style>
@@ -25,7 +59,7 @@
                 margin-left: 0.1em;   
             }
 
-            .date-picker,
+            .date-picker2,
             .date-container {
                 position: relative;
                 display: inline-block;
@@ -36,11 +70,14 @@
                 -moz-user-select: none;
                 -ms-user-select: none;
                 user-select: none;
+                
+                /*color:#FFFFFF;*/
+                color:#000000;
             }
             .date-container {
                 padding: 0px 40px;   
             }
-            .date-picker h2, .date-picker h4 {
+            .date-picker2 h2, .date-picker2 h4 {
                 margin: 0px;
                 padding: 0px;
                 font-family: 'Roboto', sans-serif;
@@ -49,7 +86,7 @@
             .date-container .date {
                 text-align: center;
             }
-            .date-picker span.fa {
+            .date-picker2 span.fa {
                 position: absolute;
                 font-size: 4em;
                 font-weight: 100;
@@ -57,13 +94,13 @@
                 cursor: pointer;
                 top: 0px;
             }
-            .date-picker span.fa[data-type="subtract"] {
+            .date-picker2 span.fa[data-type="subtract"] {
                 left: 0px;
             }
-            .date-picker span.fa[data-type="add"] {
+            .date-picker2 span.fa[data-type="add"] {
                 right: 0px;
             }
-            .date-picker span[data-toggle="calendar"] {
+            .date-picker2 span[data-toggle="calendar"] {
                 display: block;
                 position: absolute;
                 top: -7px;
@@ -72,42 +109,57 @@
                 cursor: pointer;
             }
 
-            .date-picker .input-datepicker {
+            .date-picker2 .input-datepicker2 {
                 display: none;
                 position: absolute;
                 top: 50%;
                 margin-top: -17px;
                 width:100%;
             }
-            .date-picker .input-datepicker.show-input {
+            .date-picker2 .input-datepicker2.show-input {
                 display: table;
             }
 
             @media (min-width: 768px) and (max-width: 1010px) {
-                .date-picker h2{
+                .date-picker2 h2{
                     font-size: 1.5em; 
                     font-weight: 400;  
                 }    
-                .date-picker h4 {
+                .date-picker2 h4 {
                     font-size: 1.1em;
                 }  
-                .date-picker span.fa {
+                .date-picker2 span.fa {
                     font-size: 3em;
                 } 
+            }
+            
+            .container-fluid{
+                margin: 10px 10px 10px 10px;
+                border-radius: 25px;
+                border: 1px solid #e3e3e3;
+                background-color:#f5f5f5;
+               /*background-color:rgba(0,0,0,0.5)*/
             }
         </style>
         <script>
             //Date picker function
-            $(document).ready(function() {
+            $(document).ready(function() {                
+                $('[id=datetimepicker1]').each(function () {
+                    $(this).datepicker();
+                    $(this).on('changeDate', function(){
+                    $(this).datepicker('hide');
+                    });
+                });
+                
                 $(window).on('focus', function(event) {
                     $('.show-focus-status > .alert-danger').addClass('hidden');
                     $('.show-focus-status > .alert-success').removeClass('hidden');
                 }).on('blur', function(event) {
                     $('.show-focus-status > .alert-success').addClass('hidden');
                     $('.show-focus-status > .alert-danger').removeClass('hidden');
-                });    
-
-                $('.date-picker').each(function () {
+                });
+                
+                $('.date-picker2').each(function () {
                     var $datepicker = $(this), cur_date = ($datepicker.data('date') ? moment($datepicker.data('date'), "YYYY/MM/DD") : moment()),
                         format = {
                             "weekday" : ($datepicker.find('.weekday').data('format') ? $datepicker.find('.weekday').data('format') : "dddd"),                
@@ -120,19 +172,112 @@
                         $datepicker.find('.date-container > .date').text(cur_date.format(format.date));
                         $datepicker.find('.date-container > .year').text(cur_date.format(format.year));
                         $datepicker.data('date', cur_date.format('YYYY/MM/DD'));
-                        $datepicker.find('.input-datepicker').removeClass('show-input');
-                    }
+                        $datepicker.find('.input-datepicker2').removeClass('show-input');
+                     
+                        $.ajax({
+                            url: "../../controllers/Host_controller.php",
+                            type:"POST",
+                            async:false,
+                            data: {date: JSON.stringify(cur_date.format('YYYY/MM/DD')),resId:JSON.stringify(<?php echo $resId ?>)},
+                            dataType:"html",
+                            success: function(response) {
+                                $('[id=reservation_info]').each(function(){
+                                $(this).hide();
+                             //   alert('hide');
+                            });
+                               // console.log(response);
+                            //    alert(response);
+                               var reservations = $.parseJSON(response);
+                                
+                                for (var i = 0; i < reservations.length; i++) {
+                                     var clone = $('#reservation_info').first().clone();
+                                    
+                                    var first = $('#reservation_info').first();
+                                    
+                                            first.after(clone.show());
+                                            var time = reservations[i]['time'].toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
 
-                    updateDisplay(cur_date);
-
-                    $datepicker.on('click', '[data-toggle="calendar"]', function(event) {
-                        event.preventDefault();
-                        $datepicker.find('.input-datepicker').toggleClass('show-input');
+                                             if (time.length > 1) { // If time format correct
+                                             time = time.slice (1);  // Remove full string match value
+                                              time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+                                                 time[0] = +time[0] % 12 || 12; // Adjust hours
+                                                
+                                                 time[3] = "";
+                                             }
+                                        var formattedTime= time.join (''); // return adjusted time or original string
+                                      
+                                     clone.find("#time").text(formattedTime);
+                                      clone.find("#guest_name").text(reservations[i]['user_name']);
+                                      clone.find("#no_of_people").text('Number of People: ' + reservations[i]['no_of_people']);
+                                      
+                                        if(reservations[i]['special_instruct'] === "" || reservations[i]['special_instruct'].trim().length === 0){
+                                        clone.find("#accomodations").text('Special Instructions: None');
+                                        } else {
+                                        clone.find("#accomodations").text('Special Instructions: ' + reservations[i]['special_instruct']);
+                                        
+                                        }
+                                        if(reservations[i]['contact_no'] != "" || reservations[i]['contact_no'].trim().length > 0){
+                                            clone.find('#phone').text('Contact: ' + reservations[i]['contact_no']);
+                                        }
+                                        if(reservations[i]['email'] === null ||  reservations[i]['email'].trim().length === 0){
+                                             clone.find("#email").text("");
+                                        } else{
+                                             clone.find("#email").text("Email: " + reservations[i]['email']);
+                                        }
+                                            
+                                        clone.find("#reservation_id").attr('value',reservations[i]['reservation_id']);
+                                        clone.find("#user_id").attr('value',reservations[i]['user_id']);
+                                        clone.find("#cancel-reservation").attr("name", reservations[i]['reservation_id']);
+                                        clone.find("#cancel_reservation").data("reservation-id", reservations[i]['reservation_id']);
+                                        clone.find("#cancel_reservation").click(function() {
+                                            var cancelReservationId = $(this).data("reservation-id");
+                                            $("button#confirmCancelReservation").data("reservation-id", cancelReservationId);
+                                        });
+                                    //   alert('marked ' + reservations[i]['mark_arrived']);
+                                        if(reservations[i]['mark_arrived'] == 1){
+                                             //alert('if');
+                                         clone.find("#cancel_reservation").addClass('disabled');
+                                       //  alert(clone.find("input:checkbox").is(':checked'));
+                                         clone.find("input:checkbox").prop('checked',true);
+                                         clone.find("#mark_arrived")
+                                         .removeClass('btn-default')
+                                            .addClass('disabled');
+                                         } else {
+                                             
+                                        /* clone.find("#cancel_reservation").removeClass('disabled');
+                                           clone.find("#mark_arrived")
+                                         .removeClass('disabled')
+                                            .addClass('btn-default');
+                                          clone.find("input:checkbox").prop('checked', false);*/
+                                         }
+                                    //    alert(clone.find("#user_id").val());
+                                    }
+                                    initCheckbox();
+                                },
+                            error: function(jqXHR, textStatus, errorThrown){
+                                         alert(textStatus, errorThrown);
+                             }
+                        });
+                        
+                     }
+                     
+                    $("button#confirmCancelReservation").click(function() {
+                        var reservationId = $(this).data("reservation-id");
+                        console.log(reservationId);
+                        var form = $("form[name='" + reservationId + "']");
+                                form.submit();
                     });
 
-                    $datepicker.on('click', '.input-datepicker > .input-group-btn > button', function(event) {
+                    updateDisplay(cur_date);
+                    
+                    $datepicker.on('click', '[data-toggle="calendar"]', function(event) {
                         event.preventDefault();
-                        var $input = $(this).closest('.input-datepicker').find('input'),
+                        $datepicker.find('.input-datepicker2').toggleClass('show-input');
+                    });
+
+                    $datepicker.on('click', '.input-datepicker2 > .input-group-btn > button', function(event) {
+                        event.preventDefault();
+                        var $input = $(this).closest('.input-datepicker2').find('input'),
                             date_format = ($input.data('format') ? $input.data('format') : "YYYY/MM/DD");
                         if (moment($input.val(), date_format).isValid()) {
                            updateDisplay(moment($input.val(), date_format));
@@ -141,10 +286,10 @@
                         }
                     });
 
-                    $datepicker.on('click', '[data-toggle="datepicker"]', function(event) {
+                    $datepicker.on('click', '[data-toggle="datepicker2"]', function(event) {
                         event.preventDefault();
 
-                        var cur_date = moment($(this).closest('.date-picker').data('date'), "YYYY/MM/DD"),
+                        var cur_date = moment($(this).closest('.date-picker2').data('date'), "YYYY/MM/DD"),
                             date_type = ($datepicker.data('type') ? $datepicker.data('type') : "days"),
                             type = ($(this).data('type') ? $(this).data('type') : "add"),
                             amt = ($(this).data('amt') ? $(this).data('amt') : 1);
@@ -168,10 +313,65 @@
                         });
                     }
                 });
-            });
-            
-            //Check box function
-            $(function () {
+                
+                $("#firstname").focusout(function () {
+                    var inputFirstName = $("#firstname").val();
+                    if (!inputFirstName) {
+                        $("#firstname").css("border", "#FF0000 1px solid");
+                        $("#firstNameLabel").replaceWith ("<label id='firstNameLabel'>First Name *<i style='color:red'>First name cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#firstname").css("border", "");
+                    $("#firstNameLabel").replaceWith('<label id="firstNameLabel">First Name *</label>');
+                });
+                
+                $("#lastname").focusout(function () {
+                    var inputLastName = $("#lastname").val();
+                    if (!inputLastName) {
+                        $("#lastname").css("border", "#FF0000 1px solid");
+                        $("#lastNameLabel").replaceWith ("<label id='lastNameLabel'>Last Name *<i style='color:red'>Last name cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#lastname").css("border", "");
+                    $("#lastNameLabel").replaceWith('<label id="lastNameLabel">Last Name *</label>');
+                });
+                
+                $("#email").focusout(function () {
+                    var inputEmail = $("#email").val();
+                    if (!inputEmail) {
+                        $("#email").css("border", "#FF0000 1px solid");
+                        $("#emailLabel").replaceWith ("<label id='emailLabel'>Email *<i style='color:red'>Email cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#email").css("border", "");
+                    $("#emailLabel").replaceWith('<label id="emailLabel">Email *</label>');
+                });
+                
+                $("#phone").focusout(function () {
+                    var inputPhone = $("#phone").val();
+                    if (!inputPhone) {
+                        $("#phone").css("border", "#FF0000 1px solid");
+                        $("#phoneLabel").replaceWith ("<label id='phoneLabel'>Phone Number *<i style='color:red'>Phone cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#phone").css("border", "");
+                    $("#phoneLabel").replaceWith('<label id="phoneLabel">Phone Number *</label>');
+                });
+                
+                $("#date").focusout(function () {
+                    var inputDate = $("#date").val();
+                    if (!inputDate) {
+                        $("#date").css("border", "#FF0000 1px solid");
+                        $("#dateLabel").replaceWith ("<label id='dateLabel'>Enter Date*<i style='color:red'>Date cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#date").css("border", "");
+                    $("#dateLabel").replaceWith('<label id="dateLabel">Enter Date*</label>');
+                });
+        });    
+                //Check box function
+           // $(function () {
+          function initCheckbox(){
                 $('.button-checkbox').each(function () {
 
                     // Settings
@@ -195,7 +395,7 @@
                         updateDisplay();
                     });
                     $checkbox.on('change', function () {
-                        updateDisplay();
+                    //    updateDisplay();
                     });
 
                     // Actions
@@ -209,15 +409,37 @@
                             .addClass('state-icon ' + settings[$button.data('state')].icon);
                         // Update the button's color
                         if (isChecked) {
-                            $button
-                                .removeClass('btn-default')
-                                .addClass('btn-' + color + ' active');
+                         //   alert('checked');
+                                 $button
+                                    .removeClass('btn-default')
+                                    .addClass('btn-' + color + ' disabled');
+                                    
+                                  
+                                 var parent = $checkbox.closest('div');
+                            
+                               parent.find("#cancel_reservation").addClass('disabled');
+                                // alert(parent.find("#user_id").val());
+                                     
+                                    
+                                 $.ajax({
+                                url: "../../controllers/Host_controller.php",
+                                type:"POST",
+                                async:false,
+                                data: {resId: JSON.stringify(<?php echo $resId ?>),
+                                    reservationId:JSON.stringify(parent.find("#reservation_id").val())},
+                                dataType:"html",
+                                success: function(response) {
+                                 //   alert(response);
+                                }
+                               });
+                          
                         }
                         else {
                             $button
                                 .removeClass('btn-' + color + ' active')
                                 .addClass('btn-default');
                         }
+                        
                     }
 
                     function init() {
@@ -229,218 +451,47 @@
                     }
                     init();
                 });
-            });
+            }
+         //   });
+ 
         </script>
+        
+        <style>
+           .media{
+                border: 1px solid #d6d6c2;
+                background-color:#d6d6c2;
+                padding:15px;
+            }
+        </style>
 </head>
 <body>
     <div class="container-fluid">
         <div class="mainInfo col-md-12">
-            <div class="row col-md-offset-6">
-                <h1>Little Tokyo</h1>
-            </div>
-            <!--Restaurant infomation-->
             <div class="row">
-                <div class="restaurantLogo col-md-4">
-                    <img alt="Logo" src="http://goo.gl/vrq2Cw" class="img-rounded" height="300" width="300"/>
+                <div class="col-md-1">
+                    <img alt="Logo" src="<?php echo 'data:image/jpeg;base64,' . $thumbnail ?>" class="img-rounded" height="100" width="100"/>
                 </div>
-                <div class="restaurantDetail1 col-md-4">
-                    <h3>Food type:</h3>
-                    <p>The restaurant Food type from db should be here!</p>
-                    <h3>Description:</h3>
-                    <p>The restaurant description from db should be here!</p>
-                </div>
-                <div class="restaurantDetail2 col-md-4">
-                    <h3>Address:</h3>
-                    <p>The restaurant address from db should be here!</p>
-                    <h3>Phone:</h3>
-                    <p>The restaurant phone number from db should be here!</p>
+                <div class="col-md-11">
+                    <h1><?php echo $resName ?></h1>
                 </div>
             </div>
             
             <!--Reservation-->
             <br><br>
             <h1>Reservations:</h1>
-            <button class="reservationButton btn btn-info pull-right" data-toggle="modal" data-id="<?php //echo $restaurant['restaurant_id'] ?>" data-target="#reservation-<?php //echo $restaurant['restaurant_id'] ?>" >
-                Make a Reservation
-            </button>
-            
-            <!--Reservation pop up-->
-            <div  class="modal fade" id="reservation-<?php //echo $restaurant['restaurant_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <form name="myForm" action="#.php" onsubmit="return validateForm()" method="post">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <label class="modal-title" name ="myModalLabel" id="myModalLabel">Make reservation at restaurant </label>
-                            </div>
-                            <div class="reservationPopup modal-body">
-                                <div class="col-lg-12 well">
-                                    <div class="row">
-                                        <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
-                                        <div class="col-sm-12">
-                                            <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
-                                                <option value="" disabled selected>Number of Guests</option>
-                                                <option value="2">2</option>
-                                                <option value="4">4</option>
-                                                <option value="6">6</option>
-                                            </select>
-                                            <br><br>
-                                            <select class="selectpicker" data-width="auto" id="month" name="month" required>
-                                                <option value="" disabled selected>Month</option>
-                                                <option value ="January">January</option>
-                                                <option value="February">February</option>
-                                                <option value="March">March</option>
-                                                <option value="April">April</option>
-                                                <option value="May">May</option>
-                                                <option value="June">June</option>
-                                                <option value ="July">July</option>
-                                                <option value="August">August</option>
-                                                <option value="September">September</option>
-                                                <option value="October">October</option>
-                                                <option value="November">November</option>
-                                                <option value="December">December</option>
-                                            </select>
-                                            <select class="selectpicker" data-width="auto" id="day" name="day" required>
-                                                <option value="" disabled selected>Day</option>
-                                                <option value ="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value ="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                                <option value="10">10</option>
-                                                <option value="11">11</option>
-                                                <option value="12">12</option>
-                                                <option value="13">13</option>
-                                                <option value="14">14</option>
-                                                <option value="15">15</option>
-                                                <option value="16">16</option>
-                                                <option value ="17">17</option>
-                                                <option value="18">18</option>
-                                                <option value="19">19</option>
-                                                <option value="20">20</option>
-                                                <option value="21">21</option>
-                                                <option value="22">22</option>
-                                                <option value="23">23</option>
-                                                <option value="24">24</option>
-                                                <option value="25">25</option>
-                                                <option value="26">26</option>
-                                                <option value ="27">27</option>
-                                                <option value="28">28</option>
-                                                <option value="29">29</option>
-                                                <option value="30">30</option>
-                                                option value="31">31</option>
-                                            </select>
-                                            <select class="selectpicker" data-width="auto" id="year" name="year" required>
-                                                <option value="" disabled selected>Year</option>
-                                                <option value ="2015">2015</option>
-                                                <option value="2016">2016</option>
-                                                <option value="2017">2017</option>
-                                            </select>
-                                            <select class="selectpicker" data-width="auto" id="time" name="time" required>
-                                                <option value="" disabled selected>Time</option>
-                                                <option value ="8am">8:00 AM</option>
-                                                <option value="8:30am">8:30 AM</option>
-                                                <option value="9am">9:00 AM</option>
-                                                <option value="930am">9:30 AM</option>
-                                                <option value="10am">10:00 AM</option>
-                                                <option value="1030am">10:30 AM</option>
-                                                <option value ="11am">11:00 AM</option>
-                                                <option value="1130am">11:30 AM</option>
-                                                <option value="12pm">12:00 PM</option>
-                                                <option value="1230pm">12:30 PM</option>
-                                                <option value="1pm">1:00 PM</option>
-                                                <option value="130pm">1:30 PM</option>
-                                                <option value="2pm">2:00 PM</option>
-                                                <option value="230pm">2:30 PM</option>
-                                                <option value="3pm">3:00 PM</option>
-                                                <option value="330pm">3:30 PM</option>
-                                                <option value="4pm">4:00 PM</option>
-                                                <option value="430pm">4:30 PM</option>
-                                                <option value="5pm">5:00 PM</option>
-                                                <option value="530pm">5:30 PM</option>
-                                                <option value="6pm">6:00 PM</option>
-                                                <option value="630pm">6:30 PM</option>
-                                                <option value="7pm">7:00 PM</option>
-                                                <option value="730pm">7:30 PM</option>
-                                                <option value="8pm">8:00 PM</option>
-                                                <option value="830pm">8:30 PM</option>
-                                                <option value="9pm">9:00 PM</option>
-                                                <option value="930pm">9:30 PM</option>
-                                                <option value="10pm">10:00 PM</option>
-                                                <option value="1030pm">10:30 PM</option>
-                                                <option value="11pm">11:00 PM</option>
-                                                <option value="1130pm">11:30 PM</option>
-                                                <option value="12am">12:00 AM</option>
-                                                <option value="1230am">12:30 AM</option>
-                                                <option value="1am">1:00 AM</option>
-                                                <option value="130am">1:30 AM</option>
-                                                <option value="2am">2:00 AM</option>
-                                                <option value="230am">2:30 AM</option>
-                                                <option value="3am">3:00 AM</option>
-                                                <option value="330am">3:30 AM</option>
-                                                <option value="4am">4:00 AM</option>
-                                                <option value="430am">4:30 AM</option>
-                                                <option value="5am">5:00 AM</option>
-                                                <option value="530am">5:30 AM</option>
-                                                <option value="6am">6:00 AM</option>
-                                                <option value="630am">6:30 AM</option>
-                                                <option value="7am">7:00 AM</option>
-                                                <option value="730am">7:30 AM</option>
-                                            </select>
-                                            <br><br>
-                                            <div class="row">
-                                                <div class="col-sm-6 form-group">
-                                                    <label>First Name</label>
-                                                    <input type="text" name="reservationFirstName" placeholder="Please enter your first name..." class="form-control" required>
-                                                </div>
-                                                <div class="col-sm-6 form-group">
-                                                    <label>Last Name</label>
-                                                    <input type="text" name="reservationLastName" placeholder="Please enter your last name..." class="form-control" required>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm-6 form-group">
-                                                    <label>Email</label>
-                                                    <input type="email" name="reservationEmail" placeholder="Please enter your email address..." class="form-control" required>
-                                                </div>
-                                                <div class="col-sm-6 form-group">
-                                                    <label>Phone Number</label>
-                                                    <input type="text" name="reservationPhone" placeholder="Please enter your phone number..." class="form-control">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Accommodations</label>
-                                                <input type="text" name="accommodations" placeholder="Please enter any special requests you may have..." class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary" value="submit-reservation" name="submit-reservation" >Make reservation</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
             
             <!--Date picker-->
             <div class="row">
-                <div class="datePicker col-md-4 col-md-offset-4">
-                    <div class="date-picker pagination-centered"  data-date="2015/11/09" data-keyboard="true">
+                <div class="datePicker2 col-md-4 col-md-offset-4">
+                    <div class="date-picker2 pagination-centered"  data-date="<?php echo $date; ?>" data-keyboard="true">
                         <div class="date-container pull-left">
                             <h4 class="weekday">Monday</h4>
                             <h2 class="date">November 9th</h2>
                             <h4 class="year pull-right">2015</h4>
                         </div>
-                        <span data-toggle="datepicker" data-type="subtract" class="fa fa-angle-left"></span>
-                        <span data-toggle="datepicker" data-type="add" class="fa fa-angle-right"></span>
-                        <div class="input-group input-datepicker">
+                        <span data-toggle="datepicker2" data-type="subtract" class="fa fa-angle-left"></span>
+                        <span data-toggle="datepicker2" data-type="add" class="fa fa-angle-right"></span>
+                        <div class="input-group input-datepicker2" id="datepicker2">
                             <input type="text" class="form-control" data-format="YYYY/MM/DD" placeholder="YYYY/MM/DD">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button">Go!</button>
@@ -451,65 +502,202 @@
                 </div>
             </div>
             
+            <!--Make reservation button-->
+            <button class="reservationButton btn btn-info col-md-offset-8" data-toggle="modal" data-id="<?php echo $resId ?>" data-target="#reservation-<?php echo $resId ?>" >
+                Make a Reservation
+            </button>
+             
+            <!--Make reservation pop up-->
+            <div  class="modal fade" id="reservation-<?php echo $resId ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                                <form name="myForm" action="#.php"
+                                      onsubmit="return validateForm()" method="post">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <label class="modal-title" name ="myModalLabel" id="myModalLabel">Make reservation at <?php echo $resName ?></label>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="col-md-12 well">
+                                                    <div class="row">
+                                                        <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
+                                                        <input type="hidden" name="userid" value="<?php echo "NULL" ?>">
+                                                        <!-- for debug purposes, displays restaurant ID -->
+                                                        <?php //echo $resId ?>
+                                                        <div class="col-md-12">
+                                                            <p>* indicates required field.</p>
+                                                            <label>Number of Guests*</label>
+                                                            <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                                <option value="6">6</option>
+                                                            </select>
+                                                            <br> 
+                                                            <br>
+                                           
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <!-- This is for the datapicking method -->
+                                                            <label id="dateLabel">Enter Date*</label>
+                                                            <div class="input-group date" id="datetimepicker1">
+                                                                <input   data-width="auto"  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date" placeholder="Please select date" class="form-control" required></input>
+                                                              <!--  <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>  -->
+                                                                <span class="input-group-addon" > <i class="glyphicon glyphicon-calendar" ></i></span> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+
+
+                                            <label>Enter Time*</label>
+                                            <select class="selectpicker" data-width="auto" id="hours" name="hours" required>
+                                                <!-- <option value="" disabled selected>Hours</option> -->
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                            </select>
+
+                                            <select class="selectpicker" data-width="auto" id="minutes" name="minutes" required>
+                                                    <!--<option value="" disabled selected>Minutes</option> -->
+                                                    <option value=":00">:00</option>
+                                                    <option value=":30">:30</option>
+                                             </select>
+
+                                            <select class="selectpicker" data-width="auto" id="ampm" name="ampm" required>
+                                                    <option value="" disabled selected>AM/PM</option>
+                                                    <option value="am">am</option>
+                                                    <option value="pm">pm</option>
+                                            </select>
+
+                                            <br>
+                                            <br>
+
+                                            <div class="row">
+
+
+                                                <div class="col-md-6 form-group">
+                                                    <label id="firstNameLabel">First Name *</label>
+                                                    <input type="text" name="reservationFirstName" id="firstname" placeholder="Please enter your first name..." class="form-control" required>
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label id="lastNameLabel">Last Name *</label>
+                                                    <input type="text" name="reservationLastName" id="lastname" placeholder="Please enter your last name..." class="form-control" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <label id="emailLabel">Email *</label>
+                                                    <input type="email" name="reservationEmail" id="email" placeholder="Please enter your email address..." class="form-control" required>
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label id="phoneLabel">Phone Number *</label>
+                                                    <input type="text" name="reservationPhone" id="phone" placeholder="Please enter your phone number..." class="form-control" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Accommodations</label>
+                                                <input type="text" name="accommodations" placeholder="Please enter any special requests you may have..." class="form-control">
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" value="submit-reservation" name="submit-reservation" >Make reservation</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
             <!--List of reservations-->
-            <div class="row">
+            <div class="reservationbox">
+            <div class="row" id ="reservation_info" hidden>
+              <form id="cancel-reservation" method = "post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                              
                 <div class="reservationInfo col-md-6 col-md-offset-3">
                 <div class="list-group">
                     <br><br>
-                    <h2>12:00 PM</h2>
-                    <a href="#" class="list-group-item">
+                    <h2 id="time">12:00 PM</h2>
+                   
                         <div class="media">
                             
-                            <!--Cancellation-->
-                            <button class="cancelButton btn btn-danger pull-right" data-toggle="modal" data-target="#confirmDelete">
-                                Cancel Reservation
-                            </button>
+                            <!--Arrived check box-->
+                            <span class="button-checkbox pull-right">
+                                <button id="mark_arrived" type="button" class="btn btn-success" data-color="primary">Arrived</button>
+                                <input type="checkbox" class="hidden"/>
+                            </span>
                             
-                            <!--Cancel pop up-->
-                            <div class="cancelPopup modal fade" id="confirmDelete" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                      <h4 class="modal-title">Cancel Reservation </h4>
-                                    </div>
-                                    <div class="modal-body">
-                                      <p>Are you sure about this?</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                      <button type="button" class="btn btn-danger" id="confirm">OK </button>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-                            
+                             
                             <!--Reservation info-->
                             <div class="pull-left">
                                 <img class="media-object" src="https://goo.gl/GOzAhf" alt="user" height="120" width="120">
                             </div>
                             <div class="media-body">
-                                <h2 class="media-heading">John Smith</h2>
-                                <h3>2 people</h3>
-                                <h4>Accommodations</h4>
+                                <h2 class="media-heading" id ="guest_name">John Smith</h2>
+                                <h3 id ="no_of_people"> 2 people</h3>
+                                <h4 id="accomodations">Accommodations</h4>
+                                <h4 id="email">Email</h4>
+                                <h4 id="phone">Phone number:</h4>
+                              <!--  <h2 hidden id="reservation_id">1</h2>
+                                <h2 hidden id="user_id">1</h2> -->
+                                <input type="hidden" id="reservation_id" name="reservation_id" value="">
+                                 <input type="hidden" id="user_id" name="user_id" value="">
                             </div>
+                             <!--Cancellation-->
                             
-                            <!--Arrived check box-->
-                            <span class="button-checkbox pull-right">
-                                <button type="button" class="btn" data-color="primary">Arrived</button>
-                                <input type="checkbox" class="hidden"/>
-                            </span>
+                             <button type="button" id="cancel_reservation" class="cancelButton btn btn-danger pull-right" data-toggle="modal" data-target="#confirmDelete">
+                                Cancel Reservation
+                            </button>
+                            
+                             
+                            
+                              
                         </div>
-                    </a></div>
+                    </div>
                 </div>
+              </form>  
+           
             </div>
+        </div>
         </div>
     </div>
     
-    <!--Footer-->
-    <div class = "navbar navbar-default navbar-bottom">
-        <div class = "container">
-            <p class="navbar-text navbar-left">This website belongs to SFSU Course CSC648/CSC848 Fall 15 Group 11</p>
+    <!--Cancel pop up-->
+    <div class="modal fade" id="confirmDelete" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Cancel Reservation </h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure about this?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmCancelReservation">OK </button>
+                </div>
+            </div>
         </div>
     </div>
 </body>

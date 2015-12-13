@@ -3,7 +3,6 @@
 /*
  * class to handle database functions related to restaurant table.
  */
-//session_start();
 require_once 'Database.php';
  
 class Restaurant_model  extends Database{
@@ -20,24 +19,6 @@ class Restaurant_model  extends Database{
         parent::__destruct();
     }
     
-    
-    /* find restaurant by name only. Returns results in an array ($arr), with each index
-     * ($arr[0], $arr[1]...) being and assoiative array corresponding to a row from the table.
-     */
-//    public function findRestaurantsByName($name) {
-//        $words = explode(" ", $name);
-//        $searchStr = "%";
-//        foreach ($words as $word) {
-//            $searchStr = $searchStr . $word . "%";
-//        }
-//        $sql = "SELECT * FROM restaurant WHERE name LIKE :resName LIMIT 100";
-//        $stmt = $this->dbh->prepare($sql);
-//        $stmt->bindParam(':resName', $searchStr);
-//        if ($stmt->execute()) {
-//            return $stmt->fetchAll();
-//        }
-//        return null;
-//    }
   
     /*
      * function to find restaurant by passed Id.
@@ -46,63 +27,13 @@ class Restaurant_model  extends Database{
         $sql = "SELECT * FROM restaurant WHERE restaurant_id=:resId";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':resId', $id);
-        if ($stmt->execute()) {
-            return $stmt->fetchAll();
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return null;
         }
-        return null;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
-//    public function findRestaurantsByCat($cat) {
-//        $sql = "SELECT * FROM restaurant WHERE food_category_name LIKE :str";
-//        $stmt = $this->dbh->prepare($sql);
-//        $stmt->bindParam(':str', $cat);
-//        if ($stmt->execute()) {
-//            return $stmt->fetchAll();
-//        }
-//        return null;
-//    }
-    
-    /* find restaurant by name or address (i.e. any match in name or address will be returned).
-     * Returns results in an array ($arr), with each index ($arr[0], $arr[1]...) 
-     * being and assoiative array corresponding to a row from the table.
-     */
-//    public function findRestaurantsByNameAddress($nameAdd) {
-//        $words = explode(" ", $nameAdd);
-//        $searchStr = "%";
-//        foreach ($words as $word) {
-//            $searchStr = $searchStr . $word . "%";
-//        }
-//        $sql = "SELECT * FROM restaurant WHERE name_address LIKE :str";
-//        $stmt = $this->dbh->prepare($sql);
-//       
-//        $stmt->bindParam(':str', $searchStr);
-//        
-//        if ($stmt->execute()){
-//            return $stmt->fetchAll();
-//        } 
-//        return null;
-//    }
-    
-     /* find restaurant by name/address and category.
-     * Returns results in an array ($arr), with each index ($arr[0], $arr[1]...) 
-     * being and assoiative array corresponding to a row from the table.
-     */
-//    public function findRestaurantsByNameAddressAndCategory($nameAdd, $category) {
-//        $words = explode(" ", $nameAdd);
-//        $searchStr = "%";
-//        foreach ($words as $word) {
-//            $searchStr = $searchStr . $word . "%";
-//        }
-//        $sql = "SELECT * FROM restaurant WHERE food_category_name LIKE :str2 AND name_address LIKE :str";
-//        $stmt = $this->dbh->prepare($sql);
-//        $stmt->bindParam(':str2', $category);
-//        $stmt->bindParam(':str', $searchStr);
-//        
-//        if ($stmt->execute()){
-//            return $stmt->fetchAll();
-//        } 
-//        return null;
-//    }
     
     /*
      * get count of restaurants for given seeach string.
@@ -124,11 +55,7 @@ class Restaurant_model  extends Database{
          }        
         
         $stmt = $this->dbh->prepare($sql);
-//        echo '<br><br>'.var_dump($searchStr).'<br>'.var_dump($nameAdd).'<br>'.var_dump($limit).'<br>'.var_dump($offset);
-//        exit();
         if ($stmt->execute()){
-//            echo var_dump($stmt->fetch());
-//            exit();
             $count = $stmt->fetch(PDO::FETCH_NUM);
             return intval($count[0]);
         } 
@@ -136,7 +63,8 @@ class Restaurant_model  extends Database{
     }
     
     /*
-     * get restaurants for passed search string.
+     * get restaurants for passed search string with name, address and category combined
+     * with limit number of outputs starting at offset in database
      */
     public function findRestaurantsLimitOffset($nameAddCat, $limit, $offset) {
         $sql = "SELECT * FROM restaurant WHERE name_address_category LIKE "; 
@@ -156,17 +84,11 @@ class Restaurant_model  extends Database{
          }
          $sql = $sql . " LIMIT :lim OFFSET :off";
         
-//         echo "<br><br>".$sql;
-//         exit();
-        
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':lim', $limit, PDO::PARAM_INT);
         $stmt->bindParam(':off', $offset, PDO::PARAM_INT);
-//        echo '<br><br>'.var_dump($searchStr).'<br>'.var_dump($nameAdd).'<br>'.var_dump($limit).'<br>'.var_dump($offset);
-//        exit();
+
         if (!$stmt->execute()){
-//            echo var_dump($stmt->fetch());
-//            exit();
             print_r ($stmt->errorInfo());
             exit();
             return null;
@@ -203,20 +125,6 @@ class Restaurant_model  extends Database{
         return null;
     }
    
-    /* find restaurant by name only. Returns results in an array ($arr), with each index
-     * ($arr[0], $arr[1]...) being and assoiative array corresponding to a row from the table.
-     */
-//    public function getAllRestaurants() {
-//        
-//        $sql = "SELECT * FROM restaurant LIMIT 100";
-//        $stmt = $this->dbh->prepare($sql);
-//      
-//        if ($stmt->execute()){
-//            return $stmt->fetchAll();
-//        }
-//        return null;
-//    }
-    
     /*
      * function to retrive restuarant's multimedia (all the pictures) from database.
      */
@@ -292,6 +200,9 @@ class Restaurant_model  extends Database{
         return null;
     }
     
+    /*
+     * Retrieve the food categories allowed in the table 
+     */
     public function getFoodCategories() {
         $sql = "SELECT name FROM food_category";
         $stmt = $this->dbh->prepare($sql);
@@ -299,6 +210,150 @@ class Restaurant_model  extends Database{
             return $stmt->fetchAll();
         }
         return null;
+    }
+    
+    /*
+     * Get reviews of a restaurant based on restaurant id.
+     */
+    public function getRestaurantReviews($resId) {
+        $sql = "SELECT * FROM review INNER JOIN user "
+                . " ON review.user_id=user.user_id AND review.restaurant_id=:resId AND review.review_description IS NOT NULL "
+                . " ORDER BY date_posted DESC";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':resId', $resId, PDO::PARAM_INT);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return null;
+        }
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    /*
+     * Update an existing restaurant (description, address and phone number) in the restaurant table based on restaurant id.
+     */
+    public function updateRestaurant($restaurantId, $description, $address, $phoneNum) {
+        $sql = "UPDATE restaurant SET description=:description, address=:address, phone_no=:phoneNum "
+                . " WHERE restaurant_id=:restaurantId";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':restaurantId', $restaurantId);
+        $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':address', $address);
+        $stmt->bindParam(':phoneNum', $phoneNum);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return false;
+        }
+        return true;
+    }
+    
+    /*
+     * Update restaurant's thumbnail image based on restaurant id.
+     */
+    public function updateRestaurantThumbnail($restaurantId, $thumbnail) {
+        $sql = "UPDATE restaurant SET thumbnail=:thumbnail "
+                . " WHERE restaurant_id=:restaurantId";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':restaurantId', $restaurantId, PDO::PARAM_INT);
+        $stmt->bindParam(':thumbnail', $thumbnail, PDO::PARAM_LOB);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return false;
+        }
+        return true;
+    }
+    
+    /*
+     * Upadate restaurant's menu based on restaurant id.
+     */
+    public function updateRestaurantMenu($restaurantId, $menu) {
+        $sql = "UPDATE restaurant SET menu=:menu "
+                . " WHERE restaurant_id=:restaurantId";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':restaurantId', $restaurantId, PDO::PARAM_INT);
+        $stmt->bindParam(':menu', $menu, PDO::PARAM_LOB);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return false;
+        }
+        return true;
+    }
+    
+    /*
+     * If provided multimediaId > 0, update restaurant's image in multimedia table based on restaurant id and multimedia id.
+     * If multimediaId < 0, insert new image into multimedia table
+     */
+    public function updateMultimedia($multimediaId, $img, $restaurantId) {
+        if (intval($multimediaId) > 0) {
+            $sql = "UPDATE multimedia SET media=:media WHERE multimedia_id=:multimediaId";
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->bindParam(':multimediaId', $multimediaId, PDO::PARAM_INT);
+            $stmt->bindParam(':media', $img, PDO::PARAM_LOB);
+        }
+        else {
+            $sql = "INSERT INTO multimedia(restaurant_id, type, media) "
+                    . " VALUES(:restaurantId, 'image', :media)";
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->bindParam(':restaurantId', $restaurantId, PDO::PARAM_INT);
+            $stmt->bindParam(':media', $img, PDO::PARAM_LOB);
+        }
+        
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return false;
+        }
+        return true;
+    }
+    
+    /*
+     * Update operating hours of a restaurant. The restaurantId is contained in the associative array $opHrs
+     */
+    public function updateOperatingHours($opHrs) {
+        $sql = "UPDATE operating_hours SET monday_from=:mondayFrom, monday_to=:mondayTo, "
+                . " tuesday_from=:tuesdayFrom, tuesday_to=:tuesdayTo, wednesday_from=:wednesdayFrom, "
+                . " wednesday_to=:wednesdayTo, thursday_from=:thursdayFrom, thursday_to=:thursdayTo, "
+                . " friday_from=:fridayFrom, friday_to=:fridayTo, saturday_from=:saturdayFrom, "
+                . " saturday_to=:saturdayTo, sunday_from=:sundayFrom, sunday_to=:sundayTo "
+                . " WHERE restaurant_id=:restaurantId";
+        $stmt = $this->dbh->prepare($sql);
+        $result = $stmt->execute(array(
+            ':restaurantId' => $opHrs['restaurantId'],
+            ':mondayFrom' => $opHrs['mondayFrom'],
+            ':mondayTo' => $opHrs['mondayTo'],
+            ':tuesdayFrom' => $opHrs['tuesdayFrom'],
+            ':tuesdayTo' => $opHrs['tuesdayTo'],
+            ':wednesdayFrom' => $opHrs['wednesdayFrom'],
+            ':wednesdayTo' => $opHrs['wednesdayTo'],
+            ':thursdayFrom' => $opHrs['thursdayFrom'],
+            ':thursdayTo' => $opHrs['thursdayTo'],
+            ':fridayFrom' => $opHrs['fridayFrom'],
+            ':fridayTo' => $opHrs['fridayTo'],
+            ':saturdayFrom' => $opHrs['saturdayFrom'],
+            ':saturdayTo' => $opHrs['saturdayTo'],
+            ':sundayFrom' => $opHrs['sundayFrom'],
+            ':sundayTo' => $opHrs['sundayTo']
+        ));
+        
+        if (!$result) {
+            print_r($stmt->errorInfo());
+            return false;
+        }
+        return true;
+    }
+    
+    /*
+     * Set the average rating of a restaurant in the restaurant table
+     */
+    public function setAverageRating ($restaurantId, $averageRating) {
+        $sql = "UPDATE restaurant set average_rating=:averageRating "
+                . " WHERE restaurant_id=:restaurantId";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->bindParam(':restaurantId', $restaurantId, PDO::PARAM_INT);
+        $stmt->bindParam(':averageRating', $averageRating);
+        if (!$stmt->execute()) {
+            print_r($stmt->errorInfo());
+            return false;
+        }
+        return true;
     }
 }
 

@@ -13,19 +13,59 @@
 
 <body>
 
-    <script>
-        $(document).ready(function () {
-            $(".nav-tabs a").click(function () {
-                $(this).tab('show');
-            });
+    <script type="text/javascript">
+        $(document).ready(function(){
+	$('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+		localStorage.setItem('activeTab', $(e.target).attr('href'));
+	});
+	var activeTab = localStorage.getItem('activeTab');
+	if(activeTab){
+		$('#myTab a[href="' + activeTab + '"]').tab('show');
+	}
+        $('.first-p').hide();
+        $("button").click(function(){
+            $(this).next().slideToggle(1000);
         });
+        
+    });
+
     </script> 
 
     <!-- Navigation Bar -->
     <?php
     require_once 'header.php';
+    require_once __DIR__ . '/../../models/Restaurant_model.php';
+    require_once __DIR__ . '/../../models/User_model.php';
+    require_once __DIR__ . '/../../models/Admin_model.php';
+    require_once __DIR__ . '/../../controllers/Admin_controller.php';
+    $userArray; $restaurantNewArray; $restaurantArray; $reviewArray; $restaurant; $user; $admin;
     if (!isset($_SESSION['username'])) {
         header('location: ../home/login.php');
+    }
+    if(!isset($restaurant))
+    {
+        $restaurant = new Restaurant_model();
+    }
+    if(!isset($user))
+    {
+        $user = new User_model();
+    }
+    if(!isset($admin))
+    {
+        $admin = new Admin_model();
+    }
+    if(!isset($adminController))
+    {
+        $adminController = new Admin_controller();
+    }
+    $restaurantNewArray = $admin->getNewRestaurants();
+    $restaurantArray = $admin->getAllRestaurants();
+    $userArray = $admin->getAllUsers();
+    $reviewArray = $admin->getFlaggedReviews();
+    $profile = $admin->getAdminProfile($_SESSION['username']);
+    if($_POST)
+    {
+        $adminController->submit();
     }
     ?>
     <br><br><br>
@@ -33,20 +73,21 @@
         <div class="row">
             <div class="col-md-9">
                 <li class="list-group-item text-muted"> Admin Profile </li>
-                <li class="list-group-item text-right"> <span class="pull-left"><strong>Name</strong></span>First_Name, Last_Name</li>
-                <li class="list-group-item text-right"> <span class="pull-left"><strong>E-mail</strong></span>ex_username@example.com</li>
-                <li class="list-group-item text-right"> <span class="pull-left"><strong>Username</strong></span>ex_username</li>
-                <li class="list-group-item text-right"> <span class="pull-left"><strong>Phone Number</strong></span>xxx) xxx-xxxx</li>
+                <li class="list-group-item text-right"> <span class="pull-left"><strong>Name</strong></span><?php echo $profile['name'] ?></li>
+                <li class="list-group-item text-right"> <span class="pull-left"><strong>E-mail</strong></span><?php echo $profile['email'] ?></li>
+                <li class="list-group-item text-right"> <span class="pull-left"><strong>Username</strong></span><?php echo $profile['username'] ?></li>
+                <li class="list-group-item text-right"> <span class="pull-left"><strong>Phone Number</strong></span><?php echo $profile['contact_num'] ?></li>
             </div> <!-- End of col-md-9 -->
             <div class="col-md-3">
-                <img src="#" width="200" height="230" style="float:left;">
+                <?php echo '<img width="200" height="230" style="float:left;" src="data:image/jpeg;base64,' . base64_encode($profile['profile_pic']) . '">'; ?>
+                <!-- <img src="#" width="200" height="230" style="float:left;"> -->
             </div>
         </div> <!-- End of Row -->
-        <ul class="nav nav-tabs"> <!-- Tab for the UserSection -->
-            <li class="active"><a href="#restaurants">Newly Registered Restaurants</a></li>
-            <li> <a href="#rest_list">Restaurant List</a></li>
-            <li> <a href="#reviews">Reviews</a></li> 
-            <li> <a href="#users">User List</a></li> 
+        <ul class="nav nav-tabs" id="myTab" > <!-- Tab for the UserSection -->
+            <li class="active"><a data-toggle="tab" href="#restaurants">Newly Registered Restaurants</a></li>
+            <li> <a data-toggle="tab" href="#rest_list">Restaurant List</a></li>
+            <!-- <li> <a data-toggle="tab" href="#reviews">Reviews</a></li> -->
+            <li> <a data-toggle="tab" href="#users">User List</a></li> 
         </ul> <!-- Done with the tab --> 
         <div class="tab-content">
             <div id="restaurants" class="tab-pane fade in active">
@@ -61,17 +102,29 @@
                             </tr>
                         </thead>
                         <tbody id="items">
+                            <?php
+                                    foreach($restaurantNewArray as $res) {
+                                        $owner = $admin->getOwnerByResId($res['restaurant_id']);
+                                        
+                            ?>
+                            
                             <tr>
-                                <td>DATE</td>
-                                <td>Name of Restaurant</td>
+                                <td><?php echo date('m-d-Y',strtotime($res['registration_date'])) ?></td>
+                                <td><?php echo $res['name'] ?></td>
                                 <td>
-                                    <a href="#RestaurantSignUpPage" class="btn btn-info" role="button"> Details </a>
+                                    <a href="<?php echo '../home/restaurant.php?resid='.$res['restaurant_id'] ?>" class="btn btn-info" role="button" target="_blank"> Details </a>
                                 </td>
                                 <td>
-                                    <a href="#Approve" class="btn btn-info" role="button"> Approve </a>
-                                    <a href="#Disapprove" class="btn btn-info" role="button"> Disapprove </a>
+                                    <form class="input-group" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                                        <input name="resId" id="resId" value="<?php echo $res['restaurant_id'] ?>" type="hidden" />
+                                        <input name="userName" id="userName" value="<?php echo $owner['username'] ?>" type="hidden" />
+                                        <button type="submit" class="btn btn-info" id="FormSubmit" value="submit-approve" name="submit-approve" onclick="return confirm('Are you sure you would like to approve?');"> Approve </button>
+                                        &nbsp;
+                                        <button type="submit" class="btn btn-info" id="FormSubmit" value="submit-disapprove" name="submit-disapprove" onclick="return confirm('Are you sure you would like to delete?');"> Disapprove </button>
+                                    </form>
                                 </td>
                             </tr>
+                            <?php } ?>
                         </tbody>
                     </table>
                 </div>
@@ -89,19 +142,31 @@
                             </tr>
                         </thead>
                         <tbody id="items">
+                            <?php
+                            
+                                    foreach($restaurantArray as $res) {
+                                        $owner = $admin->getOwnerByResId($res['restaurant_id']);
+                            ?>
                             <tr>
-                                <td>Name of the Restaurant</td>
-                                <td>Name of Owner</td>
-                                <td>FoodType</td>
-                                <td>XXX-XXX-XXXX</td>
+                                <td><?php echo $res['name'] ?></td>
+                                <td><?php echo $owner['name'] ?></td>
+                                <td><?php echo $res['food_category_name'] ?></td>
+                                <td><?php echo $res['phone_no'] ?></td>
                                 <td>
-                                    <a href="#ReportPage" class="btn btn-info" role="button"> DELETE </a>
+                                    <form class="input-group" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                                        <input name="resId" id="resId" value="<?php echo $res['restaurant_id'] ?>" type="hidden" />
+                                        <input name="userName" id="userName" value="<?php echo $owner['username'] ?>" type="hidden" />
+                                        <button type="submit" class="btn btn-info" role="button" value="submit-delete" name="submit-delete" onclick="return confirm('Are you sure you would like to delete?');"> DELETE </button>
+                                    </form>
                                 </td>
                             </tr>
+                            <?php } ?>
                         </tbody>
                     </table>
                 </div>
             </div> <!-- End of Reports Tab -->
+            <!-- Reviews tab depreciated, uncomment to restore -->
+            <?php /*
             <div id="reviews" class="tab-pane fade">
                 <div class="table-responsive">
                     <table class="table table-hover">
@@ -109,28 +174,43 @@
                             <tr>
                                 <th>DATE</th>
                                 <th>RestaurantName</th>
-                                <th>Title</th>
-                                <th>Review</th>
+                               <!-- <th>Title</th> -->
+                               <!-- <th>Review</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody id="items">
+                        <tbody id="items"> -->
+                            <?php
+                            
+                                    foreach($reviewArray as $review) {
+                                        $name = $admin->getRestaurantNameFromId($review['restaurant_id']);
+                            ?>
                             <tr>
-                                <td>date</td>
-                                <td>RestaurantReported</td>
-                                <td>ReportTitle</td>
+                                <td><?php echo date('m-d-Y',strtotime($review['date_posted'])) ?></td>
+                                <td><?php echo $name['name'] ?></td>
+                                <!-- <td>ReportTitle</td> -->
                                 <td>
-                                    <a href="#RestaurantSignUpPage" class="btn btn-info" role="button"> Details </a>
+                                    <div class="first" id="hidden" >
+                                    <button class="btn btn-info" role="button"> Details </button>
+                                    
+                                        <p class="first-p"><?php echo $review['review_description'] ?></p>
+                                    </div>
                                 </td>
                                 <td>
-                                    <a href="#Approve" class="btn btn-info" role="button"> Approve </a>
-                                    <a href="#Disapprove" class="btn btn-info" role="button"> Disapprove </a>
+                                    <form class="input-group" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                                        <input name="resId" id="resId" value="<?php echo $review['restaurant_id'] ?>" type="hidden" />
+                                        <input name="userId" id="userId" value="<?php echo $review['user_id'] ?>" type ="hidden" />
+                                        <button type="submit" class="btn btn-info" role="button" value="submit-review" name="submit-review"> Approve </button>
+                                        &nbsp;
+                                        <button type="submit" class="btn btn-info" role="button" value="submit-review-delete" name="submit-review-delete"> Disapprove </button>
+                                    </form>
                                 </td>
                             </tr>
+                            <?php } ?>
                         </tbody>
                     </table>
                 </div>
-            </div> <!-- End of Review Tab -->
+            </div> <!-- End of Review Tab --> */ ?>
             <div id="users" class="tab-pane fade">
                 <div class="table-responsive">
                     <table class="table table-hover">
@@ -144,24 +224,25 @@
                             </tr>
                         </thead>
                         <tbody id="items">
+                            <?php
+                            
+                                    foreach($userArray as $usr) {
+                                        $userinfo = $admin->getUserByRoleAndName($usr['username'], $usr['role']);
+                            ?>
                             <tr>
-                                <td>2015.10.28</td>
-                                <td>SeungKeun Kim</td>
-                                <td>User</td>
-                                <td>tjdrms@mail.sfsu.edu</td>
+                                <td><?php echo date('m-d-Y',strtotime($userinfo['registration_date'])) ?></td>
+                                <td><?php echo $usr['username'] ?></td>
+                                <td><?php echo $usr['role'] ?></td>
+                                <td><?php echo $userinfo['email'] ?></td>
                                 <td>
-                                    <a href="#Delete" class="btn btn-info" role="button"> Delete </a>
+                                    <form class="input-group" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                                        <input name="userName" id="userName" value="<?php echo $usr['username'] ?>" type="hidden" />
+                                        <input name="role" id="role" value="<?php echo $usr['role'] ?>" type="hidden" />
+                                        <button type="submit" class="btn btn-info" role="button" value="submit-user-delete" name="submit-user-delete" onclick="return confirm('Are you sure you would like to delete?');"> Delete </button>
+                                    </form>
                                 </td>  
                             </tr>
-                            <tr>
-                                <td>2015.10.28</td>
-                                <td>James Smith</td>
-                                <td>Owner (Restaurant Name)</td>
-                                <td>abc@example.com</td>
-                                <td>
-                                    <a href="#Delete" class="btn btn-info" role="button"> Delete </a>
-                                </td>  
-                            </tr>
+                            <?php } ?>
                         </tbody>
 
                     </table>

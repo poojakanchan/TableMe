@@ -518,14 +518,18 @@
                                                             <br> 
                                                             <br>
                                            
-
-                                            <!-- This is for the datapicking method -->
-                                            <div class="input-append date" id="datetimepicker1">
-                                                <label>Enter Date</label>
-                                                <input  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date"></input>
-                                                <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span> 
-                                                <!-- <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span> -->
-                                            </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <!-- This is for the datapicking method -->
+                                                            <label>Enter Date</label>
+                                                            <div class="input-group date" id="datetimepicker1">
+                                                                <input   data-width="auto"  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date" placeholder="Please select date" class="form-control"></input>
+                                                              <!--  <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>  -->
+                                                                <span class="input-group-addon" > <i class="glyphicon glyphicon-calendar" ></i></span> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br>
 
 
                                             <label>Enter Time</label>

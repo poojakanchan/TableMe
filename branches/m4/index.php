@@ -236,7 +236,7 @@ if (isset($reservationArray["reservationOutcome"])) {
                                     </td>
                                 </tr>
                                 <div  class="modal fade" id="reservation-<?php echo $restaurant['restaurant_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-
+                                    
                                 <form name="myForm" action="#.php"
                                       onsubmit="return validateForm()" method="post">
                                    <div class="modal-dialog">
@@ -275,11 +275,11 @@ if (isset($reservationArray["reservationOutcome"])) {
                                                              <div class="row">
                                                             <div class="col-md-6">
                                                             <!-- This is for the datapicking method -->
-                                                            <div class="input-append date" id="datetimepicker1">
-                                                                <label>Enter Date</label>
+                                                            <label>Enter Date</label>
+                                                            <div class="input-group date" id="datetimepicker1">
                                                                 <input   data-width="auto"  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date" placeholder="Please select date" class="form-control"></input>
                                                               <!--  <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>  -->
-                                                                <span class="input-group-addon" data-width="auto" > <i class="glyphicon glyphicon-calendar" ></i></span> 
+                                                                <span class="input-group-addon" > <i class="glyphicon glyphicon-calendar" ></i></span>  
                                                             </div>
                                                             </div>
                                                              </div>

@@ -30,15 +30,41 @@ class Reservation_model  extends Database{
     
     public function addReservation($reserveArray) {
        
-        $sql = "INSERT INTO reservation(restaurant_id, user_name, date, time, user_id, no_of_people, contact_no, special_instruct) VALUES(:restaurant_id, :user_name, :date, :time, :user_id, :no_of_people, :contact_no, :special_instruct)";
-        $stmt = $this->dbh->prepare($sql);
+        if($reserveArray['user_id'] == "NULL"){
+            $sql = "INSERT INTO reservation(restaurant_id, user_name, date, time, no_of_people, contact_no, email, special_instruct) VALUES(:restaurant_id, :user_name, :date, :time, :no_of_people, :contact_no, :email, :special_instruct)";
+            $stmt = $this->dbh->prepare($sql);
+            //echo "ITS NULL";
+            //echo $sql;
+        }
+        else {
+            $sql = "INSERT INTO reservation(restaurant_id, user_name, date, time, user_id, no_of_people, contact_no, email, special_instruct) VALUES(:restaurant_id, :user_name, :date, :time, :user_id, :no_of_people, :contact_no, :email, :special_instruct)";
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->bindParam(':user_id', $reserveArray['user_id']);
+            //echo "ITS NOT NULL";
+            //echo $sql;
+        }
+                    
+
+        
         $stmt->bindParam(':restaurant_id', $reserveArray['restaurant_id'], PDO::PARAM_INT);
         $stmt->bindParam(':user_name', $reserveArray['user_name']);
         $stmt->bindParam(':date', $reserveArray['date']);
         $stmt->bindParam(':time', $reserveArray['time']);
-        $stmt->bindParam(':user_id', $reserveArray['user_id'], PDO::PARAM_INT);
+        /*
+         * PROBLEMS IMPLEMENTING NULL INSERT DIRECT FROM ARRAY, ALTERNATIVE MADE ABOVE
+        if($reserveArray['user_id'] == NULL) {
+            $stmt->bindParam(':user_id', $reserveArray['user_id'], PDO::PARAM_NULL);
+            echo "ITS NULL";
+        }
+        else {
+            $stmt->bindParam(':user_id', $reserveArray['user_id']);
+            echo "ITS NOT NULL";
+        }
+        
+        */
         $stmt->bindParam(':no_of_people', $reserveArray['no_of_people']);
         $stmt->bindParam(':contact_no', $reserveArray['contact_no']);
+        $stmt->bindParam(':email', $reserveArray['email']);
         $stmt->bindParam(':special_instruct', $reserveArray['special_instruct']);
         try {
             $this->dbh->beginTransaction();
@@ -69,6 +95,34 @@ class Reservation_model  extends Database{
         }
         return null;
     }
+    /* Retrieves all reservations for a specified date and restaurant ID. Used for hosts.
+     * Requires a date string in the form "xxx-xx-xx"
+     * Returns a large array containing all the reservations found for that date.
+     */
+    public function getReservationByDateAndRestaurantId($date,$resId)
+    {
+       $sql = "SELECT * FROM reservation WHERE date=".$date . "and restaurant_id=" . $resId . " order by time desc"; 
+        $stmt = $this->dbh->prepare($sql);
+        //$stmt->bindParam(':date', $date);
+         //$stmt->bindParam(':resId', $resId);
+            
+        if ($stmt->execute()) {
+            return $stmt->fetchAll();
+        }
+        return null;
+    }
+    
+    /* Retrieves  reservation for a specified Id.  */
+    public function getReservationById($reservationId)
+    {
+        $sql = "SELECT * FROM reservation WHERE reservation_id=$reservationId";
+        $stmt = $this->dbh->prepare($sql);
+     
+        if ($stmt->execute()) {
+            return $stmt->fetchAll();
+        }
+        return null;
+    }
     
     /* Deletes old reservations. Supposed to be run after a set period on a 
      * normal schedule to delete unused entries in the reservation table.
@@ -81,17 +135,17 @@ class Reservation_model  extends Database{
     /*
      * Deletes a reservation given a reservation id. Used for the hostess or
      * when sent to the user through confirmation email/user's account management.
-     * Returns 1 if successful, otherwise null.
+     * Returns true if successful, otherwise false.
      */
     public function deleteReservation($resId)
     {
         $sql = "DELETE FROM reservation WHERE reservation_id=:resId";
         $stmt = $this->dbh->prepare($sql);
-        $stmt->bindParam(':resId', $resId);
+        $stmt->bindParam(':resId', $resId, PDO::PARAM_INT);
         if ($stmt->execute()) {
-            return $stmt->fetchAll();
+            return true;
         }
-        return null;
+        return false;
     }
     
     /* Counts the reservations in the table for a given date, time, and restaurant.
@@ -100,13 +154,16 @@ class Reservation_model  extends Database{
      * Returns the count of the reservations if any or -1 if the query was unsuccessful.
      * NOTE: should return 0 if none are found.
      */
-    public function countReservation($date, $time, $resId)
+    public function countReservation($date, $time, $resId, $groupSize)
     {
-        $sql = "SELECT COUNT(*) FROM reservation WHERE restaurant_id = :resId AND date=:date AND time IN(:time, SUBTIME(:time, '00:30:00'), ADDTIME(:time, '00:30:00'))";
+        $sql = "SELECT COUNT(*) FROM reservation WHERE restaurant_id = :resId AND no_of_people IN (:groupSize, :groupSize2) AND date=:date AND time IN(:time, SUBTIME(:time, '00:30:00'), ADDTIME(:time, '00:30:00'))";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':date', $date);
         $stmt->bindParam(':time', $time);
         $stmt->bindParam(':resId', $resId, PDO::PARAM_INT);
+        $stmt->bindParam(':groupSize', $groupSize, PDO::PARAM_INT);
+        $groupSize = $groupSize - 1;
+        $stmt->bindParam(':groupSize2', $groupSize, PDO::PARAM_INT);
         if ($stmt->execute()){
             $result = $stmt->fetch();
             //return $result;
@@ -189,7 +246,24 @@ class Reservation_model  extends Database{
         }
         return null;
     }
-
+  public function markArrived($reservation_id){
+      try{
+         $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "UPDATE reservation SET mark_arrived=1 WHERE reservation_id= " . $reservation_id;
+        $stmt = $this->dbh->prepare($sql);
+        if($stmt->execute())
+        {
+            return 1;
+        }
+        return -1;
+      }catch (Exception $ex) {
+         //         
+        echo $ex->getMessage();
+       
+        return -1;
+            
+     }
+  }
 }
 
 ?>

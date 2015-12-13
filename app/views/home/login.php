@@ -23,16 +23,18 @@
             $username = $_POST['username'];
             $password = $_POST['password'];
             $loginRole = $db->validateLogin($username, $password);
-//          var_dump($loginRole);
-//          exit();
             if (!$loginRole) {
                 $incorrectLogin = true;
             } else {
-                session_start();
+                if (!isset($_SESSION)) {
+                    session_start();
+                }
                 $_SESSION['username'] = $username;
                 switch ($loginRole['role']) {
                     case "user":
                         $_SESSION['role'] = "user";
+                        $userInfo = $db->getUser($username);
+                        $_SESSION['user_id'] = intval($userInfo['user_id']);
                         header('location: ../../../index.php');
                         break;
                     case "owner":

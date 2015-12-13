@@ -100,7 +100,7 @@ class Reservation_model  extends Database{
      */
     public function getReservationByDateAndRestaurantId($date,$resId)
     {
-       $sql = "SELECT * FROM reservation WHERE date=".$date . "and restaurant_id=" . $resId; 
+       $sql = "SELECT * FROM reservation WHERE date=".$date . "and restaurant_id=" . $resId . " order by time desc"; 
         $stmt = $this->dbh->prepare($sql);
         //$stmt->bindParam(':date', $date);
          //$stmt->bindParam(':resId', $resId);

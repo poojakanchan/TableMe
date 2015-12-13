@@ -82,8 +82,11 @@ if (!empty($oprHours)) {
     //  print_r($today);
     $totime = strtotime($to, time());
     $fromtime = strtotime($from, time());
-
-    if (time() >= $fromtime && time() < $totime) {
+    if($fromtime > $totime){
+        $totime = strtotime($to .' +1 day',time());
+    }
+    if ((time() >= $fromtime && time() < $totime)) {
+        
         $diff = abs(($totime - time()) / 60);
         if ($diff <= 60) {
             $timeMessage = "Closing soon.";
@@ -576,7 +579,7 @@ if (isset($reservationArray["reservationOutcome"])) {
                                                             <p>* indicates required field.</p>
                                                              <div class="row">
                                                             <div class="col-md-6">
-                                                            <label>Number of Guests</label>
+                                                            <label>Number of Guests*</label>
                                                                 
                                                             <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
                                                                 <option value="1">1</option>
@@ -594,7 +597,7 @@ if (isset($reservationArray["reservationOutcome"])) {
                                                              <div class="row">
                                                             <div class="col-md-6">
                                                             <!-- This is for the datapicking method -->
-                                                            <label>Enter Date</label>
+                                                            <label>Enter Date*</label>
                                                             <div class="input-group date" id="datetimepicker1">
                                                                 <input   data-width="auto"  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date" placeholder="Please select date" class="form-control"></input>
                                                               <!--  <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>  -->
@@ -605,7 +608,7 @@ if (isset($reservationArray["reservationOutcome"])) {
                                                              <br>
                                                               
                                                            
-                                                            <label>Enter Time</label>
+                                                            <label>Enter Time*</label>
                                                             <select class="selectpicker" data-width="auto" id="hours" name="hours" required>
                                                                 <!-- <option value="" disabled selected>Hours</option> -->
                                                                 <option value="1">1</option>

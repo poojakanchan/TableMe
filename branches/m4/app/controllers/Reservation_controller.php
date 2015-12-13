@@ -30,6 +30,7 @@ class Reservation_controller extends Controller {
             //parsing information from form submission
             $reserveName = htmlspecialchars($_POST["reservationFirstName"]) . " " . htmlspecialchars($_POST["reservationLastName"]);
             $reservePhone = preg_replace("/[^0-9]/", "", htmlspecialchars($_POST["reservationPhone"]));
+            $reserveEmail = htmlspecialchars($_POST['reservationEmail']);
             
             /*OLD FORM FORMAT 
             $reserveMonth = date_parse(htmlspecialchars($_POST["month"]));
@@ -72,6 +73,7 @@ class Reservation_controller extends Controller {
                 
                 "no_of_people" => $groupSize,
                 "contact_no" => $reservePhone,
+                "email" => $reserveEmail,
                 "special_instruct" => htmlspecialchars($_POST["accommodations"])
                 );
             

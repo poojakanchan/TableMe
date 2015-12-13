@@ -171,6 +171,50 @@ if (isset($reservationArray["reservationOutcome"])) {
                     $("div#reservation-success").modal({show: true});
                     break;
                 }
+                
+                $("#firstname").focusout(function () {
+                    var inputFirstName = $("#firstname").val();
+                    if (!inputFirstName) {
+                        $("#firstname").css("border", "#FF0000 1px solid");
+                        $("#firstNameLabel").replaceWith ("<label id='firstNameLabel'>First Name *<i style='color:red'>First name cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#firstname").css("border", "");
+                    $("#firstNameLabel").replaceWith('<label id="firstNameLabel">First Name *</label>');
+                });
+                
+                $("#lastname").focusout(function () {
+                    var inputLastName = $("#lastname").val();
+                    if (!inputLastName) {
+                        $("#lastname").css("border", "#FF0000 1px solid");
+                        $("#lastNameLabel").replaceWith ("<label id='lastNameLabel'>Last Name *<i style='color:red'>Last name cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#lastname").css("border", "");
+                    $("#lastNameLabel").replaceWith('<label id="lastNameLabel">Last Name *</label>');
+                });
+                
+                $("#email").focusout(function () {
+                    var inputEmail = $("#email").val();
+                    if (!inputEmail) {
+                        $("#email").css("border", "#FF0000 1px solid");
+                        $("#emailLabel").replaceWith ("<label id='emailLabel'>Email *<i style='color:red'>Email cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#email").css("border", "");
+                    $("#emailLabel").replaceWith('<label id="emailLabel">Email *</label>');
+                });
+                
+                $("#phone").focusout(function () {
+                    var inputPhone = $("#phone").val();
+                    if (!inputPhone) {
+                        $("#phone").css("border", "#FF0000 1px solid");
+                        $("#phoneLabel").replaceWith ("<label id='phoneLabel'>Phone Number *<i style='color:red'>Phone cannot be empty</i></label>");
+                        return;
+                    }
+                    $("#phone").css("border", "");
+                    $("#phoneLabel").replaceWith('<label id="phoneLabel">Phone Number *</label>');
+                });
         });
     </script> <!-- datepicking end -->
 
@@ -528,7 +572,8 @@ if (isset($reservationArray["reservationOutcome"])) {
                                                         <input type="hidden" name="userid" value="<?php echo $userId ?>">
                                                         <!-- for debug purposes, displays restaurant ID -->
                                                         <?php //echo $resId ?>
-                                                        <div class="col-md-12">     
+                                                        <div class="col-md-12">
+                                                            <p>* indicates required field.</p>
                                                              <div class="row">
                                                             <div class="col-md-6">
                                                             <label>Number of Guests</label>
@@ -597,23 +642,23 @@ if (isset($reservationArray["reservationOutcome"])) {
 
 
                                                                 <div class="col-md-6 form-group">
-                                                                    <label>First Name</label>
-                                                                    <input type="text" name="reservationFirstName" placeholder="Please enter your first name..." class="form-control" required>
+                                                                    <label id="firstNameLabel">First Name *</label>
+                                                                    <input type="text" name="reservationFirstName" id="firstname" placeholder="Please enter your first name..." class="form-control" required>
                                                                 </div>
                                                                 <div class="col-md-6 form-group">
-                                                                    <label>Last Name</label>
-                                                                    <input type="text" name="reservationLastName" placeholder="Please enter your last name..." class="form-control" required>
+                                                                    <label id="lastNameLabel">Last Name *</label>
+                                                                    <input type="text" name="reservationLastName" id="lastname" placeholder="Please enter your last name..." class="form-control" required>
                                                                 </div>
                                                             </div>
 
                                                             <div class="row">
                                                                 <div class="col-md-6 form-group">
-                                                                    <label>Email</label>
-                                                                    <input type="email" name="reservationEmail" placeholder="Please enter your email address..." class="form-control" required>
+                                                                    <label id="emailLabel">Email *</label>
+                                                                    <input type="email" name="reservationEmail" id="email" placeholder="Please enter your email address..." class="form-control" required>
                                                                 </div>
                                                                 <div class="col-md-6 form-group">
-                                                                    <label>Phone Number</label>
-                                                                    <input type="text" name="reservationPhone" placeholder="Please enter your phone number..." class="form-control">
+                                                                    <label id="phoneLabel">Phone Number *</label>
+                                                                    <input type="text" name="reservationPhone" id="phone" placeholder="Please enter your phone number..." class="form-control" required>
                                                                 </div>
                                                             </div>
 

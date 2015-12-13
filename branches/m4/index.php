@@ -343,22 +343,22 @@ if (isset($reservationArray["reservationOutcome"])) {
                                                             
                                                             <div class="row">
                                                                 <div class="col-md-6 form-group">
-                                                                    <label>First Name</label>
+                                                                    <label>First Name*</label>
                                                                     <?php if(isset($userNameFirst)) {
                                                                             echo '<input type="text" name="reservationFirstName" placeholder="'.$userNameFirst.'" class="form-control" value="'.$userNameFirst.'" readonly required>';
                                                                           }
                                                                           else {
-                                                                            echo '<input type="text" name="reservationFirstName" placeholder="Please enter your first name..." class="form-control" required>';
+                                                                            echo '<input id="firstname" type="text" name="reservationFirstName" placeholder="Please enter your first name..." class="form-control" required>';
                                                                           }
                                                                     ?>
                                                                 </div>
                                                                 <div class="col-md-6 form-group">
-                                                                    <label>Last Name</label>
+                                                                    <label>Last Name*</label>
                                                                     <?php if(isset($userNameLast)) {
                                                                             echo '<input type="text" name="reservationLastName" placeholder="'.$userNameLast.'" class="form-control" value="'.$userNameLast.'" readonly required>';
                                                                           }
                                                                           else {
-                                                                            echo '<input type="text" name="reservationLastName" placeholder="Please enter your last name..." class="form-control" required>';
+                                                                            echo '<input type="text" id="lastname" name="reservationLastName" placeholder="Please enter your last name..." class="form-control" required>';
                                                                           }
                                                                     ?>
                                                                 </div>
@@ -366,19 +366,19 @@ if (isset($reservationArray["reservationOutcome"])) {
 
                                                             <div class="row">
                                                                     <div class="col-md-6 form-group">
-                                                                        <label>Email</label>
+                                                                        <label>Email*</label>
                                                                         <?php if(isset($userNameFirst)) {
                                                                                 echo '<input type="text" name="reservationEmail" placeholder="'.$userEmail.'" class="form-control" value="'.$userEmail.'" readonly required>';
                                                                               }
                                                                               else {
-                                                                                  echo '<input type="text" name="reservationEmail" placeholder="Please enter your email address..." class="form-control" required>';
+                                                                                  echo '<input id="email" type="text" name="reservationEmail" placeholder="Please enter your email address..." class="form-control" required>';
                                                                               }
                                                                         ?>
                                                                         
                                                                     </div>
                                                                     <div class="col-md-6 form-group">
-                                                                        <label>Phone Number</label>
-                                                                        <input type="text" name="reservationPhone" placeholder="Please enter your phone number..." class="form-control">
+                                                                        <label>Phone Number*</label>
+                                                                        <input type="text" name="reservationPhone" placeholder="Please enter your phone number..." id="phone" class="form-control">
                                                                     </div>
                                                             </div>
                                                             

@@ -3,6 +3,7 @@ include 'header.php';
 require_once 'app/models/Restaurant_model.php';
 require_once 'app/models/Event_model.php';
 require_once 'app/controllers/Reservation_controller.php';
+require_once 'app/models/User_model.php';
 
 
 define("N_PER_PAGE", 5); //number of restaurants to display per page
@@ -14,7 +15,7 @@ $nameAddCat = '%';
 $totalCount = 0; //total count of restaurants to display
 $currentPage = $numberOfPages = $startPage = 1; //page number for navigating search results
 $reservation;
-$reservationArray;
+$userModel;
 
 $userId = "NULL";
 if (isset($_SESSION['user_id'])) {
@@ -22,7 +23,20 @@ if (isset($_SESSION['user_id'])) {
         $userId = $_SESSION['user_id'];
     }
 }
-
+if (!isset($userModel) && isset($_SESSION['username']) && $_SESSION['role'] == 'user') {
+    $userModel = new User_model();
+    $userInfo = $userModel->getUser($_SESSION['username']);
+    $userEmail = $userInfo['email'];
+    $userName = explode(" ", $userInfo['name']);
+    $userNameFirst = $userName[0];
+    if(sizeof($userName) > 1){
+        $userNameLast = $userName[1];
+    }
+    else {
+        $userNameLast = " ";
+    }
+    
+}
 if (!isset($db)) {
     $db = new Restaurant_model();
 }
@@ -255,35 +269,35 @@ if (isset($reservationArray["reservationOutcome"])) {
                                                         <?php //echo $resId ?>
                                                         <div class="col-md-12"> 
                                                             <p>* indicates required field.</p>
-                                                             <div class="row">
-                                                            <div class="col-md-6">
-                                                            <label>Number of Guests*</label>
-                                                                
-                                                            <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
-                                                                <option value="1">1</option>
-                                                                <option value="2">2</option>
-                                                                <option value="3">3</option>
-                                                                <option value="4">4</option>
-                                                                <option value="5">5</option>
-                                                                <option value="6">6</option>
-                                                            </select>
-                                                             </div>
-                                                             </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <label>Number of Guests*</label>
+
+                                                                    <select class="selectpicker" data-width="auto" id="guests" name="guests" required>
+                                                                        <option value="1">1</option>
+                                                                        <option value="2">2</option>
+                                                                        <option value="3">3</option>
+                                                                        <option value="4">4</option>
+                                                                        <option value="5">5</option>
+                                                                        <option value="6">6</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                             <br>
                                                           
                                                            
-                                                             <div class="row">
-                                                            <div class="col-md-6">
-                                                            <!-- This is for the datapicking method -->
-                                                            <label>Enter Date*</label>
-                                                            <div class="input-group date" id="datetimepicker1">
-                                                                <input   data-width="auto"  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date" placeholder="Please select date" class="form-control"></input>
-                                                              <!--  <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>  -->
-                                                                <span class="input-group-addon" > <i class="glyphicon glyphicon-calendar" ></i></span>  
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <!-- This is for the datapicking method -->
+                                                                    <label>Enter Date*</label>
+                                                                    <div class="input-group date" id="datetimepicker1">
+                                                                        <input   data-width="auto"  data-format="dd/MM/yyyy hh:mm:ss" type="text" name="date" id="date" placeholder="Please select date" class="form-control"></input>
+                                                                      <!--  <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>  -->
+                                                                        <span class="input-group-addon" > <i class="glyphicon glyphicon-calendar" ></i></span>  
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            </div>
-                                                             </div>
-                                                             <br>
+                                                            <br>
                                                               
                                                            
                                                             <label>Enter Time*</label>
@@ -310,9 +324,9 @@ if (isset($reservationArray["reservationOutcome"])) {
                                                              </select>
                                                             
                                                             <select class="selectpicker" data-width="auto" id="ampm" name="ampm" required>
-                                                                    <option value="" disabled selected>AM/PM</option>
-                                                                    <option value="am">am</option>
-                                                                    <option value="pm">pm</option>
+                                                                    <option value="" disabled selected>Select AM/PM</option>
+                                                                    <option value="am">AM</option>
+                                                                    <option value="pm">PM</option>
                                                             </select>
 
                                                             <br>
@@ -320,40 +334,61 @@ if (isset($reservationArray["reservationOutcome"])) {
                                                            
                                                             
                                                             <div class="row">
-
-
                                                                 <div class="col-md-6 form-group">
-                                                                    <label id="firstNameLabel">First Name *</label>
-                                                                    <input type="text" name="reservationFirstName" id="firstname" placeholder="Please enter your first name..." class="form-control" required>
+                                                                    <label>First Name</label>
+                                                                    <?php if(isset($userNameFirst)) {
+                                                                            echo '<input type="text" name="reservationFirstName" placeholder="'.$userNameFirst.'" class="form-control" value="'.$userNameFirst.'" readonly required>';
+                                                                          }
+                                                                          else {
+                                                                            echo '<input type="text" name="reservationFirstName" placeholder="Please enter your first name..." class="form-control" required>';
+                                                                          }
+                                                                    ?>
                                                                 </div>
                                                                 <div class="col-md-6 form-group">
-                                                                    <label id="lastNameLabel">Last Name *</label>
-                                                                    <input type="text" name="reservationLastName" id="lastname" placeholder="Please enter your last name..." class="form-control" required>
+                                                                    <label>Last Name</label>
+                                                                    <?php if(isset($userNameLast)) {
+                                                                            echo '<input type="text" name="reservationLastName" placeholder="'.$userNameLast.'" class="form-control" value="'.$userNameLast.'" readonly required>';
+                                                                          }
+                                                                          else {
+                                                                            echo '<input type="text" name="reservationLastName" placeholder="Please enter your last name..." class="form-control" required>';
+                                                                          }
+                                                                    ?>
                                                                 </div>
                                                             </div>
 
                                                             <div class="row">
-                                                                <div class="col-md-6 form-group">
-                                                                    <label id="emailLabel">Email *</label>
-                                                                    <input type="email" name="reservationEmail" id="email" placeholder="Please enter your email address..." class="form-control" required>
-                                                                </div>
-                                                                <div class="col-md-6 form-group">
-                                                                    <label id="phoneLabel">Phone Number *</label>
-                                                                    <input type="text" name="reservationPhone" id="phone" placeholder="Please enter your phone number..." class="form-control" required>
-                                                                </div>
+                                                                    <div class="col-md-6 form-group">
+                                                                        <label>Email</label>
+                                                                        <?php if(isset($userNameFirst)) {
+                                                                                echo '<input type="text" name="reservationEmail" placeholder="'.$userEmail.'" class="form-control" value="'.$userEmail.'" readonly required>';
+                                                                              }
+                                                                              else {
+                                                                                  echo '<input type="text" name="reservationEmail" placeholder="Please enter your email address..." class="form-control" required>';
+                                                                              }
+                                                                        ?>
+                                                                        
+                                                                    </div>
+                                                                    <div class="col-md-6 form-group">
+                                                                        <label>Phone Number</label>
+                                                                        <input type="text" name="reservationPhone" placeholder="Please enter your phone number..." class="form-control">
+                                                                    </div>
                                                             </div>
+                                                            
+
+                                               
 
                                                             <div class="form-group">
-                                                                <label>Accommodations</label>
-                                                                <input type="text" name="accommodations" placeholder="Please enter any special requests you may have..." class="form-control">
+                                                                    <label>Accommodations</label>
+                                                                    <input type="text" name="accommodations" placeholder="Please enter any special requests you may have..." class="form-control">
                                                             </div>
-
                                                         </div>
 
                                                     </div>
-                                                </div>
 
+                                                </div>
                                             </div>
+
+                                            
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                 <button type="submit" class="btn btn-primary" value="submit-reservation" name="submit-reservation" >Make reservation</button>

@@ -435,6 +435,13 @@
          //   });
  
         </script>
+        
+        <style>
+            .media{
+                border: 1px solid #C0C0C0;
+                background-color:#C0C0C0;
+            }
+        </style>
 </head>
 <body>
     <div class="container-fluid">
@@ -598,7 +605,7 @@
             </div>
             
             <!--List of reservations-->
-            
+            <div class="reservationbox">
             <div class="row" id ="reservation_info" hidden>
               <form id="cancel-reservation" method = "post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                               
@@ -644,7 +651,7 @@
               </form>  
            
             </div>
-            
+        </div>
         </div>
     </div>
     

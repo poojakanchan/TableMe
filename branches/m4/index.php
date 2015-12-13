@@ -146,49 +146,57 @@ if (isset($reservationArray["reservationOutcome"])) {
                         break;
                 }
                 
-                $("#firstname").focusout(function () {
-                    var inputFirstName = $("#firstname").val();
+                $("[id=firstname]").each(function() {
+                    $(this).on("focusout", function(){
+                       
+                   var inputFirstName = $(this).val();
                     if (!inputFirstName) {
-                        $("#firstname").css("border", "#FF0000 1px solid");
-                        $("#firstNameLabel").replaceWith ("<label id='firstNameLabel'>First Name *<i style='color:red'>First name cannot be empty</i></label>");
+                        $(this).css("border", "#FF0000 1px solid");
+                    //    $("#firstNameLabel").replaceWith ("<label id='firstNameLabel'>First Name *<i style='color:red'>First name cannot be empty</i></label>");
                         return;
                     }
-                    $("#firstname").css("border", "");
-                    $("#firstNameLabel").replaceWith('<label id="firstNameLabel">First Name *</label>');
+                    $(this).css("border", "");
+                 // $("#firstNameLabel").replaceWith('<label id="firstNameLabel">First Name *</label>');
                 });
-                
-                $("#lastname").focusout(function () {
-                    var inputLastName = $("#lastname").val();
+                });
+                 $("[id=lastname]").each(function() {
+                    $(this).on("focusout", function(){
+              
+                    var inputLastName = $(this).val();
                     if (!inputLastName) {
-                        $("#lastname").css("border", "#FF0000 1px solid");
-                        $("#lastNameLabel").replaceWith ("<label id='lastNameLabel'>Last Name *<i style='color:red'>Last name cannot be empty</i></label>");
+                        $(this).css("border", "#FF0000 1px solid");
+                       // $("#lastNameLabel").replaceWith ("<label id='lastNameLabel'>Last Name *<i style='color:red'>Last name cannot be empty</i></label>");
                         return;
                     }
-                    $("#lastname").css("border", "");
-                    $("#lastNameLabel").replaceWith('<label id="lastNameLabel">Last Name *</label>');
+                    $(this).css("border", "");
+                  //  $("#lastNameLabel").replaceWith('<label id="lastNameLabel">Last Name *</label>');
                 });
+                });
+                 $("[id=email]").each(function() {
+                    $(this).on("focusout", function(){
                 
-                $("#email").focusout(function () {
-                    var inputEmail = $("#email").val();
+                    var inputEmail = $(this).val();
                     if (!inputEmail) {
-                        $("#email").css("border", "#FF0000 1px solid");
-                        $("#emailLabel").replaceWith ("<label id='emailLabel'>Email *<i style='color:red'>Email cannot be empty</i></label>");
+                        $(this).css("border", "#FF0000 1px solid");
+                       // $("#emailLabel").replaceWith ("<label id='emailLabel'>Email *<i style='color:red'>Email cannot be empty</i></label>");
                         return;
                     }
-                    $("#email").css("border", "");
-                    $("#emailLabel").replaceWith('<label id="emailLabel">Email *</label>');
+                    $(this).css("border", "");
+               //     $("#emailLabel").replaceWith('<label id="emailLabel">Email *</label>');
                 });
-                
-                $("#phone").focusout(function () {
-                    var inputPhone = $("#phone").val();
+                });
+               $("[id=phone]").each(function() {
+                    $(this).on("focusout", function(){ 
+                    var inputPhone = $(this).val();
                     if (!inputPhone) {
-                        $("#phone").css("border", "#FF0000 1px solid");
-                        $("#phoneLabel").replaceWith ("<label id='phoneLabel'>Phone Number *<i style='color:red'>Phone cannot be empty</i></label>");
+                        $(this).css("border", "#FF0000 1px solid");
+                      //  $("#phoneLabel").replaceWith ("<label id='phoneLabel'>Phone Number *<i style='color:red'>Phone cannot be empty</i></label>");
                         return;
                     }
-                    $("#phone").css("border", "");
-                    $("#phoneLabel").replaceWith('<label id="phoneLabel">Phone Number *</label>');
+                    $(this).css("border", "");
+                  //  $("#phoneLabel").replaceWith('<label id="phoneLabel">Phone Number *</label>');
                 });
+                 });
             });
         </script> <!-- datepicking end -->
     </head>

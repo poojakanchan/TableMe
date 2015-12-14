@@ -383,7 +383,7 @@ if (isset($reservationArray["reservationOutcome"])) {
                                                             <div class="row">
                                                                     <div class="col-md-6 form-group">
                                                                         <label>Email*</label>
-                                                                        <?php if(isset($userNameFirst)) {
+                                                                        <?php if(isset($userEmail)) {
                                                                                 echo '<input type="text" name="reservationEmail" placeholder="'.$userEmail.'" class="form-control" value="'.$userEmail.'" readonly required>';
                                                                               }
                                                                               else {
@@ -574,7 +574,7 @@ if (isset($reservationArray["reservationOutcome"])) {
                                                            
                                                             <label>Select an Available Timeslot*</label>
                                                             <select class="selectpicker" data-width="auto" id="time" name="time" required>
-                                                                <option value="<?php echo $reservationArray['time'] ?>" selected><?php echo $reservationArray['time'] ?></option>
+                                                                <!--<option value="" selected disabled><?php echo $reservationArray['time'] ?></option> -->
                                                                 <?php foreach ($reservationArray['slots'] as $time) {
                                                                     echo '<option value="'.$time.'">'.$time.'</option>';
                                                                     

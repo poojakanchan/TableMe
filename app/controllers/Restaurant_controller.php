@@ -133,22 +133,23 @@ class Restaurant_controller extends Controller {
             $saturdayTo = htmlspecialchars($_POST["saturdayTo"]);
             $sundayFrom = htmlspecialchars($_POST["sundayFrom"]);
             $sundayTo = htmlspecialchars($_POST["sundayTo"]);
-
+            
+            
             $operatinghours = array(
-                "mondayFrom" => "'" . $mondayFrom . "'",
-                "mondayTo" => "'" . $mondayTo . "'",
-                "tuesdayFrom" => "'" . $tuesdayFrom . "'",
-                "tuesdayTo" => "'" . $tuesdayTo . "'",
-                "wednesdayFrom" => "'" . $wednesFrom . "'",
-                "wednesdayTo" => "'" . $wednesdayTo . "'",
-                "thursdayFrom" => "'" . $thursdayFrom . "'",
-                "thursdayTo" => "'" . $thursdayTo . "'",
-                "fridayFrom" => "'" . $fridayFrom . "'",
-                "fridayTo" => "'" . $fridayTo . "'",
-                "saturdayFrom" => "'" . $saturdayFrom . "'",
-                "saturdayTo" => "'" . $saturdayTo . "'",
-                "sundayFrom" => "'" . $sundayFrom . "'",
-                "sundayTo" => "'" . $sundayTo . "'"
+                "mondayFrom" =>  $mondayFrom ,
+                "mondayTo" =>  $mondayTo,
+                "tuesdayFrom" => $tuesdayFrom,
+                "tuesdayTo" =>$tuesdayTo,
+                "wednesdayFrom" => $wednesFrom ,
+                "wednesdayTo" => $wednesdayTo ,
+                "thursdayFrom" => $thursdayFrom ,
+                "thursdayTo" =>  $thursdayTo,
+                "fridayFrom" => $fridayFrom ,
+                "fridayTo" => $fridayTo ,
+                "saturdayFrom" =>  $saturdayFrom ,
+                "saturdayTo" => $saturdayTo,
+                "sundayFrom" =>  $sundayFrom ,
+                "sundayTo" =>  $sundayTo
             );
             $restaurant_registration = $this->model('Restaurant_Registration_model');
             $res = $restaurant_registration->registerRestaurant($resArray, $ownerArray, $operatinghours, $username, $password, $thumbnail, $menuFile);

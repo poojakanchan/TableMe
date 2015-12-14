@@ -29,10 +29,13 @@ class User_controller extends Controller {
             // call to database function.
             $userModel = $this->model('User_model');
             if ($userModel->addUser($name, $phone, $email, $username, $password) > 0) {
-                $success = 'success';
-                header("Location:login.php/?message=" . $success);
+             echo "<p style=\"color:green;text-align:center;font-weight: bold\" >Congratulations!! Registration is successful!!";
+                echo "</p><br><p style = \"text-align:center;font-weight: bold \" > ";
+                echo "<br> Please  <a href =\"login.php\">Login </a> to continue.</p>";
+//                $success = 'success';
+//                header("Location:login.php/?message=" . $success);
             } else {
-                echo "<p style=\"color:red;text-align:center;font-weight: bold\">Error occured while registestration,Please select different username.</p>";
+                echo "<p style=\"color:red;text-align:center;font-weight: bold\">Error occured while registestration,Please try again!</p>";
             }
         }
     }

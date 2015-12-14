@@ -50,33 +50,33 @@
                         header('location: ../admin/adminpage.php');
                         break;
                 }
-                
             }
         }
 
         $msg = (array_key_exists('message', $_GET) ? htmlspecialchars($_GET['message']) : '');
 
         if ($msg == 'success') {
-            echo "<p style=\"color:green;text-align:center;font-weight:bold\"> Registration is successful!</p>"
-            . " <p style=\"text-align:center;font-weight: bold\">Please login to continue.</p>";
+            echo "<h4 style=\"color:green;text-align:center;font-weight:bold\"> Registration is successful!</p>"
+            . " <h4 style=\"text-align:center;font-weight: bold\">Please login to continue.</p>";
         }
         ?>
 
-        <div class="container">
+    <center><div class="container">
             <div class="row">
-                <div class="col-md-offset-5 col-md-3">
+                <!-- <div class="col-md-offset-5 col-md-3"> -->
                     <div class="form-login">
-<?php
-if ($incorrectLogin) {
-    echo '<h4 style="color:red">Incorrect login information</h4>';
-} else {
-    echo '<h4>Welcome back</h4>';
-}
-?> 
+                        <?php
+                        if ($incorrectLogin) {
+                            echo '<h2 style="color:red">Incorrect login information</h4>';
+                        } else {
+                            echo '<h2>Welcome back</h4>';
+                        }
+                        ?>
+                        <br>
                         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                            <input type="text" id="username" name="username" class="form-control input-sm chat-input" placeholder="username" required />
+                            <input style="width:30%; height:40px;" type="text" id="username" name="username" class="form-control input-sm chat-input" placeholder="username" required />
                             <br>
-                            <input type="password" id="password" name="password" class="form-control input-sm chat-input" placeholder="password" required/>
+                            <input style="width:30%; height:40px;" type="password" id="password" name="password" class="form-control input-sm chat-input" placeholder="password" required/>
                             <br>
                             <div class="wrapper">
                                 <span class="group-btn">     
@@ -85,12 +85,11 @@ if ($incorrectLogin) {
                             </div>
                         </form>
                     </div>
-
-                </div>
+                <!-- </div> --> 
             </div>
-        </div>
+        </div></center>
 
-    </body>
+</body>
 </html>
 
 

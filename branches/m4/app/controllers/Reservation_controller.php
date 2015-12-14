@@ -134,7 +134,7 @@ class Reservation_controller extends Controller {
             //echo $openingTime."-";
             //echo $closingTime;
             //echo "reservation time: ".$reservationTime;
-            
+            //echo "FIRST ".$reserveDate." DATE ".$reserveTime." TIME ".$restaurantID." RESTAURANT ".$groupSize." GROUP ";
             $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime, $restaurantID, $groupSize);
             $restaurantCapacity=$this->reservation->getTableCount($restaurantID, $capacity );
             
@@ -178,6 +178,7 @@ class Reservation_controller extends Controller {
                             //echo "IN LOOP";
                             $reservationCount=$this->reservation->countReservation($reserveDate, $openingTime, $restaurantID, $groupSize);
                             if($reservationCount < $restaurantCapacity) {
+                                
                                 $reserveArray["slots"][$index] = date("g:i:A", $openingTime);
                                 $index += 1;
                             }
@@ -190,17 +191,18 @@ class Reservation_controller extends Controller {
                 }
                 else {
                     $reserveArray["reservationOutcome"] = "closed";
-                    $index = 0;
+                    /*$index = 0;
                     while($openingTime <= $closingTime) {
-                        //echo "IN LOOP";
-                        $reservationCount=$this->reservation->countReservation($reserveDate, $openingTime, $restaurantID, $groupSize);
-                        if($reservationCount < $restaurantCapacity) {
-                            $reserveArray["slots"][$index] = date("g:i:A", $openingTime);
-                           $index += 1;
-                        }
-                        $openingTime = strtotime("+30 minutes", $openingTime);
-                        
-                    }
+                            $reserveTime = date("H:i", $openingTime);
+                            //echo $reserveDate." DATE ".$reserveTime." TIME ".$restaurantID." RESTAURANT ".$groupSize." GROUP ";
+                            $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime, $restaurantID, $groupSize);
+                            if($reservationCount < $restaurantCapacity) {
+                                $reserveArray["slots"][$index] = date("g:iA", $openingTime);
+                               $index += 1;
+                            }
+                            $openingTime = strtotime("+30 minutes", $openingTime);
+
+                        }*/
                     return $reserveArray;
     //                echo "The restaurant is not open at the selected time or date. Please select another.";
                 }
@@ -226,10 +228,11 @@ class Reservation_controller extends Controller {
                         $reserveArray["reservationOutcome"] = "full";
                         $index = 0;
                         while($openingTime <= $closingTime) {
-                            //echo "IN LOOP";
-                            $reservationCount=$this->reservation->countReservation($reserveDate, $openingTime, $restaurantID, $groupSize);
+                            $reserveTime = date("H:i", $openingTime);
+                            //echo $reserveDate." DATE ".$reserveTime." TIME ".$restaurantID." RESTAURANT ".$groupSize." GROUP ";
+                            $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime, $restaurantID, $groupSize);
                             if($reservationCount < $restaurantCapacity) {
-                                $reserveArray["slots"][$index] = date("g:i:A", $openingTime);
+                                $reserveArray["slots"][$index] = date("g:iA", $openingTime);
                                $index += 1;
                             }
                             $openingTime = strtotime("+30 minutes", $openingTime);
@@ -241,18 +244,19 @@ class Reservation_controller extends Controller {
                 }
                 else {
                     $reserveArray["reservationOutcome"] = "closed";
-                    
+                    /*
                     $index = 0;
                     while($openingTime <= $closingTime) {
-                        //echo "IN LOOP";
-                        $reservationCount=$this->reservation->countReservation($reserveDate, $openingTime, $restaurantID, $groupSize);
-                        if($reservationCount < $restaurantCapacity) {
-                            $reserveArray["slots"][$index] = date("g:i:A", $openingTime);
-                           $index += 1;
-                        }
-                        $openingTime = strtotime("+30 minutes", $openingTime);
-                        
-                    }
+                            $reserveTime = date("H:i", $openingTime);
+                            //echo $reserveDate." DATE ".$reserveTime." TIME ".$restaurantID." RESTAURANT ".$groupSize." GROUP ";
+                            $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime, $restaurantID, $groupSize);
+                            if($reservationCount < $restaurantCapacity) {
+                                $reserveArray["slots"][$index] = date("g:iA", $openingTime);
+                               $index += 1;
+                            }
+                            $openingTime = strtotime("+30 minutes", $openingTime);
+
+                        }*/
                     return $reserveArray;
     //                echo "The restaurant is not open at the selected time or date. Please select another.";
                 }
@@ -260,17 +264,18 @@ class Reservation_controller extends Controller {
             else {
                     //echo "IN WRONG DATE";
                     $reserveArray["reservationOutcome"] = "invalid";
-                    $index = 0;
+                    /*$index = 0;
                     while($openingTime <= $closingTime) {
-                        //echo "IN LOOP";
-                        $reservationCount=$this->reservation->countReservation($reserveDate, $openingTime, $restaurantID, $groupSize);
-                        if($reservationCount < $restaurantCapacity) {
-                            $reserveArray["slots"][$index] = date("g:i:A", $openingTime);
-                           $index += 1; 
-                        }
-                        $openingTime = strtotime("+30 minutes", $openingTime);
-                        
-                    }
+                            $reserveTime = date("H:i", $openingTime);
+                            //echo $reserveDate." DATE ".$reserveTime." TIME ".$restaurantID." RESTAURANT ".$groupSize." GROUP ";
+                            $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime, $restaurantID, $groupSize);
+                            if($reservationCount < $restaurantCapacity) {
+                                $reserveArray["slots"][$index] = date("g:iA", $openingTime);
+                               $index += 1;
+                            }
+                            $openingTime = strtotime("+30 minutes", $openingTime);
+
+                        }*/
                     return $reserveArray;
             }
             
@@ -433,11 +438,12 @@ class Reservation_controller extends Controller {
                         $reserveArray["reservationOutcome"] = "full";
                         $index = 0;
                         while($openingTime <= $closingTime) {
-                            //echo "IN LOOP";
-                            $reservationCount=$this->reservation->countReservation($reserveDate, $openingTime, $restaurantID, $groupSize);
+                            $reserveTime = date("H:i", $openingTime);
+                            //echo $reserveDate." DATE ".$reserveTime." TIME ".$restaurantID." RESTAURANT ".$groupSize." GROUP ";
+                            $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime, $restaurantID, $groupSize);
                             if($reservationCount < $restaurantCapacity) {
-                                $reserveArray["slots"][$index] = date("g:i:A", $openingTime);
-                                $index += 1;
+                                $reserveArray["slots"][$index] = date("g:iA", $openingTime);
+                               $index += 1;
                             }
                             $openingTime = strtotime("+30 minutes", $openingTime);
 
@@ -448,17 +454,18 @@ class Reservation_controller extends Controller {
                 }
                 else {
                     $reserveArray["reservationOutcome"] = "closed";
-                    $index = 0;
+                    /*$index = 0;
                     while($openingTime <= $closingTime) {
-                        //echo "IN LOOP";
-                        $reservationCount=$this->reservation->countReservation($reserveDate, $openingTime, $restaurantID, $groupSize);
-                        if($reservationCount < $restaurantCapacity) {
-                            $reserveArray["slots"][$index] = date("g:i:A", $openingTime);
-                            $index += 1;
-                        }
-                        $openingTime = strtotime("+30 minutes", $openingTime);
-                        
-                    }
+                            $reserveTime = date("H:i", $openingTime);
+                            //echo $reserveDate." DATE ".$reserveTime." TIME ".$restaurantID." RESTAURANT ".$groupSize." GROUP ";
+                            $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime, $restaurantID, $groupSize);
+                            if($reservationCount < $restaurantCapacity) {
+                                $reserveArray["slots"][$index] = date("g:iA", $openingTime);
+                               $index += 1;
+                            }
+                            $openingTime = strtotime("+30 minutes", $openingTime);
+
+                        }*/
                     return $reserveArray;
     //                echo "The restaurant is not open at the selected time or date. Please select another.";
                 }
@@ -484,11 +491,12 @@ class Reservation_controller extends Controller {
                         $reserveArray["reservationOutcome"] = "full";
                         $index = 0;
                         while($openingTime <= $closingTime) {
-                            //echo "IN LOOP";
-                            $reservationCount=$this->reservation->countReservation($reserveDate, $openingTime, $restaurantID, $groupSize);
+                            $reserveTime = date("H:i", $openingTime);
+                            //echo $reserveDate." DATE ".$reserveTime." TIME ".$restaurantID." RESTAURANT ".$groupSize." GROUP ";
+                            $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime, $restaurantID, $groupSize);
                             if($reservationCount < $restaurantCapacity) {
-                                $reserveArray["slots"][$index] = date("g:i:A", $openingTime);
-                                $index += 1;
+                                $reserveArray["slots"][$index] = date("g:iA", $openingTime);
+                               $index += 1;
                             }
                             $openingTime = strtotime("+30 minutes", $openingTime);
 
@@ -499,18 +507,19 @@ class Reservation_controller extends Controller {
                 }
                 else {
                     $reserveArray["reservationOutcome"] = "closed";
-                    $index = 0;
+                    /*$index = 0;
                     while($openingTime <= $closingTime) {
-                        //echo "IN LOOP";
-                        $reservationCount=$this->reservation->countReservation($reserveDate, $openingTime, $restaurantID, $groupSize);
-                        if($reservationCount < $restaurantCapacity) {
-                            $reserveArray["slots"][$index] = date("g:i:A", $openingTime);
-                            $index += 1;
-                        }
-                        $openingTime = strtotime("+30 minutes", $openingTime);
-                        
-                    }
-                    var_dump($reserveArray['slots']);
+                            $reserveTime = date("H:i", $openingTime);
+                            //echo $reserveDate." DATE ".$reserveTime." TIME ".$restaurantID." RESTAURANT ".$groupSize." GROUP ";
+                            $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime, $restaurantID, $groupSize);
+                            if($reservationCount < $restaurantCapacity) {
+                                $reserveArray["slots"][$index] = date("g:iA", $openingTime);
+                               $index += 1;
+                            }
+                            $openingTime = strtotime("+30 minutes", $openingTime);
+
+                        }*/
+                    //var_dump($reserveArray['slots']);
                     return $reserveArray;
     //                echo "The restaurant is not open at the selected time or date. Please select another.";
                 }
@@ -518,17 +527,18 @@ class Reservation_controller extends Controller {
             else {
                     //echo "IN WRONG DATE";
                     $reserveArray["reservationOutcome"] = "invalid";
-                    $index = 0;
+                    /*$index = 0;
                     while($openingTime <= $closingTime) {
-                        //echo "IN LOOP";
-                        $reservationCount=$this->reservation->countReservation($reserveDate, $openingTime, $restaurantID, $groupSize);
-                        if($reservationCount < $restaurantCapacity) {
-                            $reserveArray["slots"][$index] = date("g:i:A", $openingTime);
-                            $index += 1;
-                        }
-                        $openingTime = strtotime("+30 minutes", $openingTime);
-                        
-                    }
+                            $reserveTime = date("H:i", $openingTime);
+                            //echo $reserveDate." DATE ".$reserveTime." TIME ".$restaurantID." RESTAURANT ".$groupSize." GROUP ";
+                            $reservationCount=$this->reservation->countReservation($reserveDate, $reserveTime, $restaurantID, $groupSize);
+                            if($reservationCount < $restaurantCapacity) {
+                                $reserveArray["slots"][$index] = date("g:iA", $openingTime);
+                               $index += 1;
+                            }
+                            $openingTime = strtotime("+30 minutes", $openingTime);
+
+                        }*/
                     return $reserveArray;
             }
             

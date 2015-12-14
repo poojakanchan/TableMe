@@ -2,7 +2,7 @@
 
 // session_start();
 require_once 'Controller.php';
-
+date_default_timezone_set("America/Los_Angeles");
 class Reservation_controller extends Controller {
     private $reservation;
     //private $restaurant;

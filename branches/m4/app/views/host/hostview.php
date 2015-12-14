@@ -523,6 +523,7 @@
                                                     <div class="row">
                                                         <input type="hidden" name="restaurant" value="<?php echo $resId ?> ">
                                                         <input type="hidden" name="userid" value="<?php echo "NULL" ?>">
+                                                        <input type="hidden" name="restaurant-name" value="<?php echo $restaurant['name']; ?>">
                                                         <!-- for debug purposes, displays restaurant ID -->
                                                         <?php //echo $resId ?>
                                                         <div class="col-md-12">

@@ -46,22 +46,23 @@ class Restaurant_registration_model extends Database {
                 . ":mon_to, :tues_to, :wednes_to, :thurs_to, :fri_to,:satur_to,:sun_to)";
         
        
+        
         $stmt = $this->dbh->prepare($sql);
     //    $stmt->bindParam(':resId', $operArray['resId']);
-        $stmt->bindParam(':mon_from', $operArray['mondayFrom']);
-        $stmt->bindParam(':tues_from', $operArray['tuesdayFrom']);
-        $stmt->bindParam(':wednes_from', $operArray['wednesdayFrom']);
-        $stmt->bindParam(':thurs_from', $operArray['thursdayFrom']);
-        $stmt->bindParam(':fri_from', $operArray['fridayFrom']);
-        $stmt->bindParam(':satur_from',$operArray['saturdayFrom']);
-        $stmt->bindParam(':sun_from', $operArray['sundayFrom']);
-        $stmt->bindParam(':mon_to', $operArray['mondayTo']);
-        $stmt->bindParam(':tues_to', $operArray['tuesdayTo']);
-        $stmt->bindParam(':wednes_to', $operArray['wednesdayTo']);
-        $stmt->bindParam(':thurs_to', $operArray['thursdayTo']);
-        $stmt->bindParam(':fri_to', $operArray['fridayTo']);
-        $stmt->bindParam(':satur_to', $operArray['saturdayTo']);
-        $stmt->bindParam(':sun_to', $operArray['sundayTo']);
+        $stmt->bindParam(':mon_from', date("H:i",strtotime($operArray['mondayFrom'])));
+        $stmt->bindParam(':tues_from', date("H:i",strtotime($operArray['tuesdayFrom'])));
+        $stmt->bindParam(':wednes_from', date("H:i",strtotime($operArray['wednesdayFrom'])));
+        $stmt->bindParam(':thurs_from', date("H:i",strtotime($operArray['thursdayFrom'])));
+        $stmt->bindParam(':fri_from', date("H:i",strtotime($operArray['fridayFrom'])));
+        $stmt->bindParam(':satur_from',date("H:i",strtotime($operArray['saturdayFrom'])));
+        $stmt->bindParam(':sun_from', date("H:i",strtotime($operArray['sundayFrom'])));
+        $stmt->bindParam(':mon_to', date("H:i",strtotime($operArray['mondayTo'])));
+        $stmt->bindParam(':tues_to',date("H:i",strtotime( $operArray['tuesdayTo'])));
+        $stmt->bindParam(':wednes_to',date("H:i",strtotime( $operArray['wednesdayTo'])));
+        $stmt->bindParam(':thurs_to', date("H:i",strtotime($operArray['thursdayTo'])));
+        $stmt->bindParam(':fri_to', date("H:i",strtotime($operArray['fridayTo'])));
+        $stmt->bindParam(':satur_to', date("H:i",strtotime($operArray['saturdayTo'])));
+        $stmt->bindParam(':sun_to', date("H:i",strtotime($operArray['sundayTo'])));
         return $stmt;
        // return $this ->insertDB($stmt);
         

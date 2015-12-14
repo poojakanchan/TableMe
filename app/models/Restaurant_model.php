@@ -39,7 +39,7 @@ class Restaurant_model  extends Database{
      * get count of restaurants for given seeach string.
      */
     public function findRestaurantsCount($nameAddCat) {
-        $sql = "SELECT COUNT(*) FROM restaurant WHERE name_address_category LIKE ";
+        $sql = "SELECT COUNT(*) FROM restaurant WHERE flag_new=0 AND name_address_category LIKE ";
         $searchWord;
          if($nameAddCat != "%") {
              $words = explode(" ", $nameAddCat);
@@ -67,7 +67,7 @@ class Restaurant_model  extends Database{
      * with limit number of outputs starting at offset in database
      */
     public function findRestaurantsLimitOffset($nameAddCat, $limit, $offset) {
-        $sql = "SELECT * FROM restaurant WHERE name_address_category LIKE "; 
+        $sql = "SELECT * FROM restaurant WHERE flag_new=0 AND name_address_category LIKE "; 
         
         $searchWord;
          if($nameAddCat != "%") {
@@ -101,7 +101,7 @@ class Restaurant_model  extends Database{
      * function to retrieve count of total number of restuarants.
      */
     public function getAllRestaurantsCount() {
-        $sql = "SELECT COUNT(*) FROM restaurant";
+        $sql = "SELECT COUNT(*) FROM restaurant WHERE flag_new=0";
         $stmt = $this->dbh->prepare($sql);
       
         if ($stmt->execute()){
@@ -115,7 +115,7 @@ class Restaurant_model  extends Database{
      * function to get restaurants with given limit.
      */
     public function getAllRestaurantsLimitOffset($limit, $offset) {
-        $sql = "SELECT * FROM restaurant LIMIT :lim OFFSET :off";
+        $sql = "SELECT * FROM restaurant WHERE flag_new=0 LIMIT :lim OFFSET :off";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindParam(':lim', $limit, PDO::PARAM_INT);
         $stmt->bindParam(':off', $offset, PDO::PARAM_INT);

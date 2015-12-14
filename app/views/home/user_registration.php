@@ -40,12 +40,21 @@
                     alert("Username must be filled out.");
                     return false;
                 }
+                
+                if(userUsername.length < 4 || userUsername.length > 8){
+                       alert("Length of Username must be between 4-8 letters.");
+                    return false;
+                }
 
                 if (userPassword === null || userPassword === "") {
                     alert("Password must be filled out.");
                     return false;
                 }
 
+                 if (userPassword.length < 4  || userPassword.length > 8) {
+                    alert("Length of Password must be between 4-8 letters.");
+                    return false;
+                }
                 if (userConfirmPassword === null || userConfirmPassword === "") {
                     alert("You must confirm the password.");
                     return false;
@@ -104,16 +113,16 @@
 
                             <div class="row">
                                 <div class="col-sm-6 form-group">
-                                <label id="usernameLabel">Username *</label>
-                                <input type="text" name="userUsername" id="username" placeholder="Please pick a username..." class="form-control" required>
+                                <label id="usernameLabel">Username * (length 3-8 letters)</label>
+                                <input type="text" name="userUsername" id="username" placeholder="Please pick a username..." class="form-control" required maxlength="8">
                                 </div>
                                 
                             </div>
 
                             <div class="row">
                                 <div class="col-sm-6 form-group">
-                                    <label id="passwordLabel">Password *</label>
-                                    <input type="password" name="userPassword" id="password" placeholder="Please pick a password..." class="form-control" required>
+                                    <label id="passwordLabel">Password *(length 4-8 letters)</label>
+                                    <input type="password" name="userPassword" id="password" placeholder="Please pick a password..." class="form-control" required maxlength="8">
                                 </div>	
                                 <div class="col-sm-6 form-group">
                                     <label id="confirmPasswordLabel">Confirm Password *</label>
@@ -235,7 +244,7 @@
                         return;
                     }
                     $("#username").css("border", "");
-                    $("#usernameLabel").replaceWith('<label id="usernameLabel">Username *</label>');
+                    $("#usernameLabel").replaceWith('<label id="usernameLabel">Username * (length 4-8 letters)</label>');
                 });
                 
                  $("#firstname").focusout(function () {
@@ -268,7 +277,7 @@
                         return;
                     }
                     $("#password").css("border", "");
-                    $("#passwordLabel").replaceWith('<label id="passwordLabel">Password *</label>');
+                    $("#passwordLabel").replaceWith('<label id="passwordLabel">Password * (length 4-8 letters) </label>');
                 });
                 
                 $("#confirmPassword").focusout(function () {

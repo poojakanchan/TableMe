@@ -12,6 +12,48 @@ if (isset($_GET['logout'])) {
 }
 ?>
 
+<style>
+
+    .member{
+        margin: 10px 10px 10px 10px;
+        border-radius: 25px;
+        border: 1px solid #e3e3e3;
+        background-color:#f5f5f5;
+        /*background-color:rgba(0,0,0,0.5)*/
+    }
+    .navbar-custom {
+        margin-bottom: 0px;
+        width: auto;
+        height: auto;
+        font-size: 120%;
+        font-weight: bold;
+        background-color: #F0FFFF;
+    }
+
+    li a {           
+        color: #000000;
+    }
+
+    .logo{
+        padding-top: 5px;
+        padding-right: 15px;
+    }
+
+    .navbar-left {
+        padding-top: 15px;
+    }
+
+    .navbar-right {
+        padding-top: 15px
+    }
+    
+    .navgationbar{
+        background-color:rgba(0,0,0,0)!important;
+        border: none!important;
+        margin: 0 0 0 0!important;
+    }
+</style>
+
 <nav class ="navbar navbar-custom">
     <div class ="container-fluid navgationbar">
         <div class ="navbar-header logo">

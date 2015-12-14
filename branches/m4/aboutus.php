@@ -28,26 +28,26 @@
                 <h3>Back-end developers:</h3>
             </div>
             <div class="col-md-12">
-                <div class="col-md-4">
+                <div class="col-md-4 col-xs-12">
                     <div class="container-fluid member">
                         <br>
-                        <img src="css/img/1.png" class="img-rounded" height="300" width="300" />
+                        <img src="css/img/1.png" class="img-rounded" height="auto" width="auto" />
                         <h4>Pooja Kanchan [Team Lead]</h4>
                         <a href="mailto:pooj.kanchan@gmail.com">pooj.kanchan@gmail.com</a>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-xs-12">
                     <div class="container-fluid member">
                         <br>
-                        <img src="css/img/2.png" class="img-rounded" height="300" width="300" />
+                        <img src="css/img/2.png" class="img-rounded" height="auto" width="auto" />
                         <h4>Adrian Lee [Tech Lead]</h4>
                         <a href="mailto:aznanimekid@gmail.com">aznanimekid@gmail.com</a>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-xs-12">
                     <div class="container-fluid member">
                         <br>
-                        <img src="css/img/3.jpg" class="img-rounded" height="300" width="300" />
+                        <img src="css/img/3.jpg" class="img-rounded" height="auto" width="auto" />
                         <h4>Haichuan Duan [Back-end Lead]</h4>
                         <a href="mailto:haichuand@gmail.com">haichuand@gmail.com</a>
                     </div>                    
@@ -57,7 +57,7 @@
                 <h3>Front-end developers:</h3>
             </div>
             <div class="col-md-12">
-                <div class="col-md-4">
+                <div class="col-md-4 col-xs-12">
                     <div class="container-fluid member">
                         <br>
                         <img src="css/img/4.png" class="img-rounded" height="300" width="300" />
@@ -65,7 +65,7 @@
                         <a href="mailto:sabreenmichael@gmail.com">sabreenmichael@gmail.com</a>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-xs-12">
                     <div class="container-fluid member">
                         <br>
                         <img src="css/img/5.png" class="img-rounded" height="300" width="300" />
@@ -73,7 +73,7 @@
                         <a href="mailto:openmichael65@gmail.com">openmichael65@gmail.com</a>
                     </div>                    
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-xs-12">
                     <div class="container-fluid member">
                         <br>
                         <img src="css/img/6.png" class="img-rounded" height="300" width="300" />

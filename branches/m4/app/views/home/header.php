@@ -13,18 +13,7 @@ if (isset($_GET['logout'])) {
 ?>
 
 <style>
-    h1 {
-        text-align: center;
-    }
-    h2 {
-        text-align: center;
-    }
-    .member {
-        text-align: center;
-    }
-    h5{
-        font-weight: bold;
-    }
+
 
     .member{
         margin: 10px 10px 10px 10px;
@@ -35,8 +24,8 @@ if (isset($_GET['logout'])) {
     }
     .navbar-custom {
         margin-bottom: 0px;
-        width: 100%;
-        height: 80px;
+        width: auto;
+        height: auto;
         font-size: 120%;
         font-weight: bold;
         background-color: #F0FFFF;

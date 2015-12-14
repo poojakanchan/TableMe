@@ -505,7 +505,7 @@ if (isset($reservationArray["reservationOutcome"])) {
                         case 'success':
                             echo '<center><h1>Reservation Successful!</h1></center>
                                     <hr><br>';
-                            echo '<p>Mr/Mrs. '. $reservationArray['user_name'] .'</p><br>';
+                            echo '<p>Dear '. $reservationArray['user_name'] .',</p><br>';
                             echo '<p>This email is to confirm your reservation for '. $reservationArray['restaurant_name'] . ' Restaurant. The following are the details of your reservation.</p><br>';
                             echo '<p><b>Restaurant: </b><a href="app/views/home/restaurant.php?resid='. $reservationArray['restaurant_id'] . '">'. $reservationArray['restaurant_name'] . '</a></p>';
                             echo '<p><b>Date: </b>' . $reservationArray['date']. '</p>';
@@ -514,7 +514,7 @@ if (isset($reservationArray["reservationOutcome"])) {
                             echo '<p><b>Guest Name: </b>'. $reservationArray['user_name'] . '</p><br>';
                             echo '<p><b>Special Instructions: </b>'. $reservationArray['special_instruct'] . '</p><br>';
                             echo '<p>If you are a registered user, you can go to "My Profile" page to view or cancel your reservation</p><br>';
-                            echo '<p>We look forward to see you!</p><br><br><hr>';
+                            echo '<p>We look forward to seeing you!</p><br><br><hr>';
                             break;
                         case 'full':
                             echo '<center><h1>Reservation Unsuccessful</h1></center>

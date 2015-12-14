@@ -51,7 +51,7 @@ class Host_controller extends Controller{
     public function makeReservation() {
         require_once 'Reservation_controller.php';
         $reservationController = new Reservation_controller();
-        $reservationController->add();
+        return $reservationController->add();
     }
     
     public function cancelReservation($resId,$reservationId) {
